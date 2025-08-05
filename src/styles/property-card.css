@@ -1,0 +1,572 @@
+/* Property Card Styles */
+.property-card {
+  background: var(--card-bg, #ffffff);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+  border: 1px solid var(--border-primary, #e5e7eb);
+}
+
+.property-card:hover {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Property Image */
+.property-image-container {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.property-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.property-card:hover .property-image {
+  transform: scale(1.05);
+}
+
+/* Ensure image fills container properly */
+.property-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Image loading and error states */
+.property-image-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.property-image-container img {
+  position: relative;
+  z-index: 2;
+}
+
+.property-image-container img[src] {
+  opacity: 1;
+}
+
+.property-image-container img:not([src]) {
+  opacity: 0;
+}
+
+/* Image error fallback */
+.property-image-container img[src*="placeholder"] {
+  object-fit: contain;
+  padding: 20px;
+}
+
+/* Ensure consistent image aspect ratios */
+.property-image-container {
+  aspect-ratio: 4/3;
+}
+
+/* Prevent image distortion */
+.property-image,
+.property-image-container img {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Smooth image transitions */
+.property-image-container img {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Image hover effects */
+.property-image-container:hover img {
+  transform: scale(1.05);
+}
+
+/* Image loading skeleton */
+.property-image-container.loading::before {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Image error state */
+.property-image-container.error::before {
+  background: #fee2e2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.property-image-container.error::before {
+  content: 'No image';
+}
+
+/* Status Badge */
+.property-status-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.property-status-badge.for-sale {
+  background-color: #10b981;
+  color: white;
+}
+
+.property-status-badge.for-rent {
+  background-color: #3b82f6;
+  color: white;
+}
+
+/* Verification Badge */
+.property-verification-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #10b981;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.property-verification-badge svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Favorite Button */
+.property-favorite-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #d1d5db;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.property-favorite-btn:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.property-favorite-btn.favorited {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: white;
+}
+
+.property-favorite-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Property Content */
+.property-content {
+  padding: 20px;
+}
+
+.property-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.property-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.property-type-badge {
+  padding: 4px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: capitalize;
+}
+
+.property-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  color: #111827;
+  transition: color 0.2s ease;
+}
+
+.property-card:hover .property-title {
+  color: #2563eb;
+}
+
+/* Subtle inner gradient overlay on image for depth */
+.property-image-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.15));
+  pointer-events: none;
+}
+
+/* Improve favorite button contrast on images */
+.property-favorite-btn { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+
+.property-location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #6b7280;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.property-location svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Property Features */
+.property-features {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.property-feature {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.property-feature svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Property Description */
+.property-description {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Property Footer */
+.property-footer {
+  padding: 20px;
+  padding-top: 0;
+}
+
+.property-view-btn {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.property-view-btn:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.property-view-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .property-features {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .property-feature {
+    min-width: 60px;
+  }
+  
+  .property-image-container {
+    aspect-ratio: 16/10;
+  }
+}
+
+@media (max-width: 480px) {
+  .property-image-container {
+    aspect-ratio: 4/3;
+  }
+  
+  .property-content {
+    padding: 16px;
+  }
+}
+
+/* Image Navigation Controls */
+.image-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 3;
+  opacity: 0;
+}
+
+.property-image-container:hover .image-nav-btn {
+  opacity: 1;
+}
+
+.image-nav-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn {
+  left: 8px;
+}
+
+.next-btn {
+  right: 8px;
+}
+
+/* Image Counter */
+.image-counter {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 3;
+}
+
+/* Image Dots */
+.image-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 3;
+}
+
+.image-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.image-dot.active {
+  background: white;
+  transform: scale(1.2);
+}
+
+.image-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Responsive adjustments for image controls */
+@media (max-width: 768px) {
+  .image-nav-btn {
+    width: 28px;
+    height: 28px;
+    opacity: 1;
+  }
+
+  .image-counter {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+
+  .image-dot {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* Dark mode adjustments */
+body.dark-mode .image-counter {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+body.dark-mode .image-nav-btn {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .image-nav-btn:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* Admin Approval Buttons - Show prominently for pending properties */
+.admin-approval-buttons {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+  justify-content: center;
+}
+
+.admin-approve-btn,
+.admin-reject-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-approve-btn {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
+.admin-approve-btn:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4);
+}
+
+.admin-reject-btn {
+  background: #ef4444;
+  color: white;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+.admin-reject-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.4);
+}
+
+/* Make approval buttons more prominent in list view */
+.property-card-list .admin-approval-buttons {
+  margin: 16px 0;
+}
+
+.property-card-list .admin-approve-btn,
+.property-card-list .admin-reject-btn {
+  padding: 10px 20px;
+  font-size: 15px;
+}
+
+/* Status badge styling for better visibility */
+.status-badge.pending {
+  background: #f59e0b !important;
+  color: white !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.approved {
+  background: #10b981 !important;
+  color: white !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.rejected {
+  background: #ef4444 !important;
+  color: white !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}

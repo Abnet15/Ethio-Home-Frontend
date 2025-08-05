@@ -1,0 +1,187 @@
+[
+  {
+    "id": "1",
+    "title": "Modern Villa in Bole",
+    "description": "Luxurious 4-bedroom villa with modern amenities in the heart of Bole. Features include a spacious living area, modern kitchen, and beautiful garden.",
+    "price": 15000000,
+    "currency": "ETB",
+    "location": "Bole, Addis Ababa",
+    "type": "villa",
+    "status": "for-sale",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "area": 350,
+    "verified": true,
+    "image": "/hero-bg-addis.jpg",
+    "images": [
+      "/hero-bg-addis.jpg",
+      "/hero-bg-modern.jpg",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    ],
+    "features": {
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "area": 350,
+      "parking": true,
+      "furnished": true,
+      "yearBuilt": 2020
+    },
+    "owner": {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "phone": "+251911123456"
+    },
+    "agentId": 1,
+    "isVerified": true,
+    "createdAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "2",
+    "title": "Cozy Apartment in Kazanchis",
+    "description": "Beautiful 2-bedroom apartment perfect for young professionals. Located in a quiet neighborhood with easy access to the city center.",
+    "price": 8500000,
+    "currency": "ETB",
+    "location": "Kazanchis, Addis Ababa",
+    "type": "apartment",
+    "status": "for-sale",
+    "features": {
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "area": 120,
+      "parking": true,
+      "furnished": false,
+      "yearBuilt": 2019
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    ],
+    "owner": {
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "phone": "+251922234567"
+    },
+    "agentId": 2,
+    "isVerified": true,
+    "createdAt": "2024-01-20T14:15:00Z"
+  },
+  {
+    "id": "3",
+    "title": "Commercial Space in Merkato",
+    "description": "Prime commercial space in the bustling Merkato area. Perfect for retail business or office space.",
+    "price": 25000,
+    "currency": "ETB",
+    "location": "Merkato, Addis Ababa",
+    "type": "commercial",
+    "status": "for-rent",
+    "features": {
+      "bedrooms": 0,
+      "bathrooms": 2,
+      "area": 200,
+      "parking": true,
+      "furnished": false,
+      "yearBuilt": 2018
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    ],
+    "owner": {
+      "name": "Ahmed Hassan",
+      "email": "ahmed@example.com",
+      "phone": "+251933345678"
+    },
+    "agentId": 1,
+    "isVerified": true,
+    "createdAt": "2024-01-25T09:45:00Z"
+  },
+  {
+    "id": "4",
+    "title": "Family House in Gerji",
+    "description": "Spacious family house with large compound. Great for families looking for a peaceful environment.",
+    "price": 12000000,
+    "currency": "ETB",
+    "location": "Gerji, Addis Ababa",
+    "type": "house",
+    "status": "for-sale",
+    "features": {
+      "bedrooms": 5,
+      "bathrooms": 4,
+      "area": 280,
+      "parking": true,
+      "furnished": false,
+      "yearBuilt": 2017
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    ],
+    "owner": {
+      "name": "Sarah Wilson",
+      "email": "sarah@example.com",
+      "phone": "+251944456789"
+    },
+    "agentId": 3,
+    "isVerified": true,
+    "createdAt": "2024-02-01T11:20:00Z"
+  },
+  {
+    "id": "5",
+    "title": "Studio Apartment in Piassa",
+    "description": "Affordable studio apartment in the historic Piassa area. Perfect for students or young professionals.",
+    "price": 3500,
+    "currency": "ETB",
+    "location": "Piassa, Addis Ababa",
+    "type": "apartment",
+    "status": "for-rent",
+    "features": {
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "area": 45,
+      "parking": false,
+      "furnished": true,
+      "yearBuilt": 2015
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    ],
+    "owner": {
+      "name": "Michael Brown",
+      "email": "michael@example.com",
+      "phone": "+251955567890"
+    },
+    "agentId": 2,
+    "isVerified": true,
+    "createdAt": "2024-02-05T16:30:00Z"
+  },
+  {
+    "id": "6",
+    "title": "Land Plot in Lebu",
+    "description": "Prime land plot suitable for residential or commercial development. Located in the growing Lebu area.",
+    "price": 5000000,
+    "currency": "ETB",
+    "location": "Lebu, Addis Ababa",
+    "type": "land",
+    "status": "for-sale",
+    "features": {
+      "bedrooms": 0,
+      "bathrooms": 0,
+      "area": 500,
+      "parking": false,
+      "furnished": false,
+      "yearBuilt": null
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    ],
+    "owner": {
+      "name": "David Johnson",
+      "email": "david@example.com",
+      "phone": "+251966678901"
+    },
+    "agentId": 3,
+    "isVerified": false,
+    "createdAt": "2024-02-10T13:45:00Z"
+  }
+]
+

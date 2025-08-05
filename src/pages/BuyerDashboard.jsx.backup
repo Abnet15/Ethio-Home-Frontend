@@ -1,0 +1,887 @@
+import React, { useState, useContext, useEffect } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
+import "../styles/buyer-dashboard.css";
+import { propertyService } from "../services/propertyService";
+import { sellingService } from "../services/sellingService";
+import { interestService } from "../services/interestService";
+
+const BuyerDashboard = () => {
+  const { user } = useContext(AuthContext);
+  const { currentLanguage, t, isAmharic, isEnglish, switchLanguage } =
+    useLanguage();
+  const [activeTab, setActiveTab] = useState("overview");
+
+  // Real data from API
+  const [favorites, setFavorites] = useState([]);
+  const [purchasedHomes, setPurchasedHomes] = useState([]);
+  const [visitRequests, setVisitRequests] = useState([]);
+  const [loading, setLoading] = useState({ favorites: true, purchased: true, visits: true });
+  const [error, setError] = useState({ favorites: "", purchased: "", visits: "" });
+
+  // Load favorites (properties user has shown interest in)
+  useEffect(() => {
+    const loadFavorites = async () => {
+      if (!user?._id) return;
+      
+      setLoading(prev => ({ ...prev, favorites: true }));
+      setError(prev => ({ ...prev, favorites: "" }));
+      
+      try {
+        const result = await interestService.getInterests();
+        if (result.success) {
+          const interests = result.data?.data?.data || [];
+          const favoriteProperties = interests.map(interest => ({
+            id: interest.propertyId?._id || interest._id,
+            title: interest.propertyId?.title || "Property",
+            price: (interest.propertyId?.price || 0).toLocaleString(),
+            location: interest.propertyId?.location || "Unknown",
+            type: interest.propertyId?.type || "property",
+            image: interest.propertyId?.imagesUrl?.[0] || "/hero-bg-1.jpg",
+            dateAdded: new Date(interest.createdAt).toISOString().split('T')[0],
+          }));
+          setFavorites(favoriteProperties);
+        } else {
+          setError(prev => ({ ...prev, favorites: result.error || "Failed to load favorites" }));
+        }
+      } catch (err) {
+        setError(prev => ({ ...prev, favorites: "Failed to load favorites" }));
+      } finally {
+        setLoading(prev => ({ ...prev, favorites: false }));
+      }
+    };
+
+    loadFavorites();
+  }, [user?._id]);
+
+  // Load purchased homes
+  useEffect(() => {
+    const loadPurchasedHomes = async () => {
+      if (!user?._id) return;
+      
+      setLoading(prev => ({ ...prev, purchased: true }));
+      setError(prev => ({ ...prev, purchased: "" }));
+      
+      try {
+        const result = await sellingService.list({ buyer: user._id, paid: true });
+        if (result.success) {
+          const sales = result.data?.data?.data || [];
+          const purchased = sales.map(sale => ({
+            id: sale._id,
+            title: sale.property?.title || "Property",
+            price: (sale.amount || 0).toLocaleString(),
+            location: sale.property?.location || "Unknown",
+            purchaseDate: new Date(sale.createdAt).toISOString().split('T')[0],
+            status: "completed",
+            image: sale.property?.imagesUrl?.[0] || "/hero-bg-1.jpg",
+          }));
+          setPurchasedHomes(purchased);
+        } else {
+          setError(prev => ({ ...prev, purchased: result.error || "Failed to load purchased homes" }));
+        }
+      } catch (err) {
+        setError(prev => ({ ...prev, purchased: "Failed to load purchased homes" }));
+      } finally {
+        setLoading(prev => ({ ...prev, purchased: false }));
+      }
+    };
+
+    loadPurchasedHomes();
+  }, [user?._id]);
+
+  // Load visit requests
+  useEffect(() => {
+    const loadVisitRequests = async () => {
+      if (!user?._id) return;
+      
+      setLoading(prev => ({ ...prev, visits: true }));
+      setError(prev => ({ ...prev, visits: "" }));
+      
+      try {
+        const result = await interestService.getInterests();
+        if (result.success) {
+          const interests = result.data?.data?.data || [];
+          const visits = interests
+            .filter(interest => interest.status === 'schedule' || interest.visitScheduled)
+            .map(interest => ({
+              id: interest._id,
+              property: interest.propertyId?.title || "Property",
+              requestedDate: interest.visitDate ? new Date(interest.visitDate).toISOString().split('T')[0] : "N/A",
+              requestedTime: interest.visitDate ? new Date(interest.visitDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "N/A",
+              status: interest.status || "pending",
+              submittedDate: new Date(interest.createdAt).toISOString().split('T')[0],
+              agent: interest.propertyId?.owner?.name || "Agent",
+            }));
+          setVisitRequests(visits);
+        } else {
+          setError(prev => ({ ...prev, visits: result.error || "Failed to load visit requests" }));
+        }
+      } catch (err) {
+        setError(prev => ({ ...prev, visits: "Failed to load visit requests" }));
+      } finally {
+        setLoading(prev => ({ ...prev, visits: false }));
+      }
+    };
+
+    loadVisitRequests();
+  }, [user?._id]);
+
+  const [testimonials, setTestimonials] = useState([
+    {
+      id: 1,
+      property: "Luxury Condo in Megenagna",
+      rating: 5,
+      title: "Excellent Service",
+      content:
+        "The entire process was smooth and professional. Highly recommend Ethio-Home!",
+      date: "2024-01-20",
+      status: "approved",
+    },
+    {
+      id: 2,
+      property: "Family House in Gerji",
+      rating: 4,
+      title: "Great Experience",
+      content:
+        "Found my dream home through this platform. Very satisfied with the service.",
+      date: "2023-12-25",
+      status: "approved",
+    },
+    {
+      id: 3,
+      property: "Modern Villa in Bole",
+      rating: 5,
+      title: "Outstanding Platform",
+      content:
+        "Professional agents and transparent process. Will definitely use again.",
+      date: "2024-01-10",
+      status: "pending",
+    },
+  ]);
+
+  const [offers, setOffers] = useState([
+    {
+      id: 1,
+      property: "Modern Villa in Bole",
+      offerAmount: "14,000,000",
+      originalPrice: "15,000,000",
+      status: "pending",
+      date: "2024-01-30",
+      message: "I would like to offer 14M ETB for this beautiful villa.",
+    },
+    {
+      id: 2,
+      property: "Apartment in Kazanchis",
+      offerAmount: "8,000,000",
+      originalPrice: "8,500,000",
+      status: "rejected",
+      date: "2024-01-25",
+      message: "My budget is 8M ETB. Please consider.",
+    },
+    {
+      id: 3,
+      property: "House in CMC",
+      offerAmount: "12,000,000",
+      originalPrice: "12,000,000",
+      status: "accepted",
+      date: "2024-01-20",
+      message: "I accept the asking price.",
+    },
+  ]);
+
+  const [showTestimonialForm, setShowTestimonialForm] = useState(false);
+  const [showOfferForm, setShowOfferForm] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState(null);
+
+  const [testimonialForm, setTestimonialForm] = useState({
+    propertyId: "",
+    rating: 5,
+    title: "",
+    content: "",
+  });
+
+  const [offerForm, setOfferForm] = useState({
+    propertyId: "",
+    offerAmount: "",
+    message: "",
+  });
+
+  const handleFavoriteAction = (favoriteId, action) => {
+    if (action === "remove") {
+      setFavorites(favorites.filter((fav) => fav.id !== favoriteId));
+    }
+  };
+
+  const handleVisitAction = (visitId, action) => {
+    setVisitRequests(
+      visitRequests.map((visit) =>
+        visit.id === visitId ? { ...visit, status: action } : visit
+      )
+    );
+  };
+
+  const handleTestimonialSubmit = (e) => {
+    e.preventDefault();
+    const newTestimonial = {
+      id: Date.now(),
+      property:
+        purchasedHomes.find(
+          (p) => p.id === parseInt(testimonialForm.propertyId)
+        )?.title || "Unknown Property",
+      rating: testimonialForm.rating,
+      title: testimonialForm.title,
+      content: testimonialForm.content,
+      date: new Date().toISOString().split("T")[0],
+      status: "pending",
+    };
+    setTestimonials([...testimonials, newTestimonial]);
+    setShowTestimonialForm(false);
+    setTestimonialForm({ propertyId: "", rating: 5, title: "", content: "" });
+  };
+
+  const handleOfferSubmit = (e) => {
+    e.preventDefault();
+    const newOffer = {
+      id: Date.now(),
+      property:
+        favorites.find((p) => p.id === parseInt(offerForm.propertyId))?.title ||
+        "Unknown Property",
+      offerAmount: offerForm.offerAmount,
+      originalPrice:
+        favorites.find((p) => p.id === parseInt(offerForm.propertyId))?.price ||
+        "0",
+      status: "pending",
+      date: new Date().toISOString().split("T")[0],
+      message: offerForm.message,
+    };
+    setOffers([...offers, newOffer]);
+    setShowOfferForm(false);
+    setOfferForm({ propertyId: "", offerAmount: "", message: "" });
+  };
+
+  const renderOverviewTab = () => (
+    <div className="buyer-section">
+      <div className="overview-grid">
+        <div className="overview-card">
+          <h3>My Properties</h3>
+          <div className="summary-stats">
+            <div className="stat-item">
+              <span className="stat-number">{favorites.length}</span>
+              <span className="stat-label">Favorites</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">{purchasedHomes.length}</span>
+              <span className="stat-label">Purchased</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">
+                {visitRequests.filter((v) => v.status === "pending").length}
+              </span>
+              <span className="stat-label">Pending Visits</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="overview-card">
+          <h3>Recent Activity</h3>
+          <div className="activity-list">
+            <div className="activity-item">
+              <span className="activity-time">2 hours ago</span>
+              <span className="activity-text">
+                Added Modern Villa in Bole to favorites
+              </span>
+            </div>
+            <div className="activity-item">
+              <span className="activity-time">1 day ago</span>
+              <span className="activity-text">
+                Visit request approved for Apartment in Kazanchis
+              </span>
+            </div>
+            <div className="activity-item">
+              <span className="activity-time">3 days ago</span>
+              <span className="activity-text">
+                Submitted testimonial for Luxury Condo
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="overview-card">
+          <h3>Offers Summary</h3>
+          <div className="summary-stats">
+            <div className="stat-item">
+              <span className="stat-number">
+                {offers.filter((o) => o.status === "pending").length}
+              </span>
+              <span className="stat-label">Pending</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">
+                {offers.filter((o) => o.status === "accepted").length}
+              </span>
+              <span className="stat-label">Accepted</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">
+                {offers.filter((o) => o.status === "rejected").length}
+              </span>
+              <span className="stat-label">Rejected</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="overview-card">
+          <h3>Investment Summary</h3>
+          <div className="investment-summary">
+            <div className="investment-item">
+              <span className="investment-label">Total Invested</span>
+              <span className="investment-amount">
+                ETB{" "}
+                {purchasedHomes
+                  .reduce(
+                    (sum, p) => sum + parseInt(p.price.replace(",", "")),
+                    0
+                  )
+                  .toLocaleString()}
+              </span>
+            </div>
+            <div className="investment-item">
+              <span className="investment-label">Properties Owned</span>
+              <span className="investment-amount">{purchasedHomes.length}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderFavoritesTab = () => (
+    <div className="buyer-section">
+      <div className="section-header">
+        <h3>My Favorites</h3>
+        <button
+          className="btn-make-offer"
+          onClick={() => setShowOfferForm(true)}
+          disabled={favorites.length === 0}
+        >
+          Make Offer
+        </button>
+      </div>
+
+      <div className="stats-row">
+        <div className="stat-item">
+          <span className="stat-number">{favorites.length}</span>
+          <span className="stat-label">Total Favorites</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-number">
+            {favorites.filter((f) => f.type === "villa").length}
+          </span>
+          <span className="stat-label">Villas</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-number">
+            {favorites.filter((f) => f.type === "apartment").length}
+          </span>
+          <span className="stat-label">Apartments</span>
+        </div>
+      </div>
+
+      {favorites.length > 0 ? (
+        <div className="favorites-grid">
+          {favorites.map((favorite) => (
+            <div key={favorite.id} className="favorite-card">
+              <div className="property-image">
+                <img src={favorite.image} alt={favorite.title} />
+                <div className="property-type">{favorite.type}</div>
+              </div>
+              <div className="property-info">
+                <h4>{favorite.title}</h4>
+                <p className="property-location">{favorite.location}</p>
+                <p className="property-price">ETB {favorite.price}</p>
+                <p className="date-added">Added: {favorite.dateAdded}</p>
+                <div className="property-actions">
+                  <button className="btn-view">View Details</button>
+                  <button className="btn-visit">Schedule Visit</button>
+                  <button
+                    className="btn-remove"
+                    onClick={() => handleFavoriteAction(favorite.id, "remove")}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="empty-state">
+          <h4>No Favorites Yet</h4>
+          <p>Start browsing properties and add them to your favorites!</p>
+          <button className="btn-browse">Browse Properties</button>
+        </div>
+      )}
+    </div>
+  );
+
+  const renderPurchasedHomesTab = () => (
+    <div className="buyer-section">
+      <div className="section-header">
+        <h3>Purchased Homes</h3>
+        <button
+          className="btn-write-testimonial"
+          onClick={() => setShowTestimonialForm(true)}
+          disabled={purchasedHomes.length === 0}
+        >
+          Write Testimonial
+        </button>
+      </div>
+
+      <div className="stats-row">
+        <div className="stat-item">
+          <span className="stat-number">{purchasedHomes.length}</span>
+          <span className="stat-label">Properties Owned</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-number">
+            ETB{" "}
+            {purchasedHomes
+              .reduce((sum, p) => sum + parseInt(p.price.replace(",", "")), 0)
+              .toLocaleString()}
+          </span>
+          <span className="stat-label">Total Investment</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-number">
+            {testimonials.filter((t) => t.status === "approved").length}
+          </span>
+          <span className="stat-label">Reviews Written</span>
+        </div>
+      </div>
+
+      {purchasedHomes.length > 0 ? (
+        <div className="purchased-homes-grid">
+          {purchasedHomes.map((home) => (
+            <div key={home.id} className="purchased-home-card">
+              <div className="property-image">
+                <img src={home.image} alt={home.title} />
+                <div className="purchase-status">{home.status}</div>
+              </div>
+              <div className="property-info">
+                <h4>{home.title}</h4>
+                <p className="property-location">{home.location}</p>
+                <p className="property-price">ETB {home.price}</p>
+                <p className="purchase-date">Purchased: {home.purchaseDate}</p>
+                <div className="property-actions">
+                  <button className="btn-view">View Property</button>
+                  <button className="btn-documents">Documents</button>
+                  <button
+                    className="btn-review"
+                    onClick={() => {
+                      setSelectedProperty(home);
+                      setShowTestimonialForm(true);
+                    }}
+                  >
+                    Write Review
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="empty-state">
+          <h4>No Purchased Homes</h4>
+          <p>Your purchased properties will appear here.</p>
+        </div>
+      )}
+    </div>
+  );
+
+  const renderVisitRequestsTab = () => (
+    <div className="buyer-section">
+      <div className="section-header">
+        <h3>Visit Requests</h3>
+        <div className="stats-row">
+          <div className="stat-item">
+            <span className="stat-number">
+              {visitRequests.filter((v) => v.status === "pending").length}
+            </span>
+            <span className="stat-label">Pending</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">
+              {visitRequests.filter((v) => v.status === "approved").length}
+            </span>
+            <span className="stat-label">Approved</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">
+              {visitRequests.filter((v) => v.status === "completed").length}
+            </span>
+            <span className="stat-label">Completed</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="table-container">
+        <table className="buyer-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Agent</th>
+              <th>Requested Date</th>
+              <th>Requested Time</th>
+              <th>Status</th>
+              <th>Submitted</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {visitRequests.map((visit) => (
+              <tr key={visit.id}>
+                <td className="property-title">{visit.property}</td>
+                <td>{visit.agent}</td>
+                <td>{visit.requestedDate}</td>
+                <td>{visit.requestedTime}</td>
+                <td>
+                  <span className={`status-badge status-${visit.status}`}>
+                    {visit.status.charAt(0).toUpperCase() +
+                      visit.status.slice(1)}
+                  </span>
+                </td>
+                <td>{visit.submittedDate}</td>
+                <td>
+                  <div className="action-buttons">
+                    <button className="btn-view">View</button>
+                    {visit.status === "approved" && (
+                      <button
+                        className="btn-complete"
+                        onClick={() => handleVisitAction(visit.id, "completed")}
+                      >
+                        Mark Complete
+                      </button>
+                    )}
+                    {visit.status === "pending" && (
+                      <button
+                        className="btn-cancel"
+                        onClick={() => handleVisitAction(visit.id, "cancelled")}
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  const renderTestimonialsTab = () => (
+    <div className="buyer-section">
+      <div className="section-header">
+        <h3>My Testimonials</h3>
+        <button
+          className="btn-write-testimonial"
+          onClick={() => setShowTestimonialForm(true)}
+          disabled={purchasedHomes.length === 0}
+        >
+          Write New Testimonial
+        </button>
+      </div>
+
+      <div className="stats-row">
+        <div className="stat-item">
+          <span className="stat-number">
+            {testimonials.filter((t) => t.status === "approved").length}
+          </span>
+          <span className="stat-label">Approved</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-number">
+            {testimonials.filter((t) => t.status === "pending").length}
+          </span>
+          <span className="stat-label">Pending</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-number">
+            {testimonials.reduce((sum, t) => sum + t.rating, 0) /
+              testimonials.length || 0}
+          </span>
+          <span className="stat-label">Avg Rating</span>
+        </div>
+      </div>
+
+      <div className="testimonials-grid">
+        {testimonials.map((testimonial) => (
+          <div key={testimonial.id} className="testimonial-card">
+            <div className="testimonial-header">
+              <h4>{testimonial.title}</h4>
+              <div className="rating">
+                {"★".repeat(testimonial.rating)}
+                {"☆".repeat(5 - testimonial.rating)}
+              </div>
+            </div>
+            <div className="testimonial-content">
+              <p className="property-name">{testimonial.property}</p>
+              <p className="testimonial-text">{testimonial.content}</p>
+              <div className="testimonial-footer">
+                <span className="testimonial-date">{testimonial.date}</span>
+                <span className={`status-badge status-${testimonial.status}`}>
+                  {testimonial.status.charAt(0).toUpperCase() +
+                    testimonial.status.slice(1)}
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="buyer-dashboard">
+      <div className="dashboard-header">
+        <h1>Buyer Dashboard</h1>
+        <p>Welcome back, {user?.name || "Buyer"}!</p>
+      </div>
+
+      <div className="dashboard-tabs">
+        <button
+          className={`tab-button ${activeTab === "overview" ? "active" : ""}`}
+          onClick={() => setActiveTab("overview")}
+        >
+          Overview
+        </button>
+        <button
+          className={`tab-button ${activeTab === "favorites" ? "active" : ""}`}
+          onClick={() => setActiveTab("favorites")}
+        >
+          Favorites
+        </button>
+        <button
+          className={`tab-button ${activeTab === "purchased" ? "active" : ""}`}
+          onClick={() => setActiveTab("purchased")}
+        >
+          Purchased Homes
+        </button>
+        <button
+          className={`tab-button ${activeTab === "visits" ? "active" : ""}`}
+          onClick={() => setActiveTab("visits")}
+        >
+          Visit Requests
+        </button>
+        <button
+          className={`tab-button ${
+            activeTab === "testimonials" ? "active" : ""
+          }`}
+          onClick={() => setActiveTab("testimonials")}
+        >
+          Testimonials
+        </button>
+        <button
+          className={`tab-button ${activeTab === "messages" ? "active" : ""}`}
+          onClick={() => window.location.href = "/messages"}
+        >
+          Messages
+        </button>
+      </div>
+
+      <div className="dashboard-content">
+        {activeTab === "overview" && renderOverviewTab()}
+        {activeTab === "favorites" && renderFavoritesTab()}
+        {activeTab === "purchased" && renderPurchasedHomesTab()}
+        {activeTab === "visits" && renderVisitRequestsTab()}
+        {activeTab === "testimonials" && renderTestimonialsTab()}
+      </div>
+
+      {/* Testimonial Form Modal */}
+      {showTestimonialForm && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowTestimonialForm(false)}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Write a Testimonial</h3>
+              <button
+                className="modal-close"
+                onClick={() => setShowTestimonialForm(false)}
+              >
+                ×
+              </button>
+            </div>
+
+            <form
+              onSubmit={handleTestimonialSubmit}
+              className="testimonial-form"
+            >
+              <div className="form-group">
+                <label>Property</label>
+                <select
+                  value={testimonialForm.propertyId}
+                  onChange={(e) =>
+                    setTestimonialForm({
+                      ...testimonialForm,
+                      propertyId: e.target.value,
+                    })
+                  }
+                  required
+                >
+                  <option value="">Select a property</option>
+                  {purchasedHomes.map((home) => (
+                    <option key={home.id} value={home.id}>
+                      {home.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Rating</label>
+                <select
+                  value={testimonialForm.rating}
+                  onChange={(e) =>
+                    setTestimonialForm({
+                      ...testimonialForm,
+                      rating: parseInt(e.target.value),
+                    })
+                  }
+                  required
+                >
+                  <option value={5}>5 Stars - Excellent</option>
+                  <option value={4}>4 Stars - Very Good</option>
+                  <option value={3}>3 Stars - Good</option>
+                  <option value={2}>2 Stars - Fair</option>
+                  <option value={1}>1 Star - Poor</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Title</label>
+                <input
+                  type="text"
+                  value={testimonialForm.title}
+                  onChange={(e) =>
+                    setTestimonialForm({
+                      ...testimonialForm,
+                      title: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Your Review</label>
+                <textarea
+                  value={testimonialForm.content}
+                  onChange={(e) =>
+                    setTestimonialForm({
+                      ...testimonialForm,
+                      content: e.target.value,
+                    })
+                  }
+                  rows="4"
+                  required
+                ></textarea>
+              </div>
+
+              <div className="form-actions">
+                <button
+                  type="button"
+                  onClick={() => setShowTestimonialForm(false)}
+                  className="btn-cancel"
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn-submit">
+                  Submit Testimonial
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Offer Form Modal */}
+      {showOfferForm && (
+        <div className="modal-overlay" onClick={() => setShowOfferForm(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Make an Offer</h3>
+              <button
+                className="modal-close"
+                onClick={() => setShowOfferForm(false)}
+              >
+                ×
+              </button>
+            </div>
+
+            <form onSubmit={handleOfferSubmit} className="offer-form">
+              <div className="form-group">
+                <label>Property</label>
+                <select
+                  value={offerForm.propertyId}
+                  onChange={(e) =>
+                    setOfferForm({ ...offerForm, propertyId: e.target.value })
+                  }
+                  required
+                >
+                  <option value="">Select a property</option>
+                  {favorites.map((fav) => (
+                    <option key={fav.id} value={fav.id}>
+                      {fav.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Offer Amount (ETB)</label>
+                <input
+                  type="number"
+                  value={offerForm.offerAmount}
+                  onChange={(e) =>
+                    setOfferForm({ ...offerForm, offerAmount: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Message (Optional)</label>
+                <textarea
+                  value={offerForm.message}
+                  onChange={(e) =>
+                    setOfferForm({ ...offerForm, message: e.target.value })
+                  }
+                  rows="3"
+                  placeholder="Add a message to the seller..."
+                ></textarea>
+              </div>
+
+              <div className="form-actions">
+                <button
+                  type="button"
+                  onClick={() => setShowOfferForm(false)}
+                  className="btn-cancel"
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn-submit">
+                  Submit Offer
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default BuyerDashboard;

@@ -1,0 +1,67 @@
+[
+  {
+    "id": "1",
+    "name": "Abebe Kebede",
+    "email": "abebe@ethiohome.com",
+    "phone": "+251911111111",
+    "photo": "https://randomuser.me/api/portraits/men/32.jpg",
+    "location": "Bole, Addis Ababa",
+    "status": "active",
+    "specialization": "Residential Properties",
+    "experience": "5 years",
+    "propertiesSold": 45,
+    "rating": 4.8
+  },
+  {
+    "id": "2",
+    "name": "Tigist Alemayehu",
+    "email": "tigist@ethiohome.com",
+    "phone": "+251922222222",
+    "photo": "https://randomuser.me/api/portraits/women/44.jpg",
+    "location": "Kazanchis, Addis Ababa",
+    "status": "active",
+    "specialization": "Commercial Properties",
+    "experience": "7 years",
+    "propertiesSold": 62,
+    "rating": 4.9
+  },
+  {
+    "id": "3",
+    "name": "Yohannes Tadesse",
+    "email": "yohannes@ethiohome.com",
+    "phone": "+251933333333",
+    "photo": "https://randomuser.me/api/portraits/men/65.jpg",
+    "location": "Gerji, Addis Ababa",
+    "status": "active",
+    "specialization": "Luxury Homes",
+    "experience": "8 years",
+    "propertiesSold": 38,
+    "rating": 4.7
+  },
+  {
+    "id": "4",
+    "name": "Selamawit Haile",
+    "email": "selamawit@ethiohome.com",
+    "phone": "+251944444444",
+    "photo": "https://randomuser.me/api/portraits/women/68.jpg",
+    "location": "Merkato, Addis Ababa",
+    "status": "active",
+    "specialization": "Rental Properties",
+    "experience": "4 years",
+    "propertiesSold": 28,
+    "rating": 4.6
+  },
+  {
+    "id": "5",
+    "name": "Mulugeta Worku",
+    "email": "mulugeta@ethiohome.com",
+    "phone": "+251955555555",
+    "photo": "https://randomuser.me/api/portraits/men/12.jpg",
+    "location": "Lebu, Addis Ababa",
+    "status": "inactive",
+    "specialization": "Land Development",
+    "experience": "6 years",
+    "propertiesSold": 22,
+    "rating": 4.5
+  }
+]

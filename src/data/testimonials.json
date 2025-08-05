@@ -1,0 +1,43 @@
+[
+  {
+    "id": "1",
+    "name": "Almaz Tadesse",
+    "message": "Ethio-Home helped me find the perfect apartment in Bole. The process was smooth and the team was very professional.",
+    "rating": 5,
+    "location": "Addis Ababa",
+    "propertyType": "apartment"
+  },
+  {
+    "id": "2",
+    "name": "Dawit Bekele",
+    "message": "I sold my house through Ethio-Home and got a great price. The platform made everything easy and transparent.",
+    "rating": 5,
+    "location": "Addis Ababa",
+    "propertyType": "house"
+  },
+  {
+    "id": "3",
+    "name": "Hanan Mohammed",
+    "message": "As a first-time buyer, I was nervous about the process. Ethio-Home's agents guided me every step of the way.",
+    "rating": 4,
+    "location": "Addis Ababa",
+    "propertyType": "villa"
+  },
+  {
+    "id": "4",
+    "name": "Getachew Assefa",
+    "message": "The verification process gives me confidence that all properties are legitimate. Great platform!",
+    "rating": 5,
+    "location": "Addis Ababa",
+    "propertyType": "commercial"
+  },
+  {
+    "id": "5",
+    "name": "Meron Haile",
+    "message": "I love the bilingual support. Being able to use the platform in Amharic made everything much easier for me.",
+    "rating": 5,
+    "location": "Addis Ababa",
+    "propertyType": "apartment"
+  }
+]
+

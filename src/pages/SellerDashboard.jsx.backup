@@ -1,0 +1,1019 @@
+import React, { useState, useContext, useEffect } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
+import "../styles/seller-dashboard.css";
+import { propertyService } from "../services/propertyService";
+
+const SellerDashboard = () => {
+  const { user } = useContext(AuthContext);
+  const { currentLanguage, t, isAmharic, isEnglish, switchLanguage } =
+    useLanguage();
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const [listings, setListings] = useState([]);
+
+  useEffect(() => {
+    const loadMyListings = async () => {
+      const result = await propertyService.getProperties({ owner: user?._id });
+      if (result.success) {
+        const items = (result.data?.data?.data || []).map(p => ({
+          id: p._id,
+          title: p.title,
+          price: (p.price || 0).toLocaleString(),
+          status: p.sold ? "sold" : (p.isVerified ? "active" : "pending"),
+          views: 0,
+          inquiries: 0,
+          dateAdded: new Date(p.createdAt).toISOString().split("T")[0],
+          type: p.type
+        }));
+        setListings(items);
+      }
+    };
+    if (user?._id) loadMyListings();
+  }, [user?._id]);
+
+  const [inquiries, setInquiries] = useState([
+    {
+      id: 1,
+      property: "Modern Villa in Bole",
+      buyer: "John Buyer",
+      email: "buyer@example.com",
+      phone: "+251911234567",
+      message:
+        "I am interested in viewing this property. When would be a good time?",
+      date: "2024-01-30",
+      status: "new",
+    },
+    {
+      id: 2,
+      property: "Apartment in Kazanchis",
+      buyer: "Alice Johnson",
+      email: "alice@example.com",
+      phone: "+251922345678",
+      message: "Is the price negotiable? I would like to make an offer.",
+      date: "2024-01-29",
+      status: "responded",
+    },
+    {
+      id: 3,
+      property: "House in CMC",
+      buyer: "Bob Wilson",
+      email: "bob@example.com",
+      phone: "+251933456789",
+      message: "Can you provide more details about the neighborhood?",
+      date: "2024-01-28",
+      status: "new",
+    },
+    {
+      id: 4,
+      property: "Condo in Megenagna",
+      buyer: "Sarah Davis",
+      email: "sarah@example.com",
+      phone: "+251944567890",
+      message: "I would like to schedule a viewing for this weekend.",
+      date: "2024-01-27",
+      status: "responded",
+    },
+  ]);
+
+  const [visitRequests, setVisitRequests] = useState([
+    {
+      id: 1,
+      property: "Modern Villa in Bole",
+      buyer: "John Buyer",
+      requestedDate: "2024-02-05",
+      requestedTime: "10:00 AM",
+      status: "pending",
+      submittedDate: "2024-01-30",
+    },
+    {
+      id: 2,
+      property: "Apartment in Kazanchis",
+      buyer: "Alice Johnson",
+      requestedDate: "2024-02-03",
+      requestedTime: "2:00 PM",
+      status: "approved",
+      submittedDate: "2024-01-28",
+    },
+    {
+      id: 3,
+      property: "House in CMC",
+      buyer: "Bob Wilson",
+      requestedDate: "2024-02-04",
+      requestedTime: "11:00 AM",
+      status: "completed",
+      submittedDate: "2024-01-26",
+    },
+    {
+      id: 4,
+      property: "Condo in Megenagna",
+      buyer: "Sarah Davis",
+      requestedDate: "2024-02-06",
+      requestedTime: "3:00 PM",
+      status: "pending",
+      submittedDate: "2024-01-29",
+    },
+  ]);
+
+  const [offers, setOffers] = useState([
+    {
+      id: 1,
+      property: "Modern Villa in Bole",
+      buyer: "John Buyer",
+      offerAmount: "14,000,000",
+      originalPrice: "15,000,000",
+      status: "pending",
+      date: "2024-01-30",
+      message: "I would like to offer 14M ETB for this beautiful villa.",
+    },
+    {
+      id: 2,
+      property: "Apartment in Kazanchis",
+      buyer: "Alice Johnson",
+      offerAmount: "8,500,000",
+      originalPrice: "8,500,000",
+      status: "accepted",
+      date: "2024-01-25",
+      message: "I accept the asking price.",
+    },
+    {
+      id: 3,
+      property: "House in CMC",
+      buyer: "Bob Wilson",
+      offerAmount: "11,000,000",
+      originalPrice: "12,000,000",
+      status: "rejected",
+      date: "2024-01-24",
+      message: "My budget is 11M ETB. Please consider.",
+    },
+    {
+      id: 4,
+      property: "Condo in Megenagna",
+      buyer: "Sarah Davis",
+      offerAmount: "6,500,000",
+      originalPrice: "6,800,000",
+      status: "countered",
+      date: "2024-01-28",
+      message: "Would you accept 6.5M ETB?",
+    },
+  ]);
+
+  const [showListingForm, setShowListingForm] = useState(false);
+  const [editingListing, setEditingListing] = useState(null);
+
+  const [listingForm, setListingForm] = useState({
+    title: "",
+    description: "",
+    price: "",
+    location: "",
+    type: "apartment",
+    status: "for-sale",
+    bedrooms: "",
+    bathrooms: "",
+    area: "",
+    parking: false,
+    furnished: false,
+    yearBuilt: "",
+  });
+
+  const handleListingAction = (listingId, action) => {
+    setListings(
+      listings.map((listing) =>
+        listing.id === listingId ? { ...listing, status: action } : listing
+      )
+    );
+  };
+
+  const handleInquiryAction = (inquiryId, action) => {
+    setInquiries(
+      inquiries.map((inquiry) =>
+        inquiry.id === inquiryId ? { ...inquiry, status: action } : inquiry
+      )
+    );
+  };
+
+  const handleVisitAction = (visitId, action) => {
+    setVisitRequests(
+      visitRequests.map((visit) =>
+        visit.id === visitId ? { ...visit, status: action } : visit
+      )
+    );
+  };
+
+  const handleOfferAction = (offerId, action) => {
+    setOffers(
+      offers.map((offer) =>
+        offer.id === offerId ? { ...offer, status: action } : offer
+      )
+    );
+  };
+
+  const handleListingFormChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setListingForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleListingSubmit = (e) => {
+    e.preventDefault();
+    if (editingListing) {
+      setListings(
+        listings.map((listing) =>
+          listing.id === editingListing.id
+            ? {
+                ...listingForm,
+                id: editingListing.id,
+                views: listing.views,
+                inquiries: listing.inquiries,
+                dateAdded: listing.dateAdded,
+              }
+            : listing
+        )
+      );
+    } else {
+      const newListing = {
+        ...listingForm,
+        id: Date.now(),
+        views: 0,
+        inquiries: 0,
+        dateAdded: new Date().toISOString().split("T")[0],
+      };
+      setListings([...listings, newListing]);
+    }
+    setShowListingForm(false);
+    setEditingListing(null);
+    setListingForm({
+      title: "",
+      description: "",
+      price: "",
+      location: "",
+      type: "apartment",
+      status: "for-sale",
+      bedrooms: "",
+      bathrooms: "",
+      area: "",
+      parking: false,
+      furnished: false,
+      yearBuilt: "",
+    });
+  };
+
+  const editListing = (listing) => {
+    setEditingListing(listing);
+    setListingForm({
+      title: listing.title,
+      description: listing.description || "",
+      price: listing.price,
+      location: listing.location || "",
+      type: listing.type,
+      status: listing.status,
+      bedrooms: listing.bedrooms || "",
+      bathrooms: listing.bathrooms || "",
+      area: listing.area || "",
+      parking: listing.parking || false,
+      furnished: listing.furnished || false,
+      yearBuilt: listing.yearBuilt || "",
+    });
+    setShowListingForm(true);
+  };
+
+  const deleteListing = (listingId) => {
+    if (window.confirm("Are you sure you want to delete this listing?")) {
+      setListings(listings.filter((listing) => listing.id !== listingId));
+    }
+  };
+
+  const renderOverviewTab = () => (
+    <div className="seller-section">
+      <div className="overview-grid">
+        <div className="overview-card">
+          <h3>Listings Performance</h3>
+          <div className="summary-stats">
+            <div className="stat-item">
+              <span className="stat-number">
+                {listings.filter((l) => l.status === "active").length}
+              </span>
+              <span className="stat-label">Active</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">
+                {listings.filter((l) => l.status === "sold").length}
+              </span>
+              <span className="stat-label">Sold</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">
+                {listings.reduce((sum, l) => sum + l.views, 0)}
+              </span>
+              <span className="stat-label">Total Views</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="overview-card">
+          <h3>Recent Activity</h3>
+          <div className="activity-list">
+            <div className="activity-item">
+              <span className="activity-time">2 hours ago</span>
+              <span className="activity-text">
+                New inquiry for Modern Villa in Bole
+              </span>
+            </div>
+            <div className="activity-item">
+              <span className="activity-time">4 hours ago</span>
+              <span className="activity-text">
+                Visit request approved for Apartment in Kazanchis
+              </span>
+            </div>
+            <div className="activity-item">
+              <span className="activity-time">1 day ago</span>
+              <span className="activity-text">
+                New offer received for Modern Villa in Bole
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="overview-card">
+          <h3>Inquiries Summary</h3>
+          <div className="summary-stats">
+            <div className="stat-item">
+              <span className="stat-number">
+                {inquiries.filter((i) => i.status === "new").length}
+              </span>
+              <span className="stat-label">New</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">
+                {inquiries.filter((i) => i.status === "responded").length}
+              </span>
+              <span className="stat-label">Responded</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">{inquiries.length}</span>
+              <span className="stat-label">Total</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="overview-card">
+          <h3>Revenue Summary</h3>
+          <div className="revenue-summary">
+            <div className="revenue-item">
+              <span className="revenue-label">Total Sales</span>
+              <span className="revenue-amount">
+                ETB{" "}
+                {offers
+                  .filter((o) => o.status === "accepted")
+                  .reduce(
+                    (sum, o) => sum + parseInt(o.offerAmount.replace(",", "")),
+                    0
+                  )
+                  .toLocaleString()}
+              </span>
+            </div>
+            <div className="revenue-item">
+              <span className="revenue-label">Pending Offers</span>
+              <span className="revenue-amount">
+                ETB{" "}
+                {offers
+                  .filter((o) => o.status === "pending")
+                  .reduce(
+                    (sum, o) => sum + parseInt(o.offerAmount.replace(",", "")),
+                    0
+                  )
+                  .toLocaleString()}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderListingsTab = () => (
+    <div className="seller-section">
+      <div className="section-header">
+        <h3>My Listings</h3>
+        <button
+          className="btn-add-listing"
+          onClick={() => setShowListingForm(true)}
+        >
+          Add New Listing
+        </button>
+      </div>
+
+      <div className="stats-row">
+        <div className="stat-item">
+          <span className="stat-number">
+            {listings.filter((l) => l.status === "active").length}
+          </span>
+          <span className="stat-label">Active</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-number">
+            {listings.filter((l) => l.status === "sold").length}
+          </span>
+          <span className="stat-label">Sold</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-number">
+            {listings.filter((l) => l.status === "pending").length}
+          </span>
+          <span className="stat-label">Pending</span>
+        </div>
+      </div>
+
+      <div className="table-container">
+        <table className="seller-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Price (ETB)</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Views</th>
+              <th>Inquiries</th>
+              <th>Date Added</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {listings.map((listing) => (
+              <tr key={listing.id}>
+                <td className="property-title">{listing.title}</td>
+                <td>{listing.price}</td>
+                <td>
+                  <span className={`type-badge type-${listing.type}`}>
+                    {listing.type.charAt(0).toUpperCase() +
+                      listing.type.slice(1)}
+                  </span>
+                </td>
+                <td>
+                  <span className={`status-badge status-${listing.status}`}>
+                    {listing.status.charAt(0).toUpperCase() +
+                      listing.status.slice(1)}
+                  </span>
+                </td>
+                <td>{listing.views}</td>
+                <td>{listing.inquiries}</td>
+                <td>{listing.dateAdded}</td>
+                <td>
+                  <div className="action-buttons">
+                    <button className="btn-view">View</button>
+                    <button
+                      className="btn-edit"
+                      onClick={() => editListing(listing)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn-delete"
+                      onClick={() => deleteListing(listing.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  const renderInquiriesTab = () => (
+    <div className="seller-section">
+      <div className="section-header">
+        <h3>Property Inquiries</h3>
+        <div className="stats-row">
+          <div className="stat-item">
+            <span className="stat-number">
+              {inquiries.filter((i) => i.status === "new").length}
+            </span>
+            <span className="stat-label">New</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">
+              {inquiries.filter((i) => i.status === "responded").length}
+            </span>
+            <span className="stat-label">Responded</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">{inquiries.length}</span>
+            <span className="stat-label">Total</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="table-container">
+        <table className="seller-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Buyer</th>
+              <th>Contact</th>
+              <th>Message</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {inquiries.map((inquiry) => (
+              <tr key={inquiry.id}>
+                <td className="property-title">{inquiry.property}</td>
+                <td>{inquiry.buyer}</td>
+                <td>
+                  <div className="contact-info">
+                    <div>{inquiry.email}</div>
+                    <div>{inquiry.phone}</div>
+                  </div>
+                </td>
+                <td className="message-cell">{inquiry.message}</td>
+                <td>{inquiry.date}</td>
+                <td>
+                  <span className={`status-badge status-${inquiry.status}`}>
+                    {inquiry.status.charAt(0).toUpperCase() +
+                      inquiry.status.slice(1)}
+                  </span>
+                </td>
+                <td>
+                  <div className="action-buttons">
+                    {inquiry.status === "new" && (
+                      <button
+                        className="btn-respond"
+                        onClick={() =>
+                          handleInquiryAction(inquiry.id, "responded")
+                        }
+                      >
+                        Respond
+                      </button>
+                    )}
+                    <button className="btn-contact">Contact</button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  const renderVisitRequestsTab = () => (
+    <div className="seller-section">
+      <div className="section-header">
+        <h3>Visit Requests</h3>
+        <div className="stats-row">
+          <div className="stat-item">
+            <span className="stat-number">
+              {visitRequests.filter((v) => v.status === "pending").length}
+            </span>
+            <span className="stat-label">Pending</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">
+              {visitRequests.filter((v) => v.status === "approved").length}
+            </span>
+            <span className="stat-label">Approved</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">
+              {visitRequests.filter((v) => v.status === "completed").length}
+            </span>
+            <span className="stat-label">Completed</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="table-container">
+        <table className="seller-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Buyer</th>
+              <th>Requested Date</th>
+              <th>Requested Time</th>
+              <th>Status</th>
+              <th>Submitted</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {visitRequests.map((visit) => (
+              <tr key={visit.id}>
+                <td className="property-title">{visit.property}</td>
+                <td>{visit.buyer}</td>
+                <td>{visit.requestedDate}</td>
+                <td>{visit.requestedTime}</td>
+                <td>
+                  <span className={`status-badge status-${visit.status}`}>
+                    {visit.status.charAt(0).toUpperCase() +
+                      visit.status.slice(1)}
+                  </span>
+                </td>
+                <td>{visit.submittedDate}</td>
+                <td>
+                  <div className="action-buttons">
+                    {visit.status === "pending" && (
+                      <>
+                        <button
+                          className="btn-approve"
+                          onClick={() =>
+                            handleVisitAction(visit.id, "approved")
+                          }
+                        >
+                          Approve
+                        </button>
+                        <button
+                          className="btn-reject"
+                          onClick={() =>
+                            handleVisitAction(visit.id, "rejected")
+                          }
+                        >
+                          Reject
+                        </button>
+                      </>
+                    )}
+                    {visit.status === "approved" && (
+                      <button
+                        className="btn-complete"
+                        onClick={() => handleVisitAction(visit.id, "completed")}
+                      >
+                        Mark Complete
+                      </button>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  const renderOffersTab = () => (
+    <div className="seller-section">
+      <div className="section-header">
+        <h3>Purchase Offers</h3>
+        <div className="stats-row">
+          <div className="stat-item">
+            <span className="stat-number">
+              {offers.filter((o) => o.status === "pending").length}
+            </span>
+            <span className="stat-label">Pending</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">
+              {offers.filter((o) => o.status === "accepted").length}
+            </span>
+            <span className="stat-label">Accepted</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">
+              {offers.filter((o) => o.status === "rejected").length}
+            </span>
+            <span className="stat-label">Rejected</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="table-container">
+        <table className="seller-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Buyer</th>
+              <th>Original Price</th>
+              <th>Offer Amount</th>
+              <th>Message</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {offers.map((offer) => (
+              <tr key={offer.id}>
+                <td className="property-title">{offer.property}</td>
+                <td>{offer.buyer}</td>
+                <td>ETB {offer.originalPrice}</td>
+                <td>ETB {offer.offerAmount}</td>
+                <td className="message-cell">{offer.message}</td>
+                <td>{offer.date}</td>
+                <td>
+                  <span className={`status-badge status-${offer.status}`}>
+                    {offer.status.charAt(0).toUpperCase() +
+                      offer.status.slice(1)}
+                  </span>
+                </td>
+                <td>
+                  <div className="action-buttons">
+                    {offer.status === "pending" && (
+                      <>
+                        <button
+                          className="btn-accept"
+                          onClick={() =>
+                            handleOfferAction(offer.id, "accepted")
+                          }
+                        >
+                          Accept
+                        </button>
+                        <button
+                          className="btn-reject"
+                          onClick={() =>
+                            handleOfferAction(offer.id, "rejected")
+                          }
+                        >
+                          Reject
+                        </button>
+                        <button
+                          className="btn-counter"
+                          onClick={() =>
+                            handleOfferAction(offer.id, "countered")
+                          }
+                        >
+                          Counter
+                        </button>
+                      </>
+                    )}
+                    <button className="btn-view">View Details</button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="seller-dashboard">
+      <div className="dashboard-header">
+        <h1>Seller Dashboard</h1>
+        <p>Welcome back, {user?.name || "Seller"}!</p>
+      </div>
+
+      <div className="dashboard-tabs">
+        <button
+          className={`tab-button ${activeTab === "overview" ? "active" : ""}`}
+          onClick={() => setActiveTab("overview")}
+        >
+          Overview
+        </button>
+        <button
+          className={`tab-button ${activeTab === "listings" ? "active" : ""}`}
+          onClick={() => setActiveTab("listings")}
+        >
+          My Listings
+        </button>
+        <button
+          className={`tab-button ${activeTab === "inquiries" ? "active" : ""}`}
+          onClick={() => setActiveTab("inquiries")}
+        >
+          Inquiries
+        </button>
+        <button
+          className={`tab-button ${activeTab === "visits" ? "active" : ""}`}
+          onClick={() => setActiveTab("visits")}
+        >
+          Visit Requests
+        </button>
+        <button
+          className={`tab-button ${activeTab === "offers" ? "active" : ""}`}
+          onClick={() => setActiveTab("offers")}
+        >
+          Offers
+        </button>
+        <button
+          className={`tab-button ${activeTab === "messages" ? "active" : ""}`}
+          onClick={() => window.location.href = "/messages"}
+        >
+          Messages
+        </button>
+      </div>
+
+      <div className="dashboard-content">
+        {activeTab === "overview" && renderOverviewTab()}
+        {activeTab === "listings" && renderListingsTab()}
+        {activeTab === "inquiries" && renderInquiriesTab()}
+        {activeTab === "visits" && renderVisitRequestsTab()}
+        {activeTab === "offers" && renderOffersTab()}
+      </div>
+
+      {/* Listing Form Modal */}
+      {showListingForm && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowListingForm(false)}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>{editingListing ? "Edit Listing" : "Add New Listing"}</h3>
+              <button
+                className="modal-close"
+                onClick={() => {
+                  setShowListingForm(false);
+                  setEditingListing(null);
+                  setListingForm({
+                    title: "",
+                    description: "",
+                    price: "",
+                    location: "",
+                    type: "apartment",
+                    status: "for-sale",
+                    bedrooms: "",
+                    bathrooms: "",
+                    area: "",
+                    parking: false,
+                    furnished: false,
+                    yearBuilt: "",
+                  });
+                }}
+              >
+                ×
+              </button>
+            </div>
+
+            <form onSubmit={handleListingSubmit} className="listing-form">
+              <div className="form-group">
+                <label>Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={listingForm.title}
+                  onChange={handleListingFormChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Description</label>
+                <textarea
+                  name="description"
+                  value={listingForm.description}
+                  onChange={handleListingFormChange}
+                  rows="4"
+                  required
+                ></textarea>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Price (ETB)</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={listingForm.price}
+                    onChange={handleListingFormChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Location</label>
+                  <input
+                    type="text"
+                    name="location"
+                    value={listingForm.location}
+                    onChange={handleListingFormChange}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Property Type</label>
+                  <select
+                    name="type"
+                    value={listingForm.type}
+                    onChange={handleListingFormChange}
+                  >
+                    <option value="apartment">Apartment</option>
+                    <option value="house">House</option>
+                    <option value="villa">Villa</option>
+                    <option value="condo">Condo</option>
+                    <option value="commercial">Commercial</option>
+                    <option value="land">Land</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Status</label>
+                  <select
+                    name="status"
+                    value={listingForm.status}
+                    onChange={handleListingFormChange}
+                  >
+                    <option value="for-sale">For Sale</option>
+                    <option value="for-rent">For Rent</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Bedrooms</label>
+                  <input
+                    type="number"
+                    name="bedrooms"
+                    value={listingForm.bedrooms}
+                    onChange={handleListingFormChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Bathrooms</label>
+                  <input
+                    type="number"
+                    name="bathrooms"
+                    value={listingForm.bathrooms}
+                    onChange={handleListingFormChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Area (sqm)</label>
+                  <input
+                    type="number"
+                    name="area"
+                    value={listingForm.area}
+                    onChange={handleListingFormChange}
+                  />
+                </div>
+              </div>
+
+              <div className="form-row checkbox-group">
+                <div className="form-group">
+                  <input
+                    type="checkbox"
+                    id="parking"
+                    name="parking"
+                    checked={listingForm.parking}
+                    onChange={handleListingFormChange}
+                  />
+                  <label htmlFor="parking">Parking Available</label>
+                </div>
+                <div className="form-group">
+                  <input
+                    type="checkbox"
+                    id="furnished"
+                    name="furnished"
+                    checked={listingForm.furnished}
+                    onChange={handleListingFormChange}
+                  />
+                  <label htmlFor="furnished">Furnished</label>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Year Built</label>
+                <input
+                  type="number"
+                  name="yearBuilt"
+                  value={listingForm.yearBuilt}
+                  onChange={handleListingFormChange}
+                />
+              </div>
+
+              <div className="form-actions">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowListingForm(false);
+                    setEditingListing(null);
+                    setListingForm({
+                      title: "",
+                      description: "",
+                      price: "",
+                      location: "",
+                      type: "apartment",
+                      status: "for-sale",
+                      bedrooms: "",
+                      bathrooms: "",
+                      area: "",
+                      parking: false,
+                      furnished: false,
+                      yearBuilt: "",
+                    });
+                  }}
+                  className="btn-cancel"
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn-submit">
+                  {editingListing ? "Update Listing" : "Add Listing"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default SellerDashboard;
