@@ -25,3 +25,11 @@ dist-ssr
 
 *storybook.log
 storybook-static
+ 
+# Environment files (frontend)
+.env
+.env.*
+.env.local
+.env.production
+.env.development
+.env.test
