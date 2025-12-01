@@ -90,6 +90,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const updatedUser = { ...user, ...profileData };
       const result = await userService.updateMe(updatedUser);
+      console.log("😅😅😅😅😄")
       authService.storeAuthData(false, result.data.data.user);
       setUser(result.data.data.user);
       return { success: true, user: updatedUser };

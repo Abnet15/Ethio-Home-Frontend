@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // API Base URL
-const API_BASE_URL = 'https://ethio-home-backend-2.onrender.com/api/v1';
-
+//const API_BASE_URL = 'https://ethio-home-backend-2.onrender.com/api/v1';
+const API_BASE_URL= 'http://127.0.0.1:5000/api/v1';
 // Server Base URL (for static files like uploads)
 export const SERVER_BASE_URL = 'https://ethio-home-backend-2.onrender.com';
 

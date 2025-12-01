@@ -18,7 +18,9 @@ export const userService = {
   // Update current user profile
   updateMe: async (userData) => {
     try {
+      console.log("😍😍😍11")
       const response = await api.patch(endpoints.users.updateMe, userData);
+      console.log("😍😍😍")
       return { success: true, data: response.data };
     } catch (error) {
       return { 

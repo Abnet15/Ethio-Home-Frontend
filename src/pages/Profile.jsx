@@ -314,6 +314,7 @@ const Profile = () => {
         state: formData.state.trim(),
         photo: formData.photo.trim(),
       });
+      console.log("here is bro🤣😃🤣🤣😂")
       if (result.success) {
         setMessage("Profile updated successfully!");
         setIsEditing(false);
