@@ -36,6 +36,7 @@ import { favoritesService } from '../services/favoritesService';
 import { interestService } from '../services/interestService';
 import { propertyService } from '../services/propertyService';
 import { userService } from '../services/userService';
+import { SERVER_BASE_URL } from '../config/api';
 import { messageService } from '../services/messageService';
 import { visitService } from '../services/visitService';
 import { sellingService } from '../services/sellingService';
@@ -1098,7 +1099,7 @@ const BuyerDashboard = () => {
                         <div className="relative h-48 bg-gradient-to-br from-neutral-100 to-neutral-200 overflow-hidden">
                           {purchase.property?.images?.[0] ? (
                             <img 
-                              src={`http://127.0.0.1:5000${purchase.property.images[0]}`}
+                              src={`${SERVER_BASE_URL}${purchase.property.images[0]}`}
                               alt={purchase.property.title}
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                             />

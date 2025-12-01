@@ -54,6 +54,7 @@ import { messageService } from '../services/messageService';
 import { propertyService } from '../services/propertyService';
 import { sellingService } from '../services/sellingService';
 import { userService } from '../services/userService';
+import { SERVER_BASE_URL } from '../config/api';
 
 const SellerDashboard = () => {
   const { user } = useAuth();
@@ -1310,7 +1311,7 @@ const SellerDashboard = () => {
                         <div className="property-image h-48 bg-neutral-200 flex items-center justify-center">
                           {property.images?.[0] ? (
                             <img 
-                              src={`http://127.0.0.1:5000${property.images[0]}`}
+                              src={`${SERVER_BASE_URL}${property.images[0]}`}
                               alt={property.title}
                               className="w-full h-full object-cover"
                             />

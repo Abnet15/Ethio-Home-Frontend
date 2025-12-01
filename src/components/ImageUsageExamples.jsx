@@ -8,6 +8,7 @@ import {
   handleImageError,
   getFallbackImage
 } from '../utils/imageUtils';
+import { SERVER_BASE_URL } from '../config/api';
 
 const ImageUsageExamples = () => {
   // Example data structures that match what the backend returns
@@ -15,7 +16,7 @@ const ImageUsageExamples = () => {
     _id: '688376ec04e8e3e28e986519',
     name: 'John Doe',
     email: 'john@example.com',
-    imagesUrl: 'http://127.0.0.1:5000/img/users/688376ec04e8e3e28e986519-1756383395536.png'
+    imagesUrl: `${SERVER_BASE_URL}/img/users/688376ec04e8e3e28e986519-1756383395536.png`
   };
 
   const exampleProperty = {
@@ -24,9 +25,9 @@ const ImageUsageExamples = () => {
     location: 'Addis Ababa, Ethiopia',
     price: 2500000,
     imagesUrl: [
-      'http://127.0.0.1:5000/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490423.jpeg',
-      'http://127.0.0.1:5000/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490424.png',
-      'http://127.0.0.1:5000/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490425.jpg'
+      `${SERVER_BASE_URL}/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490423.jpeg`,
+      `${SERVER_BASE_URL}/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490424.png`,
+      `${SERVER_BASE_URL}/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490425.jpg`
     ]
   };
 

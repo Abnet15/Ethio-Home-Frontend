@@ -48,6 +48,7 @@ import { messageService } from '../services/messageService';
 import { propertyService } from '../services/propertyService';
 import { sellingService } from '../services/sellingService';
 import { userService } from '../services/userService';
+import { SERVER_BASE_URL } from '../config/api';
 
 const AdminDashboard = () => {
   const { user, isAdmin } = useAuth();
@@ -999,7 +1000,7 @@ const AdminDashboard = () => {
                       <div className="relative h-48 overflow-hidden">
                           {property.images?.[0] ? (
                             <img 
-                              src={`http://127.0.0.1:5000${property.images[0]}`}
+                              src={`${SERVER_BASE_URL}${property.images[0]}`}
                               alt={property.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />

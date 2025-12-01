@@ -63,6 +63,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { messageService } from '../services/messageService';
 import { propertyService } from '../services/propertyService';
 import { userService } from '../services/userService';
+import { SERVER_BASE_URL } from '../config/api';
 import '../styles/employee-dashboard.css';
 
 const EmployeeDashboard = () => {
@@ -1866,8 +1867,8 @@ const EmployeeDashboard = () => {
                       {/* Property Image */}
                       <div className="relative h-48 overflow-hidden">
                         {property.images?.[0] ? (
-                          <img 
-                            src={`http://127.0.0.1:5000${property.images[0]}`}
+                              <img
+                                src={`${SERVER_BASE_URL}${property.images[0]}`}
                             alt={property.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />

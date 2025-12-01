@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { ImageIcon, Upload, Trash2, AlertCircle, Info, CheckCircle } from 'lucide-react';
 import { getFallbackImage } from '../utils/imageUtils';
+import { SERVER_BASE_URL } from '../config/api';
 import '../styles/property-image-manager.css';
 
 const PropertyImageDemo = () => {
+  const assetBaseUrl = SERVER_BASE_URL;
   const [demoProperty] = useState({
     _id: 'demo-property-123',
     title: 'Demo Property',
@@ -34,7 +36,7 @@ const PropertyImageDemo = () => {
   // Generate demo image URLs to show the backend format
   const generateDemoImageUrl = (index) => {
     const timestamp = Date.now() + index * 1000; // Different timestamp for each image
-    return `http://127.0.0.1:5000/img/properties/demo-property-123-demo-user-${timestamp}.jpeg`;
+    return `${assetBaseUrl}/img/properties/demo-property-123-demo-user-${timestamp}.jpeg`;
   };
 
   return (
@@ -203,23 +205,23 @@ if (totalImagesAfterUpload > 6) {
 const property = {
   _id: '68b049f2478d75ca65390a27',
   imagesUrl: [
-    'http://127.0.0.1:5000/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490423.jpeg',
-    'http://127.0.0.1:5000/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490424.png'
+    '${assetBaseUrl}/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490423.jpeg',
+    '${assetBaseUrl}/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490424.png'
   ]
 };
 
 // Frontend uses imagesUrl directly
 const images = getPropertyImagesFromResponse(property);
-// Returns: ['http://127.0.0.1:5000/img/properties/...', ...]
+// Returns: ['${assetBaseUrl}/img/properties/...', ...]
 
 // For user photos
 const user = {
   _id: '688376ec04e8e3e28e986519',
-  imagesUrl: 'http://127.0.0.1:5000/img/users/688376ec04e8e3e28e986519-1756383395536.png'
+  imagesUrl: '${assetBaseUrl}/img/users/688376ec04e8e3e28e986519-1756383395536.png'
 };
 
 const userPhoto = getUserPhotoFromResponse(user);
-// Returns: 'http://127.0.0.1:5000/img/users/...'`}
+// Returns: '${assetBaseUrl}/img/users/...'`}
           </pre>
         </div>
       </div>
@@ -234,14 +236,14 @@ User: 6883760104e8e3e28e986511
 Timestamp: 1756389490423
 Extension: jpeg
 
-Result: http://127.0.0.1:5000/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490423.jpeg
+Result: ${assetBaseUrl}/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490423.jpeg
 
 // User Photo URLs (from backend)
 User: 688376ec04e8e3e28e986519
 Timestamp: 1756383395536
 Extension: png
 
-Result: http://127.0.0.1:5000/img/users/688376ec04e8e3e28e986519-1756383395536.png`}
+Result: ${assetBaseUrl}/img/users/688376ec04e8e3e28e986519-1756383395536.png`}
           </pre>
         </div>
       </div>

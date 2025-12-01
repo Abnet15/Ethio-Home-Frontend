@@ -6,14 +6,16 @@ import {
   getPropertyImageCount,
   hasMultiplePropertyImages
 } from '../utils/imageUtils';
+import { SERVER_BASE_URL } from '../config/api';
 
 const ImageTest = () => {
+  const assetBaseUrl = SERVER_BASE_URL;
   // Test data based on backend response structure
   const testUser = {
     _id: '688376ec04e8e3e28e986519',
     name: 'Test User',
     photo: '688376ec04e8e3e28e986519-1756383395536.png',
-    imagesUrl: 'http://127.0.0.1:5000/img/users/688376ec04e8e3e28e986519-1756383395536.png'
+    imagesUrl: `${assetBaseUrl}/img/users/688376ec04e8e3e28e986519-1756383395536.png`
   };
 
   const testProperty = {
@@ -24,8 +26,8 @@ const ImageTest = () => {
       '68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490424.jpeg'
     ],
     imagesUrl: [
-      'http://127.0.0.1:5000/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490423.jpeg',
-      'http://127.0.0.1:5000/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490424.jpeg'
+      `${assetBaseUrl}/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490423.jpeg`,
+      `${assetBaseUrl}/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490424.jpeg`
     ]
   };
 
@@ -99,15 +101,15 @@ const ImageTest = () => {
       <h3>Backend URL Structure</h3>
       <div style={{ backgroundColor: '#f5f5f5', padding: '15px', borderRadius: '5px' }}>
         <p><strong>User Photo URL Format:</strong></p>
-        <code>http://127.0.0.1:5000/img/users/{'{userId}-{timestamp}.{extension}'}</code>
+        <code>{assetBaseUrl}/img/users/{'{userId}-{timestamp}.{extension}'}</code>
         
         <p><strong>Property Image URL Format:</strong></p>
-        <code>http://127.0.0.1:5000/img/properties/{'{propertyId}-{userId}-{timestamp}.{extension}'}</code>
+        <code>{assetBaseUrl}/img/properties/{'{propertyId}-{userId}-{timestamp}.{extension}'}</code>
         
         <p><strong>Example URLs:</strong></p>
         <ul>
-          <li>User: <code>http://127.0.0.1:5000/img/users/688376ec04e8e3e28e986519-1756383395536.png</code></li>
-          <li>Property: <code>http://127.0.0.1:5000/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490423.jpeg</code></li>
+          <li>User: <code>{assetBaseUrl}/img/users/688376ec04e8e3e28e986519-1756383395536.png</code></li>
+          <li>Property: <code>{assetBaseUrl}/img/properties/68b049f2478d75ca65390a27-6883760104e8e3e28e986511-1756389490423.jpeg</code></li>
         </ul>
       </div>
     </div>
