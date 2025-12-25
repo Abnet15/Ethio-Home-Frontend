@@ -406,84 +406,102 @@ const Profile = () => {
 
   if (!user) {
     return (
-      <div className="profile-container">
-        <div className="profile-card">
-          <p>Please log in to view your profile.</p>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+        <div className="bg-card rounded-xl border shadow-lg p-8 text-center">
+          <p className="text-muted-foreground">Please log in to view your profile.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="profile-container">
-      <div className="profile-card">
-        {/* Back Button */}
-        <div className="profile-back-button">
-          <button onClick={handleBack} className="back-btn">
-            <ArrowLeft size={20} />
-            Back
-          </button>
-        </div>
-
-        {/* Profile Header */}
-        <div className="profile-header">
-          <div className="profile-avatar">
-            {(() => {
-              const photoUrl = getUserPhotoFromResponse(user);
-              if (photoUrl) {
-                return (
-                  <img
-                    src={photoUrl}
-                    alt={user.name}
-                    style={{
-                      width: 64,
-                      height: 64,
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                      border: "3px solid var(--border-primary)",
-                    }}
-                  />
-                );
-              }
-              return <User size={64} />;
-            })()}
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-8">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <div className="bg-card rounded-xl border shadow-lg overflow-hidden">
+          {/* Back Button */}
+          <div className="p-6 border-b">
+            <button 
+              onClick={handleBack} 
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors font-semibold"
+            >
+              <ArrowLeft size={20} />
+              Back
+            </button>
           </div>
-          <div className="profile-info">
-            <h1>{user.name}</h1>
-            <p className="profile-role">{user.role}</p>
-          </div>
-          <button
-            className="edit-button"
-            onClick={() => setIsEditing(!isEditing)}
-          >
-            {isEditing ? <X size={20} /> : <Edit size={20} />}
-          </button>
-        </div>
 
-        {/* Tab Navigation */}
-        <div className="profile-tabs">
-          <button
-            className={`tab-button ${activeTab === "profile" ? "active" : ""}`}
-            onClick={() => setActiveTab("profile")}
-          >
-            <User size={16} />
-            Profile Information
-          </button>
-          <button
-            className={`tab-button ${activeTab === "photo" ? "active" : ""}`}
-            onClick={() => setActiveTab("photo")}
-          >
-            <Camera size={16} />
-            Profile Photo
-          </button>
-          <button
-            className={`tab-button ${activeTab === "password" ? "active" : ""}`}
-            onClick={() => setActiveTab("password")}
-          >
-            <Lock size={16} />
-            Change Password
-          </button>
-        </div>
+          {/* Profile Header */}
+          <div className="p-8 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-6">
+                <div className="relative">
+                  {(() => {
+                    const photoUrl = getUserPhotoFromResponse(user);
+                    if (photoUrl) {
+                      return (
+                        <img
+                          src={photoUrl}
+                          alt={user.name}
+                          className="w-24 h-24 rounded-full object-cover border-4 border-white/30"
+                        />
+                      );
+                    }
+                    return (
+                      <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-4 border-white/30">
+                        <User size={48} />
+                      </div>
+                    );
+                  })()}
+                </div>
+                <div>
+                  <h1 className="text-3xl font-black mb-2">{user.name}</h1>
+                  <p className="text-white/90 capitalize">{user.role}</p>
+                </div>
+              </div>
+              <button
+                className="p-3 bg-white/20 backdrop-blur-sm rounded-xl hover:bg-white/30 transition-colors"
+                onClick={() => setIsEditing(!isEditing)}
+              >
+                {isEditing ? <X size={24} /> : <Edit size={24} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Tab Navigation */}
+          <div className="flex border-b bg-muted/30">
+            <button
+              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${
+                activeTab === "profile"
+                  ? "bg-ethiopian-green text-white border-b-2 border-ethiopian-green"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              onClick={() => setActiveTab("profile")}
+            >
+              <User size={18} />
+              Profile Information
+            </button>
+            <button
+              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${
+                activeTab === "photo"
+                  ? "bg-ethiopian-green text-white border-b-2 border-ethiopian-green"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              onClick={() => setActiveTab("photo")}
+            >
+              <Camera size={18} />
+              Profile Photo
+            </button>
+            <button
+              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${
+                activeTab === "password"
+                  ? "bg-ethiopian-green text-white border-b-2 border-ethiopian-green"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              onClick={() => setActiveTab("password")}
+            >
+              <Lock size={18} />
+              Change Password
+            </button>
+          </div>
 
         {message && (
           <div
@@ -851,6 +869,7 @@ const Profile = () => {
             </div>
           </form>
         )}
+        </div>
       </div>
     </div>
   );

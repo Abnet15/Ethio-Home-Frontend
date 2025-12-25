@@ -496,26 +496,25 @@ const AgentDashboard = () => {
 
   if (loading) {
     return (
-      <div className="dashboard-layout">
-        <div className="dashboard-main">
-          <div className="flex items-center justify-center h-full">
-            <div className="loading-spinner"></div>
-            <span className="ml-3 text-neutral-600">Loading dashboard...</span>
-          </div>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="dashboard-layout">
-      {/* Sidebar */}
-      <div className="dashboard-sidebar">
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-neutral-900 mb-2">Agent Dashboard</h2>
-          <p className="text-sm text-neutral-600">Welcome back, {user?.name}</p>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      <div className="flex">
+        {/* Sidebar */}
+        <div className="w-64 bg-card border-r shadow-lg min-h-screen p-6">
+          <div className="mb-8">
+            <h2 className="text-2xl font-black text-foreground mb-2 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/80 bg-clip-text text-transparent">Agent Dashboard</h2>
+            <p className="text-sm text-muted-foreground">Welcome back, {user?.name}</p>
+          </div>
         </div>
-
         <nav className="nav-menu">
           <div className="nav-item">
             <a 

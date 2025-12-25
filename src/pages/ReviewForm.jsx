@@ -200,11 +200,10 @@ const ReviewForm = () => {
 
   if (loading) {
     return (
-      <div className="review-form-container">
-        <ProgressIndicator progress={0} />
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Loading review form...</p>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading review form...</p>
         </div>
       </div>
     );
@@ -212,41 +211,49 @@ const ReviewForm = () => {
 
   if (success) {
     return (
-      <div className="review-form-container">
-        <ProgressIndicator progress={100} />
-        <div className="success-container">
-          <CheckCircle size={64} className="success-icon" />
-          <h2>Review Submitted Successfully!</h2>
-          <p>Thank you for your feedback. Your review has been submitted and is pending approval.</p>
-          <p>Redirecting to dashboard...</p>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-card rounded-2xl border shadow-2xl overflow-hidden">
+          <div className="bg-gradient-to-r from-green-500 to-green-600 p-8 text-white text-center">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <CheckCircle className="w-12 h-12 text-white" />
+            </div>
+            <h2 className="text-2xl font-black mb-2">Review Submitted Successfully!</h2>
+            <p className="text-white/90">Thank you for your feedback. Your review has been submitted and is pending approval.</p>
+            <p className="text-white/80 text-sm mt-2">Redirecting to dashboard...</p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="review-form-container">
-      <ProgressIndicator progress={progress} />
-      <div className="review-form-header">
-        <button
-          onClick={() => navigate(-1)}
-          className="back-button"
-        >
-          <ArrowLeft size={20} />
-          Back
-        </button>
-        <div className="header-content">
-          <h1>Share Your Experience</h1>
-          <p>
-            {propertyId 
-              ? `Tell us about your experience with this property`
-              : 'Tell us about your experience with our service'
-            }
-          </p>
-        </div>
-      </div>
-
-      <div className="review-form-content">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-8">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <div className="bg-card rounded-xl border shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
+            <button
+              onClick={() => navigate(-1)}
+              className="mb-4 flex items-center gap-2 text-white/80 hover:text-white transition-colors"
+            >
+              <ArrowLeft size={20} />
+              Back
+            </button>
+            <h1 className="text-4xl font-black mb-2">Share Your Experience</h1>
+            <p className="text-white/90">
+              {propertyId 
+                ? `Tell us about your experience with this property`
+                : 'Tell us about your experience with our service'
+              }
+            </p>
+            <div className="mt-4 w-full bg-white/20 rounded-full h-2 overflow-hidden">
+              <div 
+                className="bg-white h-full transition-all duration-300" 
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          </div>
+          
+          <div className="p-8">
         <div className="review-form-section">
           <div className="form-card">
             <div className="card-header">
@@ -470,17 +477,32 @@ const ReviewForm = () => {
           </div>
         </div>
 
-        {/* Review Guidelines */}
-        <div className="review-guidelines">
-          <div className="guidelines-card">
-            <h4>Review Guidelines</h4>
-            <ul>
-              <li>Be honest and constructive in your feedback</li>
-              <li>Share specific details about your experience</li>
-              <li>Avoid personal attacks or inappropriate language</li>
-              <li>Your review will be reviewed before publication</li>
-              <li>You can edit or delete your review before approval</li>
-            </ul>
+            {/* Review Guidelines */}
+            <div className="mt-8 bg-muted/50 rounded-xl p-6">
+              <h4 className="text-xl font-black text-foreground mb-4">Review Guidelines</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <span className="text-ethiopian-green">•</span>
+                  Be honest and constructive in your feedback
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-ethiopian-green">•</span>
+                  Share specific details about your experience
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-ethiopian-green">•</span>
+                  Avoid personal attacks or inappropriate language
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-ethiopian-green">•</span>
+                  Your review will be reviewed before publication
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-ethiopian-green">•</span>
+                  You can edit or delete your review before approval
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

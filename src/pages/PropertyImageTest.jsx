@@ -19,53 +19,90 @@ const PropertyImageTest = () => {
   const [activeTab, setActiveTab] = useState('demo');
 
   return (
-    <div className="property-image-test-page">
-      <div className="page-header">
-        <h1>Property Image Management Test</h1>
-        <p>Test and demonstrate the enhanced property image system with automatic cleanup</p>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
+        <div className="container mx-auto">
+          <h1 className="text-4xl font-black mb-2">Property Image Management Test</h1>
+          <p className="text-white/90 text-lg">Test and demonstrate the enhanced property image system with automatic cleanup</p>
+        </div>
       </div>
+      
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-card rounded-xl border shadow-lg p-6 mb-6">
+          <h3 className="text-2xl font-black text-foreground mb-4">Test Property Information</h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div>
+              <span className="text-sm text-muted-foreground">ID:</span>
+              <p className="font-semibold text-foreground">{testProperty._id}</p>
+            </div>
+            <div>
+              <span className="text-sm text-muted-foreground">Title:</span>
+              <p className="font-semibold text-foreground">{testProperty.title}</p>
+            </div>
+            <div>
+              <span className="text-sm text-muted-foreground">Location:</span>
+              <p className="font-semibold text-foreground">{testProperty.location}</p>
+            </div>
+            <div>
+              <span className="text-sm text-muted-foreground">Price:</span>
+              <p className="font-semibold text-foreground">${testProperty.price.toLocaleString()}</p>
+            </div>
+            <div>
+              <span className="text-sm text-muted-foreground">Current Images:</span>
+              <p className="font-semibold text-foreground">{testProperty.imagesUrl.length}/6</p>
+            </div>
+          </div>
+        </div>
 
-      <div className="test-property-info">
-        <h3>Test Property Information</h3>
-        <p><strong>ID:</strong> {testProperty._id}</p>
-        <p><strong>Title:</strong> {testProperty.title}</p>
-        <p><strong>Location:</strong> {testProperty.location}</p>
-        <p><strong>Price:</strong> ${testProperty.price.toLocaleString()}</p>
-        <p><strong>Current Images:</strong> {testProperty.imagesUrl.length}/6</p>
-      </div>
+        <div className="bg-card rounded-xl border shadow-lg overflow-hidden">
+          <div className="flex border-b">
+            <button
+              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${
+                activeTab === 'demo'
+                  ? 'bg-ethiopian-green text-white border-b-2 border-ethiopian-green'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+              }`}
+              onClick={() => setActiveTab('demo')}
+            >
+              <ImageIcon size={16} />
+              Demo
+            </button>
+            <button
+              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${
+                activeTab === 'manager'
+                  ? 'bg-ethiopian-green text-white border-b-2 border-ethiopian-green'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+              }`}
+              onClick={() => setActiveTab('manager')}
+            >
+              <Upload size={16} />
+              Image Manager
+            </button>
+            <button
+              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${
+                activeTab === 'examples'
+                  ? 'bg-ethiopian-green text-white border-b-2 border-ethiopian-green'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+              }`}
+              onClick={() => setActiveTab('examples')}
+            >
+              <BookOpen size={16} />
+              Usage Examples
+            </button>
+            <button
+              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${
+                activeTab === 'info'
+                  ? 'bg-ethiopian-green text-white border-b-2 border-ethiopian-green'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+              }`}
+              onClick={() => setActiveTab('info')}
+            >
+              <Info size={16} />
+              System Info
+            </button>
+          </div>
 
-      <div className="tab-navigation">
-        <button
-          className={`tab-btn ${activeTab === 'demo' ? 'active' : ''}`}
-          onClick={() => setActiveTab('demo')}
-        >
-          <ImageIcon size={16} />
-          Demo
-        </button>
-        <button
-          className={`tab-btn ${activeTab === 'manager' ? 'active' : ''}`}
-          onClick={() => setActiveTab('manager')}
-        >
-          <Upload size={16} />
-          Image Manager
-        </button>
-        <button
-          className={`tab-btn ${activeTab === 'examples' ? 'active' : ''}`}
-          onClick={() => setActiveTab('examples')}
-        >
-          <BookOpen size={16} />
-          Usage Examples
-        </button>
-        <button
-          className={`tab-btn ${activeTab === 'info' ? 'active' : ''}`}
-          onClick={() => setActiveTab('info')}
-        >
-          <Info size={16} />
-          System Info
-        </button>
-      </div>
-
-      <div className="tab-content">
+          <div className="p-6">
         {activeTab === 'demo' && (
           <div className="demo-tab">
             <PropertyImageDemo />

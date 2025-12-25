@@ -331,13 +331,13 @@ const Messages = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="admin-container">
-        <div className="access-denied">
-          <h2>Access Denied</h2>
-          <p>You need to be logged in to access messages.</p>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+        <div className="bg-card rounded-xl border shadow-lg p-8 text-center max-w-md">
+          <h2 className="text-2xl font-bold mb-4">Access Denied</h2>
+          <p className="text-muted-foreground mb-6">You need to be logged in to access messages.</p>
           <button
             onClick={() => navigate("/login")}
-            className="btn btn-primary"
+            className="px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-lg transition-all"
           >
             Login
           </button>
@@ -462,68 +462,84 @@ const Messages = () => {
   };
 
   return (
-    <div className="modern-admin-dashboard">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
       {/* Header */}
-      <div className="dashboard-header">
-        <div className="header-left">
-          <button className="back-btn" onClick={() => navigate(-1)}>
-            <ArrowLeft size={20} />
-            Back
-          </button>
-          <div>
-            <h1>Messages</h1>
-            <p>
-              Communicate with{" "}
-              {user?.role === "buyer" ? "property owners" : "potential buyers"}
-            </p>
+      <div className="bg-card border-b shadow-sm">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <button 
+                className="p-2 hover:bg-muted rounded-lg transition-colors" 
+                onClick={() => navigate(-1)}
+              >
+                <ArrowLeft size={20} />
+              </button>
+              <div>
+                <h1 className="text-3xl font-black text-foreground">Messages</h1>
+                <p className="text-muted-foreground">
+                  Communicate with{" "}
+                  {user?.role === "buyer" ? "property owners" : "potential buyers"}
+                </p>
+              </div>
+            </div>
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search conversations..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-12 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-green focus:border-transparent"
+              />
+            </div>
           </div>
-        </div>
-        <div className="header-right">
-          <div className="search-container">
-            <Search size={16} />
-            <input
-              type="text"
-              placeholder="Search conversations..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
-            />
-          </div>
-        </div>
-      </div>
 
-      {/* Tab Navigation */}
-      <div className="messages-tabs">
-        <button
-          className={`tab-button ${activeTab === "inbox" ? "active" : ""}`}
-          onClick={() => setActiveTab("inbox")}
-        >
-          <MessageSquare size={16} />
-          Inbox
-          {conversationList.filter((conv) => (conv.unreadCount || 0) > 0)
-            .length > 0 && (
-            <span className="unread-count">
-              {
-                conversationList.filter((conv) => (conv.unreadCount || 0) > 0)
-                  .length
-              }
-            </span>
-          )}
-        </button>
-        <button
-          className={`tab-button ${activeTab === "sent" ? "active" : ""}`}
-          onClick={() => setActiveTab("sent")}
-        >
-          <Send size={16} />
-          Sent
-        </button>
-        <button
-          className={`tab-button ${activeTab === "received" ? "active" : ""}`}
-          onClick={() => setActiveTab("received")}
-        >
-          <User size={16} />
-          Received
-        </button>
+          {/* Tab Navigation */}
+          <div className="flex gap-2 border-t pt-4">
+            <button
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+                activeTab === "inbox"
+                  ? "bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+              onClick={() => setActiveTab("inbox")}
+            >
+              <MessageSquare size={18} />
+              Inbox
+              {conversationList.filter((conv) => (conv.unreadCount || 0) > 0)
+                .length > 0 && (
+                <span className="ml-2 px-2 py-1 bg-white/20 rounded-full text-xs">
+                  {
+                    conversationList.filter((conv) => (conv.unreadCount || 0) > 0)
+                      .length
+                  }
+                </span>
+              )}
+            </button>
+            <button
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+                activeTab === "sent"
+                  ? "bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+              onClick={() => setActiveTab("sent")}
+            >
+              <Send size={18} />
+              Sent
+            </button>
+            <button
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+                activeTab === "received"
+                  ? "bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+              onClick={() => setActiveTab("received")}
+            >
+              <User size={18} />
+              Received
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Main Content */}

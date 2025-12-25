@@ -137,60 +137,35 @@ const AgentProfile = () => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "var(--bg-secondary)",
-        paddingTop: "32px",
-        paddingBottom: "64px",
-      }}
-    >
-      <div className="container">
-        {/* Header */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "32px",
-          }}
-        >
-          <div>
-            <h1
-              style={{
-                fontSize: "2rem",
-                fontWeight: "700",
-                marginBottom: "16px",
-              }}
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-black mb-2">Agent Profile</h1>
+              <p className="text-white/90 text-lg">Showcase your expertise and build trust with clients</p>
+            </div>
+            <button
+              onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
+              className="px-6 py-3 bg-white text-ethiopian-green rounded-lg font-semibold hover:bg-white/90 transition-all flex items-center gap-2"
             >
-              Agent Profile
-            </h1>
-            <p style={{ color: "var(--text-secondary)", fontSize: "18px" }}>
-              Showcase your expertise and build trust with clients
-            </p>
+              {isEditing ? (
+                <>
+                  <Save size={16} />
+                  Save Changes
+                </>
+              ) : (
+                <>
+                  <Edit size={16} />
+                  Edit Profile
+                </>
+              )}
+            </button>
           </div>
-
-          <button
-            onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
-            className="btn btn-primary"
-          >
-            {isEditing ? (
-              <>
-                <Save
-                  style={{ width: "16px", height: "16px", marginRight: "8px" }}
-                />
-                Save Changes
-              </>
-            ) : (
-              <>
-                <Edit
-                  style={{ width: "16px", height: "16px", marginRight: "8px" }}
-                />
-                Edit Profile
-              </>
-            )}
-          </button>
         </div>
+      </div>
+      
+      <div className="container mx-auto px-4 py-8">
 
         <div
           style={{

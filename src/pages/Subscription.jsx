@@ -216,16 +216,16 @@ const Subscription = () => {
   }
 
   return (
-    <div className="subscription-page">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
       {/* Hero Section */}
-      <div className="subscription-hero">
-        <div className="hero-content">
-          <div className="hero-badge">
+      <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 py-16">
+        <div className="container mx-auto px-4 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white mb-6">
             <Sparkles size={16} />
-            <span>Choose Your Perfect Plan</span>
+            <span className="font-semibold">Choose Your Perfect Plan</span>
           </div>
-          <h1>Unlock the Full Potential of Ethio-Home</h1>
-          <p>
+          <h1 className="text-5xl font-black text-white mb-4">Unlock the Full Potential of Ethio-Home</h1>
+          <p className="text-xl text-white/90 max-w-2xl mx-auto">
             Whether you're buying, selling, or managing properties, we have the perfect plan 
             to help you succeed in Ethiopia's real estate market.
           </p>

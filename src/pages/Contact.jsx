@@ -203,13 +203,13 @@ const Contact = () => {
   }
 
   return (
-    <div className="contact-page">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
       {/* Hero Section */}
-      <section className="hero bg-gradient-primary text-white">
-        <div className="container">
-          <div className="hero-content text-center fade-in">
-            <h1 className="hero-title">Get in Touch</h1>
-            <p className="hero-subtitle">
+      <section className="relative py-20 bg-gradient-to-r from-ethiopian-green via-ethiopian-green/90 to-ethiopian-green text-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-6xl font-black mb-6">Get in Touch</h1>
+            <p className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
               We're here to help you find your dream property. Contact us
               anytime and we'll get back to you as soon as possible.
             </p>

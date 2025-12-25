@@ -237,24 +237,24 @@ const Payment = () => {
   }
 
   return (
-    <div className="payment-container">
-      {/* Header Section */}
-      <div className="payment-header">
-        <button 
-          className="back-button"
-          onClick={() => navigate(`/properties/${propertyId}`)}
-        >
-          <ArrowLeft size={20} />
-          Back to Property
-        </button>
-        <div className="header-content">
-          <h1>Complete Your Purchase</h1>
-          <p>Secure payment powered by Chapa - Your trusted payment gateway</p>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-8">
+      <div className="container mx-auto px-4 max-w-4xl">
+        {/* Header Section */}
+        <div className="bg-card rounded-xl border shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
+            <button 
+              className="flex items-center gap-2 text-white/80 hover:text-white transition-colors mb-4"
+              onClick={() => navigate(`/properties/${propertyId}`)}
+            >
+              <ArrowLeft size={20} />
+              Back to Property
+            </button>
+            <h1 className="text-4xl font-black mb-2">Complete Your Purchase</h1>
+            <p className="text-white/90">Secure payment powered by Chapa - Your trusted payment gateway</p>
+          </div>
         </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="payment-content">
+          {/* Main Content */}
+      <div className="p-8">
         {/* Left Column - Payment Information */}
         <div className="payment-form-section">
           <div className="form-header">
@@ -506,6 +506,7 @@ const Payment = () => {
         </div>
       </div>
     </div>
+  </div>
   );
 };
 

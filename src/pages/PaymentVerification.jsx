@@ -156,11 +156,11 @@ const PaymentVerification = () => {
 
   if (loading) {
     return (
-      <div className="payment-container">
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Verifying payment...</p>
-          <p className="small-text">Transaction ID: {tx_ref}</p>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-lg font-semibold text-foreground mb-2">Verifying payment...</p>
+          <p className="text-sm text-muted-foreground">Transaction ID: {tx_ref}</p>
         </div>
       </div>
     );
@@ -169,142 +169,146 @@ const PaymentVerification = () => {
   if (verificationStatus === 'success') {
     const propertyIdFromRef = tx_ref ? String(tx_ref).split('-')[0] : null;
     return (
-      <div className="payment-container">
-        <div className="success-container">
-          <div className="success-header">
-            <CheckCircle size={80} className="success-icon" />
-            <h1>Payment Verified Successfully!</h1>
-            <p className="success-message">
-              Your payment has been confirmed and processed successfully.
-            </p>
-          </div>
-
-          <div className="payment-details">
-            <div className="details-header">
-              <h2>Payment Verification Details</h2>
-              <div className="transaction-id">
-                Transaction ID: <span>{tx_ref}</span>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-8">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="bg-card rounded-xl border shadow-lg overflow-hidden">
+            <div className="bg-gradient-to-r from-green-500 to-green-600 p-8 text-white text-center">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <CheckCircle className="w-16 h-16 text-white" />
               </div>
+              <h1 className="text-4xl font-black mb-2">Payment Verified Successfully!</h1>
+              <p className="text-white/90 text-lg">
+                Your payment has been confirmed and processed successfully.
+              </p>
             </div>
 
-            <div className="details-grid">
-              <div className="detail-item">
-                <div className="detail-label">
-                  <DollarSign size={20} />
-                  <span>Amount Paid</span>
-                </div>
-                <div className="detail-value">
-                  {formatCurrency(verificationData?.amount || 0)}
+            <div className="p-8">
+              <div className="mb-6">
+                <h2 className="text-2xl font-black text-foreground mb-2">Payment Verification Details</h2>
+                <div className="text-sm text-muted-foreground">
+                  Transaction ID: <span className="font-mono font-semibold">{tx_ref}</span>
                 </div>
               </div>
 
-              <div className="detail-item">
-                <div className="detail-label">
-                  <Calendar size={20} />
-                  <span>Payment Date</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="bg-muted/50 rounded-xl p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <DollarSign className="h-5 w-5 text-ethiopian-yellow" />
+                    <span className="text-sm font-semibold text-muted-foreground">Amount Paid</span>
+                  </div>
+                  <div className="text-2xl font-black text-foreground">
+                    {formatCurrency(verificationData?.amount || 0)}
+                  </div>
                 </div>
-                <div className="detail-value">
-                  {formatDate(verificationData?.created_at)}
+
+                <div className="bg-muted/50 rounded-xl p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Calendar className="h-5 w-5 text-ethiopian-yellow" />
+                    <span className="text-sm font-semibold text-muted-foreground">Payment Date</span>
+                  </div>
+                  <div className="text-lg font-bold text-foreground">
+                    {formatDate(verificationData?.created_at)}
+                  </div>
+                </div>
+
+                <div className="bg-muted/50 rounded-xl p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <CreditCard className="h-5 w-5 text-ethiopian-yellow" />
+                    <span className="text-sm font-semibold text-muted-foreground">Payment Method</span>
+                  </div>
+                  <div className="text-lg font-bold text-foreground">
+                    {verificationData?.method || 'Chapa Payment Gateway'}
+                  </div>
+                </div>
+
+                <div className="bg-muted/50 rounded-xl p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <User className="h-5 w-5 text-ethiopian-yellow" />
+                    <span className="text-sm font-semibold text-muted-foreground">Customer Name</span>
+                  </div>
+                  <div className="text-lg font-bold text-foreground">
+                    {verificationData?.first_name} {verificationData?.last_name}
+                  </div>
                 </div>
               </div>
 
-              <div className="detail-item">
-                <div className="detail-label">
-                  <CreditCard size={20} />
-                  <span>Payment Method</span>
-                </div>
-                <div className="detail-value">
-                  {verificationData?.method || 'Chapa Payment Gateway'}
+              <div className="bg-card rounded-xl border p-6 mb-6">
+                <h3 className="text-xl font-black text-foreground mb-4">Chapa Payment Information</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <span className="text-sm text-muted-foreground">Status:</span>
+                    <span className="ml-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-bold">
+                      {verificationData?.status}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-sm text-muted-foreground">Currency:</span>
+                    <span className="ml-2 font-semibold text-foreground">{verificationData?.currency}</span>
+                  </div>
+                  <div>
+                    <span className="text-sm text-muted-foreground">Reference:</span>
+                    <span className="ml-2 font-semibold text-foreground">{verificationData?.reference || 'N/A'}</span>
+                  </div>
+                  <div>
+                    <span className="text-sm text-muted-foreground">Created:</span>
+                    <span className="ml-2 font-semibold text-foreground">{formatDate(verificationData?.created_at)}</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="detail-item">
-                <div className="detail-label">
-                  <User size={20} />
-                  <span>Customer Name</span>
+              <div className="mb-6">
+                <h3 className="text-xl font-black text-foreground mb-4">What Happens Next?</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-ethiopian-green text-white flex items-center justify-center font-black flex-shrink-0">1</div>
+                    <div>
+                      <h4 className="font-bold text-foreground mb-1">Payment Confirmed</h4>
+                      <p className="text-muted-foreground">Your payment has been verified and confirmed in our system.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-ethiopian-green text-white flex items-center justify-center font-black flex-shrink-0">2</div>
+                    <div>
+                      <h4 className="font-bold text-foreground mb-1">Property Transfer</h4>
+                      <p className="text-muted-foreground">Our team will process your property purchase and update the records.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-ethiopian-green text-white flex items-center justify-center font-black flex-shrink-0">3</div>
+                    <div>
+                      <h4 className="font-bold text-foreground mb-1">Documentation</h4>
+                      <p className="text-muted-foreground">You will receive all necessary documentation for your property ownership.</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="detail-value">
-                  {verificationData?.first_name} {verificationData?.last_name}
-                </div>
+              </div>
+
+              <div className="flex gap-4 flex-wrap">
+                <button 
+                  className="px-6 py-3 bg-muted hover:bg-muted/80 rounded-lg font-semibold transition-all flex items-center gap-2"
+                  onClick={handleDownloadReceipt}
+                >
+                  <Download size={20} />
+                  Download Receipt
+                </button>
+                
+                <button 
+                  className="px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-xl transition-all flex items-center gap-2"
+                  onClick={() => navigate(`/review-form/${propertyIdFromRef || 'service'}`)}
+                >
+                  <MessageSquare size={20} />
+                  Share Your Experience
+                </button>
+                
+                <button 
+                  className="px-6 py-3 border-2 border-gray-300 text-gray-700 bg-white rounded-lg font-semibold hover:border-ethiopian-green hover:text-ethiopian-green transition-all flex items-center gap-2"
+                  onClick={() => navigate(propertyIdFromRef ? `/properties/${propertyIdFromRef}` : '/buyer-dashboard')}
+                >
+                  <Home size={20} />
+                  {propertyIdFromRef ? 'View Your Property' : 'Go to Dashboard'}
+                </button>
               </div>
             </div>
-
-            <div className="chapa-details">
-              <h3>Chapa Payment Information</h3>
-              <div className="chapa-grid">
-                <div className="chapa-item">
-                  <span>Status:</span>
-                  <span className="status-success">
-                    {verificationData?.status}
-                  </span>
-                </div>
-                <div className="chapa-item">
-                  <span>Currency:</span>
-                  <span>{verificationData?.currency}</span>
-                </div>
-                <div className="chapa-item">
-                  <span>Reference:</span>
-                  <span>{verificationData?.reference || 'N/A'}</span>
-                </div>
-                <div className="chapa-item">
-                  <span>Created:</span>
-                  <span>{formatDate(verificationData?.created_at)}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="next-steps">
-            <h3>What Happens Next?</h3>
-            <div className="steps-list">
-              <div className="step-item">
-                <div className="step-number">1</div>
-                <div className="step-content">
-                  <h4>Payment Confirmed</h4>
-                  <p>Your payment has been verified and confirmed in our system.</p>
-                </div>
-              </div>
-              <div className="step-item">
-                <div className="step-number">2</div>
-                <div className="step-content">
-                  <h4>Property Transfer</h4>
-                  <p>Our team will process your property purchase and update the records.</p>
-                </div>
-              </div>
-              <div className="step-item">
-                <div className="step-number">3</div>
-                <div className="step-content">
-                  <h4>Documentation</h4>
-                  <p>You will receive all necessary documentation for your property ownership.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="action-buttons">
-            <button 
-              className="btn btn-secondary"
-              onClick={handleDownloadReceipt}
-            >
-              <Download size={20} />
-              Download Receipt
-            </button>
-            
-            <button 
-              className="btn btn-primary"
-              onClick={() => navigate(`/review-form/${propertyIdFromRef || 'service'}`)}
-            >
-              <MessageSquare size={20} />
-              Share Your Experience
-            </button>
-            
-            <button 
-              className="btn btn-outline"
-              onClick={() => navigate(propertyIdFromRef ? `/properties/${propertyIdFromRef}` : '/buyer-dashboard')}
-            >
-              <Home size={20} />
-              {propertyIdFromRef ? 'View Your Property' : 'Go to Dashboard'}
-            </button>
           </div>
         </div>
       </div>
@@ -313,46 +317,51 @@ const PaymentVerification = () => {
 
   if (verificationStatus === 'pending') {
     return (
-      <div className="payment-container">
-        <div className="pending-container">
-          <Clock size={64} className="pending-icon" />
-          <h2>Payment Verification Pending</h2>
-          <p>Your payment is still being processed. Please wait while we verify the transaction.</p>
-          
-          <div className="verification-info">
-            <div className="info-item">
-              <span>Transaction ID:</span>
-              <span className="tx-ref">{tx_ref}</span>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-card rounded-2xl border shadow-2xl overflow-hidden">
+          <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 p-8 text-white text-center">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <Clock className="w-12 h-12 text-white" />
             </div>
-            <div className="info-item">
-              <span>Retry Count:</span>
-              <span>{retryCount}/5</span>
-            </div>
-            <div className="info-item">
-              <span>Auto-retry:</span>
-              <span>{autoRetry ? 'Enabled' : 'Disabled'}</span>
-            </div>
+            <h2 className="text-2xl font-black mb-2">Payment Verification Pending</h2>
+            <p className="text-white/90">Your payment is still being processed. Please wait while we verify the transaction.</p>
           </div>
+          <div className="p-8">
+            <div className="space-y-3 mb-6">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Transaction ID:</span>
+                <span className="font-mono font-semibold">{tx_ref}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Retry Count:</span>
+                <span className="font-semibold">{retryCount}/5</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Auto-retry:</span>
+                <span className="font-semibold">{autoRetry ? 'Enabled' : 'Disabled'}</span>
+              </div>
+            </div>
 
-          <div className="spinner"></div>
-          <p className="small-text">Automatically retrying verification every 5 seconds...</p>
-          
-          <div className="action-buttons">
-            <button 
-              className="btn btn-primary"
-              onClick={handleManualRetry}
-            >
-              <RefreshCw size={20} />
-              Retry Now
-            </button>
+            <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-sm text-muted-foreground text-center mb-6">Automatically retrying verification every 5 seconds...</p>
             
-            <button 
-              className="btn btn-secondary"
-              onClick={() => redirectToDashboard(user?.role, navigate)}
-            >
-              <ArrowLeft size={20} />
-              Go to Dashboard
-            </button>
+            <div className="flex gap-3">
+              <button 
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-xl transition-all flex items-center justify-center gap-2"
+                onClick={handleManualRetry}
+              >
+                <RefreshCw size={20} />
+                Retry Now
+              </button>
+              
+              <button 
+                className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 bg-white rounded-lg font-semibold hover:border-ethiopian-green hover:text-ethiopian-green transition-all flex items-center justify-center gap-2"
+                onClick={() => redirectToDashboard(user?.role, navigate)}
+              >
+                <ArrowLeft size={20} />
+                Dashboard
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -361,47 +370,52 @@ const PaymentVerification = () => {
 
   if (verificationStatus === 'failed') {
     return (
-      <div className="payment-container">
-        <div className="error-container">
-          <XCircle size={64} className="error-icon" />
-          <h2>Payment Verification Failed</h2>
-          <p>{error || 'We were unable to verify your payment. Please try again or contact support.'}</p>
-          
-          <div className="verification-info">
-            <div className="info-item">
-              <span>Transaction ID:</span>
-              <span className="tx-ref">{tx_ref}</span>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-card rounded-2xl border shadow-2xl overflow-hidden">
+          <div className="bg-gradient-to-r from-red-500 to-red-600 p-8 text-white text-center">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <XCircle className="w-12 h-12 text-white" />
             </div>
-            <div className="info-item">
-              <span>Error:</span>
-              <span className="error-message">{error}</span>
-            </div>
+            <h2 className="text-2xl font-black mb-2">Payment Verification Failed</h2>
+            <p className="text-white/90">{error || 'We were unable to verify your payment. Please try again or contact support.'}</p>
           </div>
+          <div className="p-8">
+            <div className="space-y-3 mb-6">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Transaction ID:</span>
+                <span className="font-mono font-semibold">{tx_ref}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Error:</span>
+                <span className="font-semibold text-red-600">{error}</span>
+              </div>
+            </div>
 
-          <div className="action-buttons">
-            <button 
-              className="btn btn-primary"
-              onClick={handleManualRetry}
-            >
-              <RefreshCw size={20} />
-              Try Again
-            </button>
-            
-            <button 
-              className="btn btn-secondary"
-              onClick={() => redirectToDashboard(user?.role, navigate)}
-            >
-              <ArrowLeft size={20} />
-              Go to Dashboard
-            </button>
-            
-            <button 
-              className="btn btn-outline"
-              onClick={() => navigate('/contact')}
-            >
-              <AlertCircle size={20} />
-              Contact Support
-            </button>
+            <div className="flex gap-3 flex-wrap">
+              <button 
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-xl transition-all flex items-center justify-center gap-2"
+                onClick={handleManualRetry}
+              >
+                <RefreshCw size={20} />
+                Try Again
+              </button>
+              
+              <button 
+                className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 bg-white rounded-lg font-semibold hover:border-ethiopian-green hover:text-ethiopian-green transition-all flex items-center justify-center gap-2"
+                onClick={() => redirectToDashboard(user?.role, navigate)}
+              >
+                <ArrowLeft size={20} />
+                Dashboard
+              </button>
+              
+              <button 
+                className="w-full px-6 py-3 bg-muted hover:bg-muted/80 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
+                onClick={() => navigate('/contact')}
+              >
+                <AlertCircle size={20} />
+                Contact Support
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -409,15 +423,18 @@ const PaymentVerification = () => {
   }
 
   return (
-    <div className="payment-container">
-      <div className="error-container">
-        <AlertCircle size={64} className="error-icon" />
-        <h2>Verification Error</h2>
-        <p>An unexpected error occurred during payment verification.</p>
-        
-        <div className="action-buttons">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-card rounded-2xl border shadow-2xl overflow-hidden">
+        <div className="bg-gradient-to-r from-red-500 to-red-600 p-8 text-white text-center">
+          <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+            <AlertCircle className="w-12 h-12 text-white" />
+          </div>
+          <h2 className="text-2xl font-black mb-2">Verification Error</h2>
+          <p className="text-white/90">An unexpected error occurred during payment verification.</p>
+        </div>
+        <div className="p-8 flex gap-3">
           <button 
-            className="btn btn-primary"
+            className="flex-1 px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-xl transition-all flex items-center justify-center gap-2"
             onClick={() => window.location.reload()}
           >
             <RefreshCw size={20} />
@@ -425,11 +442,11 @@ const PaymentVerification = () => {
           </button>
           
           <button 
-            className="btn btn-secondary"
+            className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 bg-white rounded-lg font-semibold hover:border-ethiopian-green hover:text-ethiopian-green transition-all flex items-center justify-center gap-2"
             onClick={() => redirectToDashboard(user?.role, navigate)}
           >
             <ArrowLeft size={20} />
-            Go to Dashboard
+            Dashboard
           </button>
         </div>
       </div>

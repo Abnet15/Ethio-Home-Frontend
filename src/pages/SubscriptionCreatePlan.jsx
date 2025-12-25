@@ -45,19 +45,34 @@ const SubscriptionCreatePlan = () => {
   }, [location, navigate]);
 
   return (
-    <div className="verification-page" style={{minHeight:'60vh', display:'grid', placeItems:'center', padding:'40px 16px'}}>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center p-4">
       {isSubmitting ? (
-        <div className="loading-content" style={{textAlign:'center'}}>
-          <RefreshCw size={64} className="loading-icon" />
-          <h2>Redirecting to secure payment...</h2>
-          <p>Please wait while we open the Chapa checkout.</p>
+        <div className="max-w-md w-full bg-card rounded-2xl border shadow-2xl overflow-hidden">
+          <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white text-center">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <RefreshCw className="w-12 h-12 text-white animate-spin" />
+            </div>
+            <h2 className="text-2xl font-black mb-2">Redirecting to secure payment...</h2>
+            <p className="text-white/90">Please wait while we open the Chapa checkout.</p>
+          </div>
         </div>
       ) : (
-        <div style={{textAlign:'center', maxWidth:480}}>
-          <AlertCircle size={48} style={{color:'#DC2626', marginBottom:12}} />
-          <h3>We couldn\'t start the payment</h3>
-          <p style={{color:'#6b7280', marginTop:8}}>{error}</p>
-          <button className="btn btn-primary" onClick={() => navigate('/subscription')}>Back to Plans</button>
+        <div className="max-w-md w-full bg-card rounded-2xl border shadow-2xl overflow-hidden">
+          <div className="bg-gradient-to-r from-red-500 to-red-600 p-8 text-white text-center">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <AlertCircle className="w-12 h-12 text-white" />
+            </div>
+            <h3 className="text-2xl font-black mb-2">We couldn't start the payment</h3>
+            <p className="text-white/90">{error}</p>
+          </div>
+          <div className="p-8">
+            <button 
+              className="w-full px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-xl transition-all" 
+              onClick={() => navigate('/subscription')}
+            >
+              Back to Plans
+            </button>
+          </div>
         </div>
       )}
     </div>

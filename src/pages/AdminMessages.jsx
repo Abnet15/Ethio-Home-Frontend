@@ -550,66 +550,70 @@ const AdminMessages = () => {
   }
 
   return (
-    <div className="modern-admin-dashboard">
-      {/* Header */}
-      <div className="dashboard-header">
-        <div className="header-left">
-          <button
-            className="back-btn"
-            onClick={() => navigate("/admin-dashboard")}
-          >
-            <ArrowLeft size={20} />
-          </button>
-          <div>
-            <h1>Message Management</h1>
-            <p>
-              Monitor and manage conversations between property owners and
-              buyers
-            </p>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <button 
+                className="p-2 rounded-lg hover:bg-white/20 transition-colors" 
+                onClick={() => navigate("/admin-dashboard")}
+              >
+                <ArrowLeft size={20} />
+              </button>
+              <div>
+                <h1 className="text-4xl font-black mb-2">Message Management</h1>
+                <p className="text-white/90">
+                  Monitor and manage conversations between property owners and buyers
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/80" />
+                <input
+                  type="text"
+                  placeholder="Search conversations..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 pr-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
+                />
+              </div>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+              >
+                <option value="all" className="text-gray-900">All Status</option>
+                <option value="unread" className="text-gray-900">Unread</option>
+                <option value="read" className="text-gray-900">Read</option>
+                <option value="archived" className="text-gray-900">Archived</option>
+              </select>
+              {permissions.canSendBulk && (
+                <button
+                  className="px-4 py-2 bg-white text-ethiopian-green rounded-lg font-semibold hover:bg-white/90 transition-all flex items-center gap-2"
+                  onClick={() => setShowBulkMessageModal(true)}
+                >
+                  <UserPlus size={16} />
+                  Bulk Message
+                </button>
+              )}
+              <button
+                className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-lg font-semibold hover:bg-white/30 transition-all flex items-center gap-2"
+                onClick={() => setShowTemplatesModal(true)}
+              >
+                <FileText size={16} />
+                Templates
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="header-right">
-          <div className="search-container">
-            <Search size={16} />
-            <input
-              type="text"
-              placeholder="Search conversations..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
-            />
-          </div>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="filter-select"
-          >
-            <option value="all">All Status</option>
-            <option value="unread">Unread</option>
-            <option value="read">Read</option>
-            <option value="archived">Archived</option>
-          </select>
-          {permissions.canSendBulk && (
-            <button
-              className="action-btn primary"
-              onClick={() => setShowBulkMessageModal(true)}
-            >
-              <UserPlus size={16} />
-              Bulk Message
-            </button>
-          )}
-          <button
-            className="action-btn secondary"
-            onClick={() => setShowTemplatesModal(true)}
-          >
-            <FileText size={16} />
-            Templates
-          </button>
         </div>
       </div>
+      
+      <div className="container mx-auto px-4 py-8">
 
-      {/* Main Content */}
-      <div className="messages-container">
+        {/* Main Content */}
+        <div className="bg-card rounded-xl border shadow-lg overflow-hidden">
         {/* Conversations List */}
         <div className="conversations-panel">
           <div className="panel-header">
@@ -1026,6 +1030,7 @@ const AdminMessages = () => {
           </div>
         </div>
       )}
+        </div>
     </div>
   );
 };

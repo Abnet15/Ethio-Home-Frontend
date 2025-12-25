@@ -1,4 +1,4 @@
-// import axios from "axios";
+// Modern Property Details Page - Redesigned
 import {
   MapPin,
   Bed,
@@ -22,16 +22,19 @@ import {
   ChevronRight,
   X,
   CreditCard,
+  Clock,
+  ArrowLeft,
 } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { interestService } from "@/services/interestService";
-
 import { useAuth } from "../context/AuthContext";
 import { favoritesService } from "../services/favoritesService";
 import { propertyService } from "../services/propertyService";
 import { userService } from "../services/userService";
+import { getPropertyImagesFromResponse } from "../utils/imageUtils";
+import { SERVER_BASE_URL } from "../config/api";
 
 import "../styles/property-details.css";
 
@@ -105,33 +108,21 @@ const PropertyDetails = () => {
       setError(null);
 
       try {
-        console.log("Fetching property with ID:", id);
         const result = await propertyService.getProperty(id);
-        console.log("Property service result:", result);
 
         if (result.success) {
-          // Backend returns: { status: 'success', data: { data: {...} } }
           const propertyData = result.data?.data?.data;
-          console.log("Property data:", propertyData);
           setProperty(propertyData);
 
-          // If property has an owner, fetch owner details (owner is the seller/agent)
+          // If property has an owner, fetch owner details
           if (propertyData.owner && propertyData.owner._id) {
             try {
-              console.log("Fetching agent data for:", propertyData.owner._id);
-              const agentResult = await userService.getUser(
-                propertyData.owner._id
-              );
-              console.log("Agent result:", agentResult);
+              const agentResult = await userService.getUser(propertyData.owner._id);
               if (agentResult.success) {
                 setAgent(agentResult.data.data.data);
               }
             } catch (e) {
-              // If fetching owner requires auth, ignore and continue rendering property
-              console.warn(
-                "Owner fetch failed (non-fatal):",
-                e?.response?.status
-              );
+              console.warn("Owner fetch failed (non-fatal):", e?.response?.status);
             }
           }
 
@@ -140,7 +131,6 @@ const PropertyDetails = () => {
             checkFavoriteStatus(propertyData._id);
           }
         } else {
-          console.error("Property service error:", result.error);
           setError(result.error);
         }
       } catch (error) {
@@ -155,19 +145,17 @@ const PropertyDetails = () => {
   }, [id, isAuthenticated, user]);
 
   const formatPrice = (price) => {
-    if (price >= 1000000) {
-      return `$${(price / 1000000).toFixed(1)}M`;
-    } else if (price >= 1000) {
-      return `$${(price / 1000).toFixed(0)}K`;
-    }
-    return price.toString();
+    return new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
   };
 
   const checkFavoriteStatus = async (propertyId) => {
     try {
       const result = await favoritesService.checkFavorite(propertyId);
       if (result.success) {
-        setIsFavorite(result.data.isFavorite);
+        setIsFavorite(result.data?.isFavorite || result.data?.data?.isFavorite || false);
       }
     } catch (error) {
       console.error("Failed to check favorite status:", error);
@@ -201,7 +189,6 @@ const PropertyDetails = () => {
         console.log("Error sharing:", error);
       }
     } else {
-      // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href);
       alert("Link copied to clipboard!");
     }
@@ -209,7 +196,6 @@ const PropertyDetails = () => {
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically send the contact form data to your backend
     await interestService.submitInterest(id, contactForm);
     alert("Your message has been sent to the agent or seller!");
     setShowContactForm(false);
@@ -223,7 +209,6 @@ const PropertyDetails = () => {
     });
   };
 
-  // Message modal functions
   const openMessageModal = () => {
     if (!isAuthenticated) {
       alert("Please log in to send a message");
@@ -231,7 +216,6 @@ const PropertyDetails = () => {
       return;
     }
 
-    // Pre-fill the subject with property information
     setMessageForm({
       subject: `Inquiry about ${property.title}`,
       content: "",
@@ -277,90 +261,81 @@ const PropertyDetails = () => {
     }
   };
 
-  const nextImage = () => {
+  const nextImage = useCallback(() => {
     setCurrentImageIndex((prev) => {
-      const images = property.imagesUrl || property.images || [];
-      const displayImages = images.length > 0 ? images : [fallbackImage];
-      return prev === displayImages.length - 1 ? 0 : prev + 1;
+      const images = getPropertyImagesFromResponse(property) || [];
+      return prev === images.length - 1 ? 0 : prev + 1;
     });
-  };
+  }, [property]);
 
-  const prevImage = () => {
+  const prevImage = useCallback(() => {
     setCurrentImageIndex((prev) => {
-      const images = property.imagesUrl || property.images || [];
-      const displayImages = images.length > 0 ? images : [fallbackImage];
-      return prev === 0 ? displayImages.length - 1 : prev - 1;
+      const images = getPropertyImagesFromResponse(property) || [];
+      return prev === 0 ? images.length - 1 : prev - 1;
     });
-  };
+  }, [property]);
+
+  useEffect(() => {
+    if (!showImageModal) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setShowImageModal(false);
+      } else if (e.key === "ArrowRight") {
+        nextImage();
+      } else if (e.key === "ArrowLeft") {
+        prevImage();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showImageModal, nextImage, prevImage]);
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p>Loading property details...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="error-container">
-        <h2>Error Loading Property</h2>
-        <p>{error}</p>
-        <div className="error-actions">
-          <button
-            onClick={() => window.location.reload()}
-            className="btn btn-secondary"
-          >
-            Try Again
-          </button>
-          <button
-            onClick={() => navigate("/properties")}
-            className="btn btn-primary"
-          >
-            Back to Properties
-          </button>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading property details...</p>
         </div>
       </div>
     );
   }
 
-  if (!property) {
+  if (error || !property) {
     return (
-      <div className="not-found-container">
-        <h2>Property Not Found</h2>
-        <p>The property you&apos;re looking for doesn&apos;t exist.</p>
-        <button
-          onClick={() => navigate("/properties")}
-          className="btn btn-primary"
-        >
-          Back to Properties
-        </button>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-card rounded-xl border border-destructive/30 p-6 text-center">
+          <h2 className="text-2xl font-bold text-destructive mb-2">Error Loading Property</h2>
+          <p className="text-muted-foreground mb-6">{error || "Property not found"}</p>
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-muted rounded-lg hover:bg-muted/80 transition-colors"
+            >
+              Try Again
+            </button>
+            <button
+              onClick={() => navigate("/properties")}
+              className="px-4 py-2 bg-ethiopian-yellow text-black rounded-lg hover:bg-ethiopian-yellow/90 transition-colors font-semibold"
+            >
+              Back to Properties
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
 
-  // Use the images array from property data and normalize to string URLs
-  const rawImages = property.imagesUrl || property.images || [];
-  const images = Array.isArray(rawImages)
-    ? rawImages
-    : [rawImages].filter(Boolean);
-  console.log("Property images:", property);
-
-  // Fallback image if no images are available
-  const fallbackImage =
-    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23f3f4f6'/%3E%3Ctext x='300' y='200' font-family='Arial, sans-serif' font-size='24' fill='%236b7280' text-anchor='middle' dominant-baseline='middle'%3ENo Image Available%3C/text%3E%3C/svg%3E";
-
-  // Ensure we have at least one image
-  const displayImages = images.length > 0 ? images : [fallbackImage];
+  // Get images from property
+  const displayImages = getPropertyImagesFromResponse(property);
+  const fallbackImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23f3f4f6'/%3E%3Ctext x='300' y='200' font-family='Arial, sans-serif' font-size='24' fill='%236b7280' text-anchor='middle' dominant-baseline='middle'%3ENo Image Available%3C/text%3E%3C/svg%3E";
+  const images = displayImages.length > 0 ? displayImages : [fallbackImage];
 
   const amenities = [
     { icon: Wifi, label: "WiFi", available: true },
-    {
-      icon: Car,
-      label: "Parking",
-      available: property.features?.parking,
-    },
+    { icon: Car, label: "Parking", available: property.features?.parking },
     { icon: Tv, label: "Cable TV", available: true },
     { icon: Utensils, label: "Kitchen", available: true },
     { icon: Wind, label: "Air Conditioning", available: false },
@@ -368,545 +343,450 @@ const PropertyDetails = () => {
   ];
 
   return (
-    <div className="property-details">
-      {/* Back Button */}
-      <div className="back-button-container">
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          <ChevronLeft size={20} />
-          Back
-        </button>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      {/* Hero Section with Main Image */}
+      <div className="relative">
+        <div className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
+          <img
+            src={images[currentImageIndex] || images[0]}
+            alt={property.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/50 to-transparent" />
+          
+          {/* Floating Back Button */}
+          <div className="absolute top-6 left-6 z-10">
+            <button
+              onClick={() => navigate(-1)}
+              className="bg-white/90 backdrop-blur-md text-foreground px-4 py-2 rounded-lg shadow-lg hover:bg-white transition-colors flex items-center gap-2 font-semibold"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </button>
+          </div>
 
-      {/* Image Gallery */}
-      <div className="property-gallery">
-        <div className="main-image-container">
-          <button
-            src={displayImages[currentImageIndex]}
-            onClick={() => setShowImageModal(true)}
-            aria-label="Open image gallery"
-            className="main-image"
-            style={{ padding: 0, border: "none", background: "transparent" }}
-          >
-            <img
-              src={displayImages[currentImageIndex]}
-              alt={property.title}
-              className="main-image"
-            />
-          </button>
+          {/* Floating Action Buttons */}
+          <div className="absolute top-6 right-6 z-10 flex gap-2">
+            <button
+              onClick={toggleFavorite}
+              className="bg-white/90 backdrop-blur-md p-3 rounded-lg shadow-lg hover:bg-white transition-colors"
+              title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+            >
+              <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
+            </button>
+            <button
+              onClick={handleShare}
+              className="bg-white/90 backdrop-blur-md p-3 rounded-lg shadow-lg hover:bg-white transition-colors"
+              title="Share property"
+            >
+              <Share2 className="h-5 w-5" />
+            </button>
+          </div>
 
-          {displayImages.length > 1 && (
-            <>
-              <button className="gallery-nav prev" onClick={prevImage}>
-                <ChevronLeft />
-              </button>
-              <button className="gallery-nav next" onClick={nextImage}>
-                <ChevronRight />
-              </button>
-            </>
-          )}
-
-          <div className="image-counter">
-            {currentImageIndex + 1} / {displayImages.length}
+          {/* Hero Content */}
+          <div className="absolute inset-x-0 bottom-0 container mx-auto px-4 pb-8">
+            <div className="max-w-4xl">
+              <div className="mb-4">
+                <span className="inline-block rounded-full bg-ethiopian-yellow/20 px-4 py-1.5 text-sm font-semibold text-ethiopian-yellow backdrop-blur-sm">
+                  {property.status === "for-sale" ? "FOR SALE" : "FOR RENT"}
+                </span>
+              </div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground mb-4 drop-shadow-lg">
+                {property.title}
+              </h1>
+              <div className="flex items-center gap-2 text-lg text-muted-foreground mb-6">
+                <MapPin className="h-5 w-5 text-ethiopian-yellow" />
+                <span className="font-medium">{property.location}</span>
+              </div>
+              <div className="flex items-baseline gap-3">
+                <span className="text-5xl md:text-6xl font-black text-foreground">
+                  {formatPrice(property.price)}
+                </span>
+                <span className="text-2xl text-muted-foreground font-semibold">
+                  ETB
+                </span>
+              </div>
+            </div>
           </div>
         </div>
-
-        {displayImages.length > 1 && (
-          <div className="thumbnail-gallery">
-            {displayImages.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentImageIndex(index)}
-                aria-label={`View image ${index + 1}`}
-                className={`thumbnail ${
-                  index === currentImageIndex ? "active" : ""
-                }`}
-                style={{
-                  padding: 0,
-                  border: "none",
-                  background: "transparent",
-                }}
-              >
-                <img
-                  src={image}
-                  alt={`${property.title} ${index + 1}`}
-                  className="thumbnail"
-                />
-              </button>
-            ))}
-          </div>
-        )}
       </div>
 
-      <div className="property-details-container">
-        <div className="property-main-content">
-          {/* Property Header */}
-          <div className="property-header">
-            <div className="property-title-section">
-              <div className="property-badges">
-                {(() => {
-                  const statusText = (property.status || "active").toString();
-                  return (
-                    <span
-                      className={`status-badge ${statusText
-                        .toLowerCase()
-                        .replace(" ", "-")}`}
-                    >
-                      {statusText}
-                    </span>
-                  );
-                })()}
-                {property.isVerified && (
-                  <span className="verified-badge">
-                    <CheckCircle style={{ width: "14px", height: "14px" }} />
-                    Verified
-                  </span>
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-8 lg:py-12">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          {/* Left Column - Main Content */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Image Gallery */}
+            <div className="bg-card rounded-xl border shadow-lg p-6">
+              <h2 className="text-2xl font-bold mb-4">Photo Gallery</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {/* Main large image */}
+                <div 
+                  className="col-span-2 relative h-96 w-full overflow-hidden rounded-xl cursor-pointer group"
+                  onClick={() => setShowImageModal(true)}
+                >
+                  <img
+                    src={images[currentImageIndex] || images[0]}
+                    alt={`${property.title} - Main image`}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                  <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1.5 rounded-lg text-sm backdrop-blur-sm">
+                    Click to view all {images.length} photos
+                  </div>
+                </div>
+                
+                {/* Thumbnail grid */}
+                {images.slice(1, 5).map((img, idx) => (
+                  <div
+                    key={idx + 1}
+                    className="relative h-48 w-full overflow-hidden rounded-xl cursor-pointer group"
+                    onClick={() => {
+                      setCurrentImageIndex(idx + 1);
+                      setShowImageModal(true);
+                    }}
+                  >
+                    <img
+                      src={img}
+                      alt={`${property.title} image ${idx + 2}`}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                  </div>
+                ))}
+                {images.length > 5 && (
+                  <div
+                    className="relative h-48 w-full overflow-hidden rounded-xl cursor-pointer group bg-muted flex items-center justify-center"
+                    onClick={() => {
+                      setCurrentImageIndex(5);
+                      setShowImageModal(true);
+                    }}
+                  >
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-muted-foreground mb-2">
+                        +{images.length - 5}
+                      </div>
+                      <div className="text-sm text-muted-foreground">More photos</div>
+                    </div>
+                  </div>
                 )}
               </div>
-
-              <h1 className="property-title">{property.title}</h1>
-
-              <div className="property-location">
-                <MapPin style={{ width: "16px", height: "16px" }} />
-                {property.location}
-              </div>
-
-              <div className="property-price">
-                ETB {formatPrice(property.price)}
-                <span className="property-type">{property.type}</span>
-              </div>
-
-              {/* Removed large header buy button: kept in Contact Owner card and footer */}
             </div>
 
-            <div className="property-actions">
-              <button
-                onClick={toggleFavorite}
-                className={`action-btn ${isFavorite ? "favorited" : ""}`}
-              >
-                <Heart style={{ width: "20px", height: "20px" }} />
-                {isFavorite ? "Saved" : "Save"}
-              </button>
-
-             {/*  <button onClick={handleShare} className="action-btn">
-                <Share2 style={{ width: "20px", height: "20px" }} />
-                Share
-              </button> */}
-
-              <button
-                onClick={() => setShowContactForm(true)}
-                className="action-btn primary"
-              >
-                <Calendar style={{ width: "20px", height: "20px" }} />
-                Schedule Visit
-              </button>
-            </div>
-          </div>
-
-          {/* Property Features */}
-          <div className="property-features-section">
-            <h3>Property Features</h3>
-            <div className="features-grid">
-              {property.features?.bedrooms > 0 && (
-                <div className="feature-item">
-                  <Bed style={{ width: "24px", height: "24px" }} />
-                  <div>
-                    <span className="feature-value">
-                      {property.features.bedrooms}
-                    </span>
-                    <span className="feature-label">Bedrooms</span>
+            {/* Overview Section */}
+            <div className="bg-card rounded-xl border shadow-lg p-6">
+              <h2 className="text-2xl font-bold mb-4">Property Overview</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {property.features?.bedrooms && (
+                  <div className="flex items-center gap-4 rounded-xl border-2 border-muted bg-card p-4 transition-all duration-300 hover:border-ethiopian-yellow/30 hover:shadow-lg">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-ethiopian-yellow/20 to-ethiopian-yellow/10 text-ethiopian-yellow">
+                      <Bed className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+                        Bedrooms
+                      </p>
+                      <p className="text-xl font-bold text-foreground">{property.features.bedrooms}</p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {property.features?.bathrooms > 0 && (
-                <div className="feature-item">
-                  <Bath style={{ width: "24px", height: "24px" }} />
-                  <div>
-                    <span className="feature-value">
-                      {property.features.bathrooms}
-                    </span>
-                    <span className="feature-label">Bathrooms</span>
+                {property.features?.bathrooms && (
+                  <div className="flex items-center gap-4 rounded-xl border-2 border-muted bg-card p-4 transition-all duration-300 hover:border-ethiopian-yellow/30 hover:shadow-lg">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-ethiopian-yellow/20 to-ethiopian-yellow/10 text-ethiopian-yellow">
+                      <Bath className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+                        Bathrooms
+                      </p>
+                      <p className="text-xl font-bold text-foreground">{property.features.bathrooms}</p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              <div className="feature-item">
-                <Square style={{ width: "24px", height: "24px" }} />
-                <div>
-                  <span className="feature-value">
-                    {property.features?.area}m²
-                  </span>
-                  <span className="feature-label">Area</span>
-                </div>
-              </div>
-            </div>
-          </div>
+                {property.features?.area && (
+                  <div className="flex items-center gap-4 rounded-xl border-2 border-muted bg-card p-4 transition-all duration-300 hover:border-ethiopian-yellow/30 hover:shadow-lg">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-ethiopian-yellow/20 to-ethiopian-yellow/10 text-ethiopian-yellow">
+                      <Square className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+                        Area
+                      </p>
+                      <p className="text-xl font-bold text-foreground">{property.features.area} m²</p>
+                    </div>
+                  </div>
+                )}
 
-          {/* Description */}
-          <div className="property-description-section">
-            <h3>Description</h3>
-            <p>{property.description}</p>
-          </div>
-
-          {/* Amenities */}
-          <div className="property-amenities-section">
-            <h3>Amenities</h3>
-            <div className="amenities-grid">
-              {amenities.map((amenity, index) => (
-                <div
-                  key={index}
-                  className={`amenity-item ${
-                    amenity.available ? "available" : "unavailable"
-                  }`}
-                >
-                  <amenity.icon style={{ width: "20px", height: "20px" }} />
-                  <span>{amenity.label}</span>
-                  {amenity.available && (
-                    <CheckCircle style={{ width: "16px", height: "16px" }} />
-                  )}
-                </div>
-              ))}
-              <div className="amenities-buy-item">
-                <button
-                  className="btn btn-primary btn-payment amenities-buy-btn"
-                  onClick={() =>
-                    navigate(`/payment/${property._id}`, {
-                      state: { amount: property.price },
-                    })
-                  }
-                >
-                  <CreditCard style={{ width: "18px", height: "18px" }} />
-                  Buy Now - ETB {formatPrice(property.price)}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Agent Contact Card (not fixed) */}
-        <div className="agent-contact-card">
-          {agent ? (
-            <>
-              <div className="agent-header">
-                <img
-                  src={agent.imagesUrl || agent.photo || agent.image}
-                  alt={agent.name}
-                  className="agent-avatar"
-                />
-                <div className="agent-info">
-                  <h4>{agent.name}</h4>
-                  <p>{agent.title}</p>
-                  <div className="agent-rating">
-                    {[...Array(5)].map((_, i) => (
-                      <span
-                        key={i}
-                        className={`star ${i < agent.rating ? "filled" : ""}`}
-                      >
-                        ★
-                      </span>
-                    ))}
-                    <span className="rating-text">
-                      ({agent.reviews} reviews)
-                    </span>
+                <div className="flex items-center gap-4 rounded-xl border-2 border-muted bg-card p-4 transition-all duration-300 hover:border-ethiopian-yellow/30 hover:shadow-lg">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-ethiopian-yellow/20 to-ethiopian-yellow/10 text-ethiopian-yellow">
+                    <MapPin className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+                      Type
+                    </p>
+                    <p className="text-xl font-bold text-foreground">{property.type}</p>
                   </div>
                 </div>
               </div>
-
-              <div className="agent-contact-info">
-                <div className="contact-item">
-                  <Phone style={{ width: "16px", height: "16px" }} />
-                  <span>{agent.phone}</span>
-                </div>
-                <div className="contact-item">
-                  <Mail style={{ width: "16px", height: "16px" }} />
-                  <span>{agent.email}</span>
-                </div>
-              </div>
-
-              {/* Payment and Contact Actions */}
-              <div className="agent-actions">
-                {/* Payment Button - Always visible for now */}
-                <button
-                  className="btn btn-primary btn-payment"
-                  onClick={() =>
-                    navigate(`/payment/${property._id}`, {
-                      state: { amount: property.price },
-                    })
-                  }
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #059669 0%, #047857 100%)",
-                    color: "white",
-                    border: "none",
-                    padding: "1rem 2rem",
-                    borderRadius: "8px",
-                    fontWeight: "600",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "0.5rem",
-                    cursor: "pointer",
-                    marginBottom: "1rem",
-                    fontSize: "1.1rem",
-                  }}
-                >
-                  <CreditCard style={{ width: "20px", height: "20px" }} />
-                  Buy  -{" "}
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "ETB",
-                    minimumFractionDigits: 0,
-                  }).format(property.price)}
-                </button>
-
-                <button
-                  className="btn btn-secondary"
-                  onClick={openMessageModal}
-                >
-                  <MessageSquare style={{ width: "16px", height: "16px" }} />
-                  Message Agent
-                </button>
-
-                <button className="btn btn-secondary btn-full">
-                  <Phone style={{ width: "16px", height: "16px" }} />
-                  Call Now
-                </button>
-              </div>
-            </>
-          ) : (
-            <div className="no-agent">
-              <h4>Contact Property Owner</h4>
-
-              {/* Payment Button for no-agent case */}
-              <button
-                className=" btn-primary btn-payment"
-                onClick={() =>
-                  navigate(`/payment/${property._id}`, {
-                    state: { amount: property.price },
-                  })
-                }
-                style={{
-                  background:
-                    "linear-gradient(135deg, #059669 0%, #047857 100%)",
-                  color: "white",
-                  border: "none",
-                  padding: "1rem 1.5rem",
-                  borderRadius: "8px",
-                  fontWeight: "600",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "0.5rem",
-                  cursor: "pointer",
-                  marginBottom: "1rem",
-                  fontSize: "1.1rem",
-                  width: "100%",
-                }}
-              >
-                <CreditCard style={{ width: "20px", height: "20px" }} />
-                Buy This Property -{" "}
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "ETB",
-                  minimumFractionDigits: 0,
-                }).format(property.price)}
-              </button>
-
-              <div className="contact-item">
-                <Phone style={{ width: "16px", height: "16px" }} />
-                <span>{agent?.phone || property.owner?.phone}</span>
-              </div>
-              <div className="contact-item">
-                <Mail style={{ width: "16px", height: "16px" }} />
-                <span>{agent?.email || property.owner?.email}</span>
-              </div>
-              <button
-                onClick={openMessageModal}
-                className="btn btn-primary btn-full"
-              >
-                Message Owner
-              </button>
             </div>
-          )}
+
+            {/* Description Section */}
+            <div className="bg-card rounded-xl border shadow-lg p-6">
+              <h2 className="text-2xl font-bold mb-3">Description</h2>
+              <p className="text-muted-foreground leading-relaxed text-base whitespace-pre-line">
+                {property.description || "No description available for this property."}
+              </p>
+            </div>
+
+            {/* Amenities Section */}
+            <div className="bg-card rounded-xl border shadow-lg p-6">
+              <h2 className="text-2xl font-bold mb-4">Amenities</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {amenities.map((amenity, index) => (
+                  <div
+                    key={index}
+                    className={`flex items-center gap-3 p-3 rounded-lg border ${
+                      amenity.available ? "bg-green-50 border-green-200" : "bg-gray-50 border-gray-200 opacity-50"
+                    }`}
+                  >
+                    <amenity.icon className={`h-5 w-5 ${amenity.available ? "text-green-600" : "text-gray-400"}`} />
+                    <span className={`font-medium ${amenity.available ? "text-green-900" : "text-gray-500"}`}>
+                      {amenity.label}
+                    </span>
+                    {amenity.available && (
+                      <CheckCircle className="h-4 w-4 text-green-600 ml-auto" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Sidebar - Sticky */}
+          <aside className="lg:sticky lg:top-24 h-fit space-y-6">
+            {/* Price & Actions Card */}
+            <div className="bg-card rounded-xl border-2 border-ethiopian-yellow/20 shadow-lg p-6 space-y-6">
+              <div className="text-center space-y-2 pb-4 border-b">
+                <div className="text-4xl font-black text-foreground">
+                  {formatPrice(property.price)}
+                </div>
+                <div className="text-lg text-muted-foreground font-medium">
+                  ETB
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <button 
+                  className="w-full bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                  onClick={() => navigate(`/payment/${property._id}`, { state: { amount: property.price } })}
+                >
+                  <CreditCard className="h-5 w-5" />
+                  Buy Now
+                </button>
+                
+                <div className="grid grid-cols-2 gap-3">
+                  <button 
+                    onClick={() => setShowContactForm(true)}
+                    className="w-full border-2 border-ethiopian-yellow/50 px-4 py-2 rounded-lg hover:bg-ethiopian-yellow/10 transition-colors flex items-center justify-center gap-2 font-semibold"
+                  >
+                    <Phone className="h-4 w-4" />
+                    Contact
+                  </button>
+                  <button 
+                    onClick={openMessageModal}
+                    className="w-full border-2 border-ethiopian-yellow/50 px-4 py-2 rounded-lg hover:bg-ethiopian-yellow/10 transition-colors flex items-center justify-center gap-2 font-semibold"
+                  >
+                    <Mail className="h-4 w-4" />
+                    Message
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Agent/Owner Card */}
+            {agent && (
+              <div className="bg-card rounded-xl border shadow-lg p-6">
+                <h3 className="text-lg font-semibold mb-4">Listed by</h3>
+                <div className="flex items-center gap-4">
+                  <div className="relative h-16 w-16 overflow-hidden rounded-full bg-muted ring-2 ring-ethiopian-yellow/20">
+                    <img
+                      src={agent.imagesUrl?.[0] || agent.photo || agent.image || "/placeholder-avatar.jpg"}
+                      alt={agent.name}
+                      className="h-full w-full object-cover"
+                      onError={(e) => {
+                        e.target.src = "/placeholder-avatar.jpg";
+                      }}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-lg">{agent.name}</p>
+                    {agent.phone && (
+                      <p className="text-sm text-muted-foreground flex items-center gap-1.5 mt-1">
+                        <Phone className="h-4 w-4" />
+                        {agent.phone}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </aside>
         </div>
       </div>
 
-      {/* Image Modal */}
+      {/* Image Lightbox Modal */}
       {showImageModal && (
-        <div
-          className="image-modal"
-          role="button"
-          tabIndex={0}
-          aria-label="Close image gallery"
-          onKeyDown={(e) => {
-            if (e.key === "Escape") {
-              e.preventDefault();
-              setShowImageModal(false);
-            }
-          }}
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm"
           onClick={() => setShowImageModal(false)}
         >
-          <div
-            className="image-modal-content"
-            role="presentation"
-            onClick={(e) => e.stopPropagation()}
-            onKeyDown={(e) => e.stopPropagation()}
-          >
+          <div className="relative w-full h-full flex items-center justify-center p-4">
             <button
-              className="modal-close"
+              className="absolute top-4 right-4 text-white hover:bg-white/20 z-10 p-2 rounded-lg transition-colors"
               onClick={() => setShowImageModal(false)}
             >
-              <X style={{ width: "24px", height: "24px" }} />
+              <X className="h-6 w-6" />
             </button>
-
-            <img
-              src={displayImages[currentImageIndex]}
-              alt={property.title}
-              className="modal-image"
-            />
-
+            
             {images.length > 1 && (
               <>
-                <button className="modal-nav prev" onClick={prevImage}>
-                  <ChevronLeft style={{ width: "32px", height: "32px" }} />
+                <button
+                  className="absolute left-4 text-white hover:bg-white/20 z-10 p-2 rounded-lg transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    prevImage();
+                  }}
+                >
+                  <ChevronLeft className="h-8 w-8" />
                 </button>
-                <button className="modal-nav next" onClick={nextImage}>
-                  <ChevronRight style={{ width: "32px", height: "32px" }} />
+                <button
+                  className="absolute right-4 text-white hover:bg-white/20 z-10 p-2 rounded-lg transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    nextImage();
+                  }}
+                >
+                  <ChevronRight className="h-8 w-8" />
                 </button>
               </>
             )}
+
+            <div 
+              className="relative max-w-7xl max-h-[90vh] w-full h-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={images[currentImageIndex] || images[0]}
+                alt={`${property.title} - Image ${currentImageIndex + 1}`}
+                className="w-full h-full object-contain"
+              />
+            </div>
+
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white bg-black/50 px-4 py-2 rounded-lg backdrop-blur-sm">
+              {currentImageIndex + 1} / {images.length}
+            </div>
           </div>
         </div>
       )}
 
-      {/* Contact Form Modal */}
+      {/* Contact Modal */}
       {showContactForm && (
-        <div
-          className="contact-modal"
-          role="button"
-          tabIndex={0}
-          aria-label="Close contact form"
-          onKeyDown={(e) => {
-            if (e.key === "Escape") {
-              e.preventDefault();
-              setShowContactForm(false);
-            }
-          }}
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4"
           onClick={() => setShowContactForm(false)}
         >
-          <div
-            className="contact-modal-content"
-            role="presentation"
+          <div 
+            className="w-full max-w-2xl bg-card rounded-xl border shadow-2xl p-6"
             onClick={(e) => e.stopPropagation()}
-            onKeyDown={(e) => e.stopPropagation()}
           >
-            <div className="contact-modal-header">
-              <h3>Schedule a Visit</h3>
-              <button
-                className="modal-close"
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-2xl font-semibold">Contact Agent</h3>
+              <button 
                 onClick={() => setShowContactForm(false)}
+                className="p-2 hover:bg-muted rounded-lg transition-colors"
               >
-                <X style={{ width: "20px", height: "20px" }} />
+                <X className="h-5 w-5" />
               </button>
             </div>
-
-            <form onSubmit={handleContactSubmit} className="contact-form">
-              <div className="form-group">
-                <label htmlFor="fullName">Full Name</label>
-                <input
-                  type="text"
-                  id="fullName"
-                  value={contactForm.name}
-                  onChange={(e) =>
-                    setContactForm({ ...contactForm, name: e.target.value })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={contactForm.email}
-                  onChange={(e) =>
-                    setContactForm({ ...contactForm, email: e.target.value })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="phone">Phone</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  value={contactForm.phone}
-                  onChange={(e) =>
-                    setContactForm({ ...contactForm, phone: e.target.value })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="visitDate">Preferred Date</label>
+            <form onSubmit={handleContactSubmit} className="space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Full Name</label>
                   <input
-                    type="date"
-                    id="visitDate"
-                    value={contactForm.visitDate}
-                    onChange={(e) =>
-                      setContactForm({
-                        ...contactForm,
-                        visitDate: e.target.value,
-                      })
-                    }
+                    type="text"
+                    value={contactForm.name}
+                    onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                    required
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow"
                   />
                 </div>
-
-                <div className="form-group">
-                  <label htmlFor="visitTime">Preferred Time</label>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Email Address</label>
+                  <input
+                    type="email"
+                    value={contactForm.email}
+                    onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                    required
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Phone Number</label>
+                  <input
+                    type="tel"
+                    value={contactForm.phone}
+                    onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                    required
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Preferred Visit Date</label>
+                  <div className="relative">
+                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <input
+                      type="date"
+                      value={contactForm.visitDate}
+                      onChange={(e) => setContactForm({ ...contactForm, visitDate: e.target.value })}
+                      className="w-full px-4 py-2 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Preferred Visit Time</label>
+                <div className="relative">
+                  <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <input
                     type="time"
-                    id="visitTime"
                     value={contactForm.visitTime}
-                    onChange={(e) =>
-                      setContactForm({
-                        ...contactForm,
-                        visitTime: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setContactForm({ ...contactForm, visitTime: e.target.value })}
+                    className="w-full px-4 py-2 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow"
                   />
                 </div>
               </div>
-
-              <div className="form-group">
-                <label htmlFor="message">Message</label>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Message</label>
                 <textarea
-                  id="message"
                   value={contactForm.message}
-                  onChange={(e) =>
-                    setContactForm({ ...contactForm, message: e.target.value })
-                  }
-                  rows="4"
-                  placeholder="Any specific questions or requirements..."
-                ></textarea>
+                  onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                  rows={5}
+                  placeholder="Share what you love about this property or your availability for a visit..."
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow resize-none"
+                />
               </div>
-
-              <div className="form-actions">
-                <button
-                  type="button"
-                  onClick={() => setShowContactForm(false)}
-                  className="btn btn-secondary"
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Send Request
-                </button>
-              </div>
+              <button 
+                type="submit" 
+                className="w-full bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
+              >
+                <Phone className="h-4 w-4" />
+                Send to Agent
+              </button>
             </form>
           </div>
         </div>
@@ -914,97 +794,61 @@ const PropertyDetails = () => {
 
       {/* Message Modal */}
       {showMessageModal && (
-        <div
-          className="contact-modal"
-          role="button"
-          tabIndex={0}
-          aria-label="Close message form"
-          onKeyDown={(e) => {
-            if (e.key === "Escape") {
-              e.preventDefault();
-              setShowMessageModal(false);
-            }
-          }}
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4"
           onClick={() => setShowMessageModal(false)}
         >
-          <div
-            className="contact-modal-content"
-            role="presentation"
+          <div 
+            className="w-full max-w-2xl bg-card rounded-xl border shadow-2xl p-6"
             onClick={(e) => e.stopPropagation()}
-            onKeyDown={(e) => e.stopPropagation()}
           >
-            <div className="contact-modal-header">
-              <h3>Send Message to Agent</h3>
-              <button
-                className="modal-close"
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-2xl font-semibold">Send Message</h3>
+              <button 
                 onClick={() => setShowMessageModal(false)}
+                className="p-2 hover:bg-muted rounded-lg transition-colors"
               >
-                <X style={{ width: "20px", height: "20px" }} />
+                <X className="h-5 w-5" />
               </button>
             </div>
-
-            <form onSubmit={handleMessageSubmit} className="contact-form">
-              <div className="form-group">
-                <label htmlFor="msgSubject">Subject</label>
+            <form onSubmit={handleMessageSubmit} className="space-y-5">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Subject</label>
                 <input
-                  id="msgSubject"
                   type="text"
                   value={messageForm.subject}
-                  onChange={(e) =>
-                    setMessageForm({ ...messageForm, subject: e.target.value })
-                  }
+                  onChange={(e) => setMessageForm({ ...messageForm, subject: e.target.value })}
                   required
+                  placeholder="e.g., Question about property details"
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow"
                 />
               </div>
-
-              <div className="form-group">
-                <label htmlFor="msgContent">Message</label>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Message</label>
                 <textarea
-                  id="msgContent"
                   value={messageForm.content}
-                  onChange={(e) =>
-                    setMessageForm({ ...messageForm, content: e.target.value })
-                  }
-                  rows="6"
+                  onChange={(e) => setMessageForm({ ...messageForm, content: e.target.value })}
+                  rows={6}
                   placeholder="Write your message here..."
                   required
-                ></textarea>
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow resize-none"
+                />
               </div>
-
               {messageError && (
-                <div
-                  className="error-message"
-                  style={{ color: "red", marginBottom: "1rem" }}
-                >
-                  {messageError}
-                </div>
+                <div className="text-red-500 text-sm">{messageError}</div>
               )}
-
-              <div className="form-actions">
-                <button
-                  type="button"
-                  onClick={() => setShowMessageModal(false)}
-                  className="btn btn-secondary"
-                  disabled={messageLoading}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={messageLoading}
-                >
-                  {messageLoading ? "Sending..." : "Send Message"}
-                </button>
-              </div>
+              <button 
+                type="submit" 
+                disabled={messageLoading}
+                className="w-full bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                <Mail className="h-4 w-4" />
+                {messageLoading ? "Sending..." : "Send Message"}
+              </button>
             </form>
           </div>
         </div>
       )}
-      {/* Footer Buy Button (short, bottom-right within flow) */}
-      <div
-        style={{ maxWidth: "1200px", margin: "24px auto 0", padding: "0 20px" }}
-      ></div>
     </div>
   );
 };

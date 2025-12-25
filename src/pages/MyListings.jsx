@@ -128,11 +128,11 @@ const MyListings = () => {
 
   if (!user) {
     return (
-      <div className="my-listings-container">
-        <div className="empty-state">
-          <Building size={48} />
-          <h2>Please log in to view your listings</h2>
-          <Link to="/login" className="btn btn-primary">
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+        <div className="bg-card rounded-xl border shadow-lg p-8 text-center max-w-md">
+          <Building className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+          <h2 className="text-2xl font-bold mb-4">Please log in to view your listings</h2>
+          <Link to="/login" className="inline-block px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-lg transition-all">
             Login
           </Link>
         </div>
@@ -142,148 +142,177 @@ const MyListings = () => {
 
   if (loading) {
     return (
-      <div className="my-listings-container">
-        <div className="loading-state">
-          <div className="spinner"></div>
-          <p>Loading your listings...</p>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading your listings...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="my-listings-container">
-      <div className="listings-header">
-        <div className="header-content">
-          <h1>My Listings</h1>
-          <p>Manage your property listings</p>
-        </div>
-        <Link to="/add-listing" className="btn btn-primary">
-          <Plus size={16} />
-          Add New Listing
-        </Link>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-8">
+      <div className="container mx-auto px-4">
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-black text-foreground mb-2">My Listings</h1>
+              <p className="text-xl text-muted-foreground">Manage your property listings</p>
+            </div>
+            <Link 
+              to="/properties/new" 
+              className="px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-xl transition-all flex items-center gap-2"
+            >
+              <Plus size={20} />
+              Add New Listing
+            </Link>
+          </div>
 
-      <div className="listings-filters">
-        <button
-          className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
-          onClick={() => setFilter('all')}
-        >
-          All ({listings.length})
-        </button>
-        <button
-          className={`filter-btn ${filter === 'active' ? 'active' : ''}`}
-          onClick={() => setFilter('active')}
-        >
-          Active ({listings.filter(l => l.status === 'active').length})
-        </button>
-        <button
-          className={`filter-btn ${filter === 'pending' ? 'active' : ''}`}
-          onClick={() => setFilter('pending')}
-        >
-          Pending ({listings.filter(l => l.status === 'pending').length})
-        </button>
-        <button
-          className={`filter-btn ${filter === 'sold' ? 'active' : ''}`}
-          onClick={() => setFilter('sold')}
-        >
-          Sold ({listings.filter(l => l.status === 'sold').length})
-        </button>
-      </div>
-
-      {filteredListings.length === 0 ? (
-        <div className="empty-state">
-          <Building size={48} />
-          <h2>No listings found</h2>
-          <p>
-            {filter === 'all' 
-              ? "You haven't created any listings yet." 
-              : `No ${filter} listings found.`
-            }
-          </p>
-          <Link to="/add-listing" className="btn btn-primary">
-            <Plus size={16} />
-            Create Your First Listing
-          </Link>
+          <div className="flex gap-3 flex-wrap">
+            <button
+              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                filter === 'all'
+                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
+                  : 'bg-card border-2 border-gray-300 text-muted-foreground hover:border-ethiopian-green hover:text-foreground'
+              }`}
+              onClick={() => setFilter('all')}
+            >
+              All ({listings.length})
+            </button>
+            <button
+              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                filter === 'active'
+                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
+                  : 'bg-card border-2 border-gray-300 text-muted-foreground hover:border-ethiopian-green hover:text-foreground'
+              }`}
+              onClick={() => setFilter('active')}
+            >
+              Active ({listings.filter(l => l.status === 'active').length})
+            </button>
+            <button
+              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                filter === 'pending'
+                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
+                  : 'bg-card border-2 border-gray-300 text-muted-foreground hover:border-ethiopian-green hover:text-foreground'
+              }`}
+              onClick={() => setFilter('pending')}
+            >
+              Pending ({listings.filter(l => l.status === 'pending').length})
+            </button>
+            <button
+              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                filter === 'sold'
+                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
+                  : 'bg-card border-2 border-gray-300 text-muted-foreground hover:border-ethiopian-green hover:text-foreground'
+              }`}
+              onClick={() => setFilter('sold')}
+            >
+              Sold ({listings.filter(l => l.status === 'sold').length})
+            </button>
+          </div>
         </div>
-      ) : (
-        <div className="listings-grid">
-          {filteredListings.map((listing) => (
-            <div key={listing.id} className="listing-card">
-              <div className="listing-image">
-                <img src={listing.image} alt={listing.title} />
-                <div className="listing-status" style={{ backgroundColor: getStatusColor(listing.status) }}>
-                  {listing.status}
-                </div>
-              </div>
-              
-              <div className="listing-content">
-                <h3>{listing.title}</h3>
-                <div className="listing-location">
-                  <MapPin size={14} />
-                  <span>{listing.location}</span>
+
+        {filteredListings.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center mb-6">
+              <Building className="h-12 w-12 text-gray-400" />
+            </div>
+            <h2 className="text-2xl font-bold mb-2">No listings found</h2>
+            <p className="text-muted-foreground mb-6 text-center max-w-md">
+              {filter === 'all' 
+                ? "You haven't created any listings yet." 
+                : `No ${filter} listings found.`
+              }
+            </p>
+            <Link 
+              to="/properties/new" 
+              className="px-8 py-4 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-xl transition-all flex items-center gap-2"
+            >
+              <Plus size={20} />
+              Create Your First Listing
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredListings.map((listing) => (
+              <div key={listing.id} className="bg-card rounded-xl border shadow-lg overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1">
+                <div className="relative h-48 overflow-hidden">
+                  <img src={listing.image} alt={listing.title} className="w-full h-full object-cover" />
+                  <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-white text-xs font-bold" style={{ backgroundColor: getStatusColor(listing.status) }}>
+                    {listing.status}
+                  </div>
                 </div>
                 
-                <div className="listing-price">
-                  <DollarSign size={16} />
-                  <span>{formatPrice(listing.price, listing.currency)}</span>
-                  <span className="price-type">
-                    {listing.type === 'rent' ? '/month' : ''}
-                  </span>
-                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-foreground mb-2">{listing.title}</h3>
+                  <div className="flex items-center gap-2 text-muted-foreground mb-4">
+                    <MapPin className="h-4 w-4 text-ethiopian-yellow" />
+                    <span className="text-sm">{listing.location}</span>
+                  </div>
+                  
+                  <div className="text-2xl font-black text-ethiopian-green mb-4">
+                    {formatPrice(listing.price, listing.currency)}
+                    {listing.type === 'rent' && <span className="text-sm font-normal text-muted-foreground">/month</span>}
+                  </div>
 
-                <div className="listing-details">
-                  <div className="detail-item">
-                    <Home size={14} />
-                    <span>{listing.propertyType}</span>
+                  <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <Home className="h-4 w-4" />
+                      {listing.propertyType}
+                    </span>
+                    {listing.bedrooms > 0 && (
+                      <span className="flex items-center gap-1">
+                        <Bed className="h-4 w-4" />
+                        {listing.bedrooms} bed
+                      </span>
+                    )}
+                    <span className="flex items-center gap-1">
+                      <Bath className="h-4 w-4" />
+                      {listing.bathrooms} bath
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Square className="h-4 w-4" />
+                      {listing.area} m²
+                    </span>
                   </div>
-                  {listing.bedrooms > 0 && (
-                    <div className="detail-item">
-                      <Bed size={14} />
-                      <span>{listing.bedrooms} bed</span>
-                    </div>
-                  )}
-                  <div className="detail-item">
-                    <Bath size={14} />
-                    <span>{listing.bathrooms} bath</span>
-                  </div>
-                  <div className="detail-item">
-                    <Square size={14} />
-                    <span>{listing.area} m²</span>
-                  </div>
-                </div>
 
-                <div className="listing-meta">
-                  <div className="meta-item">
-                    <Calendar size={14} />
-                    <span>{formatDate(listing.createdAt)}</span>
+                  <div className="flex items-center gap-4 mb-4 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {formatDate(listing.createdAt)}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Eye className="h-3 w-3" />
+                      {listing.views} views
+                    </span>
                   </div>
-                  <div className="meta-item">
-                    <Eye size={14} />
-                    <span>{listing.views} views</span>
-                  </div>
-                </div>
 
-                <div className="listing-actions">
-                  <Link to={`/properties/${listing.id}`} className="action-btn view-btn">
-                    <Eye size={16} />
-                    View
-                  </Link>
-                  <Link to={`/edit-listing/${listing.id}`} className="action-btn edit-btn">
-                    <Edit size={16} />
-                    Edit
-                  </Link>
-                  <button className="action-btn delete-btn">
-                    <Trash2 size={16} />
-                    Delete
-                  </button>
+                  <div className="flex gap-2 pt-4 border-t">
+                    <Link 
+                      to={`/properties/${listing.id}`} 
+                      className="flex-1 px-4 py-2 bg-muted hover:bg-muted/80 rounded-lg font-semibold text-center transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Eye size={16} />
+                      View
+                    </Link>
+                    <Link 
+                      to={`/properties/${listing.id}/edit`} 
+                      className="flex-1 px-4 py-2 bg-ethiopian-yellow/20 hover:bg-ethiopian-yellow/30 text-ethiopian-yellow rounded-lg font-semibold text-center transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Edit size={16} />
+                      Edit
+                    </Link>
+                    <button className="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg font-semibold transition-colors">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-
+            ))}
+          </div>
+        )}
+      </div>
       <style>{`
         .my-listings-container {
           max-width: 1200px;

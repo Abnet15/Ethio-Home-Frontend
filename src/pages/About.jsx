@@ -267,13 +267,13 @@ const About = () => {
   }
 
   return (
-    <div className="about-page">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
       {/* Hero Section */}
-      <section className="hero bg-gradient-primary text-white">
-        <div className="container">
-          <div className="hero-content text-center fade-in">
-            <h1 className="hero-title">About Ethio-Home</h1>
-            <p className="hero-subtitle">
+      <section className="relative py-20 bg-gradient-to-r from-ethiopian-green via-ethiopian-green/90 to-ethiopian-green text-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-6xl font-black mb-6">About Ethio-Home</h1>
+            <p className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
               Pioneering the future of real estate in Ethiopia through
               technology, trust, and transparency
             </p>
@@ -339,26 +339,25 @@ const About = () => {
         </div>
       </section>
       {/* Stats Section */}
-      <section className="section bg-secondary-50">
-        <div className="container">
-          <div className="section-header mb-12">
-            <h2 className="section-title">Our Achievements</h2>
-            <p className="section-subtitle">
+      <section className="py-16 bg-gradient-to-b from-muted/20 to-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-4">Our Achievements</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Real numbers that reflect our commitment to excellence
             </p>
           </div>
-          <div className="grid grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="stat-card card text-center slide-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="bg-card rounded-xl border shadow-lg p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1"
               >
-                <div className="stat-icon">
-                  <stat.icon />
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-ethiopian-yellow/20 to-ethiopian-yellow/10 text-ethiopian-yellow mb-4">
+                  <stat.icon className="h-8 w-8" />
                 </div>
-                <div className="stat-value">{stat.value}</div>
-                <div className="stat-label">{stat.label}</div>
+                <div className="text-3xl md:text-4xl font-black text-foreground mb-2">{stat.value}</div>
+                <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">{stat.label}</div>
               </div>
             ))}
           </div>

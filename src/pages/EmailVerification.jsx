@@ -86,18 +86,18 @@ const EmailVerification = () => {
 
   if (loading) {
     return (
-      <div className="email-verification-container">
-        <div className="verification-card">
-          <div className="verification-header">
-            <Link to="/" className="auth-logo">
-              <div className="auth-logo-icon">
-                <Home style={{ width: "24px", height: "24px", color: "white" }} />
+      <div className="min-h-screen bg-gradient-to-br from-ethiopian-green via-ethiopian-green/90 to-ethiopian-green flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-card rounded-2xl border shadow-2xl overflow-hidden">
+          <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white text-center">
+            <Link to="/" className="flex items-center gap-3 justify-center mb-6 hover:opacity-80 transition-opacity">
+              <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <Home className="h-6 w-6" />
               </div>
-              <span className="auth-logo-text">Ethio-Home</span>
+              <span className="text-2xl font-black">Ethio-Home</span>
             </Link>
             
-            <div className="loading-spinner">
-              <div className="spinner"></div>
+            <div className="flex flex-col items-center">
+              <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
               <h2>Verifying your email...</h2>
               <p>Please wait while we verify your email address.</p>
               <div className="loading-dots">
@@ -113,84 +113,76 @@ const EmailVerification = () => {
   }
 
   return (
-    <div className="email-verification-container">
-      <div className="verification-card">
-        <div className="verification-header">
-          <Link to="/" className="auth-logo">
-            <div className="auth-logo-icon">
-              <Home style={{ width: "24px", height: "24px", color: "white" }} />
+    <div className="min-h-screen bg-gradient-to-br from-ethiopian-green via-ethiopian-green/90 to-ethiopian-green flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-card rounded-2xl border shadow-2xl overflow-hidden">
+        <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white text-center">
+          <Link to="/" className="flex items-center gap-3 justify-center mb-6 hover:opacity-80 transition-opacity">
+            <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <Home className="h-6 w-6" />
             </div>
-            <span className="auth-logo-text">Ethio-Home</span>
+            <span className="text-2xl font-black">Ethio-Home</span>
           </Link>
           
           <div className="verification-status">
             {status === 'success' ? (
               <>
-                <div className="success-animation">
-                  <div className="status-icon success">
-                    <CheckCircle style={{ width: "64px", height: "64px" }} />
+                <div className="flex flex-col items-center mb-6">
+                  <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4">
+                    <CheckCircle className="w-16 h-16 text-white" />
                   </div>
-                  <div className="celebration-icon">
-                    <PartyPopper style={{ width: "32px", height: "32px" }} />
-                  </div>
+                  <div className="text-4xl mb-2">🎉</div>
                 </div>
-                <h2 className="success-title">🎉 Email Verified Successfully! 🎉</h2>
-                <p className="success-message">{message}</p>
+                <h2 className="text-2xl font-black mb-2">Email Verified Successfully!</h2>
+                <p className="text-white/90 mb-6">{message}</p>
                 {verificationResult?.data?.token ? (
-                  <div className="verification-actions">
-                    <div className="success-info">
-                      <p className="redirect-message">
-                        You will be automatically redirected to your dashboard in <strong>{countdown}</strong> seconds...
+                  <div className="px-8 pb-8">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-4">
+                      <p className="text-white/90 mb-2">
+                        Redirecting to your dashboard in <strong className="text-white">{countdown}</strong> seconds...
                       </p>
-                      <div className="progress-bar">
+                      <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden">
                         <div 
-                          className="progress-fill" 
+                          className="bg-white h-full transition-all duration-1000" 
                           style={{ width: `${((5 - countdown) / 5) * 100}%` }}
                         ></div>
                       </div>
                     </div>
-                    <div className="action-buttons">
-                      <button 
-                        onClick={() => {
-                          // Redirect to role-specific dashboard
-                          const userRole = verificationResult.data.data.user.role;
-                          redirectToDashboard(userRole, navigate);
-                        }} 
-                        className="btn btn-primary"
-                      >
-                        Go to Dashboard Now
-                        <ArrowRight style={{ width: "16px", height: "16px" }} />
-                      </button>
-                      <p className="manual-redirect">
-                        Or wait for automatic redirect...
-                      </p>
-                    </div>
+                    <button 
+                      onClick={() => {
+                        const userRole = verificationResult.data.data.user.role;
+                        redirectToDashboard(userRole, navigate);
+                      }} 
+                      className="w-full py-4 bg-white text-ethiopian-green rounded-xl font-bold hover:shadow-xl transition-all flex items-center justify-center gap-2"
+                    >
+                      Go to Dashboard Now
+                      <ArrowRight className="w-5 h-5" />
+                    </button>
                   </div>
                 ) : (
-                  <div className="verification-actions">
-                    <Link to="/login" className="btn btn-primary">
+                  <div className="px-8 pb-8">
+                    <Link to="/login" className="block w-full py-4 bg-white text-ethiopian-green rounded-xl font-bold hover:shadow-xl transition-all text-center">
                       Go to Login
-                      <ArrowRight style={{ width: "16px", height: "16px" }} />
+                      <ArrowRight className="w-5 h-5 inline ml-2" />
                     </Link>
                   </div>
                 )}
               </>
             ) : (
               <>
-                <div className="status-icon error">
-                  <XCircle style={{ width: "64px", height: "64px" }} />
+                <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4 mx-auto">
+                  <XCircle className="w-16 h-16 text-white" />
                 </div>
-                <h2 className="error-title">Verification Failed</h2>
-                <p className="error-message">{message}</p>
-                <div className="verification-actions">
-                  <Link to="/login" className="btn btn-primary">
-                    <Mail style={{ width: "16px", height: "16px" }} />
+                <h2 className="text-2xl font-black mb-2">Verification Failed</h2>
+                <p className="text-white/90 mb-6">{message}</p>
+                <div className="px-8 pb-8 space-y-3">
+                  <Link to="/login" className="block w-full py-4 bg-white text-ethiopian-green rounded-xl font-bold hover:shadow-xl transition-all text-center">
+                    <Mail className="w-5 h-5 inline mr-2" />
                     Try Again with Login
                   </Link>
-                  <Link to="/signup" className="btn btn-secondary">
+                  <Link to="/signup" className="block w-full py-4 border-2 border-white text-white rounded-xl font-semibold hover:bg-white/10 transition-all text-center">
                     Create New Account
                   </Link>
-                  <p className="error-help">
+                  <p className="text-white/80 text-sm text-center mt-4">
                     If you continue to have issues, please contact our support team.
                   </p>
                 </div>

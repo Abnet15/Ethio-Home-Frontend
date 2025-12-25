@@ -303,41 +303,54 @@ const Home = () => {
   ];
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
       {/* Hero Section */}
       <section
-        className="hero-section"
+        className="relative h-[70vh] min-h-[600px] w-full overflow-hidden"
         style={{
-          backgroundImage: `linear-gradient(135deg, rgba(37, 99, 235, 0.8) 0%, rgba(29, 78, 216, 0.8) 100%), url(${
+          backgroundImage: `linear-gradient(135deg, rgba(0, 122, 51, 0.85) 0%, rgba(29, 78, 216, 0.75) 100%), url(${
             backgroundImages[currentBgIndex]
           })`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       >
-        <div className="hero-overlay"></div>
-        <div className="hero-container">
-          <h1 className="hero-title">{t("heroTitle")}</h1>
-          <p className="hero-subtitle">{t("heroSubtitle")}</p>
+        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/60 to-transparent"></div>
+        <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 drop-shadow-2xl">
+            {t("heroTitle")}
+          </h1>
+          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl drop-shadow-lg">
+            {t("heroSubtitle")}
+          </p>
 
-          <div className="hero-indicators">
+          <div className="flex gap-2 mb-8">
             {backgroundImages.map((_, index) => (
               <button
                 key={index}
-                className={`indicator ${index === currentBgIndex ? "active" : ""}`}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === currentBgIndex 
+                    ? "w-8 bg-ethiopian-yellow" 
+                    : "w-2 bg-white/50 hover:bg-white/70"
+                }`}
                 onClick={() => setCurrentBgIndex(index)}
                 aria-label={`Select background image ${index + 1}`}
               />
             ))}
           </div>
 
-          <div className="advanced-search-bar">
-            <form onSubmit={handleSearch} className="search-form-advanced">
-              <div className="filter-dropdowns">
-                <div className="filter-group">
-                  <label htmlFor="location-filter">{t("Location")}</label>
+          <div className="w-full max-w-5xl bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-6 md:p-8">
+            <form onSubmit={handleSearch} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="location-filter" className="text-sm font-semibold text-gray-700">
+                    {t("Location")}
+                  </label>
                   <select
                     id="location-filter"
                     value={locationFilter}
                     onChange={(e) => setLocationFilter(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow focus:border-transparent"
                   >
                     <option value="">{t("All Locations")}</option>
                     <option value="Addis Ababa">{t("Addis Ababa")}</option>
@@ -347,12 +360,15 @@ const Home = () => {
                   </select>
                 </div>
 
-                <div className="filter-group">
-                  <label htmlFor="type-filter">{t("Property Type")}</label>
+                <div className="space-y-2">
+                  <label htmlFor="type-filter" className="text-sm font-semibold text-gray-700">
+                    {t("Property Type")}
+                  </label>
                   <select
                     id="type-filter"
                     value={typeFilter}
                     onChange={(e) => setTypeFilter(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow focus:border-transparent"
                   >
                     <option value="">{t("All Types")}</option>
                     <option value="house">{t("house")}</option>
@@ -362,12 +378,15 @@ const Home = () => {
                   </select>
                 </div>
 
-                <div className="filter-group">
-                  <label htmlFor="price-filter">{t("Price Range")}</label>
+                <div className="space-y-2">
+                  <label htmlFor="price-filter" className="text-sm font-semibold text-gray-700">
+                    {t("Price Range")}
+                  </label>
                   <select
                     id="price-filter"
                     value={priceFilter}
                     onChange={(e) => setPriceFilter(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow focus:border-transparent"
                   >
                     <option value="">{t("Any Price")}</option>
                     <option value="0-500000">{t("Under 500K ETB")}</option>
@@ -378,33 +397,49 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="search-input-group">
+              <div className="flex gap-3">
                 <input
                   type="text"
                   placeholder={t("Search by keywords...")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="search-keyword-input"
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow focus:border-transparent"
                 />
-                <button type="submit" className="search-button" aria-label={t("Search properties")}>
-                  <Search />
+                <button 
+                  type="submit" 
+                  className="px-8 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-lg transition-all flex items-center gap-2"
+                  aria-label={t("Search properties")}
+                >
+                  <Search className="h-5 w-5" />
                   {t("Search")}
                 </button>
               </div>
             </form>
           </div>
 
-          <div className="hero-quick-links">
-            <Link to="/properties?type=house" className="quick-link">
+          <div className="flex flex-wrap gap-3 mt-8 justify-center">
+            <Link 
+              to="/properties?type=house" 
+              className="px-6 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/30 transition-colors border border-white/30"
+            >
               {t("house")}
             </Link>
-            <Link to="/properties?type=apartment" className="quick-link">
+            <Link 
+              to="/properties?type=apartment" 
+              className="px-6 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/30 transition-colors border border-white/30"
+            >
               {t("apartment")}
             </Link>
-            <Link to="/properties?type=villa" className="quick-link">
+            <Link 
+              to="/properties?type=villa" 
+              className="px-6 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/30 transition-colors border border-white/30"
+            >
               {t("villa")}
             </Link>
-            <Link to="/properties?type=commercial" className="quick-link">
+            <Link 
+              to="/properties?type=commercial" 
+              className="px-6 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/30 transition-colors border border-white/30"
+            >
               {t("commercial")}
             </Link>
           </div>
@@ -412,16 +447,19 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="stats-section">
-        <div className="stats-container">
-          <div className="stats-grid">
+      <section className="py-16 bg-gradient-to-b from-muted/20 to-background">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
-              <div key={index} className="stat-item">
-                <div className="stat-icon">
-                  <stat.icon />
+              <div 
+                key={index} 
+                className="bg-card rounded-xl border shadow-lg p-6 text-center hover:shadow-xl transition-shadow"
+              >
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-ethiopian-yellow/20 to-ethiopian-yellow/10 text-ethiopian-yellow mb-4">
+                  <stat.icon className="h-8 w-8" />
                 </div>
-                <div className="stat-value">{stat.value}</div>
-                <div className="stat-label">{stat.label}</div>
+                <div className="text-3xl md:text-4xl font-black text-foreground mb-2">{stat.value}</div>
+                <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -453,36 +491,39 @@ const Home = () => {
       </section>
 
       {/* Featured Properties */}
-      <section className="featured-section">
-        <div className="featured-container">
-          <div className="section-header">
-            <h2 className="section-title">{t("featuredProperties")}</h2>
-            <p className="section-subtitle">
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-4">
+              {t("featuredProperties")}
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               {t("Discover our handpicked selection of premium properties")}
             </p>
           </div>
           {loading.properties ? (
-            <div className="loading-container">
-              <div className="loading-spinner"></div>
-              <p>{t("Loading properties...")}</p>
+            <div className="flex flex-col items-center justify-center py-20">
+              <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mb-4"></div>
+              <p className="text-muted-foreground">{t("Loading properties...")}</p>
             </div>
-          ) /* : error.properties ? (
-            <div className="error-container">
-              <p>{error.properties}</p>
-            </div>
-          )*/  : featuredProperties.length > 0 ? (
-            <div className="properties-grid">
+          ) : featuredProperties.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {featuredProperties.map((property) => (
                 <PropertyCard key={property._id} property={property} />
               ))}
             </div>
           ) : (
-            <p>{t("No properties available at the moment.")}</p>
+            <div className="text-center py-20">
+              <p className="text-muted-foreground text-lg">{t("No properties available at the moment.")}</p>
+            </div>
           )}
           <div className="text-center">
-            <Link to="/properties" className="view-all-btn">
+            <Link 
+              to="/properties" 
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-xl transition-all"
+            >
               {t("View All Properties")}
-              <ArrowRight />
+              <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
         </div>
@@ -603,17 +644,25 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="cta-section">
-        <div className="cta-container">
-          <h2 className="cta-title">{t("Ready to Find Your Dream Home?")}</h2>
-          <p className="cta-subtitle">
+      <section className="py-20 bg-gradient-to-r from-ethiopian-green via-ethiopian-green/90 to-ethiopian-green text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl md:text-5xl font-black mb-4">
+            {t("Ready to Find Your Dream Home?")}
+          </h2>
+          <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
             {t("Join thousands of satisfied customers who found their perfect property with Ethio-Home")}
           </p>
-          <div className="cta-buttons">
-            <Link to="/properties" className="cta-btn-primary">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              to="/properties" 
+              className="px-8 py-4 bg-white text-ethiopian-green rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg"
+            >
               {t("Browse Properties")}
             </Link>
-            <Link to="/signup" className="cta-btn-secondary">
+            <Link 
+              to="/signup" 
+              className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition-colors"
+            >
               {t("Get Started")}
             </Link>
           </div>

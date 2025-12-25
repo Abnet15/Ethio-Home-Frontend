@@ -180,40 +180,40 @@ const Signup = () => {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <div className="auth-header">
-          <Link to="/" className="auth-logo">
-            <div className="auth-logo-icon">
-              <Home style={{ width: "24px", height: "24px", color: "white" }} />
+    <div className="min-h-screen bg-gradient-to-br from-ethiopian-green via-ethiopian-green/90 to-ethiopian-green py-12 px-4">
+      <div className="max-w-4xl mx-auto bg-card rounded-2xl border shadow-2xl overflow-hidden">
+        <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
+          <Link to="/" className="flex items-center gap-3 mb-6 hover:opacity-80 transition-opacity">
+            <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <Home className="h-6 w-6" />
             </div>
-            <span className="auth-logo-text">Ethio-Home</span>
+            <span className="text-2xl font-black">Ethio-Home</span>
           </Link>
-
-          <h1 className="auth-title">{t("Create Account")}</h1>
-          <p className="auth-subtitle">
+          <h1 className="text-3xl font-black mb-2">{t("Create Account")}</h1>
+          <p className="text-white/90">
             {t("Join Ethio-Home and start your real estate journey")}
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="p-8 space-y-6 max-h-[70vh] overflow-y-auto">
           {error && (
-            <div className="form-error">
+            <div className="p-4 bg-red-50 border-2 border-red-200 rounded-xl text-red-700 font-semibold">
               {error}
             </div>
           )}
 
           {success && (
-            <div className="form-success">
+            <div className="p-4 bg-green-50 border-2 border-green-200 rounded-xl text-green-700 font-semibold">
               {success}
             </div>
           )}
 
-          <div className="form-group">
-            <label htmlFor="name" className="form-label">
+          <div className="space-y-2">
+            <label htmlFor="name" className="block text-sm font-semibold text-foreground">
               {t("Full Name")}
             </label>
-            <div className="form-input-container">
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <input
                 type="text"
                 id="name"
@@ -221,42 +221,46 @@ const Signup = () => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder={t("Enter your full name")}
-                className={`form-input ${formErrors.name ? 'error' : ''}`}
+                className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-ethiopian-green focus:border-transparent ${
+                  formErrors.name ? 'border-red-300' : 'border-gray-300'
+                }`}
                 autoComplete="name"
                 required
               />
-              <User />
             </div>
-            {formErrors.name && <div className="error-message">{formErrors.name}</div>}
+            {formErrors.name && <div className="text-sm text-red-600 font-medium">{formErrors.name}</div>}
           </div>
 
-          <div className="form-group-row">
-            <div className="form-group">
-              <label htmlFor="email" className="form-label">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label htmlFor="email" className="block text-sm font-semibold text-foreground">
                 {t("Email Address")}
               </label>
-              <div className="form-input-container">
-                              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder={t("Enter your email")}
-                className={`form-input ${formErrors.email ? 'error' : ''}`}
-                autoComplete="email"
-                required
-              />
-                                  <Mail />
-                </div>
-                {formErrors.email && <div className="error-message">{formErrors.email}</div>}
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder={t("Enter your email")}
+                  className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-ethiopian-green focus:border-transparent ${
+                    formErrors.email ? 'border-red-300' : 'border-gray-300'
+                  }`}
+                  autoComplete="email"
+                  required
+                />
               </div>
+              {formErrors.email && <div className="text-sm text-red-600 font-medium">{formErrors.email}</div>}
+            </div>
 
-            <div className="form-group">
-              <label htmlFor="phone" className="form-label">
+            <div className="space-y-2">
+              <label htmlFor="phone" className="block text-sm font-semibold text-foreground">
                 {t("Phone Number")}
               </label>
-              <div className="form-input-container">
+              <div className="relative">
+                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <input
                   type="tel"
                   id="phone"
@@ -264,13 +268,14 @@ const Signup = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder={t("+251 911 123 456")}
-                  className={`form-input ${formErrors.phone ? 'error' : ''}`}
+                  className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-ethiopian-green focus:border-transparent ${
+                    formErrors.phone ? 'border-red-300' : 'border-gray-300'
+                  }`}
                   autoComplete="tel"
                   required
                 />
-                <Phone />
               </div>
-              {formErrors.phone && <div className="error-message">{formErrors.phone}</div>}
+              {formErrors.phone && <div className="text-sm text-red-600 font-medium">{formErrors.phone}</div>}
             </div>
           </div>
 
@@ -450,10 +455,14 @@ const Signup = () => {
               </div>
           </div>
 
-          <button type="submit" className="auth-button" disabled={loading}>
+          <button 
+            type="submit" 
+            className="w-full py-4 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-xl font-bold text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" 
+            disabled={loading}
+          >
             {loading ? (
               <>
-                <div className="loading-spinner"></div>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 {t("Creating Account...")}
               </>
             ) : (
@@ -462,13 +471,13 @@ const Signup = () => {
           </button>
         </form>
 
-        <div className="auth-link">
-          <span className="auth-link-text">
-            {t("Already have an account?")}
-            <Link to="/login" className="auth-link-button">
+        <div className="px-8 pb-8 text-center border-t pt-6">
+          <p className="text-muted-foreground">
+            {t("Already have an account?")}{" "}
+            <Link to="/login" className="font-semibold text-ethiopian-green hover:underline">
               {t("Sign in here")}
             </Link>
-          </span>
+          </p>
         </div>
       </div>
     </div>

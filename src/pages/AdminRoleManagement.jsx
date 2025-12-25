@@ -692,36 +692,43 @@ const AdminRoleManagement = () => {
   }
 
   return (
-    <div className="admin-container">
-      <div className="admin-header">
-        <div className="header-content">
-          <button 
-            className="back-btn"
-            onClick={() => navigate('/admin-dashboard')}
-          >
-            <ArrowLeft size={20} />
-            Back
-          </button>
-          <h1>Admin Role Management</h1>
-          <p>Manage admin roles, permissions, and user assignments</p>
-        </div>
-        <div className="header-actions">
-          <button
-            className="btn btn-secondary"
-            onClick={() => setShowCreateRole(true)}
-          >
-            <Plus size={16} />
-            Create Role
-          </button>
-          <button
-            className="btn btn-primary"
-            onClick={() => setShowCreateAdmin(true)}
-          >
-            <UserPlus size={16} />
-            Create Admin
-          </button>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <button 
+                className="p-2 rounded-lg hover:bg-white/20 transition-colors"
+                onClick={() => navigate('/admin-dashboard')}
+              >
+                <ArrowLeft size={20} />
+              </button>
+              <div>
+                <h1 className="text-4xl font-black mb-2">Admin Role Management</h1>
+                <p className="text-white/90">Manage admin roles, permissions, and user assignments</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-lg font-semibold hover:bg-white/30 transition-all flex items-center gap-2"
+                onClick={() => setShowCreateRole(true)}
+              >
+                <Plus size={16} />
+                Create Role
+              </button>
+              <button
+                className="px-4 py-2 bg-white text-ethiopian-green rounded-lg font-semibold hover:bg-white/90 transition-all flex items-center gap-2"
+                onClick={() => setShowCreateAdmin(true)}
+              >
+                <UserPlus size={16} />
+                Create Admin
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+      
+      <div className="container mx-auto px-4 py-8">
 
       {message && (
         <div className={`message ${message.includes('success') ? 'success' : 'error'}`}>
@@ -1816,6 +1823,7 @@ const AdminRoleManagement = () => {
           }
         }
       `}</style>
+      </div>
     </div>
   );
 };

@@ -96,15 +96,18 @@ const PaymentSuccess = () => {
   }
 
   return (
-    <div className="payment-container">
-      <div className="success-container">
-        <div className="success-header">
-          <CheckCircle size={80} className="success-icon" />
-          <h1>Payment Successful!</h1>
-          <p className="success-message">
-            Your payment has been processed successfully. Thank you for your purchase!
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-8">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <div className="bg-card rounded-xl border shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-green-500 to-green-600 p-8 text-white text-center">
+            <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <CheckCircle className="w-16 h-16 text-white" />
+            </div>
+            <h1 className="text-4xl font-black mb-2">Payment Successful!</h1>
+            <p className="text-white/90 text-lg">
+              Your payment has been processed successfully. Thank you for your purchase!
+            </p>
+          </div>
 
         <div className="payment-details">
           <div className="details-header">
@@ -250,6 +253,7 @@ const PaymentSuccess = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

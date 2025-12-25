@@ -43,6 +43,7 @@ import {
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import PropertyCard from '../components/PropertyCard';
 import UserContactForm from '../components/UserContactForm';
@@ -322,21 +323,103 @@ const SellerDashboard = () => {
     return new Intl.NumberFormat('en-US').format(num);
   };
 
-  // Stat Card Component
-  const StatCard = ({ title, value, icon: Icon, color = 'primary', onClick }) => (
-    <div 
-      className={`stat-card stat-${color} ${onClick ? 'clickable' : ''}`}
-      onClick={onClick}
-    >
-      <div className="stat-icon">
-        <Icon size={24} />
-      </div>
-      <div className="stat-content">
-        <div className="stat-value">{value}</div>
-        <div className="stat-label">{title}</div>
-      </div>
-    </div>
-  );
+  // WOW UPGRADE: Animated Stat Card with glassmorphism and counter animation
+  const StatCard = ({ title, value, icon: Icon, color = 'primary', onClick }) => {
+    const [displayValue, setDisplayValue] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
+    
+    useEffect(() => {
+      // Extract numeric value for animation
+      const numValue = typeof value === 'string' 
+        ? parseFloat(value.replace(/[^0-9.]/g, '')) || 0
+        : value || 0;
+      
+      if (!isNaN(numValue) && numValue > 0) {
+        const duration = 1500;
+        const steps = 60;
+        const increment = numValue / steps;
+        let current = 0;
+        
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= numValue) {
+            setDisplayValue(numValue);
+            clearInterval(timer);
+          } else {
+            setDisplayValue(Math.floor(current));
+          }
+        }, duration / steps);
+        
+        return () => clearInterval(timer);
+      } else {
+        setDisplayValue(value);
+      }
+    }, [value]);
+
+    const formatDisplayValue = () => {
+      if (typeof value === 'string') {
+        if (value.includes('%')) return `${displayValue}%`;
+        if (value.includes('ETB') || value.includes('$')) {
+          return value.replace(/[\d,]+/, displayValue.toLocaleString());
+        }
+        return value;
+      }
+      return displayValue.toLocaleString();
+    };
+
+    const colorClasses = {
+      primary: 'from-coffee-500/20 to-chocolate-500/20 border-coffee-500/30',
+      success: 'from-ethiopian-green/20 to-emerald-500/20 border-ethiopian-green/30',
+      warning: 'from-gold-400/20 to-amber-500/20 border-gold-400/30',
+      error: 'from-ethiopian-red/20 to-red-500/20 border-ethiopian-red/30',
+    };
+
+    return (
+      <motion.div
+        className={`relative overflow-hidden rounded-2xl p-6 glass-dark border backdrop-blur-md cursor-pointer group ${
+          colorClasses[color] || colorClasses.primary
+        } ${onClick ? 'hover:scale-105' : ''}`}
+        onClick={onClick}
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ y: -4, scale: 1.02 }}
+        transition={{ duration: 0.3, type: 'spring', stiffness: 300 }}
+      >
+        <div className="flex items-center justify-between relative z-10">
+          <div className="flex-1">
+            <p className="text-sm text-coffee-300/70 mb-2 font-medium">{title}</p>
+            <motion.p
+              className="text-3xl font-bold text-gradient-coffee"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+            >
+              {formatDisplayValue()}
+            </motion.p>
+          </div>
+          <motion.div
+            className={`p-3 rounded-xl bg-gradient-to-br ${colorClasses[color] || colorClasses.primary} border`}
+            whileHover={{ rotate: 5, scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 400 }}
+          >
+            <Icon size={24} className="text-coffee-400" />
+          </motion.div>
+        </div>
+        {/* Animated gradient overlay on hover */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-coffee-500/0 to-chocolate-500/0 pointer-events-none"
+          animate={{
+            background: isHovered
+              ? 'linear-gradient(135deg, rgba(139, 69, 19, 0.1) 0%, rgba(210, 105, 30, 0.1) 100%)'
+              : 'linear-gradient(135deg, rgba(139, 69, 19, 0) 0%, rgba(210, 105, 30, 0) 100%)',
+          }}
+          transition={{ duration: 0.3 }}
+        />
+      </motion.div>
+    );
+  };
 
   
 
@@ -794,275 +877,412 @@ const SellerDashboard = () => {
 
   if (loading) {
     return (
-      <div className="dashboard-layout">
-        <div className="dashboard-main">
-          <div className="flex items-center justify-center h-full">
-            <div className="loading-spinner"></div>
-            <span className="ml-3 text-neutral-600">Loading dashboard...</span>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+        <div className="flex">
+          <div className="w-64 bg-card border-r shadow-lg min-h-screen sticky top-0">
+            <div className="p-6 border-b">
+              <h2 className="text-2xl font-black text-foreground mb-1">Seller Dashboard</h2>
+              <p className="text-sm text-muted-foreground">Welcome back, {user?.name}</p>
+            </div>
+            <nav className="p-4 space-y-2">
+              {['overview', 'properties', 'interests', 'sales', 'appointments', 'clients', 'leads'].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${
+                    activeTab === tab
+                      ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
+                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  }`}
+                >
+                  {tab === 'overview' && <Home size={20} />}
+                  {tab === 'properties' && <Building size={20} />}
+                  {tab === 'interests' && <Heart size={20} />}
+                  {tab === 'sales' && <DollarSign size={20} />}
+                  {tab === 'appointments' && <Calendar size={20} />}
+                  {tab === 'clients' && <Users size={20} />}
+                  {tab === 'leads' && <Target size={20} />}
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                </button>
+              ))}
+            </nav>
+          </div>
+          <div className="flex-1 p-8">
+            <div className="flex items-center justify-center h-full">
+              <div className="loading-spinner"></div>
+              <span className="ml-3 text-neutral-600">Loading dashboard...</span>
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
+  // WOW UPGRADE: Glassmorphism sidebar with Ethiopian theme
+  const navItems = [
+    { id: 'overview', label: 'Overview', icon: Home },
+    { id: 'properties', label: 'My Properties', icon: Building },
+    { id: 'interests', label: 'Buyer Interests', icon: Users },
+    { id: 'selling', label: 'Selling Properties', icon: TrendingUp },
+    { id: 'sales', label: 'Sales History', icon: DollarSign },
+    { id: 'analytics', label: 'Analytics', icon: PieChart },
+    { id: 'messages', label: 'Messages', icon: MessageSquare, action: () => navigate('/messages') },
+    { id: 'profile', label: 'Profile', icon: User, action: () => navigate('/profile') },
+    { id: 'contact', label: 'Contact Support', icon: Mail },
+    { id: 'help', label: 'Help Center', icon: MessageSquare },
+  ];
+
   return (
-    <div className="dashboard-layout">
-      {/* Sidebar */}
-      <div className="dashboard-sidebar">
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-neutral-900 mb-2">Seller Dashboard</h2>
-          <p className="text-sm text-neutral-600">Welcome back, {user?.name}</p>
+    <div className="min-h-screen bg-gradient-warm-dark">
+      {/* WOW UPGRADE: Glassmorphism sidebar */}
+      <motion.aside
+        className="fixed left-0 top-0 h-screen w-64 glass-dark border-r border-coffee-800/30 z-40 overflow-y-auto scrollbar-thin"
+        initial={{ x: -100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5, type: 'spring' }}
+      >
+        <div className="p-6 mb-8 border-b border-coffee-800/20">
+          <motion.h2
+            className="text-2xl font-bold text-gradient-coffee mb-2"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            Seller Dashboard
+          </motion.h2>
+          <motion.p
+            className="text-sm text-coffee-300/70"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            Welcome back, {user?.name}
+          </motion.p>
         </div>
 
-        <nav className="nav-menu">
-          <div className="nav-item">
-            <a 
-              href="#overview" 
-              className={`nav-link ${activeTab === 'overview' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('overview'); }}
-            >
-              <Home size={20} />
-              Overview
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#properties" 
-              className={`nav-link ${activeTab === 'properties' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('properties'); }}
-            >
-              <Building size={20} />
-              My Properties
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#interests" 
-              className={`nav-link ${activeTab === 'interests' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('interests'); }}
-            >
-              <Users size={20} />
-              Buyer Interests
-            </a>
-          </div>
-          {/* <div className="nav-item">
-            <a 
-              href="#appointments" 
-              className={`nav-link ${activeTab === 'appointments' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('appointments'); }}
-            >
-              <Calendar size={20} />
-              Appointments
-            </a>
-          </div> */}
-          {<div className="nav-item">
-            <a 
-              href="#selling" 
-              className={`nav-link ${activeTab === 'selling' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('selling'); }}
-            >
-              <TrendingUp size={20} />
-              Selling Properties
-            </a>
-          </div>}{
-          <div className="nav-item">
-            <a 
-              href="#sales" 
-              className={`nav-link ${activeTab === 'sales' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('sales'); }}
-            >
-              <DollarSign size={20} />
-              Sales History
-            </a>
-          </div>}
-          {<div className="nav-item">
-            <a 
-              href="#analytics" 
-              className={`nav-link ${activeTab === 'analytics' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('analytics'); }}
-            >
-              <PieChart size={20} />
-              Analytics
-            </a>
-          </div>}
-          <div className="nav-item">
-            <a 
-              href="#messages" 
-              className="nav-link"
-              onClick={(e) => { e.preventDefault(); navigate('/messages'); }}
-            >
-              <MessageSquare size={20} />
-              Messages
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#profile" 
-              className="nav-link"
-              onClick={(e) => { e.preventDefault(); navigate('/profile'); }}
-            >
-              <User size={20} />
-              Profile
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#contact" 
-              className={`nav-link ${activeTab === 'contact' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('contact'); }}
-            >
-              <Mail size={20} />
-              Contact Support
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#help" 
-              className={`nav-link ${activeTab === 'help' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('help'); }}
-            >
-              <MessageSquare size={20} />
-              Help Center
-            </a>
-          </div>
+        <nav className="px-4 space-y-2">
+          {navItems.map((item, index) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            
+            return (
+              <motion.a
+                key={item.id}
+                href={`#${item.id}`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 relative overflow-hidden ${
+                  isActive
+                    ? 'bg-gradient-coffee text-white shadow-lg shadow-coffee-500/20'
+                    : 'text-coffee-200/70 hover:bg-coffee-800/30 hover:text-white'
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (item.action) {
+                    item.action();
+                  } else {
+                    setActiveTab(item.id);
+                  }
+                }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 * index, duration: 0.3 }}
+                whileHover={{ scale: 1.02, x: 4 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Icon size={20} className="flex-shrink-0" />
+                <span className="font-medium">{item.label}</span>
+                {isActive && (
+                  <motion.div
+                    className="absolute right-0 top-0 bottom-0 w-1 bg-gold-400"
+                    layoutId="activeIndicator"
+                    initial={false}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  />
+                )}
+              </motion.a>
+            );
+          })}
         </nav>
-      </div>
+      </motion.aside>
 
-      {/* Main Content */}
-      <div className="dashboard-main">
-        {/* Header */}
-        <div className="dashboard-header">
-          <div>
-            <h1 className="dashboard-title">
-              {activeTab === 'overview' && 'Dashboard Overview'}
-              {activeTab === 'properties' && 'My Properties'}
-              {activeTab === 'interests' && 'Buyer Interests'}
-              {activeTab === 'appointments' && 'Appointments'}
-            </h1>
-            <p className="text-neutral-600">
-              {activeTab === 'overview' && 'Track your property listings and manage your real estate business'}
-              {activeTab === 'properties' && 'Manage your property listings and track their performance'}
-              {activeTab === 'interests' && 'Review and respond to buyer inquiries and visit requests'}
-              {activeTab === 'appointments' && 'Schedule and manage property viewings and consultations'}
-            </p>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="btn btn-secondary">
-              <Bell size={16} />
-              Notifications
-            </button>
-            <button className="btn btn-secondary" onClick={() => navigate('/properties/new')}>
-              <Plus size={16} />
-              Add Property
-            </button>
-          </div>
-        </div>
-
-        {/* Overview Tab */}
-        {activeTab === 'overview' && (
-          <>
-            {/* Stats Grid */}
-            <div className="stats-grid">
-              <StatCard
-                title="Total Properties"
-                value={stats.totalProperties}
-                icon={Building}
-                color="primary"
-                onClick={() => setActiveTab('properties')}
-              />
-              <StatCard
-                title="Active Listings"
-                value={stats.activeListings}
-                icon={CheckCircle}
-                color="success"
-                onClick={() => setActiveTab('properties')}
-              />
-              {<StatCard
-                title="Total Revenue"
-                value={formatCurrency(stats.totalRevenue)}
-                icon={DollarSign}
-                color="warning"
-                onClick={() => setActiveTab('sales')}
-              />}
-              <StatCard
-                title="Pending Interests"
-                value={stats.pendingInterests}
-                icon={Heart}
-                color="error"
-                onClick={() => setActiveTab('appointments')}
-              />
+      {/* WOW UPGRADE: Main content with proper spacing for fixed sidebar */}
+      <div className="ml-64 min-h-screen">
+        <div className="p-8">
+          {/* WOW UPGRADE: Animated header */}
+          <motion.div
+            className="mb-8 flex items-center justify-between"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div>
+              <motion.h1
+                className="text-4xl font-bold text-gradient-coffee mb-2"
+                key={activeTab}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {activeTab === 'overview' && 'Dashboard Overview'}
+                {activeTab === 'properties' && 'My Properties'}
+                {activeTab === 'interests' && 'Buyer Interests'}
+                {activeTab === 'appointments' && 'Appointments'}
+                {activeTab === 'selling' && 'Selling Properties'}
+                {activeTab === 'sales' && 'Sales History'}
+                {activeTab === 'analytics' && 'Analytics'}
+                {activeTab === 'contact' && 'Contact Support'}
+                {activeTab === 'help' && 'Help Center'}
+              </motion.h1>
+              <motion.p
+                className="text-coffee-300/70 text-lg"
+                key={`${activeTab}-desc`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                {activeTab === 'overview' && 'Track your property listings and manage your real estate business'}
+                {activeTab === 'properties' && 'Manage your property listings and track their performance'}
+                {activeTab === 'interests' && 'Review and respond to buyer inquiries and visit requests'}
+                {activeTab === 'appointments' && 'Schedule and manage property viewings and consultations'}
+                {activeTab === 'selling' && 'View and manage properties currently for sale'}
+                {activeTab === 'sales' && 'Track your sales history and revenue'}
+                {activeTab === 'analytics' && 'View detailed analytics and insights'}
+                {activeTab === 'contact' && 'Get in touch with our support team'}
+                {activeTab === 'help' && 'Find answers to common questions'}
+              </motion.p>
             </div>
+            <div className="flex items-center gap-4">
+              <motion.button
+                className="px-4 py-2 glass-dark border border-coffee-800/30 rounded-lg text-coffee-200 hover:text-white hover:bg-coffee-800/30 transition-all flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Bell size={16} />
+                Notifications
+              </motion.button>
+              <motion.button
+                className="px-6 py-2 bg-gradient-coffee text-white rounded-lg shadow-lg hover:shadow-xl flex items-center gap-2 font-medium"
+                onClick={() => navigate('/properties/new')}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Plus size={16} />
+                Add Property
+              </motion.button>
+            </div>
+          </motion.div>
 
-            {/* Content Sections */}
-            <div className="content-sections">
-              <div className="content-section">
-                <div className="section-header">
-                  <h3>Recent Properties</h3>
-                  <button className="btn btn-secondary" onClick={() => setActiveTab('properties')}>
-                    View All
-                  </button>
-                </div>
-                <div className="properties-grid">
-                  {myProperties.slice(0, 3).map(property => (
-                    <PropertyCard key={property._id} property={property} />
-                  ))}
-                  {myProperties.length === 0 && (
-                    <div className="empty-state">
-                      <Building size={48} />
-                      <h3>No properties yet</h3>
-                      <p>Start by adding your first property listing</p>
-                      <button className="btn btn-primary" onClick={() => navigate('/properties/new')}>
-                        <Plus size={16} />
-                        Add Property
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
+        {/* WOW UPGRADE: Overview Tab with animated stats */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'overview' && (
+            <motion.div
+              key="overview"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* WOW UPGRADE: Animated Stats Grid */}
+              <motion.div
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.1,
+                    },
+                  },
+                }}
+              >
+                <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+                  <StatCard
+                    title="Total Properties"
+                    value={stats.totalProperties}
+                    icon={Building}
+                    color="primary"
+                    onClick={() => setActiveTab('properties')}
+                  />
+                </motion.div>
+                <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+                  <StatCard
+                    title="Active Listings"
+                    value={stats.activeListings}
+                    icon={CheckCircle}
+                    color="success"
+                    onClick={() => setActiveTab('properties')}
+                  />
+                </motion.div>
+                <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+                  <StatCard
+                    title="Total Revenue"
+                    value={formatCurrency(stats.totalRevenue)}
+                    icon={DollarSign}
+                    color="warning"
+                    onClick={() => setActiveTab('sales')}
+                  />
+                </motion.div>
+                <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+                  <StatCard
+                    title="Pending Interests"
+                    value={stats.pendingInterests}
+                    icon={Heart}
+                    color="error"
+                    onClick={() => setActiveTab('interests')}
+                  />
+                </motion.div>
+              </motion.div>
 
-              <div className="content-section">
-                <div className="section-header">
-                  <h3>Recent Appointments</h3>
-                  <button className="btn btn-secondary" onClick={() => setActiveTab('appointments')}>
-                    View All
-                  </button>
-                </div>
-                <div className="appointments-list">
-                  {appointments.slice(0, 5).map(appointment => (
-                    <div key={appointment._id} className="appointment-item">
-                      <div className="appointment-info">
-                        <div className="appointment-client">{appointment.contactInfo?.name || appointment.sender?.name || 'Anonymous Client'}</div>
-                        <div className="appointment-property">{appointment.propertyId?.title || appointment.subject || 'Unknown Property'}</div>
-                        <div className="appointment-time">
-                          <Calendar size={14} />
-                          {new Date(appointment.createdAt).toLocaleDateString()}
+              {/* WOW UPGRADE: Content Sections with glassmorphism */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <motion.div
+                  className="glass-dark border border-coffee-800/30 rounded-2xl p-6"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-bold text-coffee-200">Recent Properties</h3>
+                    <motion.button
+                      className="px-4 py-2 glass border border-coffee-800/30 rounded-lg text-coffee-200 hover:text-white text-sm"
+                      onClick={() => setActiveTab('properties')}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      View All
+                    </motion.button>
+                  </div>
+                  <div className="space-y-4">
+                    {myProperties.slice(0, 3).map((property, index) => (
+                      <motion.div
+                        key={property._id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 + index * 0.1 }}
+                      >
+                        <PropertyCard property={property} />
+                      </motion.div>
+                    ))}
+                    {myProperties.length === 0 && (
+                      <motion.div
+                        className="text-center py-12"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.3 }}
+                      >
+                        <motion.div
+                          className="inline-block p-4 rounded-full bg-coffee-800/30 mb-4"
+                          animate={{ rotate: [0, 10, -10, 0] }}
+                          transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                        >
+                          <Building size={48} className="text-coffee-400" />
+                        </motion.div>
+                        <h3 className="text-xl font-bold text-coffee-200 mb-2">No properties yet</h3>
+                        <p className="text-coffee-300/70 mb-4">Start by adding your first property listing</p>
+                        <motion.button
+                          className="px-6 py-2 bg-gradient-coffee text-white rounded-lg shadow-lg font-medium flex items-center gap-2 mx-auto"
+                          onClick={() => navigate('/properties/new')}
+                          whileHover={{ scale: 1.05, y: -2 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Plus size={16} />
+                          Add Property
+                        </motion.button>
+                      </motion.div>
+                    )}
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  className="glass-dark border border-coffee-800/30 rounded-2xl p-6"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-bold text-coffee-200">Recent Appointments</h3>
+                    <motion.button
+                      className="px-4 py-2 glass border border-coffee-800/30 rounded-lg text-coffee-200 hover:text-white text-sm"
+                      onClick={() => setActiveTab('interests')}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      View All
+                    </motion.button>
+                  </div>
+                  <div className="space-y-3">
+                    {appointments.slice(0, 5).map((appointment, index) => (
+                      <motion.div
+                        key={appointment._id}
+                        className="glass border border-coffee-800/20 rounded-lg p-4 hover:border-coffee-500/30 transition-all"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.4 + index * 0.1 }}
+                        whileHover={{ scale: 1.02, x: 4 }}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="font-semibold text-coffee-200 mb-1">
+                              {appointment.contactInfo?.name || appointment.sender?.name || 'Anonymous Client'}
+                            </div>
+                            <div className="text-sm text-coffee-300/70 mb-2">
+                              {appointment.propertyId?.title || appointment.subject || 'Unknown Property'}
+                            </div>
+                            <div className="flex items-center gap-2 text-xs text-coffee-400">
+                              <Calendar size={14} />
+                              {new Date(appointment.createdAt).toLocaleDateString()}
+                            </div>
+                          </div>
+                          <span className={`px-2 py-1 rounded text-xs font-medium ${
+                            appointment.status === 'pending' ? 'bg-gold-400/20 text-gold-400' :
+                            appointment.status === 'contacted' ? 'bg-blue-400/20 text-blue-400' :
+                            appointment.status === 'schedule' ? 'bg-ethiopian-green/20 text-ethiopian-green' :
+                            'bg-coffee-800/30 text-coffee-300'
+                          }`}>
+                            {appointment.status}
+                          </span>
                         </div>
-                      </div>
-                      <div className="appointment-status">
-                        <span className={`status-badge ${appointment.status}`}>
-                          {appointment.status}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                  {appointments.length === 0 && (
-                    <div className="empty-state">
-                      <Calendar size={48} />
-                      <h3>No appointments</h3>
-                      <p>You have no scheduled appointments</p>
-                    </div>
-                  )}
-                </div>
+                      </motion.div>
+                    ))}
+                    {appointments.length === 0 && (
+                      <motion.div
+                        className="text-center py-12"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.4 }}
+                      >
+                        <motion.div
+                          className="inline-block p-4 rounded-full bg-coffee-800/30 mb-4"
+                          animate={{ rotate: [0, 10, -10, 0] }}
+                          transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                        >
+                          <Calendar size={48} className="text-coffee-400" />
+                        </motion.div>
+                        <h3 className="text-xl font-bold text-coffee-200 mb-2">No appointments</h3>
+                        <p className="text-coffee-300/70">You have no scheduled appointments</p>
+                      </motion.div>
+                    )}
+                  </div>
+                </motion.div>
               </div>
-            </div>
-          </>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Properties Tab */}
-        {activeTab === 'properties' && (
-          <div className="content-section">
-            <div className="section-header">
-              <h3>My Properties</h3>
+        {/* WOW UPGRADE: Properties Tab with animations */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'properties' && (
+            <motion.div
+              key="properties"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="content-section">
+                <div className="section-header">
+                  <h3>My Properties</h3>
               <div className="view-controls">
                 <button 
                   className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
@@ -1175,12 +1395,22 @@ const SellerDashboard = () => {
                 )}
               </div>
             )}
-          </div>
-        )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Interests Tab */}
-        {activeTab === 'interests' && (
-          <div className="content-section">
+        {/* WOW UPGRADE: Interests Tab with animations */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'interests' && (
+            <motion.div
+              key="interests"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="content-section">
             <div className="section-header">
               <h3>Buyer Interests ({recentInterests.length})</h3>
               <div className="flex items-center gap-2">
@@ -1222,19 +1452,57 @@ const SellerDashboard = () => {
                   ))}
                 </div>
               ) : (
-                <div className="empty-state">
-                  <Users size={48} />
-                  <h3>No buyer interests yet</h3>
-                  <p>Buyer interests will appear here when someone shows interest in your properties</p>
-                </div>
+                <motion.div
+                  className="col-span-full text-center py-16 glass-dark border border-coffee-800/30 rounded-2xl"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <motion.div
+                    className="inline-block p-6 rounded-full bg-gradient-to-br from-ethiopian-green/20 to-emerald-500/20 mb-6"
+                    animate={{ 
+                      rotate: [0, 5, -5, 0],
+                      scale: [1, 1.05, 1]
+                    }}
+                    transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
+                  >
+                    <Users size={64} className="text-ethiopian-green" />
+                  </motion.div>
+                  <motion.h3
+                    className="text-2xl font-bold text-gradient-coffee mb-3"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    No buyer interests yet
+                  </motion.h3>
+                  <motion.p
+                    className="text-coffee-300/70 mb-6 text-lg"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    Buyer interests will appear here when someone shows interest in your properties
+                  </motion.p>
+                </motion.div>
               )}
             </div>
-          </div>
-        )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Appointments Tab */}
-        {activeTab === 'appointments' && (
-          <div className="content-section">
+        {/* WOW UPGRADE: Appointments Tab with animations */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'appointments' && (
+            <motion.div
+              key="appointments"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="content-section">
             <div className="section-header">
               <h3>Appointments & Viewings ({appointments.length})</h3>
               <div className="flex items-center gap-2">
@@ -1282,12 +1550,22 @@ const SellerDashboard = () => {
                 </div>
               )}
             </div>
-          </div>
-        )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Selling Properties Tab */}
-        {activeTab === 'selling' && (
-          <div className="content-section">
+        {/* WOW UPGRADE: Selling Properties Tab with animations */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'selling' && (
+            <motion.div
+              key="selling"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="content-section">
             <div className="section-header">
               <h3>Selling Properties ({myProperties.filter(p => p.sold === false && p.isVerified === true).length})</h3>
               <div className="flex items-center gap-2">
@@ -1366,36 +1644,90 @@ const SellerDashboard = () => {
                     ))}
                 </div>
               ) : (
-                <div className="empty-state">
-                  <TrendingUp size={48} />
-                  <h3>No properties currently for sale</h3>
-                  <p>Properties you list for sale will appear here</p>
-                  <button 
-                    className="btn btn-primary mt-4"
-                    onClick={() => navigate('/property-form')}
+                <motion.div
+                  className="col-span-full text-center py-16 glass-dark border border-coffee-800/30 rounded-2xl"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <motion.div
+                    className="inline-block p-6 rounded-full bg-gradient-to-br from-gold-400/20 to-amber-500/20 mb-6"
+                    animate={{ 
+                      rotate: [0, 5, -5, 0],
+                      scale: [1, 1.05, 1]
+                    }}
+                    transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
                   >
-                    <Plus size={16} className="mr-2" />
+                    <TrendingUp size={64} className="text-gold-400" />
+                  </motion.div>
+                  <motion.h3
+                    className="text-2xl font-bold text-gradient-coffee mb-3"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    No properties currently for sale
+                  </motion.h3>
+                  <motion.p
+                    className="text-coffee-300/70 mb-6 text-lg"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    Properties you list for sale will appear here
+                  </motion.p>
+                  <motion.button
+                    className="px-8 py-3 bg-gradient-coffee text-white rounded-lg shadow-xl hover:shadow-2xl font-medium flex items-center gap-2 mx-auto"
+                    onClick={() => navigate('/properties/new')}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <Plus size={20} />
                     List New Property
-                  </button>
-                </div>
+                  </motion.button>
+                </motion.div>
               )}
             </div>
-          </div>
-        )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Contact Tab */}
-        {activeTab === 'contact' && (
-          <div className="space-y-6">
-            <UserContactForm />
-          </div>
-        )}
+        {/* WOW UPGRADE: Contact Tab with animations */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'contact' && (
+            <motion.div
+              key="contact"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-6"
+            >
+              <UserContactForm />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Help Center Tab */}
-        {activeTab === 'help' && (
-          <div className="space-y-6">
-            <FAQViewer userRole="seller" />
-          </div>
-        )}
+        {/* WOW UPGRADE: Help Center Tab with animations */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'help' && (
+            <motion.div
+              key="help"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-6"
+            >
+              <FAQViewer userRole="seller" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        </div>
       </div>
     </div>
   );

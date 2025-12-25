@@ -484,27 +484,34 @@ const AdminUserManagement = () => {
   }
 
   return (
-    <div className="admin-container">
-      <div className="admin-header">
-        <div className="header-content">
-          <button 
-            className="back-btn"
-            onClick={() => navigate('/admin-dashboard')}
-          >
-            <ArrowLeft size={20} />
-            Back
-          </button>
-          <h1>User Management</h1>
-          <p>Create and manage user accounts</p>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <button 
+                className="p-2 rounded-lg hover:bg-white/20 transition-colors"
+                onClick={() => navigate('/admin-dashboard')}
+              >
+                <ArrowLeft size={20} />
+              </button>
+              <div>
+                <h1 className="text-4xl font-black mb-2">User Management</h1>
+                <p className="text-white/90">Create and manage user accounts</p>
+              </div>
+            </div>
+            <button
+              className="px-6 py-3 bg-white text-ethiopian-green rounded-lg font-semibold hover:bg-white/90 transition-all flex items-center gap-2"
+              onClick={() => setShowCreateForm(true)}
+            >
+              <Plus size={16} />
+              Create User
+            </button>
+          </div>
         </div>
-        <button
-          className="btn btn-primary create-user-btn"
-          onClick={() => setShowCreateForm(true)}
-        >
-          <Plus size={16} />
-          Create User
-        </button>
       </div>
+      
+      <div className="container mx-auto px-4 py-8">
 
       {message && (
         <div className={`message ${messageType === 'success' ? 'success' : 'error'}`}>
@@ -1745,6 +1752,7 @@ const AdminUserManagement = () => {
           .actions-cell::before { content: "Actions: "; font-weight: 600; }
         }
       `}</style>
+      </div>
     </div>
   );
 };

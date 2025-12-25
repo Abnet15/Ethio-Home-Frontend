@@ -474,11 +474,12 @@ const PropertyForm = () => {
   }
 
   return (
-    <div className="property-form-container">
-      <div className="property-form-header">
-        <div className="header-content">
-          <h1>{isEdit ? t('Edit Property') : t('Create Property')}</h1>
-          <p>{isEdit ? t('Update your property details') : t('Add a new property to your listings')}</p>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-8">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <div className="bg-card rounded-xl border shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
+            <h1 className="text-3xl font-black mb-2">{isEdit ? t('Edit Property') : t('Create Property')}</h1>
+            <p className="text-white/90">{isEdit ? t('Update your property details') : t('Add a new property to your listings')}</p>
           
           {/* Subscription Info Display */}
           {!isEdit && subscriptionInfo && (
@@ -552,7 +553,7 @@ const PropertyForm = () => {
         <button onClick={handleBack} className="back-button">
           ← {t('Back')}
         </button>
-      </div>
+        </div>
 
             {error && !isEdit && !subscriptionInfo?.hasActiveSubscription && !subscriptionInfo?.isAdminOrEmployee && (
         <div className="error-container">
@@ -613,10 +614,8 @@ const PropertyForm = () => {
       )}
       
 
-
-      <div className="property-form-main">
-        <form onSubmit={onSubmit}>
-          <div className="form-grid">
+          <div className="p-8">
+            <form onSubmit={onSubmit} className="space-y-8">
           <div>
               {/* Basic Information */}
               <div className="form-section">
@@ -973,10 +972,10 @@ const PropertyForm = () => {
                         <button type="button" onClick={() => removeSelectedImage(idx)} className="btn btn-cancel" style={{ position: 'absolute', top: '6px', right: '6px', padding: '0.25rem 0.5rem' }}>Remove</button>
                       </div>
                     ))}
-          </div>
+                  </div>
                 )}
-          </div>
-        </div>
+              </div>
+            </div>
 
             <div className="publishing-sidebar">
               <h3>Publishing</h3>
@@ -1020,13 +1019,14 @@ const PropertyForm = () => {
                   className="btn btn-cancel"
                 >
                   {t('Cancel')}
-          </button>
+                </button>
               </div>
             </div>
+            </form>
+          </div>
         </div>
-      </form>
       </div>
-    </div>
+    
   );
 };
 

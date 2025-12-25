@@ -546,37 +546,37 @@ const BuyerDashboard = () => {
 
   if (loading) {
     return (
-      <div className="dashboard-layout">
-        <div className="dashboard-main">
-          <div className="flex items-center justify-center h-full">
-            <div className="loading-spinner"></div>
-            <span className="ml-3 text-neutral-600">Loading dashboard...</span>
-          </div>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="dashboard-layout">
-      {/* Sidebar */}
-      <div className="dashboard-sidebar">
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-neutral-900 mb-2">Buyer Dashboard</h2>
-          <p className="text-sm text-neutral-600">Welcome back, {user?.name}</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      <div className="flex">
+        {/* Sidebar */}
+        <div className="w-64 bg-card border-r shadow-lg min-h-screen sticky top-0">
+          <div className="p-6 border-b">
+            <h2 className="text-2xl font-black text-foreground mb-1">Buyer Dashboard</h2>
+            <p className="text-sm text-muted-foreground">Welcome back, {user?.name}</p>
+          </div>
 
-        <nav className="nav-menu">
-          <div className="nav-item">
-            <a 
-              href="#overview" 
-              className={`nav-link ${activeTab === 'overview' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('overview'); }}
+          <nav className="p-4 space-y-2">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${
+                activeTab === 'overview'
+                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
+                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+              }`}
             >
               <Home size={20} />
               Overview
-            </a>
-          </div>
+            </button>
           {/* <div className="nav-item">
             <a 
               href="#search" 
@@ -587,224 +587,252 @@ const BuyerDashboard = () => {
               Search Properties
             </a>
           </div> */}
-          <div className="nav-item">
-            <a 
-              href="#favorites" 
-              className={`nav-link ${activeTab === 'favorites' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('favorites'); }}
+            <button
+              onClick={() => setActiveTab('favorites')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${
+                activeTab === 'favorites'
+                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
+                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+              }`}
             >
               <Heart size={20} />
               Favorites
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#visits" 
-              className={`nav-link ${activeTab === 'visits' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('visits'); }}
+            </button>
+            <button
+              onClick={() => setActiveTab('visits')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${
+                activeTab === 'visits'
+                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
+                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+              }`}
             >
               <Calendar size={20} />
               Scheduled Visits
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#purchased" 
-              className={`nav-link ${activeTab === 'purchased' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('purchased'); }}
+            </button>
+            <button
+              onClick={() => setActiveTab('purchased')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${
+                activeTab === 'purchased'
+                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
+                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+              }`}
             >
               <ShoppingBag size={20} />
-              Purchased Properties
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#messages" 
-              className="nav-link"
-              onClick={(e) => { e.preventDefault(); navigate('/messages'); }}
-            >
-              <MessageSquare size={20} />
-              Messages
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#profile" 
-              className="nav-link"
-              onClick={(e) => { e.preventDefault(); navigate('/profile'); }}
-            >
-              <User size={20} />
-              Profile
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#contact" 
-              className={`nav-link ${activeTab === 'contact' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('contact'); }}
-            >
-              <Mail size={20} />
-              Contact Support
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#help" 
-              className={`nav-link ${activeTab === 'help' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('help'); }}
-            >
-              <MessageSquare size={20} />
-              Help Center
-            </a>
-          </div>
-        </nav>
-      </div>
-
-      {/* Main Content */}
-      <div className="dashboard-main">
-        {/* Header */}
-        <div className="dashboard-header">
-          <div>
-            <h1 className="dashboard-title">
-              {activeTab === 'overview' && 'Dashboard Overview'}
-              {activeTab === 'search' && 'Search Properties'}
-              {activeTab === 'favorites' && 'Favorite Properties'}
-              {activeTab === 'visits' && 'Scheduled Visits'}
-            </h1>
-            <p className="text-neutral-600">
-              {activeTab === 'overview' && 'Track your property search progress and manage your interests'}
-              {activeTab === 'search' && 'Find your perfect property with advanced search filters'}
-              {activeTab === 'favorites' && 'Manage your saved properties and wishlist'}
-              {activeTab === 'visits' && 'View and manage your scheduled property visits'}
-            </p>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="btn btn-secondary">
-              <Bell size={16} />
-              Notifications
+              Purchased
             </button>
-            <button className="btn btn-secondary" onClick={() => navigate('/properties')}>
-              <Search size={16} />
-              Browse Properties
-            </button>
-          </div>
+            <div className="pt-4 border-t mt-4">
+              <button
+                onClick={() => navigate('/messages')}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
+              >
+                <MessageSquare size={20} />
+                Messages
+              </button>
+              <button
+                onClick={() => navigate('/profile')}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
+              >
+                <User size={20} />
+                Profile
+              </button>
+              <button
+                onClick={() => setActiveTab('contact')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${
+                  activeTab === 'contact'
+                    ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                }`}
+              >
+                <Mail size={20} />
+                Contact Support
+              </button>
+              <button
+                onClick={() => setActiveTab('help')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${
+                  activeTab === 'help'
+                    ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                }`}
+              >
+                <MessageSquare size={20} />
+                Help Center
+              </button>
+            </div>
+          </nav>
         </div>
+
+        {/* Main Content */}
+        <div className="flex-1 p-8">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h1 className="text-4xl font-black text-foreground mb-2">
+                  {activeTab === 'overview' && 'Dashboard Overview'}
+                  {activeTab === 'search' && 'Search Properties'}
+                  {activeTab === 'favorites' && 'Favorite Properties'}
+                  {activeTab === 'visits' && 'Scheduled Visits'}
+                  {activeTab === 'purchased' && 'Purchased Properties'}
+                  {activeTab === 'contact' && 'Contact Support'}
+                  {activeTab === 'help' && 'Help Center'}
+                </h1>
+                <p className="text-lg text-muted-foreground">
+                  {activeTab === 'overview' && 'Track your property search progress and manage your interests'}
+                  {activeTab === 'search' && 'Find your perfect property with advanced search filters'}
+                  {activeTab === 'favorites' && 'Manage your saved properties and wishlist'}
+                  {activeTab === 'visits' && 'View and manage your scheduled property visits'}
+                  {activeTab === 'purchased' && 'View your purchased properties'}
+                  {activeTab === 'contact' && 'Get in touch with our support team'}
+                  {activeTab === 'help' && 'Find answers to common questions'}
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <button className="px-4 py-2 border-2 border-ethiopian-yellow/50 rounded-lg hover:bg-ethiopian-yellow/10 transition-colors flex items-center gap-2 font-semibold">
+                  <Bell size={18} />
+                  Notifications
+                </button>
+                <button 
+                  className="px-6 py-2 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg hover:shadow-lg transition-all flex items-center gap-2 font-semibold"
+                  onClick={() => navigate('/properties')}
+                >
+                  <Search size={18} />
+                  Browse Properties
+                </button>
+              </div>
+            </div>
+          </div>
 
         {/* Overview Tab */}
         {activeTab === 'overview' && (
           <>
             {/* Stats Grid */}
-            <div className="stats-grid">
-              <StatCard
-                title="Favorite Properties"
-                value={stats.favoriteProperties}
-                icon={Heart}
-                color="error"
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div 
                 onClick={() => setActiveTab('favorites')}
-              />
-              <StatCard
-                title="Scheduled Visits"
-                value={stats.scheduledVisits}
-                icon={Calendar}
-                color="primary"
+                className="bg-card rounded-xl border shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
+                    <Heart className="h-6 w-6 text-red-600" />
+                  </div>
+                </div>
+                <div className="text-3xl font-black text-foreground mb-1">{stats.favoriteProperties}</div>
+                <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Favorite Properties</div>
+              </div>
+              <div 
                 onClick={() => setActiveTab('visits')}
-              />
-              <StatCard
-                title="Properties Viewed"
-                value={stats.viewedProperties}
-                icon={Eye}
-                color="success"
-              />
-              <StatCard
-                title="Saved Searches"
-                value={stats.savedSearches}
-                icon={Bookmark}
-                color="warning"
+                className="bg-card rounded-xl border shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                    <Calendar className="h-6 w-6 text-blue-600" />
+                  </div>
+                </div>
+                <div className="text-3xl font-black text-foreground mb-1">{stats.scheduledVisits}</div>
+                <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Scheduled Visits</div>
+              </div>
+              <div className="bg-card rounded-xl border shadow-lg p-6 hover:shadow-xl transition-all hover:-translate-y-1">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                    <Eye className="h-6 w-6 text-green-600" />
+                  </div>
+                </div>
+                <div className="text-3xl font-black text-foreground mb-1">{stats.viewedProperties}</div>
+                <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Properties Viewed</div>
+              </div>
+              <div 
                 onClick={() => setActiveTab('search')}
-              />
+                className="bg-card rounded-xl border shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
+                    <Bookmark className="h-6 w-6 text-yellow-600" />
+                  </div>
+                </div>
+                <div className="text-3xl font-black text-foreground mb-1">{stats.savedSearches}</div>
+                <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Saved Searches</div>
+              </div>
             </div>
 
             {/* Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Recently Viewed */}
-              <div className="card">
-                <div className="card-header">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-neutral-900">Recently Viewed</h3>
-                    <button className="btn btn-sm btn-secondary">
-                      View All
-                    </button>
-                  </div>
+              <div className="bg-card rounded-xl border shadow-lg p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-foreground">Recently Viewed</h3>
+                  <button className="text-sm font-semibold text-ethiopian-green hover:underline">
+                    View All
+                  </button>
                 </div>
-                <div className="card-body">
-                  <div className="space-y-4">
-                    {recentlyViewed.slice(0, 3).map((property) => (
-                      <div key={property._id} className="flex items-center gap-4 p-3 hover:bg-neutral-50 rounded-lg transition cursor-pointer"
-                           onClick={() => navigate(`/properties/${property._id}`)}>
-                        <img 
-                          src={property.imagesUrl?.[0] || property.images?.[0] || '/hero-bg-1.jpg'} 
-                          alt={property.title}
-                          className="w-15 h-15 object-cover rounded-lg"
-                        />
-                        <div className="flex-1">
-                          <h4 className="font-medium text-neutral-900">{property.title}</h4>
-                          <div className="flex items-center gap-2 text-neutral-600 mt-1">
-                            <MapPin size={14} />
-                            <span className="text-sm">{property.location}</span>
-                          </div>
-                          <p className="font-semibold text-primary-600 mt-1">
-                            {formatCurrency(property.price)}
-                          </p>
+                <div className="space-y-4">
+                  {recentlyViewed.slice(0, 3).map((property) => (
+                    <div 
+                      key={property._id} 
+                      className="flex items-center gap-4 p-4 hover:bg-muted rounded-xl transition cursor-pointer border border-transparent hover:border-ethiopian-yellow/30"
+                      onClick={() => navigate(`/properties/${property._id}`)}
+                    >
+                      <img 
+                        src={property.imagesUrl?.[0] || property.images?.[0] || '/hero-bg-1.jpg'} 
+                        alt={property.title}
+                        className="w-20 h-20 object-cover rounded-lg"
+                      />
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-foreground mb-1">{property.title}</h4>
+                        <div className="flex items-center gap-2 text-muted-foreground mb-2">
+                          <MapPin size={14} />
+                          <span className="text-sm">{property.location}</span>
                         </div>
-                        <ChevronRight size={16} className="text-neutral-400" />
+                        <p className="font-bold text-ethiopian-green">
+                          {formatCurrency(property.price)}
+                        </p>
                       </div>
-                    ))}
-                  </div>
+                      <ChevronRight size={20} className="text-muted-foreground" />
+                    </div>
+                  ))}
                 </div>
               </div>
 
               {/* Recommended Properties */}
-              <div className="card">
-                <div className="card-header">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-neutral-900">Recommended for You</h3>
-                    <button className="btn btn-sm btn-secondary">
-                      View All
-                    </button>
-                  </div>
+              <div className="bg-card rounded-xl border shadow-lg p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-foreground">Recommended for You</h3>
+                  <button className="text-sm font-semibold text-ethiopian-green hover:underline">
+                    View All
+                  </button>
                 </div>
-                <div className="card-body">
-                  <div className="space-y-4">
-                    {recommendedProperties.slice(0, 3).map((property) => (
-                      <div key={property._id} className="flex items-center gap-4 p-3 hover:bg-neutral-50 rounded-lg transition cursor-pointer"
-                           onClick={() => navigate(`/properties/${property._id}`)}>
-                        <img 
-                          src={property.imagesUrl?.[0] || property.images?.[0] || '/hero-bg-1.jpg'} 
-                          alt={property.title}
-                          className="w-15 h-15 object-cover rounded-lg"
-                        />
-                        <div className="flex-1">
-                          <h4 className="font-medium text-neutral-900">{property.title}</h4>
-                          <div className="flex items-center gap-2 text-neutral-600 mt-1">
-                            <MapPin size={14} />
-                            <span className="text-sm">{property.location}</span>
-                          </div>
-                          <p className="font-semibold text-primary-600 mt-1">
-                            {formatCurrency(property.price)}
-                          </p>
+                <div className="space-y-4">
+                  {recommendedProperties.slice(0, 3).map((property) => (
+                    <div 
+                      key={property._id} 
+                      className="flex items-center gap-4 p-4 hover:bg-muted rounded-xl transition cursor-pointer border border-transparent hover:border-ethiopian-yellow/30"
+                      onClick={() => navigate(`/properties/${property._id}`)}
+                    >
+                      <img 
+                        src={property.imagesUrl?.[0] || property.images?.[0] || '/hero-bg-1.jpg'} 
+                        alt={property.title}
+                        className="w-20 h-20 object-cover rounded-lg"
+                      />
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-foreground mb-1">{property.title}</h4>
+                        <div className="flex items-center gap-2 text-muted-foreground mb-2">
+                          <MapPin size={14} />
+                          <span className="text-sm">{property.location}</span>
                         </div>
-                        <button 
-                          className="btn btn-sm btn-secondary"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAddToFavorites(property._id);
-                          }}
-                        >
-                          <Heart size={14} />
-                        </button>
+                        <p className="font-bold text-ethiopian-green">
+                          {formatCurrency(property.price)}
+                        </p>
                       </div>
-                    ))}
-                  </div>
+                      <button 
+                        className="p-2 hover:bg-muted rounded-lg transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAddToFavorites(property._id);
+                        }}
+                      >
+                        <Heart size={18} className="text-ethiopian-yellow" />
+                      </button>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1252,17 +1280,18 @@ const BuyerDashboard = () => {
 
         {/* Contact Tab */}
         {activeTab === 'contact' && (
-          <div className="space-y-6">
+          <div className="bg-card rounded-xl border shadow-lg p-6">
             <UserContactForm />
           </div>
         )}
 
         {/* Help Center Tab */}
         {activeTab === 'help' && (
-          <div className="space-y-6">
+          <div className="bg-card rounded-xl border shadow-lg p-6">
             <FAQViewer userRole="buyer" />
           </div>
         )}
+        </div>
       </div>
     </div>
   );

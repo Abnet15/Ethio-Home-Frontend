@@ -803,40 +803,45 @@ const EmployeeDashboard = () => {
 
   if (loading) {
     return (
-      <div className="modern-admin-dashboard">
-        <div className="loading-state">
-          <div className="loading-spinner"></div>
-          <p>Loading employee dashboard...</p>
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading employee dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="modern-admin-dashboard">
-      {/* Sidebar */}
-      <div className={`dashboard-sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
-        <div className="sidebar-header">
-          <div className="sidebar-logo">
-            <Building size={32} className="text-primary-600" />
-            <h2 className="sidebar-title">Employee Portal</h2>
-          </div>
-          <div className="user-info">
-            <div className="user-avatar">
-              <UserPlus size={20} />
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      <div className="flex">
+        {/* Sidebar */}
+        <div className={`bg-card border-r shadow-lg min-h-screen p-6 transition-all ${sidebarCollapsed ? 'w-20' : 'w-64'}`}>
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ethiopian-green to-ethiopian-green/80 flex items-center justify-center">
+                <Building size={24} className="text-white" />
+              </div>
+              {!sidebarCollapsed && <h2 className="text-2xl font-black bg-gradient-to-r from-ethiopian-green to-ethiopian-green/80 bg-clip-text text-transparent">Employee Portal</h2>}
             </div>
-            <div className="user-details">
-              <p className="user-name">{user?.name || 'Employee'}</p>
-              <p className="user-role">Employee</p>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-ethiopian-yellow/20 flex items-center justify-center">
+                <UserPlus size={20} className="text-ethiopian-yellow" />
+              </div>
+              {!sidebarCollapsed && (
+                <div>
+                  <p className="font-bold text-foreground">{user?.name || 'Employee'}</p>
+                  <p className="text-xs text-muted-foreground">Employee</p>
+                </div>
+              )}
             </div>
+            <button 
+              className="w-full p-2 rounded-lg hover:bg-muted transition-colors"
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            >
+              <ChevronRight size={20} className={`text-muted-foreground transition-transform ${sidebarCollapsed ? '' : 'rotate-180'}`} />
+            </button>
           </div>
-          <button 
-            className="sidebar-toggle"
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          >
-            <ChevronRight size={20} />
-          </button>
-        </div>
 
         <nav className="nav-menu">
           {menuItems.map((item) => {
@@ -2182,6 +2187,7 @@ const EmployeeDashboard = () => {
             </div>
           </div>
         )}
+      </div>
       </div>
     </div>
   );

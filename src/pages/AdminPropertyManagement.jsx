@@ -500,44 +500,47 @@ const AdminPropertyManagement = () => {
   };
 
   return (
-    <div className="modern-property-management">
-      <div className="container">
-        {/* Header */}
-        <div className="property-header">
-          <div className="header-left">
-            <button
-              className="back-btn"
-              onClick={() => navigate("/admin-dashboard")}
-            >
-              <ArrowLeft size={20} />
-              Back
-            </button>
-            <div>
-              <h1>Property Management</h1>
-              <p>Create and manage property listings</p>
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <button
+                className="p-2 rounded-lg hover:bg-white/20 transition-colors"
+                onClick={() => navigate("/admin-dashboard")}
+              >
+                <ArrowLeft size={20} />
+              </button>
+              <div>
+                <h1 className="text-4xl font-black mb-2">Property Management</h1>
+                <p className="text-white/90">Create and manage property listings</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <button className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-lg font-semibold hover:bg-white/30 transition-all flex items-center gap-2">
+                <Download size={16} />
+                Export
+              </button>
+              <button
+                className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-lg font-semibold hover:bg-white/30 transition-all flex items-center gap-2"
+                onClick={() => setRefreshTrigger(prev => prev + 1)}
+              >
+                <RefreshCw size={16} />
+                Refresh
+              </button>
+              <button
+                className="px-4 py-2 bg-white text-ethiopian-green rounded-lg font-semibold hover:bg-white/90 transition-all flex items-center gap-2"
+                onClick={() => setShowAddForm(true)}
+              >
+                <Plus size={16} />
+                Add Property
+              </button>
             </div>
           </div>
-          <div className="header-actions">
-            <button className="action-btn secondary">
-              <Download size={16} />
-              Export
-            </button>
-            <button
-              className="action-btn secondary"
-              onClick={() => setRefreshTrigger(prev => prev + 1)}
-            >
-              <RefreshCw size={16} />
-              Refresh
-            </button>
-            <button
-              className="action-btn primary"
-              onClick={() => setShowAddForm(true)}
-            >
-              <Plus size={16} />
-              Add Property
-            </button>
-          </div>
         </div>
+      </div>
+      
+      <div className="container mx-auto px-4 py-8">
 
         {/* Admin Instructions */}
         {stats.pending > 0 && (
