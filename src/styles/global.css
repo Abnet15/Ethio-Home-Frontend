@@ -109,6 +109,28 @@ body {
   color: white;
 }
 
+/* Dark Mode Buttons */
+[data-theme="dark"] .btn-secondary {
+  background-color: var(--bg-secondary, #1e293b);
+  color: var(--text-primary, #e2e8f0);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background-color: var(--bg-tertiary, #334155);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="dark"] .btn-outline {
+  color: #60a5fa;
+  border-color: #60a5fa;
+}
+
+[data-theme="dark"] .btn-outline:hover {
+  background-color: #60a5fa;
+  color: white;
+}
+
 .btn-sm {
   padding: 8px 16px;
   font-size: 14px;
@@ -194,6 +216,7 @@ select:-webkit-autofill:focus {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: box-shadow 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .card:hover {
@@ -213,6 +236,26 @@ select:-webkit-autofill:focus {
   padding: 24px;
   border-top: 1px solid #e5e7eb;
   background-color: #f9fafb;
+}
+
+/* Dark Mode Cards */
+[data-theme="dark"] .card {
+  background: var(--card-bg, #1e293b);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .card-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .card-footer {
+  background-color: var(--bg-secondary, #0f172a);
+  border-top-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Badges */

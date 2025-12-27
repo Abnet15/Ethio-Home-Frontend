@@ -232,8 +232,8 @@ const Profile = () => {
         setMessage("Photo removed successfully!");
 
         // Update user state in AuthContext with the complete user data from backend
-        const  updatedUserData = result.data.data.user;
-        
+        const updatedUserData = result.data.data.user;
+
         if (updatedUserData) {
           console.log("Updating user after photo removal:", updatedUserData);
           await updateUserPhoto(updatedUserData);
@@ -420,8 +420,8 @@ const Profile = () => {
         <div className="bg-card rounded-xl border shadow-lg overflow-hidden">
           {/* Back Button */}
           <div className="p-6 border-b">
-            <button 
-              onClick={handleBack} 
+            <button
+              onClick={handleBack}
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors font-semibold"
             >
               <ArrowLeft size={20} />
@@ -469,33 +469,30 @@ const Profile = () => {
           {/* Tab Navigation */}
           <div className="flex border-b bg-muted/30">
             <button
-              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${
-                activeTab === "profile"
+              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${activeTab === "profile"
                   ? "bg-ethiopian-green text-white border-b-2 border-ethiopian-green"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              }`}
+                }`}
               onClick={() => setActiveTab("profile")}
             >
               <User size={18} />
               Profile Information
             </button>
             <button
-              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${
-                activeTab === "photo"
+              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${activeTab === "photo"
                   ? "bg-ethiopian-green text-white border-b-2 border-ethiopian-green"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              }`}
+                }`}
               onClick={() => setActiveTab("photo")}
             >
               <Camera size={18} />
               Profile Photo
             </button>
             <button
-              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${
-                activeTab === "password"
+              className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${activeTab === "password"
                   ? "bg-ethiopian-green text-white border-b-2 border-ethiopian-green"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              }`}
+                }`}
               onClick={() => setActiveTab("password")}
             >
               <Lock size={18} />
@@ -503,372 +500,370 @@ const Profile = () => {
             </button>
           </div>
 
-        {message && (
-          <div
-            className={`message ${
-              message.includes("success") ? "success" : "error"
-            }`}
-          >
-            {message}
-          </div>
-        )}
-
-        {/* Profile Information Tab */}
-        {activeTab === "profile" && (
-          <form onSubmit={handleSubmit} className="profile-form">
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="name">
-                  <User size={16} />
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className={formErrors.name ? "error" : ""}
-                  required
-                />
-                {formErrors.name && (
-                  <div className="error-message">{formErrors.name}</div>
-                )}
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="email">
-                  <Mail size={16} />
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className={formErrors.email ? "error" : ""}
-                  required
-                />
-                {formErrors.email && (
-                  <div className="error-message">{formErrors.email}</div>
-                )}
-              </div>
+          {message && (
+            <div
+              className={`message ${message.includes("success") ? "success" : "error"
+                }`}
+            >
+              {message}
             </div>
+          )}
 
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="phone">
-                  <Phone size={16} />
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className={formErrors.phone ? "error" : ""}
-                  placeholder="+251 911 123 456"
-                  required
-                />
-                {formErrors.phone && (
-                  <div className="error-message">{formErrors.phone}</div>
-                )}
+          {/* Profile Information Tab */}
+          {activeTab === "profile" && (
+            <form onSubmit={handleSubmit} className="profile-form">
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="name">
+                    <User size={16} />
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className={formErrors.name ? "error" : ""}
+                    required
+                  />
+                  {formErrors.name && (
+                    <div className="error-message">{formErrors.name}</div>
+                  )}
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="email">
+                    <Mail size={16} />
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className={formErrors.email ? "error" : ""}
+                    required
+                  />
+                  {formErrors.email && (
+                    <div className="error-message">{formErrors.email}</div>
+                  )}
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="phone">
+                    <Phone size={16} />
+                    Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className={formErrors.phone ? "error" : ""}
+                    placeholder="+251 911 123 456"
+                    required
+                  />
+                  {formErrors.phone && (
+                    <div className="error-message">{formErrors.phone}</div>
+                  )}
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="location">
+                    <MapPin size={16} />
+                    Location *
+                  </label>
+                  <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className={formErrors.location ? "error" : ""}
+                    placeholder="e.g., Bole, Addis Ababa"
+                    required
+                  />
+                  {formErrors.location && (
+                    <div className="error-message">{formErrors.location}</div>
+                  )}
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="address">
+                    <MapPin size={16} />
+                    Address *
+                  </label>
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className={formErrors.address ? "error" : ""}
+                    placeholder="Enter your full address"
+                    required
+                  />
+                  {formErrors.address && (
+                    <div className="error-message">{formErrors.address}</div>
+                  )}
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="city">
+                    <MapPin size={16} />
+                    City *
+                  </label>
+                  <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className={formErrors.city ? "error" : ""}
+                    placeholder="Enter your city"
+                    required
+                  />
+                  {formErrors.city && (
+                    <div className="error-message">{formErrors.city}</div>
+                  )}
+                </div>
               </div>
 
               <div className="form-group">
-                <label htmlFor="location">
+                <label htmlFor="state">
                   <MapPin size={16} />
-                  Location *
+                  State/Region *
                 </label>
                 <input
                   type="text"
-                  id="location"
-                  name="location"
-                  value={formData.location}
+                  id="state"
+                  name="state"
+                  value={formData.state}
                   onChange={handleInputChange}
                   disabled={!isEditing}
-                  className={formErrors.location ? "error" : ""}
-                  placeholder="e.g., Bole, Addis Ababa"
+                  className={formErrors.state ? "error" : ""}
+                  placeholder="Enter your state or region"
                   required
                 />
-                {formErrors.location && (
-                  <div className="error-message">{formErrors.location}</div>
-                )}
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="address">
-                  <MapPin size={16} />
-                  Address *
-                </label>
-                <input
-                  type="text"
-                  id="address"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className={formErrors.address ? "error" : ""}
-                  placeholder="Enter your full address"
-                  required
-                />
-                {formErrors.address && (
-                  <div className="error-message">{formErrors.address}</div>
+                {formErrors.state && (
+                  <div className="error-message">{formErrors.state}</div>
                 )}
               </div>
 
-              <div className="form-group">
-                <label htmlFor="city">
-                  <MapPin size={16} />
-                  City *
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className={formErrors.city ? "error" : ""}
-                  placeholder="Enter your city"
-                  required
-                />
-                {formErrors.city && (
-                  <div className="error-message">{formErrors.city}</div>
-                )}
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="state">
-                <MapPin size={16} />
-                State/Region *
-              </label>
-              <input
-                type="text"
-                id="state"
-                name="state"
-                value={formData.state}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                className={formErrors.state ? "error" : ""}
-                placeholder="Enter your state or region"
-                required
-              />
-              {formErrors.state && (
-                <div className="error-message">{formErrors.state}</div>
+              {isEditing && (
+                <div className="form-actions">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={loading}
+                  >
+                    {loading ? "Saving..." : "Save Changes"}
+                  </button>
+                </div>
               )}
-            </div>
+            </form>
+          )}
 
-            {isEditing && (
+          {/* Photo Upload Tab */}
+          {activeTab === "photo" && (
+            <div className="photo-upload-section">
+              <div className="current-photo">
+                <h3>Current Profile Photo</h3>
+                <div className="photo-display">
+                  {user.photo && user.photo !== "default.png" ? (
+                    <img
+                      src={getUserPhotoFromResponse(user)}
+                      alt="Current profile"
+                    />
+                  ) : (
+                    <div className="no-photo">
+                      <User size={64} />
+                      <p>No profile photo</p>
+                    </div>
+                  )}
+                </div>
+                {user.photo && user.photo !== "default.png" && (
+                  <button
+                    className="btn btn-danger"
+                    onClick={handleRemovePhoto}
+                    disabled={photoLoading}
+                  >
+                    <Trash2 size={16} />
+                    {photoLoading ? "Removing..." : "Remove Photo"}
+                  </button>
+                )}
+              </div>
+
+              <div className="upload-new-photo">
+                <h3>Upload New Photo</h3>
+                <div className="upload-area">
+                  <input
+                    type="file"
+                    id="photo-upload"
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    style={{ display: "none" }}
+                  />
+                  <label htmlFor="photo-upload" className="upload-button">
+                    <Upload size={24} />
+                    <span>Choose Image</span>
+                    <small>Max size: 5MB</small>
+                  </label>
+                </div>
+
+                {photoPreview && (
+                  <div className="photo-preview">
+                    <h4>Preview</h4>
+                    <img src={photoPreview} alt="Preview" />
+                    <button
+                      className="btn btn-primary"
+                      onClick={handlePhotoUpload}
+                      disabled={photoLoading}
+                    >
+                      {photoLoading ? "Uploading..." : "Upload Photo"}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Password Change Tab */}
+          {activeTab === "password" && (
+            <form onSubmit={handlePasswordSubmit} className="password-form">
+              <div className="form-group">
+                <label htmlFor="currentPassword">
+                  <Lock size={16} />
+                  Current Password
+                </label>
+                <div className="password-input-wrapper">
+                  <input
+                    type={showPasswords.currentPassword ? "text" : "password"}
+                    id="currentPassword"
+                    name="currentPassword"
+                    value={passwordData.currentPassword}
+                    onChange={handlePasswordChange}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => togglePasswordVisibility("currentPassword")}
+                  >
+                    {showPasswords.currentPassword ? (
+                      <EyeOff size={16} />
+                    ) : (
+                      <Eye size={16} />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="newPassword">
+                    <Lock size={16} />
+                    New Password
+                  </label>
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showPasswords.newPassword ? "text" : "password"}
+                      id="newPassword"
+                      name="newPassword"
+                      value={passwordData.newPassword}
+                      onChange={handlePasswordChange}
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={() => togglePasswordVisibility("newPassword")}
+                    >
+                      {showPasswords.newPassword ? (
+                        <EyeOff size={16} />
+                      ) : (
+                        <Eye size={16} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="confirmPassword">
+                    <Lock size={16} />
+                    Confirm New Password
+                  </label>
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showPasswords.confirmPassword ? "text" : "password"}
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      value={passwordData.confirmPassword}
+                      onChange={handlePasswordChange}
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={() => togglePasswordVisibility("confirmPassword")}
+                    >
+                      {showPasswords.confirmPassword ? (
+                        <EyeOff size={16} />
+                      ) : (
+                        <Eye size={16} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {passwordMessage && (
+                <div
+                  className={`message ${passwordMessage.includes("success") ? "success" : "error"
+                    }`}
+                >
+                  {passwordMessage}
+                </div>
+              )}
+
               <div className="form-actions">
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  onClick={handleCancel}
+                  onClick={handlePasswordCancel}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   className="btn btn-primary"
-                  disabled={loading}
+                  disabled={passwordLoading}
                 >
-                  {loading ? "Saving..." : "Save Changes"}
+                  {passwordLoading ? "Updating..." : "Update Password"}
                 </button>
               </div>
-            )}
-          </form>
-        )}
-
-        {/* Photo Upload Tab */}
-        {activeTab === "photo" && (
-          <div className="photo-upload-section">
-            <div className="current-photo">
-              <h3>Current Profile Photo</h3>
-              <div className="photo-display">
-                {user.photo && user.photo !== "default.png" ? (
-                  <img
-                    src={getUserPhotoFromResponse(user)}
-                    alt="Current profile"
-                  />
-                ) : (
-                  <div className="no-photo">
-                    <User size={64} />
-                    <p>No profile photo</p>
-                  </div>
-                )}
-              </div>
-              {user.photo && user.photo !== "default.png" && (
-                <button
-                  className="btn btn-danger"
-                  onClick={handleRemovePhoto}
-                  disabled={photoLoading}
-                >
-                  <Trash2 size={16} />
-                  {photoLoading ? "Removing..." : "Remove Photo"}
-                </button>
-              )}
-            </div>
-
-            <div className="upload-new-photo">
-              <h3>Upload New Photo</h3>
-              <div className="upload-area">
-                <input
-                  type="file"
-                  id="photo-upload"
-                  accept="image/*"
-                  onChange={handleFileSelect}
-                  style={{ display: "none" }}
-                />
-                <label htmlFor="photo-upload" className="upload-button">
-                  <Upload size={24} />
-                  <span>Choose Image</span>
-                  <small>Max size: 5MB</small>
-                </label>
-              </div>
-
-              {photoPreview && (
-                <div className="photo-preview">
-                  <h4>Preview</h4>
-                  <img src={photoPreview} alt="Preview" />
-                  <button
-                    className="btn btn-primary"
-                    onClick={handlePhotoUpload}
-                    disabled={photoLoading}
-                  >
-                    {photoLoading ? "Uploading..." : "Upload Photo"}
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Password Change Tab */}
-        {activeTab === "password" && (
-          <form onSubmit={handlePasswordSubmit} className="password-form">
-            <div className="form-group">
-              <label htmlFor="currentPassword">
-                <Lock size={16} />
-                Current Password
-              </label>
-              <div className="password-input-wrapper">
-                <input
-                  type={showPasswords.currentPassword ? "text" : "password"}
-                  id="currentPassword"
-                  name="currentPassword"
-                  value={passwordData.currentPassword}
-                  onChange={handlePasswordChange}
-                  required
-                />
-                <button
-                  type="button"
-                  className="password-toggle"
-                  onClick={() => togglePasswordVisibility("currentPassword")}
-                >
-                  {showPasswords.currentPassword ? (
-                    <EyeOff size={16} />
-                  ) : (
-                    <Eye size={16} />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="newPassword">
-                  <Lock size={16} />
-                  New Password
-                </label>
-                <div className="password-input-wrapper">
-                  <input
-                    type={showPasswords.newPassword ? "text" : "password"}
-                    id="newPassword"
-                    name="newPassword"
-                    value={passwordData.newPassword}
-                    onChange={handlePasswordChange}
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={() => togglePasswordVisibility("newPassword")}
-                  >
-                    {showPasswords.newPassword ? (
-                      <EyeOff size={16} />
-                    ) : (
-                      <Eye size={16} />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="confirmPassword">
-                  <Lock size={16} />
-                  Confirm New Password
-                </label>
-                <div className="password-input-wrapper">
-                  <input
-                    type={showPasswords.confirmPassword ? "text" : "password"}
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={passwordData.confirmPassword}
-                    onChange={handlePasswordChange}
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={() => togglePasswordVisibility("confirmPassword")}
-                  >
-                    {showPasswords.confirmPassword ? (
-                      <EyeOff size={16} />
-                    ) : (
-                      <Eye size={16} />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {passwordMessage && (
-              <div
-                className={`message ${
-                  passwordMessage.includes("success") ? "success" : "error"
-                }`}
-              >
-                {passwordMessage}
-              </div>
-            )}
-
-            <div className="form-actions">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={handlePasswordCancel}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={passwordLoading}
-              >
-                {passwordLoading ? "Updating..." : "Update Password"}
-              </button>
-            </div>
-          </form>
-        )}
+            </form>
+          )}
         </div>
       </div>
     </div>

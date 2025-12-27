@@ -64,6 +64,24 @@
   align-items: start;
 }
 
+@media (max-width: 1024px) {
+  .payment-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .payment-summary-wrapper {
+    position: static;
+    order: -1;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .payment-summary {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
 /* Left Column - Payment Form Section */
 .payment-form-section {
   background: white;
@@ -629,8 +647,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Success Container */
@@ -921,7 +944,8 @@
 }
 
 /* Error and Pending States */
-.error-container, .pending-container {
+.error-container,
+.pending-container {
   background: white;
   border-radius: 20px;
   padding: 3rem;
@@ -941,12 +965,14 @@
   margin-bottom: 1rem;
 }
 
-.error-container h2, .pending-container h2 {
+.error-container h2,
+.pending-container h2 {
   color: #1a202c;
   margin-bottom: 1rem;
 }
 
-.error-container p, .pending-container p {
+.error-container p,
+.pending-container p {
   color: #4a5568;
   margin-bottom: 2rem;
   line-height: 1.6;
@@ -1030,17 +1056,149 @@
   border: 1px solid #feb2b2;
 }
 
+/* Dark Mode Styles */
+[data-theme="dark"] .payment-container {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+[data-theme="dark"] .payment-form-section,
+[data-theme="dark"] .payment-summary {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .header-main h2,
+[data-theme="dark"] .card-header h3,
+[data-theme="dark"] .property-header h3,
+[data-theme="dark"] .property-title,
+[data-theme="dark"] .summary-header h3,
+[data-theme="dark"] .form-group label {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .header-description,
+[data-theme="dark"] .property-location,
+[data-theme="dark"] .meta-item,
+[data-theme="dark"] .price-label,
+[data-theme="dark"] .summary-item span:first-child,
+[data-theme="dark"] .chapa-info p {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .form-input {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .form-input:focus {
+  border-color: #667eea;
+  background: #1e293b;
+}
+
+[data-theme="dark"] .form-input.readonly {
+  background: #0f172a;
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .property-card {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .payment-method-card {
+  background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+[data-theme="dark"] .customer-info-card {
+  background: linear-gradient(135deg, #2d1b3d 0%, #1e293b 100%);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+[data-theme="dark"] .property-price-display {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .price-value {
+  color: #48bb78;
+}
+
+[data-theme="dark"] .summary-item.total {
+  color: #48bb78;
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .summary-item span:last-child {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .security-info {
+  background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+  border-color: rgba(72, 187, 120, 0.3);
+}
+
+[data-theme="dark"] .security-info h4,
+[data-theme="dark"] .security-item {
+  color: #86efac;
+}
+
+[data-theme="dark"] .security-item:not(:last-child) {
+  border-bottom-color: rgba(134, 239, 172, 0.2);
+}
+
+[data-theme="dark"] .chapa-info {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .chapa-logo {
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .info-note {
+  background: #451a03;
+  color: #fdba74;
+  border-color: rgba(251, 146, 60, 0.3);
+}
+
+[data-theme="dark"] .form-header,
+[data-theme="dark"] .property-header,
+[data-theme="dark"] .card-header,
+[data-theme="dark"] .summary-header,
+[data-theme="dark"] .payment-button-section {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .success-container,
+[data-theme="dark"] .error-container,
+[data-theme="dark"] .pending-container {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .success-container h2,
+[data-theme="dark"] .error-container h2,
+[data-theme="dark"] .pending-container h2,
+[data-theme="dark"] .success-message,
+[data-theme="dark"] .error-container p,
+[data-theme="dark"] .pending-container p {
+  color: #e2e8f0;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
   .payment-content {
     grid-template-columns: 1fr 380px;
     gap: 2.5rem;
   }
-  
+
   .payment-summary-wrapper {
     width: 380px;
   }
-  
+
   .payment-summary {
     max-width: 380px;
   }
@@ -1051,26 +1209,26 @@
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-  
+
   .payment-summary-wrapper {
     position: static;
     order: -1;
     width: 100%;
   }
-  
+
   .payment-summary {
     max-width: 100%;
   }
-  
+
   .property-content {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .property-image-section {
     text-align: center;
   }
-  
+
   .property-image {
     width: 200px;
     height: 150px;
@@ -1082,49 +1240,60 @@
   .payment-container {
     padding: 1rem 0;
   }
-  
+
   .payment-header {
     margin-bottom: 2rem;
   }
-  
+
   .header-content h1 {
     font-size: 2.5rem;
   }
-  
+
   .back-button {
     position: static;
     transform: none;
     margin-bottom: 1.5rem;
     display: inline-flex;
   }
-  
+
   .payment-content {
     padding: 0 1rem;
     gap: 1.5rem;
   }
-  
-  .payment-form-section, .payment-summary {
+
+  .payment-form-section,
+  .payment-summary {
     padding: 2rem 1.5rem;
   }
-  
+
   .form-grid {
     grid-template-columns: 1fr;
   }
   
-  .details-grid, .chapa-grid {
-    grid-template-columns: 1fr;
+  .payment-content {
+    grid-template-columns: 1fr !important;
+    gap: 2rem;
   }
   
+  .payment-summary-wrapper {
+    order: -1;
+  }
+
+  .details-grid,
+  .chapa-grid {
+    grid-template-columns: 1fr;
+  }
+
   .action-buttons {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .contact-methods {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .payment-button {
     min-width: 100%;
   }
@@ -1134,25 +1303,30 @@
   .header-content h1 {
     font-size: 2rem;
   }
-  
-  .success-container, .error-container, .pending-container {
+
+  .success-container,
+  .error-container,
+  .pending-container {
     padding: 2rem 1.5rem;
   }
-  
+
   .step-item {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .payment-content {
     padding: 0 1rem;
   }
-  
-  .payment-form-section, .payment-summary {
+
+  .payment-form-section,
+  .payment-summary {
     padding: 1.5rem 1rem;
   }
-  
-  .property-card, .payment-method-card, .customer-info-card {
+
+  .property-card,
+  .payment-method-card,
+  .customer-info-card {
     padding: 1.5rem;
   }
 }

@@ -254,7 +254,7 @@ const Payment = () => {
           </div>
         </div>
           {/* Main Content */}
-      <div className="p-8">
+      <div className="payment-content">
         {/* Left Column - Payment Information */}
         <div className="payment-form-section">
           <div className="form-header">

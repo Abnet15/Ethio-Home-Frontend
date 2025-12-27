@@ -434,6 +434,20 @@ body::before {
 
 .card-body {
   padding: var(--space-6);
+  background: var(--card-bg, #ffffff);
+  color: var(--text-primary, #1e293b);
+}
+
+/* Dark Mode for Card Body */
+[data-theme="dark"] .card-body {
+  background: var(--card-bg, #1e293b);
+  color: var(--text-primary, #e2e8f0);
+}
+
+[data-theme="dark"] .card-body h3,
+[data-theme="dark"] .card-body h4,
+[data-theme="dark"] .card-body p {
+  color: var(--text-primary, #e2e8f0);
 }
 
 .card-footer {
@@ -1560,6 +1574,8 @@ body::before {
   border-radius: 8px;
   font-size: 0.875rem;
   transition: all 0.2s ease;
+  background: var(--input-bg, #ffffff);
+  color: var(--text-primary, #1e293b);
 }
 
 .form-group input:focus {
@@ -1569,14 +1585,80 @@ body::before {
 }
 
 .form-group input:disabled {
-  background: #f9fafb;
-  color: #6b7280;
+  background: var(--disabled-bg, #f9fafb);
+  color: var(--text-tertiary, #6b7280);
   cursor: not-allowed;
 }
 
 .form-group input.error {
   border-color: #dc2626;
   box-shadow: 0 0 0 1px #dc2626;
+}
+
+/* Dark Mode Styles for Forms */
+[data-theme="dark"] .profile-form,
+[data-theme="dark"] .password-form,
+[data-theme="dark"] .photo-upload-section {
+  background: var(--card-bg, #1e293b);
+}
+
+[data-theme="dark"] .form-group label {
+  color: var(--text-primary, #e2e8f0);
+}
+
+[data-theme="dark"] .form-group input {
+  background: var(--input-bg, #0f172a);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary, #e2e8f0);
+}
+
+[data-theme="dark"] .form-group input:focus {
+  border-color: #3b82f6;
+  background: var(--input-bg, #1e293b);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="dark"] .form-group input:disabled {
+  background: var(--disabled-bg, #1e293b);
+  color: var(--text-tertiary, #64748b);
+}
+
+[data-theme="dark"] .form-group input.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="dark"] .form-actions {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .current-photo,
+[data-theme="dark"] .upload-new-photo h3,
+[data-theme="dark"] .current-photo h3 {
+  color: var(--text-primary, #e2e8f0);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .no-photo {
+  background: var(--bg-secondary, #0f172a);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-tertiary, #64748b);
+}
+
+[data-theme="dark"] .upload-button {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: var(--bg-secondary, #0f172a);
+  color: var(--text-secondary, #cbd5e1);
+}
+
+[data-theme="dark"] .upload-button:hover {
+  border-color: #3b82f6;
+  background: var(--bg-tertiary, #1e293b);
+  color: #3b82f6;
+}
+
+[data-theme="dark"] .photo-preview h4 {
+  color: var(--text-primary, #e2e8f0);
 }
 
 .form-actions {
@@ -1803,7 +1885,21 @@ body::before {
 }
 
 /* Responsive Design */
+/* Ensure form-row displays two columns on larger screens */
+@media (min-width: 769px) {
+  .form-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr !important;
+  }
+
   .profile-container {
     padding: 1rem 0.5rem;
   }
@@ -1824,11 +1920,15 @@ body::before {
   }
 
   .form-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   .form-actions {
     flex-direction: column;
+  }
+  
+  .payment-content {
+    grid-template-columns: 1fr !important;
   }
 
   .photo-display {
