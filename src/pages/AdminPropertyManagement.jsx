@@ -500,39 +500,53 @@ const AdminPropertyManagement = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-      <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
-        <div className="container mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+      {/* Animated background orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-10 w-[500px] h-[500px] rounded-full opacity-20"
+             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.4) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+        <div className="absolute bottom-20 left-10 w-[400px] h-[400px] rounded-full opacity-15"
+             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.3) 0%, transparent 70%)', filter: 'blur(60px)' }} />
+      </div>
+
+      {/* Premium Header */}
+      <div className="relative bg-gradient-to-r from-emerald-900/90 via-emerald-800/80 to-emerald-900/90 backdrop-blur-xl border-b border-emerald-500/20 shadow-2xl shadow-emerald-900/30">
+        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/50 to-transparent" />
+        
+        <div className="relative container mx-auto px-6 py-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-5">
               <button
-                className="p-2 rounded-lg hover:bg-white/20 transition-colors"
+                className="group p-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-gold-400/40 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gold-400/20"
                 onClick={() => navigate("/admin-dashboard")}
               >
-                <ArrowLeft size={20} />
+                <ArrowLeft size={20} className="text-white group-hover:text-gold-400 transition-colors" />
               </button>
               <div>
-                <h1 className="text-4xl font-black mb-2">Property Management</h1>
-                <p className="text-white/90">Create and manage property listings</p>
+                <h1 className="text-4xl font-black mb-2 font-serif tracking-tight bg-gradient-to-r from-white via-gold-200 to-white bg-clip-text text-transparent">
+                  Property Management
+                </h1>
+                <p className="text-emerald-100/80 font-medium">Create and manage property listings</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <button className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-lg font-semibold hover:bg-white/30 transition-all flex items-center gap-2">
-                <Download size={16} />
-                Export
+              <button className="group px-5 py-2.5 bg-white/10 backdrop-blur-sm border border-white/20 text-white rounded-xl font-semibold hover:bg-white/20 hover:border-gold-400/40 transition-all duration-300 flex items-center gap-2 hover:shadow-lg hover:shadow-gold-400/10">
+                <Download size={16} className="group-hover:text-gold-400 transition-colors" />
+                <span className="group-hover:text-gold-400 transition-colors">Export</span>
               </button>
               <button
-                className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-lg font-semibold hover:bg-white/30 transition-all flex items-center gap-2"
+                className="group px-5 py-2.5 bg-white/10 backdrop-blur-sm border border-white/20 text-white rounded-xl font-semibold hover:bg-white/20 hover:border-gold-400/40 transition-all duration-300 flex items-center gap-2 hover:shadow-lg hover:shadow-gold-400/10"
                 onClick={() => setRefreshTrigger(prev => prev + 1)}
               >
-                <RefreshCw size={16} />
-                Refresh
+                <RefreshCw size={16} className="group-hover:text-gold-400 group-hover:rotate-180 transition-all duration-500" />
+                <span className="group-hover:text-gold-400 transition-colors">Refresh</span>
               </button>
               <button
-                className="px-4 py-2 bg-white text-ethiopian-green rounded-lg font-semibold hover:bg-white/90 transition-all flex items-center gap-2"
+                className="group px-6 py-3 bg-gradient-to-r from-gold-400 to-gold-500 text-slate-900 rounded-xl font-bold hover:from-gold-300 hover:to-gold-400 transition-all duration-300 flex items-center gap-2.5 shadow-lg shadow-gold-400/30 hover:shadow-xl hover:shadow-gold-400/40 hover:scale-105"
                 onClick={() => setShowAddForm(true)}
               >
-                <Plus size={16} />
+                <Plus size={18} className="group-hover:rotate-90 transition-transform duration-300" />
                 Add Property
               </button>
             </div>
@@ -540,7 +554,7 @@ const AdminPropertyManagement = () => {
         </div>
       </div>
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="relative container mx-auto px-6 py-10">
 
         {/* Admin Instructions */}
         {stats.pending > 0 && (
@@ -584,123 +598,144 @@ const AdminPropertyManagement = () => {
           </div>
         )}
 
-        {/* Stats Cards */}
-        <div className="property-stats">
+        {/* Premium Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           <button
             type="button"
-            className="stat-card total"
+            className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 hover:border-gold-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-gold-400/10 text-left"
             onClick={() => setStatusFilter("all")}
-            style={{ cursor: "pointer" }}
           >
-            <div className="stat-icon">
-              <Building size={24} />
-            </div>
-            <div className="stat-content">
-              <div className="stat-number">{stats.total}</div>
-              <div className="stat-label">Total Properties</div>
+            <div className="absolute inset-0 bg-gradient-to-br from-gold-400/0 to-gold-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative z-10 flex items-center gap-4">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gold-400/30 to-gold-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-gold-400/20">
+                <Building size={26} className="text-gold-400" />
+              </div>
+              <div>
+                <div className="text-3xl font-bold font-serif bg-gradient-to-r from-gold-400 to-gold-500 bg-clip-text text-transparent">{stats.total}</div>
+                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Properties</div>
+              </div>
             </div>
           </button>
+          
           <button
             type="button"
-            className="stat-card approved"
+            className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 hover:border-emerald-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-400/10 text-left"
             onClick={() => setStatusFilter("approved")}
-            style={{ cursor: "pointer" }}
           >
-            <div className="stat-icon">
-              <Check size={24} />
-            </div>
-            <div className="stat-content">
-              <div className="stat-number">{stats.approved}</div>
-              <div className="stat-label">Approved</div>
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/0 to-emerald-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative z-10 flex items-center gap-4">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-400/30 to-emerald-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-emerald-400/20">
+                <Check size={26} className="text-emerald-400" />
+              </div>
+              <div>
+                <div className="text-3xl font-bold font-serif bg-gradient-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent">{stats.approved}</div>
+                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Approved</div>
+              </div>
             </div>
           </button>
+          
           <button
             type="button"
-            className="stat-card pending"
+            className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 hover:border-amber-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-400/10 text-left"
             onClick={() => setStatusFilter("pending")}
-            style={{ cursor: "pointer" }}
           >
-            <div className="stat-icon">
-              <Calendar size={24} />
-            </div>
-            <div className="stat-content">
-              <div className="stat-number">{stats.pending}</div>
-              <div className="stat-label">Pending</div>
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-400/0 to-amber-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative z-10 flex items-center gap-4">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400/30 to-amber-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-amber-400/20">
+                <Calendar size={26} className="text-amber-400" />
+              </div>
+              <div>
+                <div className="text-3xl font-bold font-serif bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">{stats.pending}</div>
+                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pending</div>
+              </div>
             </div>
           </button>
+          
           <button
             type="button"
-            className="stat-card rejected"
+            className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 hover:border-red-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-red-400/10 text-left"
             onClick={() => setStatusFilter("rejected")}
-            style={{ cursor: "pointer" }}
           >
-            <div className="stat-icon">
-              <X size={24} />
-            </div>
-            <div className="stat-content">
-              <div className="stat-number">{stats.rejected}</div>
-              <div className="stat-label">Rejected</div>
+            <div className="absolute inset-0 bg-gradient-to-br from-red-400/0 to-red-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative z-10 flex items-center gap-4">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-red-400/30 to-red-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-400/20">
+                <X size={26} className="text-red-400" />
+              </div>
+              <div>
+                <div className="text-3xl font-bold font-serif bg-gradient-to-r from-red-400 to-red-500 bg-clip-text text-transparent">{stats.rejected}</div>
+                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Rejected</div>
+              </div>
             </div>
           </button>
         </div>
 
-        {/* Enhanced Filters and Search */}
-        <div className="property-filters">
-          <div className="search-section">
-            <div className="search-input">
-              <Search size={20} />
-              <input
-                type="text"
-                placeholder="Search properties..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="filter-section">
-            <div className="status-filter-group">
-              <label className="filter-label">Status Filter:</label>
-              <div className="status-filter-buttons">
-                <button
-                  className={`status-filter-btn ${
-                    statusFilter === "all" ? "active" : ""
-                  }`}
-                  onClick={() => setStatusFilter("all")}
-                >
-                  All ({stats.total})
-                </button>
-                <button
-                  className={`status-filter-btn pending ${
-                    statusFilter === "pending" ? "active" : ""
-                  }`}
-                  onClick={() => setStatusFilter("pending")}
-                >
-                  Pending ({stats.pending})
-                </button>
-                <button
-                  className={`status-filter-btn approved ${
-                    statusFilter === "approved" ? "active" : ""
-                  }`}
-                  onClick={() => setStatusFilter("approved")}
-                >
-                  Approved ({stats.approved})
-                </button>
-                <button
-                  className={`status-filter-btn rejected ${
-                    statusFilter === "rejected" ? "active" : ""
-                  }`}
-                  onClick={() => setStatusFilter("rejected")}
-                >
-                  Rejected ({stats.rejected})
-                </button>
+        {/* Premium Filters and Search */}
+        <div className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 mb-8">
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Search Input */}
+            <div className="flex-1">
+              <div className="relative">
+                <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search properties by title or location..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3.5 bg-slate-900/50 border border-slate-700/50 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-gold-400/50 focus:ring-2 focus:ring-gold-400/20 transition-all duration-300"
+                />
               </div>
             </div>
-            <div className="type-filter-group">
-              <label className="filter-label">Type Filter:</label>
+            
+            {/* Status Filter Buttons */}
+            <div className="flex flex-wrap gap-2">
+              <button
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  statusFilter === "all" 
+                    ? "bg-gold-400/20 text-gold-400 border border-gold-400/40" 
+                    : "bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:border-gold-400/30"
+                }`}
+                onClick={() => setStatusFilter("all")}
+              >
+                All ({stats.total})
+              </button>
+              <button
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  statusFilter === "pending" 
+                    ? "bg-amber-400/20 text-amber-400 border border-amber-400/40" 
+                    : "bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:border-amber-400/30"
+                }`}
+                onClick={() => setStatusFilter("pending")}
+              >
+                Pending ({stats.pending})
+              </button>
+              <button
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  statusFilter === "approved" 
+                    ? "bg-emerald-400/20 text-emerald-400 border border-emerald-400/40" 
+                    : "bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:border-emerald-400/30"
+                }`}
+                onClick={() => setStatusFilter("approved")}
+              >
+                Approved ({stats.approved})
+              </button>
+              <button
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  statusFilter === "rejected" 
+                    ? "bg-red-400/20 text-red-400 border border-red-400/40" 
+                    : "bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:border-red-400/30"
+                }`}
+                onClick={() => setStatusFilter("rejected")}
+              >
+                Rejected ({stats.rejected})
+              </button>
+            </div>
+            
+            {/* Type Filter & View Toggle */}
+            <div className="flex gap-3">
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="filter-select"
+                className="px-4 py-2.5 bg-slate-900/50 border border-slate-700/50 rounded-xl text-white appearance-none cursor-pointer focus:outline-none focus:border-gold-400/50 transition-all duration-300"
               >
                 <option value="all">All Types</option>
                 <option value="apartment">Apartments</option>
@@ -708,36 +743,50 @@ const AdminPropertyManagement = () => {
                 <option value="villa">Villas</option>
                 <option value="commercial">Commercial</option>
               </select>
-            </div>
-            <div className="view-toggle">
-              <button
-                className={`view-btn ${viewMode === "grid" ? "active" : ""}`}
-                onClick={() => setViewMode("grid")}
-              >
-                Grid
-              </button>
-              <button
-                className={`view-btn ${viewMode === "list" ? "active" : ""}`}
-                onClick={() => setViewMode("list")}
-              >
-                List
-              </button>
+              
+              <div className="flex rounded-xl overflow-hidden border border-slate-700/50">
+                <button
+                  className={`px-4 py-2.5 text-sm font-semibold transition-all duration-300 ${
+                    viewMode === "grid" 
+                      ? "bg-gold-400/20 text-gold-400" 
+                      : "bg-slate-800/50 text-slate-400 hover:text-gold-400"
+                  }`}
+                  onClick={() => setViewMode("grid")}
+                >
+                  Grid
+                </button>
+                <button
+                  className={`px-4 py-2.5 text-sm font-semibold transition-all duration-300 ${
+                    viewMode === "list" 
+                      ? "bg-gold-400/20 text-gold-400" 
+                      : "bg-slate-800/50 text-slate-400 hover:text-gold-400"
+                  }`}
+                  onClick={() => setViewMode("list")}
+                >
+                  List
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Loading and Error States */}
         {loading && (
-          <div className="loading-state">
-            <div className="loading-spinner"></div>
-            <p>Loading properties...</p>
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="w-14 h-14 border-4 border-gold-400/30 border-t-gold-400 rounded-full animate-spin mb-4"></div>
+            <p className="text-slate-400 font-medium">Loading properties...</p>
           </div>
         )}
 
         {error && (
-          <div className="error-state">
-            <p>Error: {error}</p>
-            <button onClick={() => setRefreshTrigger(prev => prev + 1)}>Retry</button>
+          <div className="flex flex-col items-center justify-center py-16 bg-red-400/10 border border-red-400/30 rounded-2xl">
+            <p className="text-red-400 font-medium mb-4">Error: {error}</p>
+            <button 
+              onClick={() => setRefreshTrigger(prev => prev + 1)}
+              className="px-6 py-2.5 bg-red-400/20 text-red-400 border border-red-400/30 rounded-xl font-semibold hover:bg-red-400/30 transition-all duration-300"
+            >
+              Retry
+            </button>
           </div>
         )}
 

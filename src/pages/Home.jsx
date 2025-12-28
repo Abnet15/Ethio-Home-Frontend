@@ -27,6 +27,7 @@ import { propertyService } from "../services/propertyService";
 import { reviewService } from "../services/reviewService";
 
 import "../styles/home-unbelievable.css";
+import "../styles/properties.css";
 
 const Home = () => {
   const { t } = useLanguage();
@@ -303,54 +304,134 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-      {/* Hero Section */}
+    <div className="min-h-screen bg-background overflow-x-hidden">
+      {/* Hero Section - Cinematic & Luxurious with Parallax */}
       <section
-        className="relative h-[70vh] min-h-[600px] w-full overflow-hidden"
+        className="relative min-h-[95vh] w-full overflow-hidden flex items-center justify-center"
         style={{
-          backgroundImage: `linear-gradient(135deg, rgba(0, 122, 51, 0.85) 0%, rgba(29, 78, 216, 0.75) 100%), url(${
-            backgroundImages[currentBgIndex]
-          })`,
+          backgroundImage: `url(${backgroundImages[currentBgIndex]})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/60 to-transparent"></div>
-        <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 drop-shadow-2xl">
-            {t("heroTitle")}
+        {/* Multi-layer gradient overlays for cinematic depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-foreground/85 via-foreground/60 to-foreground/95"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-accent/30 via-transparent to-primary/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+        
+        {/* Animated floating elements - parallax particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Large gold accent orb - top left */}
+          <div 
+            className="absolute top-[10%] left-[10%] w-[500px] h-[500px] rounded-full opacity-20"
+            style={{
+              background: 'radial-gradient(circle, hsl(48 96% 53% / 0.3) 0%, transparent 70%)',
+              animation: 'float 8s ease-in-out infinite',
+              filter: 'blur(60px)',
+            }}
+          />
+          
+          {/* Green accent orb - bottom right */}
+          <div 
+            className="absolute bottom-[15%] right-[10%] w-[400px] h-[400px] rounded-full opacity-20"
+            style={{
+              background: 'radial-gradient(circle, hsl(145 63% 32% / 0.4) 0%, transparent 70%)',
+              animation: 'float 10s ease-in-out infinite',
+              animationDelay: '-3s',
+              filter: 'blur(50px)',
+            }}
+          />
+          
+          {/* Red accent orb - center right */}
+          <div 
+            className="absolute top-[40%] right-[20%] w-[250px] h-[250px] rounded-full opacity-15"
+            style={{
+              background: 'radial-gradient(circle, hsl(0 85% 47% / 0.3) 0%, transparent 70%)',
+              animation: 'float 6s ease-in-out infinite',
+              animationDelay: '-5s',
+              filter: 'blur(40px)',
+            }}
+          />
+
+          {/* Floating small particles */}
+          <div className="absolute top-[20%] left-[30%] w-4 h-4 bg-gold-400/60 rounded-full animate-float" style={{ animationDelay: '-1s' }}></div>
+          <div className="absolute top-[60%] left-[15%] w-3 h-3 bg-gold-400/40 rounded-full animate-float" style={{ animationDelay: '-2s' }}></div>
+          <div className="absolute top-[35%] right-[25%] w-5 h-5 bg-accent/50 rounded-full animate-float" style={{ animationDelay: '-4s' }}></div>
+          <div className="absolute bottom-[30%] left-[40%] w-2 h-2 bg-gold-400/80 rounded-full animate-float" style={{ animationDelay: '-6s' }}></div>
+          <div className="absolute top-[70%] right-[35%] w-3 h-3 bg-white/30 rounded-full animate-float" style={{ animationDelay: '-3.5s' }}></div>
+        </div>
+        
+        {/* Animated gradient mesh overlay */}
+        <div 
+          className="absolute inset-0 opacity-30"
+          style={{
+            background: `
+              linear-gradient(45deg, transparent 25%, hsl(48 96% 53% / 0.05) 50%, transparent 75%),
+              linear-gradient(-45deg, transparent 25%, hsl(145 63% 32% / 0.05) 50%, transparent 75%)
+            `,
+            backgroundSize: '60px 60px',
+            animation: 'shimmer 20s linear infinite',
+          }}
+        />
+        
+        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
+          {/* Ethiopian accent bar with glow */}
+          <div className="relative w-32 mx-auto mb-10 animate-fade-in-down">
+            <div className="ethiopian-accent-bar h-1.5 rounded-full"></div>
+            <div className="absolute inset-0 ethiopian-accent-bar h-1.5 rounded-full blur-md opacity-60"></div>
+          </div>
+          
+          {/* Main headline with letter-spacing and text shadow */}
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 leading-tight animate-fade-in-up"
+              style={{ 
+                letterSpacing: '-0.02em',
+                textShadow: '0 4px 30px rgba(0,0,0,0.3), 0 0 60px hsl(48 96% 53% / 0.2)'
+              }}>
+            <span className="block">{t("heroTitle")}</span>
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl drop-shadow-lg">
+          
+          {/* Subheadline with elegant styling */}
+          <p className="text-xl md:text-2xl lg:text-3xl text-white/85 mb-12 max-w-4xl mx-auto font-light tracking-wide animate-fade-in-up" 
+             style={{ animationDelay: '0.2s', textShadow: '0 2px 20px rgba(0,0,0,0.2)' }}>
             {t("heroSubtitle")}
           </p>
 
-          <div className="flex gap-2 mb-8">
+          {/* Background image indicators with glow */}
+          <div className="flex gap-4 mb-12 justify-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
             {backgroundImages.map((_, index) => (
               <button
                 key={index}
-                className={`h-2 rounded-full transition-all duration-300 ${
+                className={`relative h-2.5 rounded-full transition-all duration-500 hover:scale-110 ${
                   index === currentBgIndex 
-                    ? "w-8 bg-ethiopian-yellow" 
-                    : "w-2 bg-white/50 hover:bg-white/70"
+                    ? "w-14 bg-gradient-to-r from-gold-400 to-gold-500" 
+                    : "w-4 bg-white/30 hover:bg-white/50"
                 }`}
                 onClick={() => setCurrentBgIndex(index)}
                 aria-label={`Select background image ${index + 1}`}
-              />
+              >
+                {index === currentBgIndex && (
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-gold-400 to-gold-500 blur-md animate-pulse-glow"></div>
+                )}
+              </button>
             ))}
           </div>
 
-          <div className="w-full max-w-5xl bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-6 md:p-8">
-            <form onSubmit={handleSearch} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <label htmlFor="location-filter" className="text-sm font-semibold text-gray-700">
+          {/* Premium Search Card with Glassmorphism */}
+          <div className="w-full max-w-5xl mx-auto glass-card rounded-3xl shadow-luxury p-8 md:p-10 animate-fade-in-up border border-white/10" 
+               style={{ animationDelay: '0.4s' }}>
+            <form onSubmit={handleSearch} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-2 text-left">
+                  <label htmlFor="location-filter" className="text-sm font-semibold text-card-foreground/80 uppercase tracking-wider flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-gold-400" />
                     {t("Location")}
                   </label>
                   <select
                     id="location-filter"
                     value={locationFilter}
                     onChange={(e) => setLocationFilter(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow focus:border-transparent"
+                    className="w-full px-5 py-4 bg-background/60 border border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 hover:shadow-inner-glow backdrop-blur-sm"
                   >
                     <option value="">{t("All Locations")}</option>
                     <option value="Addis Ababa">{t("Addis Ababa")}</option>
@@ -360,15 +441,16 @@ const Home = () => {
                   </select>
                 </div>
 
-                <div className="space-y-2">
-                  <label htmlFor="type-filter" className="text-sm font-semibold text-gray-700">
+                <div className="space-y-2 text-left">
+                  <label htmlFor="type-filter" className="text-sm font-semibold text-card-foreground/80 uppercase tracking-wider flex items-center gap-2">
+                    <Building className="w-4 h-4 text-gold-400" />
                     {t("Property Type")}
                   </label>
                   <select
                     id="type-filter"
                     value={typeFilter}
                     onChange={(e) => setTypeFilter(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow focus:border-transparent"
+                    className="w-full px-5 py-4 bg-background/60 border border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 hover:shadow-inner-glow backdrop-blur-sm"
                   >
                     <option value="">{t("All Types")}</option>
                     <option value="house">{t("house")}</option>
@@ -378,15 +460,16 @@ const Home = () => {
                   </select>
                 </div>
 
-                <div className="space-y-2">
-                  <label htmlFor="price-filter" className="text-sm font-semibold text-gray-700">
+                <div className="space-y-2 text-left">
+                  <label htmlFor="price-filter" className="text-sm font-semibold text-card-foreground/80 uppercase tracking-wider flex items-center gap-2">
+                    <CreditCard className="w-4 h-4 text-gold-400" />
                     {t("Price Range")}
                   </label>
                   <select
                     id="price-filter"
                     value={priceFilter}
                     onChange={(e) => setPriceFilter(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow focus:border-transparent"
+                    className="w-full px-5 py-4 bg-background/60 border border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 hover:shadow-inner-glow backdrop-blur-sm"
                   >
                     <option value="">{t("Any Price")}</option>
                     <option value="0-500000">{t("Under 500K ETB")}</option>
@@ -397,69 +480,77 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  placeholder={t("Search by keywords...")}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow focus:border-transparent"
-                />
+              <div className="flex gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder={t("Search by keywords...")}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-14 pr-6 py-4 bg-background/60 border border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 backdrop-blur-sm"
+                  />
+                </div>
                 <button 
                   type="submit" 
-                  className="px-8 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-lg transition-all flex items-center gap-2"
+                  className="group relative px-10 py-4 bg-gradient-to-r from-accent to-accent/90 text-accent-foreground rounded-xl font-bold text-lg hover:shadow-glow-green transition-all duration-300 flex items-center gap-3 overflow-hidden"
                   aria-label={t("Search properties")}
                 >
-                  <Search className="h-5 w-5" />
-                  {t("Search")}
+                  {/* Button glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <Search className="h-5 w-5 group-hover:scale-110 transition-transform relative z-10" />
+                  <span className="hidden md:inline relative z-10">{t("Search")}</span>
                 </button>
               </div>
             </form>
           </div>
 
-          <div className="flex flex-wrap gap-3 mt-8 justify-center">
-            <Link 
-              to="/properties?type=house" 
-              className="px-6 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/30 transition-colors border border-white/30"
-            >
-              {t("house")}
-            </Link>
-            <Link 
-              to="/properties?type=apartment" 
-              className="px-6 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/30 transition-colors border border-white/30"
-            >
-              {t("apartment")}
-            </Link>
-            <Link 
-              to="/properties?type=villa" 
-              className="px-6 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/30 transition-colors border border-white/30"
-            >
-              {t("villa")}
-            </Link>
-            <Link 
-              to="/properties?type=commercial" 
-              className="px-6 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/30 transition-colors border border-white/30"
-            >
-              {t("commercial")}
-            </Link>
+          {/* Quick Property Type Links with hover effects */}
+          <div className="flex flex-wrap gap-4 mt-12 justify-center animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+            {['house', 'apartment', 'villa', 'commercial'].map((type, index) => (
+              <Link 
+                key={type}
+                to={`/properties?type=${type}`} 
+                className="group relative px-8 py-4 glass text-white rounded-full font-medium overflow-hidden transition-all duration-300 hover:scale-105 border border-white/10 hover:border-gold-400/30"
+                style={{ animationDelay: `${0.6 + index * 0.1}s` }}
+              >
+                {/* Hover gradient */}
+                <div className="absolute inset-0 bg-gradient-to-r from-gold-400/0 via-gold-400/20 to-gold-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <span className="relative z-10">{t(type)}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+        
+        {/* Scroll indicator with enhanced animation */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
+          <div className="relative">
+            <div className="w-8 h-14 rounded-full border-2 border-white/40 flex items-start justify-center p-2">
+              <div className="w-2 h-4 bg-white/70 rounded-full animate-bounce"></div>
+            </div>
+            <div className="absolute -inset-2 rounded-full border border-white/10 animate-ping" style={{ animationDuration: '2s' }}></div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-gradient-to-b from-muted/20 to-background">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      {/* Stats Section - Floating Cards */}
+      <section className="py-24 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 bg-gradient-radial-gold opacity-30"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div 
                 key={index} 
-                className="bg-card rounded-xl border shadow-lg p-6 text-center hover:shadow-xl transition-shadow"
+                className="group bg-card rounded-2xl border border-border shadow-lg p-8 text-center card-hover-lift hover:border-gold-400/50 transition-all duration-500"
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-ethiopian-yellow/20 to-ethiopian-yellow/10 text-ethiopian-yellow mb-4">
-                  <stat.icon className="h-8 w-8" />
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 text-gold-500 mb-6 group-hover:scale-110 group-hover:shadow-glow-gold transition-all duration-500">
+                  <stat.icon className="h-10 w-10" />
                 </div>
-                <div className="text-3xl md:text-4xl font-black text-foreground mb-2">{stat.value}</div>
-                <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">{stat.label}</div>
+                <div className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-3 text-gradient-gold">{stat.value}</div>
+                <div className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -490,40 +581,46 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Properties */}
-      <section className="py-20 bg-background">
+      {/* Featured Properties - Premium Layout */}
+      <section className="py-24 bg-background relative">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-4">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <div className="ethiopian-accent-bar w-16 mx-auto mb-6"></div>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
               {t("featuredProperties")}
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
               {t("Discover our handpicked selection of premium properties")}
             </p>
           </div>
+          
           {loading.properties ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mb-4"></div>
-              <p className="text-muted-foreground">{t("Loading properties...")}</p>
+              <div className="w-20 h-20 border-4 border-gold-400 border-t-transparent rounded-full animate-spin mb-6"></div>
+              <p className="text-muted-foreground text-lg">{t("Loading properties...")}</p>
             </div>
           ) : featuredProperties.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {featuredProperties.map((property) => (
-                <PropertyCard key={property._id} property={property} />
+            <div className="properties-container grid mb-16">
+              {featuredProperties.map((property, index) => (
+                <div key={property._id} className="animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <PropertyCard property={property} />
+                </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-20">
-              <p className="text-muted-foreground text-lg">{t("No properties available at the moment.")}</p>
+            <div className="text-center py-20 glass-card rounded-3xl">
+              <p className="text-muted-foreground text-xl">{t("No properties available at the moment.")}</p>
             </div>
           )}
+          
           <div className="text-center">
             <Link 
               to="/properties" 
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-xl transition-all"
+              className="group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-2xl font-semibold text-lg hover:shadow-glow-green transition-all duration-500 hover:scale-105"
             >
               {t("View All Properties")}
-              <ArrowRight className="h-5 w-5" />
+              <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
             </Link>
           </div>
         </div>
@@ -643,25 +740,35 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-ethiopian-green via-ethiopian-green/90 to-ethiopian-green text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-black mb-4">
+      {/* CTA Section - Luxurious Final Call */}
+      <section className="py-28 relative overflow-hidden">
+        {/* Background with gradient and pattern */}
+        <div className="absolute inset-0 bg-gradient-to-br from-accent via-accent/95 to-accent/80"></div>
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
+        
+        {/* Floating decorative elements */}
+        <div className="absolute top-10 left-10 w-40 h-40 bg-gold-400/20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-10 right-10 w-60 h-60 bg-white/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '-2s' }}></div>
+        
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <div className="ethiopian-accent-bar w-20 mx-auto mb-8"></div>
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
             {t("Ready to Find Your Dream Home?")}
           </h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
+          <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-white/80 font-light">
             {t("Join thousands of satisfied customers who found their perfect property with Ethio-Home")}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link 
               to="/properties" 
-              className="px-8 py-4 bg-white text-ethiopian-green rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg"
+              className="group px-10 py-5 bg-white text-accent rounded-2xl font-semibold text-lg hover:bg-white/95 transition-all duration-300 shadow-luxury hover:shadow-luxury-lg hover:scale-105 inline-flex items-center justify-center gap-3"
             >
               {t("Browse Properties")}
+              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link 
               to="/signup" 
-              className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition-colors"
+              className="px-10 py-5 bg-transparent border-2 border-white/50 text-white rounded-2xl font-semibold text-lg hover:bg-white/10 hover:border-white transition-all duration-300 hover:scale-105"
             >
               {t("Get Started")}
             </Link>

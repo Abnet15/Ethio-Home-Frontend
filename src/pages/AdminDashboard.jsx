@@ -198,201 +198,267 @@ const AdminDashboard = () => {
     return new Intl.NumberFormat('en-US').format(num);
   };
 
+  // Animated counter hook for premium stat cards
+  const AnimatedCounter = ({ value, duration = 2000 }) => {
+    const [count, setCount] = useState(0);
+    const numericValue = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.]/g, '')) || 0 : value;
+    
+    useEffect(() => {
+      let startTime;
+      const animate = (currentTime) => {
+        if (!startTime) startTime = currentTime;
+        const progress = Math.min((currentTime - startTime) / duration, 1);
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        setCount(Math.floor(numericValue * easeOutQuart));
+        if (progress < 1) requestAnimationFrame(animate);
+      };
+      requestAnimationFrame(animate);
+    }, [numericValue, duration]);
+    
+    return count.toLocaleString();
+  };
+
   const StatCard = ({ title, value, change, icon: Icon, color = 'primary', onClick }) => (
-    <div className="stat-card cursor-pointer" onClick={onClick}>
-      <div className="stat-header">
-        <h3 className="stat-title">{title}</h3>
-        <Icon className={`stat-icon text-${color}`} />
-      </div>
-      <p className="stat-value">{value}</p>
-      {change !== undefined && (
-        <div className={`stat-change ${change >= 0 ? 'positive' : 'negative'}`}>
-          {change >= 0 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
-          <span>{Math.abs(change)}% from last month</span>
+    <div 
+      className="group relative overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-3"
+      onClick={onClick}
+    >
+      {/* Glassmorphism card */}
+      <div className="relative h-full rounded-2xl p-6 bg-gradient-to-br from-card/90 via-card/80 to-card/70 backdrop-blur-xl border border-border/40 shadow-xl hover:shadow-2xl hover:border-gold-400/40 transition-all duration-500">
+        
+        {/* Animated glow background */}
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gold-400/0 via-gold-400/5 to-ethiopian-green/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        
+        {/* Floating orb decoration */}
+        <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-gradient-to-br from-gold-400/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        
+        <div className="relative z-10">
+          {/* Header with icon */}
+          <div className="flex items-center justify-between mb-5">
+            <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] font-sans">{title}</h3>
+            <div className="relative">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/30 via-gold-500/20 to-gold-600/10 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-gold-400/20">
+                <Icon className="w-7 h-7 text-gold-500 group-hover:text-gold-400 transition-colors duration-300" />
+              </div>
+              {/* Pulse ring on hover */}
+              <div className="absolute inset-0 rounded-2xl border-2 border-gold-400/30 opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity duration-300" />
+            </div>
+          </div>
+          
+          {/* Animated value */}
+          <div className="mb-4">
+            <p className="text-4xl font-bold font-serif tracking-tight bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 bg-clip-text text-transparent bg-[length:200%_100%] group-hover:animate-shimmer-fast">
+              {typeof value === 'string' && value.includes('ETB') ? (
+                <span className="flex items-baseline gap-1">
+                  <span className="text-2xl font-sans font-medium text-gold-500/80">ETB</span>
+                  <AnimatedCounter value={value} />
+                </span>
+              ) : (
+                <AnimatedCounter value={value} />
+              )}
+            </p>
+          </div>
+          
+          {/* Change indicator */}
+          {change !== undefined && (
+            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-semibold backdrop-blur-sm ${
+              change >= 0 
+                ? 'bg-ethiopian-green/20 text-green-400 border border-ethiopian-green/30' 
+                : 'bg-ethiopian-red/20 text-red-400 border border-ethiopian-red/30'
+            }`}>
+              <div className={`w-5 h-5 rounded-full flex items-center justify-center ${change >= 0 ? 'bg-ethiopian-green/30' : 'bg-ethiopian-red/30'}`}>
+                {change >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+              </div>
+              <span>{Math.abs(change)}% from last month</span>
+            </div>
+          )}
         </div>
-      )}
+        
+        {/* Bottom accent line */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold-400/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      </div>
     </div>
   );
 
   const ActivityItem = ({ activity }) => {
     const Icon = activity.icon;
     return (
-      <div className="flex items-center gap-4 p-4 hover:bg-neutral-50 rounded-lg transition">
-        <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-          <Icon size={20} className="text-primary-600" />
+      <div className="group flex items-center gap-4 p-4 rounded-xl hover:bg-gradient-to-r hover:from-gold-400/10 hover:to-transparent cursor-pointer transition-all duration-300 border border-transparent hover:border-gold-400/20">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-400/30 to-gold-500/10 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-gold-400/20 transition-all duration-300">
+          <Icon size={22} className="text-gold-500" />
         </div>
-        <div className="flex-1">
-          <p className="font-medium text-neutral-900">{activity.message}</p>
-          <p className="text-sm text-neutral-500">{activity.time}</p>
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-foreground group-hover:text-gold-400 transition-colors truncate">{activity.message}</p>
+          <p className="text-sm text-muted-foreground">{activity.time}</p>
         </div>
-        <ChevronRight size={16} className="text-neutral-400" />
+        <div className="w-8 h-8 rounded-full bg-muted/50 flex items-center justify-center group-hover:bg-gold-400/20 transition-all duration-300">
+          <ChevronRight size={16} className="text-muted-foreground group-hover:text-gold-400 group-hover:translate-x-0.5 transition-all" />
+        </div>
       </div>
     );
   };
 
   const QuickActionCard = ({ title, description, icon: Icon, onClick, color = 'primary' }) => (
-    <div className="card cursor-pointer" onClick={onClick}>
-      <div className="card-body">
-        <div className="flex items-center gap-4">
-          <div className={`w-12 h-12 bg-${color}-100 rounded-xl flex items-center justify-center`}>
-            <Icon size={24} className={`text-${color}-600`} />
-          </div>
-          <div className="flex-1">
-            <h3 className="font-semibold text-neutral-900">{title}</h3>
-            <p className="text-sm text-neutral-600">{description}</p>
-          </div>
-          <ChevronRight size={20} className="text-neutral-400" />
+    <div 
+      className="group relative p-4 rounded-xl cursor-pointer bg-gradient-to-br from-card/90 to-card/60 backdrop-blur-sm border border-border/40 hover:border-gold-400/40 hover:shadow-xl hover:shadow-gold-400/10 transition-all duration-500 overflow-hidden"
+      onClick={onClick}
+    >
+      {/* Hover glow effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-gold-400/0 via-gold-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      <div className="relative z-10 flex items-center gap-4">
+        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gold-400/20 via-gold-500/15 to-gold-600/10 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-gold-400/10">
+          <Icon size={26} className="text-gold-500 group-hover:text-gold-400 transition-colors" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-bold text-foreground group-hover:text-gold-400 transition-colors font-serif tracking-tight">{title}</h3>
+          <p className="text-sm text-muted-foreground line-clamp-1">{description}</p>
+        </div>
+        <div className="w-10 h-10 rounded-full bg-muted/30 flex items-center justify-center group-hover:bg-gold-400/20 group-hover:translate-x-1 transition-all duration-300">
+          <ChevronRight size={20} className="text-muted-foreground group-hover:text-gold-400 transition-colors" />
         </div>
       </div>
     </div>
   );
 
+  // Import PremiumLoader for loading state
+  const PremiumLoader = React.lazy(() => import('../components/PremiumLoader'));
+  
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading dashboard...</p>
+      <React.Suspense fallback={
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="w-16 h-16 border-4 border-gold-400 border-t-transparent rounded-full animate-spin"></div>
         </div>
-      </div>
+      }>
+        <PremiumLoader message="Loading Dashboard..." />
+      </React.Suspense>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-      <div className="flex">
-        {/* Sidebar */}
-        <div className="w-64 bg-card border-r shadow-lg min-h-screen p-6">
-          <div className="mb-8">
-            <h2 className="text-2xl font-black text-foreground mb-2 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/80 bg-clip-text text-transparent">Admin Panel</h2>
-            <p className="text-sm text-muted-foreground">Welcome back, {user?.name}</p>
-          </div>
-        </div>
-
-        <nav className="nav-menu">
-          <div className="nav-item">
-            <a 
-              href="#overview" 
-              className={`nav-link ${activeTab === 'overview' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('overview'); }}
-            >
-              <BarChart3 size={20} />
-              Overview
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#users" 
-              className="nav-link"
-              onClick={(e) => { e.preventDefault(); navigate('/admin/users'); }}
-            >
-              <Users size={20} />
-              Users
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#properties" 
-              className="nav-link"
-              onClick={(e) => { e.preventDefault(); navigate('/admin/properties'); }}
-            >
-              <Building size={20} />
-              Properties
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#messages" 
-              className="nav-link"
-              onClick={(e) => { e.preventDefault(); navigate('/admin/messages'); }}
-            >
-              <MessageSquare size={20} />
-              Messages
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#selling" 
-              className={`nav-link ${activeTab === 'selling' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('selling'); }}
-            >
-              <TrendingUp size={20} />
-              All Selling Properties
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#reviews" 
-              className={`nav-link ${activeTab === 'reviews' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('reviews'); }}
-            >
-              <Star size={20} />
-              Reviews
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#activity" 
-              className="nav-link"
-              onClick={(e) => { e.preventDefault(); navigate('/admin/activity'); }}
-            >
-              <Activity size={20} />
-              Activity
-            </a>
-          </div>
-          {/* <div className="nav-item">
-            <a 
-              href="#roles" 
-              className="nav-link"
-              onClick={(e) => { e.preventDefault(); navigate('/admin/roles'); }}
-            >
-              <Shield size={20} />
-              Roles
-            </a>
-          </div> */}
-          {<div className="nav-item">
-            <a 
-              href="#subscriptions" 
-              className={`nav-link ${activeTab === 'subscriptions' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('subscriptions'); }}
-            >
-              <Bell size={20} />
-              Subscriptions
-            </a>
-          </div>}
-          <div className="nav-item">
-            <a 
-              href="#contacts" 
-              className={`nav-link ${activeTab === 'contacts' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('contacts'); }}
-            >
-              <Mail size={20} />
-              Contact Forms
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#faqs" 
-              className={`nav-link ${activeTab === 'faqs' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('faqs'); }}
-            >
-              <MessageSquare size={20} />
-              FAQ Management
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#departments" 
-              className={`nav-link ${activeTab === 'departments' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('departments'); }}
-            >
-              <Building size={20} />
-              Department Management
-            </a>
-          </div>
-        </nav>
+    <div className="admin-dashboard-premium min-h-screen bg-gradient-to-br from-background via-background to-muted/10 relative overflow-hidden">
+      {/* Premium animated background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[900px] h-[900px] rounded-full opacity-20 animate-pulse-slow"
+             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 60%)', filter: 'blur(120px)' }} />
+        <div className="absolute bottom-0 left-0 w-[700px] h-[700px] rounded-full opacity-20 animate-pulse-slow"
+             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.15) 0%, transparent 60%)', filter: 'blur(100px)', animationDelay: '-5s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-10"
+             style={{ background: 'radial-gradient(circle, hsl(0 72% 51% / 0.1) 0%, transparent 60%)', filter: 'blur(80px)' }} />
       </div>
+      
+      <div className="flex relative z-10 min-h-screen">
+        {/* Premium Glassmorphism Sidebar */}
+        <aside className="admin-sidebar hidden lg:flex flex-col w-80 bg-card/80 backdrop-blur-2xl border-r border-border/30 min-h-screen p-8 shadow-2xl relative overflow-hidden">
+          {/* Sidebar gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-gold-400/5 via-transparent to-ethiopian-green/5 pointer-events-none" />
+          
+          {/* Sidebar header */}
+          <div className="relative z-10 mb-10">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-lg shadow-gold-400/30">
+                <Shield className="w-6 h-6 text-background" />
+              </div>
+              <div>
+                <h2 className="font-serif text-2xl font-bold text-gradient-gold">Admin</h2>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">Control Panel</p>
+              </div>
+            </div>
+            <div className="ethiopian-accent-bar w-full mb-6"></div>
+            <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-muted/50 to-transparent border border-border/30">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ethiopian-green to-ethiopian-green/70 flex items-center justify-center text-white font-bold text-sm">
+                {user?.name?.charAt(0) || 'A'}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-foreground truncate">{user?.name}</p>
+                <p className="text-xs text-muted-foreground">Administrator</p>
+              </div>
+            </div>
+          </div>
 
+          {/* Premium Navigation */}
+          <nav className="relative z-10 flex-1 space-y-2">
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 px-3">Navigation</p>
+            
+            {[
+              { id: 'overview', icon: BarChart3, label: 'Overview', onClick: () => setActiveTab('overview') },
+              { id: 'users', icon: Users, label: 'Users', onClick: () => navigate('/admin/users') },
+              { id: 'properties', icon: Building, label: 'Properties', onClick: () => navigate('/admin/properties') },
+              { id: 'messages', icon: MessageSquare, label: 'Messages', onClick: () => navigate('/admin/messages') },
+              { id: 'selling', icon: TrendingUp, label: 'All Sales', onClick: () => setActiveTab('selling') },
+              { id: 'reviews', icon: Star, label: 'Reviews', onClick: () => setActiveTab('reviews') },
+              { id: 'activity', icon: Activity, label: 'Activity', onClick: () => navigate('/admin/activity') },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={item.onClick}
+                className={`admin-nav-item group w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
+                  activeTab === item.id 
+                    ? 'bg-gradient-to-r from-gold-400/20 to-gold-400/5 text-gold-400 border border-gold-400/30 shadow-lg shadow-gold-400/10' 
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                }`}
+              >
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                  activeTab === item.id 
+                    ? 'bg-gold-400/20' 
+                    : 'bg-muted/50 group-hover:bg-muted'
+                }`}>
+                  <item.icon size={18} className={activeTab === item.id ? 'text-gold-400' : ''} />
+                </div>
+                <span className="font-medium">{item.label}</span>
+                {activeTab === item.id && (
+                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
+                )}
+              </button>
+            ))}
+            
+            <div className="pt-4 mt-4 border-t border-border/30">
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 px-3">Management</p>
+              
+              {[
+                { id: 'subscriptions', icon: Bell, label: 'Subscriptions', onClick: () => setActiveTab('subscriptions') },
+                { id: 'contacts', icon: Mail, label: 'Contact Forms', onClick: () => setActiveTab('contacts') },
+                { id: 'faqs', icon: MessageSquare, label: 'FAQ Management', onClick: () => setActiveTab('faqs') },
+                { id: 'departments', icon: Building, label: 'Departments', onClick: () => setActiveTab('departments') },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={item.onClick}
+                  className={`admin-nav-item group w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
+                    activeTab === item.id 
+                      ? 'bg-gradient-to-r from-gold-400/20 to-gold-400/5 text-gold-400 border border-gold-400/30 shadow-lg shadow-gold-400/10' 
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                  }`}
+                >
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                    activeTab === item.id 
+                      ? 'bg-gold-400/20' 
+                      : 'bg-muted/50 group-hover:bg-muted'
+                  }`}>
+                    <item.icon size={18} className={activeTab === item.id ? 'text-gold-400' : ''} />
+                  </div>
+                  <span className="font-medium">{item.label}</span>
+                  {activeTab === item.id && (
+                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </nav>
+          
+          {/* Sidebar footer */}
+          <div className="relative z-10 pt-6 border-t border-border/30 mt-auto">
+            <button 
+              onClick={() => navigate('/admin/settings')}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-300"
+            >
+              <Settings size={18} />
+              <span className="font-medium">Settings</span>
+            </button>
+          </div>
+        </aside>
+      </div>
       {/* Main Content */}
       <div className="dashboard-main">
         {activeTab === 'overview' && (

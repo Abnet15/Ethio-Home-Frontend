@@ -152,74 +152,63 @@ const MyListings = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-8">
-      <div className="container mx-auto px-4">
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-15"
+             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full opacity-15"
+             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.15) 0%, transparent 70%)', filter: 'blur(60px)' }} />
+      </div>
+      
+      <div className="container mx-auto px-4 py-12 relative z-10">
+        {/* Premium Header */}
+        <div className="mb-12 animate-fade-in-up">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div>
-              <h1 className="text-4xl md:text-5xl font-black text-foreground mb-2">My Listings</h1>
+              <div className="ethiopian-accent-bar w-16 mb-4"></div>
+              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-2">My Listings</h1>
               <p className="text-xl text-muted-foreground">Manage your property listings</p>
             </div>
             <Link 
               to="/properties/new" 
-              className="px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-xl transition-all flex items-center gap-2"
+              className="group px-8 py-4 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-2xl font-bold text-lg shadow-lg hover:shadow-glow-green transition-all duration-300 flex items-center gap-3 hover:scale-[1.02] active:scale-[0.98]"
             >
-              <Plus size={20} />
+              <Plus size={20} className="group-hover:rotate-90 transition-transform duration-300" />
               Add New Listing
             </Link>
           </div>
+        </div>
 
-          <div className="flex gap-3 flex-wrap">
+        {/* Premium Filter Buttons */}
+        <div className="flex gap-4 flex-wrap mb-10 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+          {[
+            { key: 'all', label: `All (${listings.length})` },
+            { key: 'active', label: `Active (${listings.filter(l => l.status === 'active').length})` },
+            { key: 'pending', label: `Pending (${listings.filter(l => l.status === 'pending').length})` },
+            { key: 'sold', label: `Sold (${listings.filter(l => l.status === 'sold').length})` }
+          ].map((item) => (
             <button
-              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                filter === 'all'
-                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
-                  : 'bg-card border-2 border-gray-300 text-muted-foreground hover:border-ethiopian-green hover:text-foreground'
+              key={item.key}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                filter === item.key
+                  ? 'bg-gradient-to-r from-gold-400 to-gold-500 text-foreground shadow-glow-gold'
+                  : 'glass border border-border/50 text-muted-foreground hover:border-gold-400/30 hover:text-foreground'
               }`}
-              onClick={() => setFilter('all')}
+              onClick={() => setFilter(item.key)}
             >
-              All ({listings.length})
+              {item.label}
             </button>
-            <button
-              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                filter === 'active'
-                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
-                  : 'bg-card border-2 border-gray-300 text-muted-foreground hover:border-ethiopian-green hover:text-foreground'
-              }`}
-              onClick={() => setFilter('active')}
-            >
-              Active ({listings.filter(l => l.status === 'active').length})
-            </button>
-            <button
-              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                filter === 'pending'
-                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
-                  : 'bg-card border-2 border-gray-300 text-muted-foreground hover:border-ethiopian-green hover:text-foreground'
-              }`}
-              onClick={() => setFilter('pending')}
-            >
-              Pending ({listings.filter(l => l.status === 'pending').length})
-            </button>
-            <button
-              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                filter === 'sold'
-                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
-                  : 'bg-card border-2 border-gray-300 text-muted-foreground hover:border-ethiopian-green hover:text-foreground'
-              }`}
-              onClick={() => setFilter('sold')}
-            >
-              Sold ({listings.filter(l => l.status === 'sold').length})
-            </button>
-          </div>
+          ))}
         </div>
 
         {filteredListings.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center mb-6">
-              <Building className="h-12 w-12 text-gray-400" />
+          <div className="flex flex-col items-center justify-center py-24 animate-fade-in-up">
+            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center mb-8 shadow-luxury">
+              <Building className="h-16 w-16 text-muted-foreground/50" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">No listings found</h2>
-            <p className="text-muted-foreground mb-6 text-center max-w-md">
+            <h2 className="font-serif text-3xl font-bold text-foreground mb-4">No listings found</h2>
+            <p className="text-lg text-muted-foreground mb-8 text-center max-w-lg">
               {filter === 'all' 
                 ? "You haven't created any listings yet." 
                 : `No ${filter} listings found.`
@@ -227,57 +216,81 @@ const MyListings = () => {
             </p>
             <Link 
               to="/properties/new" 
-              className="px-8 py-4 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-xl transition-all flex items-center gap-2"
+              className="px-10 py-5 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-2xl font-bold text-lg hover:shadow-glow-green transition-all duration-300 flex items-center gap-3 hover:scale-[1.02]"
             >
               <Plus size={20} />
               Create Your First Listing
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredListings.map((listing) => (
-              <div key={listing.id} className="bg-card rounded-xl border shadow-lg overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1">
-                <div className="relative h-48 overflow-hidden">
-                  <img src={listing.image} alt={listing.title} className="w-full h-full object-cover" />
-                  <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-white text-xs font-bold" style={{ backgroundColor: getStatusColor(listing.status) }}>
-                    {listing.status}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children">
+            {filteredListings.map((listing, index) => (
+              <div 
+                key={listing.id} 
+                className="group glass-card rounded-2xl border border-border/50 shadow-lg overflow-hidden hover:shadow-luxury hover:border-gold-400/30 transition-all duration-500 hover:-translate-y-2"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="relative h-56 overflow-hidden">
+                  <img 
+                    src={listing.image} 
+                    alt={listing.title} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent"></div>
+                  
+                  {/* Status badge */}
+                  <div className="absolute top-4 left-4">
+                    <span 
+                      className="px-4 py-2 rounded-full text-white text-xs font-bold uppercase tracking-wider backdrop-blur-sm"
+                      style={{ 
+                        backgroundColor: getStatusColor(listing.status),
+                        boxShadow: `0 0 20px ${getStatusColor(listing.status)}50`
+                      }}
+                    >
+                      {listing.status}
+                    </span>
+                  </div>
+                  
+                  {/* Price overlay */}
+                  <div className="absolute bottom-4 left-4">
+                    <span className="text-2xl font-black text-gradient-gold" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>
+                      {formatPrice(listing.price, listing.currency)}
+                      {listing.type === 'rent' && <span className="text-sm font-normal text-white/80">/month</span>}
+                    </span>
                   </div>
                 </div>
                 
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-foreground mb-2">{listing.title}</h3>
-                  <div className="flex items-center gap-2 text-muted-foreground mb-4">
-                    <MapPin className="h-4 w-4 text-ethiopian-yellow" />
+                  <h3 className="font-serif text-xl font-bold text-foreground mb-3 group-hover:text-gold-500 transition-colors">{listing.title}</h3>
+                  <div className="flex items-center gap-2 text-muted-foreground mb-5">
+                    <div className="p-1 rounded-md bg-gold-400/20">
+                      <MapPin className="h-4 w-4 text-gold-500" />
+                    </div>
                     <span className="text-sm">{listing.location}</span>
                   </div>
-                  
-                  <div className="text-2xl font-black text-ethiopian-green mb-4">
-                    {formatPrice(listing.price, listing.currency)}
-                    {listing.type === 'rent' && <span className="text-sm font-normal text-muted-foreground">/month</span>}
-                  </div>
 
-                  <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Home className="h-4 w-4" />
+                  <div className="flex items-center gap-3 mb-5 text-sm text-muted-foreground flex-wrap">
+                    <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
+                      <Home className="h-4 w-4 text-gold-500" />
                       {listing.propertyType}
                     </span>
                     {listing.bedrooms > 0 && (
-                      <span className="flex items-center gap-1">
-                        <Bed className="h-4 w-4" />
-                        {listing.bedrooms} bed
+                      <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
+                        <Bed className="h-4 w-4 text-gold-500" />
+                        {listing.bedrooms}
                       </span>
                     )}
-                    <span className="flex items-center gap-1">
-                      <Bath className="h-4 w-4" />
-                      {listing.bathrooms} bath
+                    <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
+                      <Bath className="h-4 w-4 text-gold-500" />
+                      {listing.bathrooms}
                     </span>
-                    <span className="flex items-center gap-1">
-                      <Square className="h-4 w-4" />
+                    <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
+                      <Square className="h-4 w-4 text-gold-500" />
                       {listing.area} m²
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-4 mb-4 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-4 mb-5 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {formatDate(listing.createdAt)}
@@ -288,22 +301,22 @@ const MyListings = () => {
                     </span>
                   </div>
 
-                  <div className="flex gap-2 pt-4 border-t">
+                  <div className="flex gap-3 pt-5 border-t border-border/50">
                     <Link 
                       to={`/properties/${listing.id}`} 
-                      className="flex-1 px-4 py-2 bg-muted hover:bg-muted/80 rounded-lg font-semibold text-center transition-colors flex items-center justify-center gap-2"
+                      className="flex-1 px-4 py-3 glass border border-border/50 hover:border-gold-400/30 rounded-xl font-semibold text-center transition-all duration-300 flex items-center justify-center gap-2 text-foreground hover:text-gold-500"
                     >
                       <Eye size={16} />
                       View
                     </Link>
                     <Link 
                       to={`/properties/${listing.id}/edit`} 
-                      className="flex-1 px-4 py-2 bg-ethiopian-yellow/20 hover:bg-ethiopian-yellow/30 text-ethiopian-yellow rounded-lg font-semibold text-center transition-colors flex items-center justify-center gap-2"
+                      className="flex-1 px-4 py-3 bg-gradient-to-r from-gold-400/20 to-gold-500/10 border border-gold-400/30 text-gold-500 rounded-xl font-semibold text-center transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-glow-gold"
                     >
                       <Edit size={16} />
                       Edit
                     </Link>
-                    <button className="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg font-semibold transition-colors">
+                    <button className="px-4 py-3 bg-ethiopian-red/10 border border-ethiopian-red/30 hover:bg-ethiopian-red/20 text-ethiopian-red rounded-xl font-semibold transition-all duration-300">
                       <Trash2 size={16} />
                     </button>
                   </div>

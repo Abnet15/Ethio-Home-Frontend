@@ -180,269 +180,288 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-ethiopian-green via-ethiopian-green/90 to-ethiopian-green py-12 px-4">
-      <div className="max-w-4xl mx-auto bg-card rounded-2xl border shadow-2xl overflow-hidden">
-        <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
-          <Link to="/" className="flex items-center gap-3 mb-6 hover:opacity-80 transition-opacity">
-            <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              <Home className="h-6 w-6" />
-            </div>
-            <span className="text-2xl font-black">Ethio-Home</span>
-          </Link>
-          <h1 className="text-3xl font-black mb-2">{t("Create Account")}</h1>
-          <p className="text-white/90">
-            {t("Join Ethio-Home and start your real estate journey")}
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-8 space-y-6 max-h-[70vh] overflow-y-auto">
-          {error && (
-            <div className="p-4 bg-red-50 border-2 border-red-200 rounded-xl text-red-700 font-semibold">
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="p-4 bg-green-50 border-2 border-green-200 rounded-xl text-green-700 font-semibold">
-              {success}
-            </div>
-          )}
-
-          <div className="space-y-2">
-            <label htmlFor="name" className="block text-sm font-semibold text-foreground">
-              {t("Full Name")}
-            </label>
-            <div className="relative">
-              <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder={t("Enter your full name")}
-                className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-ethiopian-green focus:border-transparent ${
-                  formErrors.name ? 'border-red-300' : 'border-gray-300'
-                }`}
-                autoComplete="name"
-                required
-              />
-            </div>
-            {formErrors.name && <div className="text-sm text-red-600 font-medium">{formErrors.name}</div>}
+    <div className="min-h-screen relative py-16 px-4 overflow-hidden">
+      {/* Animated background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-accent via-accent/90 to-foreground/90"></div>
+      <div className="fixed inset-0 bg-gradient-radial-gold opacity-40"></div>
+      
+      {/* Floating decorative elements */}
+      <div className="fixed top-20 left-20 w-72 h-72 bg-gold-400/20 rounded-full blur-3xl animate-float"></div>
+      <div className="fixed bottom-20 right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '-3s' }}></div>
+      
+      <div className="max-w-4xl mx-auto relative z-10 animate-fade-in-up">
+        <div className="glass-card rounded-3xl shadow-luxury overflow-hidden">
+          {/* Header */}
+          <div className="relative bg-gradient-to-br from-accent to-accent/80 p-10 text-accent-foreground overflow-hidden">
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full"></div>
+            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 rounded-full"></div>
+            
+            <Link to="/" className="relative flex items-center gap-4 mb-8 group">
+              <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <Home className="h-7 w-7" />
+              </div>
+              <span className="text-2xl font-serif font-bold tracking-tight">Ethio-Home</span>
+            </Link>
+            
+            <div className="ethiopian-accent-bar w-16 mb-6"></div>
+            <h1 className="font-serif text-4xl font-bold mb-3">{t("Create Account")}</h1>
+            <p className="text-accent-foreground/80 text-lg font-light">
+              {t("Join Ethio-Home and start your real estate journey")}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-semibold text-foreground">
-                {t("Email Address")}
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder={t("Enter your email")}
-                  className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-ethiopian-green focus:border-transparent ${
-                    formErrors.email ? 'border-red-300' : 'border-gray-300'
-                  }`}
-                  autoComplete="email"
-                  required
-                />
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="p-10 space-y-6 bg-card max-h-[60vh] overflow-y-auto scrollbar-luxury">
+            {error && (
+              <div className="p-4 bg-destructive/10 border border-destructive/30 rounded-xl text-destructive font-medium animate-fade-in">
+                {error}
               </div>
-              {formErrors.email && <div className="text-sm text-red-600 font-medium">{formErrors.email}</div>}
-            </div>
+            )}
+
+            {success && (
+              <div className="p-4 bg-accent/10 border border-accent/30 rounded-xl text-accent font-medium animate-fade-in">
+                {success}
+              </div>
+            )}
 
             <div className="space-y-2">
-              <label htmlFor="phone" className="block text-sm font-semibold text-foreground">
-                {t("Phone Number")}
+              <label htmlFor="name" className="block text-sm font-semibold text-foreground uppercase tracking-wider">
+                {t("Full Name")}
               </label>
-              <div className="relative">
-                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <div className="relative group">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
-                  placeholder={t("+251 911 123 456")}
-                  className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-ethiopian-green focus:border-transparent ${
-                    formErrors.phone ? 'border-red-300' : 'border-gray-300'
+                  placeholder={t("Enter your full name")}
+                  className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
+                    formErrors.name ? 'border-destructive' : 'border-border'
                   }`}
-                  autoComplete="tel"
+                  autoComplete="name"
                   required
                 />
               </div>
-              {formErrors.phone && <div className="text-sm text-red-600 font-medium">{formErrors.phone}</div>}
+              {formErrors.name && <div className="text-sm text-destructive font-medium animate-fade-in">{formErrors.name}</div>}
             </div>
-          </div>
 
-          <div className="form-group">
-            <label htmlFor="location" className="form-label">
-              {t("Location")}
-            </label>
-            <div className="form-input-container">
-              <input
-                type="text"
-                id="location"
-                name="location"
-                value={formData.location}
-                onChange={handleChange}
-                placeholder={t("e.g., Bole, Addis Ababa")}
-                className={`form-input ${formErrors.location ? 'error' : ''}`}
-                autoComplete="address-line1"
-                required
-              />
-              <MapPin />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label htmlFor="email" className="block text-sm font-semibold text-foreground uppercase tracking-wider">
+                  {t("Email Address")}
+                </label>
+                <div className="relative group">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder={t("Enter your email")}
+                    className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
+                      formErrors.email ? 'border-destructive' : 'border-border'
+                    }`}
+                    autoComplete="email"
+                    required
+                  />
+                </div>
+                {formErrors.email && <div className="text-sm text-destructive font-medium animate-fade-in">{formErrors.email}</div>}
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="phone" className="block text-sm font-semibold text-foreground uppercase tracking-wider">
+                  {t("Phone Number")}
+                </label>
+                <div className="relative group">
+                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder={t("+251 911 123 456")}
+                    className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
+                      formErrors.phone ? 'border-destructive' : 'border-border'
+                    }`}
+                    autoComplete="tel"
+                    required
+                  />
+                </div>
+                {formErrors.phone && <div className="text-sm text-destructive font-medium animate-fade-in">{formErrors.phone}</div>}
+              </div>
             </div>
-            {formErrors.location && <div className="error-message">{formErrors.location}</div>}
-          </div>
 
-          <div className="form-group">
-            <label htmlFor="address" className="form-label">
-              {t("Full Address")}
-            </label>
-            <div className="form-input-container">
-              <input
-                type="text"
-                id="address"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                placeholder={t("Enter your full address")}
-                className={`form-input ${formErrors.address ? 'error' : ''}`}
-                autoComplete="address-line2"
-                required
-              />
-              <MapPin />
-            </div>
-            {formErrors.address && <div className="error-message">{formErrors.address}</div>}
-          </div>
-
-          <div className="form-group-row">
-            <div className="form-group">
-              <label htmlFor="city" className="form-label">
-                {t("City")}
+            <div className="space-y-2">
+              <label htmlFor="location" className="block text-sm font-semibold text-foreground uppercase tracking-wider">
+                {t("Location")}
               </label>
-              <div className="form-input-container">
+              <div className="relative group">
+                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
                   type="text"
-                  id="city"
-                  name="city"
-                  value={formData.city}
+                  id="location"
+                  name="location"
+                  value={formData.location}
                   onChange={handleChange}
-                  placeholder={t("Enter your city")}
-                  className={`form-input ${formErrors.city ? 'error' : ''}`}
-                  autoComplete="address-level2"
+                  placeholder={t("e.g., Bole, Addis Ababa")}
+                  className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
+                    formErrors.location ? 'border-destructive' : 'border-border'
+                  }`}
+                  autoComplete="address-line1"
                   required
                 />
-                <MapPin />
               </div>
-              {formErrors.city && <div className="error-message">{formErrors.city}</div>}
+              {formErrors.location && <div className="text-sm text-destructive font-medium animate-fade-in">{formErrors.location}</div>}
             </div>
 
-            <div className="form-group">
-              <label htmlFor="state" className="form-label">
-                {t("State/Region")}
+            <div className="space-y-2">
+              <label htmlFor="address" className="block text-sm font-semibold text-foreground uppercase tracking-wider">
+                {t("Full Address")}
               </label>
-              <div className="form-input-container">
+              <div className="relative group">
+                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
                   type="text"
-                  id="state"
-                  name="state"
-                  value={formData.state}
+                  id="address"
+                  name="address"
+                  value={formData.address}
                   onChange={handleChange}
-                  placeholder={t("Enter your state or region")}
-                  className={`form-input ${formErrors.state ? 'error' : ''}`}
-                  autoComplete="address-level1"
+                  placeholder={t("Enter your full address")}
+                  className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
+                    formErrors.address ? 'border-destructive' : 'border-border'
+                  }`}
+                  autoComplete="address-line2"
                   required
                 />
-                <MapPin />
               </div>
-              {formErrors.state && <div className="error-message">{formErrors.state}</div>}
+              {formErrors.address && <div className="text-sm text-destructive font-medium animate-fade-in">{formErrors.address}</div>}
             </div>
-          </div>
 
-          <div className="form-group">
-            <div className="selected-role-info">
-              <div className="selected-role-header">
-                <ShoppingCart className="selected-role-icon" />
-                <div>
-                  <div className="selected-role-title">
-                    {t("Property Buyer Account")}
-                  </div>
-                  <div className="selected-role-description">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label htmlFor="city" className="block text-sm font-semibold text-foreground uppercase tracking-wider">
+                  {t("City")}
+                </label>
+                <div className="relative group">
+                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    placeholder={t("Enter your city")}
+                    className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
+                      formErrors.city ? 'border-destructive' : 'border-border'
+                    }`}
+                    autoComplete="address-level2"
+                    required
+                  />
+                </div>
+                {formErrors.city && <div className="text-sm text-destructive font-medium animate-fade-in">{formErrors.city}</div>}
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="state" className="block text-sm font-semibold text-foreground uppercase tracking-wider">
+                  {t("State/Region")}
+                </label>
+                <div className="relative group">
+                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <input
+                    type="text"
+                    id="state"
+                    name="state"
+                    value={formData.state}
+                    onChange={handleChange}
+                    placeholder={t("Enter your state or region")}
+                    className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
+                      formErrors.state ? 'border-destructive' : 'border-border'
+                    }`}
+                    autoComplete="address-level1"
+                    required
+                  />
+                </div>
+                {formErrors.state && <div className="text-sm text-destructive font-medium animate-fade-in">{formErrors.state}</div>}
+              </div>
+            </div>
+
+            {/* Role info card */}
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center">
+                  <ShoppingCart className="h-6 w-6 text-accent" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-bold text-foreground mb-1">{t("Property Buyer Account")}</h4>
+                  <p className="text-sm text-muted-foreground mb-3">
                     {t("You're creating a buyer account to search and purchase properties.")}
-                  </div>
+                  </p>
+                  <p className="text-xs text-muted-foreground/80 p-3 rounded-lg bg-muted/30">
+                    <strong className="text-foreground">{t("Note")}:</strong>{" "}
+                    {t("Other account types (Seller, Agent, Employee) are created by administrators only.")}
+                  </p>
                 </div>
               </div>
-              <div className="role-note">
-                <strong>{t("Note")}:</strong>{" "}
-                {t(
-                  "Other account types (Seller, Agent, Employee) are created by administrators only. If you need a different account type, please contact our support team."
-                )}
-              </div>
             </div>
-          </div>
 
-          <div className="form-group-row">
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">
-                {t("Password")}
-              </label>
-              <div className="form-input-container">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder={t("Create password")}
-                  className={`form-input ${formErrors.password ? 'error' : ''}`}
-                  style={{ paddingRight: "48px" }}
-                  autoComplete="new-password"
-                  required
-                />
-                                  <Lock />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label htmlFor="password" className="block text-sm font-semibold text-foreground uppercase tracking-wider">
+                  {t("Password")}
+                </label>
+                <div className="relative group">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder={t("Create password")}
+                    className={`w-full pl-12 pr-14 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
+                      formErrors.password ? 'border-destructive' : 'border-border'
+                    }`}
+                    autoComplete="new-password"
+                    required
+                  />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="password-toggle"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-muted"
                   >
-                    {showPassword ? (
-                      <EyeOff style={{ width: "20px", height: "20px" }} />
-                    ) : (
-                      <Eye style={{ width: "20px", height: "20px" }} />
-                    )}
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
-                {formErrors.password && <div className="error-message">{formErrors.password}</div>}
+                {formErrors.password && <div className="text-sm text-destructive font-medium animate-fade-in">{formErrors.password}</div>}
               </div>
 
-            <div className="form-group">
-              <label htmlFor="passwordConfirm" className="form-label">
-                {t("Confirm Password")}
-              </label>
-              <div className="form-input-container">
-                <input
-                  type={showPasswordConfirm ? "text" : "password"}
-                  id="passwordConfirm"
-                  name="passwordConfirm"
-                  value={formData.passwordConfirm}
-                  onChange={handleChange}
-                  placeholder={t("Confirm password")}
-                  className={`form-input ${formErrors.passwordConfirm ? 'error' : ''}`}
-                  style={{ paddingRight: "48px" }}
-                  autoComplete="new-password"
-                  required
-                />
-                                  <Lock />
+              <div className="space-y-2">
+                <label htmlFor="passwordConfirm" className="block text-sm font-semibold text-foreground uppercase tracking-wider">
+                  {t("Confirm Password")}
+                </label>
+                <div className="relative group">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <input
+                    type={showPasswordConfirm ? "text" : "password"}
+                    id="passwordConfirm"
+                    name="passwordConfirm"
+                    value={formData.passwordConfirm}
+                    onChange={handleChange}
+                    placeholder={t("Confirm password")}
+                    className={`w-full pl-12 pr-14 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
+                      formErrors.passwordConfirm ? 'border-destructive' : 'border-border'
+                    }`}
+                    autoComplete="new-password"
+                    required
+                  />
                   <button
                     type="button"
                     onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-                    className="password-toggle"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-muted"
                   >
                     {showPasswordConfirm ? (
                       <EyeOff style={{ width: "20px", height: "20px" }} />
@@ -451,33 +470,35 @@ const Signup = () => {
                     )}
                   </button>
                 </div>
-                {formErrors.passwordConfirm && <div className="error-message">{formErrors.passwordConfirm}</div>}
+                {formErrors.passwordConfirm && <div className="text-sm text-destructive font-medium animate-fade-in">{formErrors.passwordConfirm}</div>}
               </div>
+            </div>
+
+            <button 
+              type="submit" 
+              className="w-full py-4 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-xl font-bold text-lg shadow-lg hover:shadow-glow-green transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]" 
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-accent-foreground border-t-transparent rounded-full animate-spin"></div>
+                  {t("Creating Account...")}
+                </>
+              ) : (
+                t("Create Account")
+              )}
+            </button>
+          </form>
+
+          {/* Footer */}
+          <div className="px-10 pb-10 text-center bg-card border-t border-border pt-6">
+            <p className="text-muted-foreground">
+              {t("Already have an account?")}{" "}
+              <Link to="/login" className="font-semibold text-accent hover:underline transition-colors">
+                {t("Sign in here")}
+              </Link>
+            </p>
           </div>
-
-          <button 
-            type="submit" 
-            className="w-full py-4 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-xl font-bold text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" 
-            disabled={loading}
-          >
-            {loading ? (
-              <>
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                {t("Creating Account...")}
-              </>
-            ) : (
-              t("Create Account")
-            )}
-          </button>
-        </form>
-
-        <div className="px-8 pb-8 text-center border-t pt-6">
-          <p className="text-muted-foreground">
-            {t("Already have an account?")}{" "}
-            <Link to="/login" className="font-semibold text-ethiopian-green hover:underline">
-              {t("Sign in here")}
-            </Link>
-          </p>
         </div>
       </div>
     </div>

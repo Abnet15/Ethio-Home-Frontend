@@ -24,11 +24,17 @@ import {
   CreditCard,
   Clock,
   ArrowLeft,
+  Search,
+  ZoomIn,
+  Sparkles,
 } from "lucide-react";
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import { interestService } from "@/services/interestService";
+import PropertyGallery from "../components/PropertyGallery";
+import ImageGalleryLightbox from "../components/ImageGalleryLightbox";
 import { useAuth } from "../context/AuthContext";
 import { favoritesService } from "../services/favoritesService";
 import { propertyService } from "../services/propertyService";
@@ -295,10 +301,19 @@ const PropertyDetails = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading property details...</p>
-        </div>
+        <motion.div 
+          className="text-center"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+        >
+          <div className="relative w-24 h-24 mx-auto mb-6">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-gold-400 to-gold-500 animate-spin" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <div className="absolute inset-2 rounded-full bg-background flex items-center justify-center">
+              <Sparkles className="w-8 h-8 text-gold-400 animate-pulse" />
+            </div>
+          </div>
+          <p className="text-muted-foreground font-medium">Loading property details...</p>
+        </motion.div>
       </div>
     );
   }
@@ -344,70 +359,171 @@ const PropertyDetails = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-      {/* Hero Section with Main Image */}
+      {/* Hero Section with Main Image - Premium Parallax Effect */}
       <div className="relative">
-        <div className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
-          <img
-            src={images[currentImageIndex] || images[0]}
-            alt={property.title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/50 to-transparent" />
+        <div 
+          className="relative h-[70vh] min-h-[550px] w-full overflow-hidden"
+          style={{ perspective: '1000px' }}
+        >
+          {/* Main Image with Parallax */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              transform: 'translateZ(-1px) scale(1.1)',
+              willChange: 'transform',
+            }}
+          >
+            <img
+              src={images[currentImageIndex] || images[0]}
+              alt={property.title}
+              className="w-full h-full object-cover transition-transform duration-700"
+              style={{ transform: 'scale(1.05)' }}
+            />
+          </div>
           
-          {/* Floating Back Button */}
-          <div className="absolute top-6 left-6 z-10">
+          {/* Multi-layer gradient overlays for cinematic depth */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-accent/10 via-transparent to-primary/10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent" />
+          
+          {/* Animated accent orbs */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div 
+              className="absolute top-[20%] right-[10%] w-[300px] h-[300px] rounded-full opacity-20"
+              style={{
+                background: 'radial-gradient(circle, hsl(48 96% 53% / 0.3) 0%, transparent 70%)',
+                animation: 'float 8s ease-in-out infinite',
+                filter: 'blur(40px)',
+              }}
+            />
+            <div 
+              className="absolute bottom-[30%] left-[5%] w-[200px] h-[200px] rounded-full opacity-15"
+              style={{
+                background: 'radial-gradient(circle, hsl(145 63% 32% / 0.4) 0%, transparent 70%)',
+                animation: 'float 10s ease-in-out infinite',
+                animationDelay: '-4s',
+                filter: 'blur(30px)',
+              }}
+            />
+          </div>
+          
+          {/* Floating Back Button with glass effect */}
+          <div className="absolute top-6 left-6 z-20">
             <button
               onClick={() => navigate(-1)}
-              className="bg-white/90 backdrop-blur-md text-foreground px-4 py-2 rounded-lg shadow-lg hover:bg-white transition-colors flex items-center gap-2 font-semibold"
+              className="group glass border border-white/20 text-white px-5 py-3 rounded-xl shadow-lg hover:bg-white/20 hover:border-white/30 transition-all duration-300 flex items-center gap-2 font-semibold backdrop-blur-xl"
             >
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
               Back
             </button>
           </div>
 
-          {/* Floating Action Buttons */}
-          <div className="absolute top-6 right-6 z-10 flex gap-2">
+          {/* Floating Action Buttons with 3D effect */}
+          <div className="absolute top-6 right-6 z-20 flex gap-3">
             <button
               onClick={toggleFavorite}
-              className="bg-white/90 backdrop-blur-md p-3 rounded-lg shadow-lg hover:bg-white transition-colors"
+              className={`group glass p-4 rounded-xl shadow-lg transition-all duration-300 backdrop-blur-xl border ${
+                isFavorite 
+                  ? 'bg-red-500/20 border-red-500/50 text-red-400' 
+                  : 'border-white/20 text-white hover:bg-white/20 hover:border-white/30'
+              }`}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+              style={{ transform: 'perspective(500px) rotateX(0deg)' }}
             >
-              <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
+              <Heart className={`h-5 w-5 transition-transform group-hover:scale-110 ${isFavorite ? "fill-current" : ""}`} />
             </button>
             <button
               onClick={handleShare}
-              className="bg-white/90 backdrop-blur-md p-3 rounded-lg shadow-lg hover:bg-white transition-colors"
+              className="group glass border border-white/20 p-4 rounded-xl shadow-lg hover:bg-white/20 hover:border-white/30 transition-all duration-300 text-white backdrop-blur-xl"
               title="Share property"
             >
-              <Share2 className="h-5 w-5" />
+              <Share2 className="h-5 w-5 group-hover:scale-110 transition-transform" />
             </button>
           </div>
 
-          {/* Hero Content */}
-          <div className="absolute inset-x-0 bottom-0 container mx-auto px-4 pb-8">
-            <div className="max-w-4xl">
-              <div className="mb-4">
-                <span className="inline-block rounded-full bg-ethiopian-yellow/20 px-4 py-1.5 text-sm font-semibold text-ethiopian-yellow backdrop-blur-sm">
+          {/* Image Navigation Arrows */}
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={prevImage}
+                className="absolute left-6 top-1/2 -translate-y-1/2 z-20 glass border border-white/20 p-4 rounded-full text-white hover:bg-white/20 hover:border-white/30 transition-all duration-300 backdrop-blur-xl group"
+              >
+                <ChevronLeft className="h-6 w-6 group-hover:-translate-x-0.5 transition-transform" />
+              </button>
+              <button
+                onClick={nextImage}
+                className="absolute right-6 top-1/2 -translate-y-1/2 z-20 glass border border-white/20 p-4 rounded-full text-white hover:bg-white/20 hover:border-white/30 transition-all duration-300 backdrop-blur-xl group"
+              >
+                <ChevronRight className="h-6 w-6 group-hover:translate-x-0.5 transition-transform" />
+              </button>
+            </>
+          )}
+
+          {/* Hero Content with 3D depth */}
+          <div className="absolute inset-x-0 bottom-0 container mx-auto px-4 pb-10">
+            <div className="max-w-4xl animate-fade-in-up">
+              {/* Status Badge */}
+              <div className="mb-6">
+                <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-gold-400/20 to-gold-500/10 px-5 py-2 text-sm font-bold text-gold-400 backdrop-blur-md border border-gold-400/30 shadow-glow-gold">
+                  <span className="w-2 h-2 rounded-full bg-gold-400 animate-pulse"></span>
                   {property.status === "for-sale" ? "FOR SALE" : "FOR RENT"}
                 </span>
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground mb-4 drop-shadow-lg">
+              
+              {/* Title with text shadow */}
+              <h1 
+                className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-5"
+                style={{ textShadow: '0 4px 30px rgba(0,0,0,0.4), 0 0 60px hsl(48 96% 53% / 0.15)' }}
+              >
                 {property.title}
               </h1>
-              <div className="flex items-center gap-2 text-lg text-muted-foreground mb-6">
-                <MapPin className="h-5 w-5 text-ethiopian-yellow" />
+              
+              {/* Location */}
+              <div className="flex items-center gap-3 text-lg text-white/90 mb-8">
+                <div className="p-2 rounded-lg bg-gold-400/20 backdrop-blur-sm">
+                  <MapPin className="h-5 w-5 text-gold-400" />
+                </div>
                 <span className="font-medium">{property.location}</span>
               </div>
-              <div className="flex items-baseline gap-3">
-                <span className="text-5xl md:text-6xl font-black text-foreground">
+              
+              {/* Price with luxury styling */}
+              <div className="flex items-baseline gap-4">
+                <span 
+                  className="text-5xl md:text-6xl lg:text-7xl font-black text-gradient-gold"
+                  style={{ textShadow: '0 0 40px hsl(48 96% 53% / 0.3)' }}
+                >
                   {formatPrice(property.price)}
                 </span>
-                <span className="text-2xl text-muted-foreground font-semibold">
+                <span className="text-2xl text-white/70 font-semibold">
                   ETB
                 </span>
               </div>
             </div>
           </div>
+          
+          {/* Image count indicator */}
+          {images.length > 1 && (
+            <div className="absolute bottom-10 right-6 z-20">
+              <div className="glass border border-white/20 rounded-xl px-4 py-2 backdrop-blur-xl flex items-center gap-3 text-white">
+                <div className="flex gap-1.5">
+                  {images.slice(0, 5).map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentImageIndex(idx)}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        idx === currentImageIndex 
+                          ? 'w-6 bg-gold-400' 
+                          : 'bg-white/40 hover:bg-white/60'
+                      }`}
+                    />
+                  ))}
+                  {images.length > 5 && (
+                    <span className="text-xs text-white/60 ml-1">+{images.length - 5}</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -416,57 +532,102 @@ const PropertyDetails = () => {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Image Gallery */}
-            <div className="bg-card rounded-xl border shadow-lg p-6">
-              <h2 className="text-2xl font-bold mb-4">Photo Gallery</h2>
+            {/* Image Gallery with 3D Card Effects */}
+            <div className="bg-card/80 backdrop-blur-sm rounded-2xl border border-border/50 shadow-luxury p-8 hover:shadow-glow-gold/20 transition-all duration-500">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center">
+                  <span className="text-gold-400 text-xl">📸</span>
+                </div>
+                <h2 className="text-2xl font-serif font-bold text-foreground">Photo Gallery</h2>
+              </div>
+              
               <div className="grid grid-cols-2 gap-4">
-                {/* Main large image */}
+                {/* Main large image with 3D tilt effect */}
                 <div 
-                  className="col-span-2 relative h-96 w-full overflow-hidden rounded-xl cursor-pointer group"
+                  className="col-span-2 relative h-[450px] w-full overflow-hidden rounded-2xl cursor-pointer group"
                   onClick={() => setShowImageModal(true)}
+                  style={{ 
+                    perspective: '1000px',
+                    transformStyle: 'preserve-3d' 
+                  }}
                 >
-                  <img
-                    src={images[currentImageIndex] || images[0]}
-                    alt={`${property.title} - Main image`}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                  <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1.5 rounded-lg text-sm backdrop-blur-sm">
-                    Click to view all {images.length} photos
+                  <div 
+                    className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.02]"
+                    style={{ transformStyle: 'preserve-3d' }}
+                  >
+                    <img
+                      src={images[currentImageIndex] || images[0]}
+                      alt={`${property.title} - Main image`}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
+                  
+                  {/* Gradient overlays */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-gold-400/0 via-gold-400/5 to-gold-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  {/* Interactive hint */}
+                  <div className="absolute bottom-6 right-6 glass border border-white/20 text-white px-5 py-3 rounded-xl text-sm backdrop-blur-xl flex items-center gap-3 opacity-80 group-hover:opacity-100 transition-all group-hover:translate-y-0 translate-y-2">
+                    <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+                      <Search className="w-4 h-4" />
+                    </div>
+                    <span>View all {images.length} photos</span>
+                  </div>
+                  
+                  {/* Image navigation on hover */}
+                  {images.length > 1 && (
+                    <>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 glass border border-white/20 p-3 rounded-full text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white/20"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 glass border border-white/20 p-3 rounded-full text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white/20"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </>
+                  )}
                 </div>
                 
-                {/* Thumbnail grid */}
+                {/* Thumbnail grid with 3D hover */}
                 {images.slice(1, 5).map((img, idx) => (
                   <div
                     key={idx + 1}
-                    className="relative h-48 w-full overflow-hidden rounded-xl cursor-pointer group"
+                    className="relative h-52 w-full overflow-hidden rounded-xl cursor-pointer group"
                     onClick={() => {
                       setCurrentImageIndex(idx + 1);
                       setShowImageModal(true);
                     }}
+                    style={{ perspective: '500px' }}
                   >
-                    <img
-                      src={img}
-                      alt={`${property.title} image ${idx + 2}`}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                    <div className="absolute inset-0 transition-all duration-500 group-hover:scale-105">
+                      <img
+                        src={img}
+                        alt={`${property.title} image ${idx + 2}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 border-2 border-transparent group-hover:border-gold-400/30 rounded-xl transition-colors duration-300" />
                   </div>
                 ))}
                 {images.length > 5 && (
                   <div
-                    className="relative h-48 w-full overflow-hidden rounded-xl cursor-pointer group bg-muted flex items-center justify-center"
+                    className="relative h-52 w-full overflow-hidden rounded-xl cursor-pointer group bg-gradient-to-br from-muted/80 to-muted flex items-center justify-center border border-border/50 hover:border-gold-400/30 transition-all duration-300"
                     onClick={() => {
                       setCurrentImageIndex(5);
                       setShowImageModal(true);
                     }}
                   >
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-muted-foreground mb-2">
+                    <div className="text-center group-hover:scale-105 transition-transform duration-300">
+                      <div className="text-4xl font-bold text-gradient-gold mb-2">
                         +{images.length - 5}
                       </div>
-                      <div className="text-sm text-muted-foreground">More photos</div>
+                      <div className="text-sm text-muted-foreground font-medium">More photos</div>
                     </div>
                   </div>
                 )}
@@ -637,60 +798,15 @@ const PropertyDetails = () => {
         </div>
       </div>
 
-      {/* Image Lightbox Modal */}
-      {showImageModal && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm"
-          onClick={() => setShowImageModal(false)}
-        >
-          <div className="relative w-full h-full flex items-center justify-center p-4">
-            <button
-              className="absolute top-4 right-4 text-white hover:bg-white/20 z-10 p-2 rounded-lg transition-colors"
-              onClick={() => setShowImageModal(false)}
-            >
-              <X className="h-6 w-6" />
-            </button>
-            
-            {images.length > 1 && (
-              <>
-                <button
-                  className="absolute left-4 text-white hover:bg-white/20 z-10 p-2 rounded-lg transition-colors"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    prevImage();
-                  }}
-                >
-                  <ChevronLeft className="h-8 w-8" />
-                </button>
-                <button
-                  className="absolute right-4 text-white hover:bg-white/20 z-10 p-2 rounded-lg transition-colors"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    nextImage();
-                  }}
-                >
-                  <ChevronRight className="h-8 w-8" />
-                </button>
-              </>
-            )}
-
-            <div 
-              className="relative max-w-7xl max-h-[90vh] w-full h-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img
-                src={images[currentImageIndex] || images[0]}
-                alt={`${property.title} - Image ${currentImageIndex + 1}`}
-                className="w-full h-full object-contain"
-              />
-            </div>
-
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white bg-black/50 px-4 py-2 rounded-lg backdrop-blur-sm">
-              {currentImageIndex + 1} / {images.length}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Premium Property Gallery Lightbox */}
+      <PropertyGallery
+        images={images}
+        currentIndex={currentImageIndex}
+        isOpen={showImageModal}
+        onClose={() => setShowImageModal(false)}
+        onIndexChange={setCurrentImageIndex}
+        propertyTitle={property.title}
+      />
 
       {/* Contact Modal */}
       {showContactForm && (
@@ -849,6 +965,13 @@ const PropertyDetails = () => {
           </div>
         </div>
       )}
+      {/* Image Gallery Lightbox */}
+      <ImageGalleryLightbox 
+        images={images}
+        isOpen={showImageModal}
+        onClose={() => setShowImageModal(false)}
+        initialIndex={currentImageIndex}
+      />
     </div>
   );
 };

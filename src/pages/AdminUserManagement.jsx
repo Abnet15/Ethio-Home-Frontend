@@ -484,34 +484,48 @@ const AdminUserManagement = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-      <div className="bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 p-8 text-white">
-        <div className="container mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+      {/* Animated background orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-10 w-[500px] h-[500px] rounded-full opacity-20"
+             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.4) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+        <div className="absolute bottom-20 left-10 w-[400px] h-[400px] rounded-full opacity-15"
+             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.3) 0%, transparent 70%)', filter: 'blur(60px)' }} />
+      </div>
+
+      {/* Premium Header */}
+      <div className="relative bg-gradient-to-r from-emerald-900/90 via-emerald-800/80 to-emerald-900/90 backdrop-blur-xl border-b border-emerald-500/20 shadow-2xl shadow-emerald-900/30">
+        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/50 to-transparent" />
+        
+        <div className="relative container mx-auto px-6 py-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-5">
               <button 
-                className="p-2 rounded-lg hover:bg-white/20 transition-colors"
+                className="group p-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-gold-400/40 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gold-400/20"
                 onClick={() => navigate('/admin-dashboard')}
               >
-                <ArrowLeft size={20} />
+                <ArrowLeft size={20} className="text-white group-hover:text-gold-400 transition-colors" />
               </button>
               <div>
-                <h1 className="text-4xl font-black mb-2">User Management</h1>
-                <p className="text-white/90">Create and manage user accounts</p>
+                <h1 className="text-4xl font-black mb-2 font-serif tracking-tight bg-gradient-to-r from-white via-gold-200 to-white bg-clip-text text-transparent">
+                  User Management
+                </h1>
+                <p className="text-emerald-100/80 font-medium">Create and manage user accounts</p>
               </div>
             </div>
             <button
-              className="px-6 py-3 bg-white text-ethiopian-green rounded-lg font-semibold hover:bg-white/90 transition-all flex items-center gap-2"
+              className="group px-6 py-3.5 bg-gradient-to-r from-gold-400 to-gold-500 text-slate-900 rounded-xl font-bold hover:from-gold-300 hover:to-gold-400 transition-all duration-300 flex items-center gap-2.5 shadow-lg shadow-gold-400/30 hover:shadow-xl hover:shadow-gold-400/40 hover:scale-105"
               onClick={() => setShowCreateForm(true)}
             >
-              <Plus size={16} />
+              <Plus size={18} className="group-hover:rotate-90 transition-transform duration-300" />
               Create User
             </button>
           </div>
         </div>
       </div>
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="relative container mx-auto px-6 py-10">
 
       {message && (
         <div className={`message ${messageType === 'success' ? 'success' : 'error'}`}>
@@ -801,20 +815,26 @@ const AdminUserManagement = () => {
         </div>
       )}
 
-      <div className="users-filters">
-        <div className="search-wrapper">
-          <Search size={16} />
+      {/* Premium Filters Section */}
+      <div className="flex flex-col md:flex-row gap-4 mb-8">
+        <div className="relative flex-1">
+          <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder="Search users..."
+            placeholder="Search users by name or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-12 pr-4 py-3.5 bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-gold-400/50 focus:ring-2 focus:ring-gold-400/20 transition-all duration-300"
           />
         </div>
 
-        <div className="filter-wrapper">
-          <Filter size={16} />
-          <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
+        <div className="relative">
+          <Filter size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+          <select 
+            value={roleFilter} 
+            onChange={(e) => setRoleFilter(e.target.value)}
+            className="pl-12 pr-10 py-3.5 bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-xl text-white appearance-none cursor-pointer focus:outline-none focus:border-gold-400/50 focus:ring-2 focus:ring-gold-400/20 transition-all duration-300"
+          >
             <option value="all">All Roles</option>
             <option value="buyer">Buyers</option>
             <option value="seller">Sellers</option>
@@ -824,80 +844,87 @@ const AdminUserManagement = () => {
         </div>
       </div>
 
-      <div className="users-table">
-        <div className="table-header">
-          <div className="header-cell">User</div>
-          <div className="header-cell">Role</div>
-          <div className="header-cell">Contact</div>
-          <div className="header-cell">Location</div>
-          {/* <div className="header-cell">Created</div> */}
-          <div className="header-cell">Actions</div>
+      {/* Premium Data Table */}
+      <div className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl overflow-hidden shadow-2xl shadow-slate-900/50">
+        {/* Table Header */}
+        <div className="grid grid-cols-5 gap-4 px-6 py-4 bg-slate-800/60 border-b border-slate-700/50">
+          <div className="text-xs font-bold text-gold-400 uppercase tracking-wider">User</div>
+          <div className="text-xs font-bold text-gold-400 uppercase tracking-wider">Role</div>
+          <div className="text-xs font-bold text-gold-400 uppercase tracking-wider">Contact</div>
+          <div className="text-xs font-bold text-gold-400 uppercase tracking-wider">Location</div>
+          <div className="text-xs font-bold text-gold-400 uppercase tracking-wider text-right">Actions</div>
         </div>
 
-        {filteredUsers.map((user) => {
-          const RoleIcon = getRoleIcon(user.role);
-          return (
-            <div 
-              key={user.id} 
-              className="table-row clickable"
-              onClick={() => {
-                setSelectedUser(user);
-                setShowUserDetails(true);
-              }}
-            >
-              <div className="cell user-cell">
-                <div className="user-info">
-                  <div className="user-name">{user.name}</div>
-                  <div className="user-email">{user.email}</div>
+        {/* Table Rows */}
+        <div className="divide-y divide-slate-700/30">
+          {filteredUsers.map((user, index) => {
+            const RoleIcon = getRoleIcon(user.role);
+            return (
+              <div 
+                key={user.id} 
+                className="group grid grid-cols-5 gap-4 px-6 py-4 hover:bg-gradient-to-r hover:from-gold-400/5 hover:to-transparent cursor-pointer transition-all duration-300"
+                onClick={() => {
+                  setSelectedUser(user);
+                  setShowUserDetails(true);
+                }}
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center text-gold-400 font-bold text-sm">
+                    {user.name?.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-white group-hover:text-gold-400 transition-colors">{user.name}</div>
+                    <div className="text-xs text-slate-400">{user.email}</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center">
+                  <span 
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white"
+                    style={{ backgroundColor: getRoleColor(user.role) + '40', borderColor: getRoleColor(user.role), borderWidth: '1px' }}
+                  >
+                    <RoleIcon size={12} />
+                    <span className="capitalize">{user.role}</span>
+                  </span>
+                </div>
+                
+                <div className="flex items-center text-sm text-slate-300">
+                  {user.phone}
+                </div>
+                
+                <div className="flex items-center text-sm text-slate-300">
+                  {user.location || '—'}
+                </div>
+                
+                <div className="flex items-center justify-end gap-2">
+                  <button
+                    className="p-2 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-gold-400/20 hover:text-gold-400 transition-all duration-300"
+                    onClick={(e) => { e.stopPropagation(); handleEdit(user); }}
+                    title="Edit user"
+                  >
+                    <Edit size={16} />
+                  </button>
+                  <button
+                    className="p-2 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-red-400/20 hover:text-red-400 transition-all duration-300"
+                    onClick={(e) => { e.stopPropagation(); handleDelete(user.id); }}
+                    title="Delete user"
+                  >
+                    <Trash2 size={16} />
+                  </button>
                 </div>
               </div>
-              
-              <div className="cell role-cell">
-                <div className="role-badge" style={{ backgroundColor: getRoleColor(user.role) }}>
-                  <RoleIcon size={14} />
-                  <span>{user.role}</span>
-                </div>
-              </div>
-              
-              <div className="cell contact-cell">
-                <div className="contact-info">
-                  <div className="phone">{user.phone}</div>
-                </div>
-              </div>
-              
-              <div className="cell location-cell">
-                {user.location}
-              </div>
-              
-              {/* <div className="cell date-cell">
-                {new Date(user.createdAt).toLocaleDateString()}
-              </div> */}
-              
-              <div className="cell actions-cell">
-                <button
-                  className="action-btn edit-btn"
-                  onClick={(e) => { e.stopPropagation(); handleEdit(user); }}
-                  title="Edit user"
-                >
-                  <Edit size={14} />
-                </button>
-                <button
-                  className="action-btn delete-btn"
-                  onClick={(e) => { e.stopPropagation(); handleDelete(user.id); }}
-                  title="Delete user"
-                >
-                  <Trash2 size={14} />
-                </button>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
         {filteredUsers.length === 0 && (
-          <div className="empty-state">
-            <Users size={48} />
-            <h3>No users found</h3>
-            <p>No users match your current search and filter criteria.</p>
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="w-20 h-20 rounded-2xl bg-slate-700/30 flex items-center justify-center mb-4">
+              <Users size={40} className="text-slate-500" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">No users found</h3>
+            <p className="text-slate-400 text-sm">No users match your current search and filter criteria.</p>
           </div>
         )}
       </div>

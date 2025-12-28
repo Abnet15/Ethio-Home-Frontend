@@ -90,19 +90,29 @@ const Favorites = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-8">
-      <div className="container mx-auto px-4">
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center">
-                <Heart className="h-8 w-8 text-red-600" />
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-15"
+             style={{ background: 'radial-gradient(circle, hsl(0 85% 47% / 0.15) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full opacity-15"
+             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 70%)', filter: 'blur(60px)' }} />
+      </div>
+      
+      <div className="container mx-auto px-4 py-12 relative z-10">
+        {/* Premium Header */}
+        <div className="mb-12 animate-fade-in-up">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="flex items-center gap-6">
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-ethiopian-red/20 to-ethiopian-red/10 flex items-center justify-center shadow-lg border border-ethiopian-red/20 group-hover:scale-110 transition-transform">
+                <Heart className="h-10 w-10 text-ethiopian-red" />
               </div>
               <div>
-                <h1 className="text-4xl md:text-5xl font-black text-foreground">
+                <div className="ethiopian-accent-bar w-16 mb-4"></div>
+                <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-2">
                   {t("My Favorites")}
                 </h1>
-                <p className="text-muted-foreground mt-1">
+                <p className="text-lg text-muted-foreground">
                   {favorites.length} {t("property")}{favorites.length !== 1 ? 's' : ''} {t("saved")}
                 </p>
               </div>
@@ -111,9 +121,9 @@ const Favorites = () => {
             {favorites.length > 0 && (
               <button 
                 onClick={clearAllFavorites}
-                className="px-6 py-3 border-2 border-red-300 text-red-600 rounded-lg font-semibold hover:bg-red-50 transition-colors flex items-center gap-2"
+                className="group px-6 py-3 glass border border-ethiopian-red/30 text-ethiopian-red rounded-xl font-semibold hover:bg-ethiopian-red/10 hover:border-ethiopian-red/50 transition-all duration-300 flex items-center gap-3 hover:scale-[1.02]"
               >
-                <Trash2 className="h-5 w-5" />
+                <Trash2 className="h-5 w-5 group-hover:scale-110 transition-transform" />
                 {t("Clear All")}
               </button>
             )}
@@ -121,11 +131,11 @@ const Favorites = () => {
         </div>
 
         {error && (
-          <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6 mb-6 text-center">
-            <p className="text-red-700 font-semibold mb-4">{error}</p>
+          <div className="glass-card border border-destructive/30 rounded-2xl p-8 mb-8 text-center animate-fade-in">
+            <p className="text-destructive font-semibold mb-6 text-lg">{error}</p>
             <button 
               onClick={loadFavorites} 
-              className="px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-lg transition-all"
+              className="px-8 py-4 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-xl font-bold hover:shadow-glow-green transition-all duration-300 hover:scale-[1.02]"
             >
               {t("Try Again")}
             </button>
@@ -133,77 +143,106 @@ const Favorites = () => {
         )}
 
         {favorites.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center mb-6">
-              <Heart className="h-12 w-12 text-gray-400" />
+          <div className="flex flex-col items-center justify-center py-24 animate-fade-in-up">
+            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center mb-8 shadow-luxury">
+              <Heart className="h-16 w-16 text-muted-foreground/50" />
             </div>
-            <h3 className="text-2xl font-bold mb-2">{t("No favorites yet")}</h3>
-            <p className="text-muted-foreground mb-6 text-center max-w-md">
+            <h3 className="font-serif text-3xl font-bold text-foreground mb-4">{t("No favorites yet")}</h3>
+            <p className="text-lg text-muted-foreground mb-8 text-center max-w-lg">
               {t("Start browsing properties and add them to your favorites!")}
             </p>
             <button 
               onClick={() => navigate("/properties")}
-              className="px-8 py-4 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-xl transition-all"
+              className="px-10 py-5 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-2xl font-bold text-lg hover:shadow-glow-green transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               {t("Browse Properties")}
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {favorites.map((property) => (
-              <div key={property._id} className="bg-card rounded-xl border shadow-lg overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1">
-                <div className="relative h-48 overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children">
+            {favorites.map((property, index) => (
+              <div 
+                key={property._id} 
+                className="group glass-card rounded-2xl border border-border/50 shadow-lg overflow-hidden hover:shadow-luxury hover:border-gold-400/30 transition-all duration-500 hover:-translate-y-2"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="relative h-56 overflow-hidden">
                   <img 
                     src={property.imagesUrl?.[0] || property.images?.[0] || '/placeholder-property.jpg'} 
                     alt={property.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute top-4 right-4 flex gap-2">
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent"></div>
+                  
+                  {/* Floating action buttons */}
+                  <div className="absolute top-4 right-4 flex gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
                     <button
                       onClick={() => navigate(`/properties/${property._id}`)}
-                      className="p-2 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors"
+                      className="p-3 glass border border-white/20 backdrop-blur-xl rounded-xl hover:bg-white/20 transition-all duration-300 text-white"
                       title={t("View Details")}
                     >
-                      <Eye className="h-5 w-5 text-foreground" />
+                      <Eye className="h-5 w-5" />
                     </button>
                     <button
                       onClick={() => removeFromFavorites(property._id)}
-                      className="p-2 bg-red-500/90 backdrop-blur-sm rounded-lg hover:bg-red-600 transition-colors"
+                      className="p-3 bg-ethiopian-red/80 backdrop-blur-xl rounded-xl hover:bg-ethiopian-red transition-all duration-300 text-white"
                       title={t("Remove from Favorites")}
                     >
-                      <Trash2 className="h-5 w-5 text-white" />
+                      <Trash2 className="h-5 w-5" />
                     </button>
+                  </div>
+                  
+                  {/* Heart indicator */}
+                  <div className="absolute top-4 left-4">
+                    <div className="p-2 bg-ethiopian-red/80 backdrop-blur-sm rounded-lg">
+                      <Heart className="h-4 w-4 text-white fill-white" />
+                    </div>
+                  </div>
+                  
+                  {/* Price overlay */}
+                  <div className="absolute bottom-4 left-4">
+                    <span className="text-2xl font-black text-gradient-gold" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>
+                      {formatPrice(property.price)}
+                    </span>
                   </div>
                 </div>
                 
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-foreground mb-2 line-clamp-2">{property.title}</h3>
-                  <p className="text-muted-foreground mb-4 flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-ethiopian-yellow" />
+                  <h3 className="font-serif text-xl font-bold text-foreground mb-3 line-clamp-2 group-hover:text-gold-500 transition-colors">
+                    {property.title}
+                  </h3>
+                  <p className="text-muted-foreground mb-5 flex items-center gap-2">
+                    <div className="p-1 rounded-md bg-gold-400/20">
+                      <MapPin className="h-4 w-4 text-gold-500" />
+                    </div>
                     {property.location}
                   </p>
-                  <p className="text-2xl font-black text-ethiopian-green mb-4">{formatPrice(property.price)}</p>
                   
-                  <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Bed className="h-4 w-4" />
+                  <div className="flex items-center gap-4 mb-5 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
+                      <Bed className="h-4 w-4 text-gold-500" />
                       {property.features?.bedrooms || property.bedrooms} {t("beds")}
                     </span>
-                    <span className="flex items-center gap-1">
-                      <Bath className="h-4 w-4" />
+                    <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
+                      <Bath className="h-4 w-4 text-gold-500" />
                       {property.features?.bathrooms || property.bathrooms} {t("baths")}
                     </span>
-                    <span className="flex items-center gap-1">
-                      <Square className="h-4 w-4" />
+                    <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
+                      <Square className="h-4 w-4 text-gold-500" />
                       {property.features?.area || property.area} m²
                     </span>
                   </div>
                   
-                  <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 bg-ethiopian-yellow/20 text-ethiopian-yellow rounded-full text-sm font-semibold">
+                  <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                    <span className="px-4 py-2 bg-gradient-to-r from-gold-400/20 to-gold-500/10 text-gold-500 rounded-full text-sm font-bold border border-gold-400/30">
                       {t(property.type || 'property')}
                     </span>
+                    <button
+                      onClick={() => navigate(`/properties/${property._id}`)}
+                      className="text-sm font-semibold text-accent hover:text-accent/80 transition-colors flex items-center gap-1"
+                    >
+                      {t("View Details")} →
+                    </button>
                   </div>
                 </div>
               </div>

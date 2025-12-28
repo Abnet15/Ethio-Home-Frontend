@@ -267,13 +267,35 @@ const About = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-r from-ethiopian-green via-ethiopian-green/90 to-ethiopian-green text-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-black mb-6">About Ethio-Home</h1>
-            <p className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-[600px] h-[600px] rounded-full opacity-10"
+             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] rounded-full opacity-10"
+             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.15) 0%, transparent 70%)', filter: 'blur(60px)' }} />
+      </div>
+      
+      {/* Hero Section - Cinematic */}
+      <section className="relative py-28 overflow-hidden">
+        {/* Hero background with gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-accent via-accent/95 to-foreground/90"></div>
+        <div className="absolute inset-0 bg-gradient-radial-gold opacity-30"></div>
+        
+        {/* Floating decorative elements */}
+        <div className="absolute top-10 left-10 w-60 h-60 bg-gold-400/20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-10 right-10 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '-3s' }}></div>
+        
+        {/* Pattern overlay */}
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center max-w-4xl mx-auto animate-fade-in-up">
+            <div className="ethiopian-accent-bar w-24 mx-auto mb-8"></div>
+            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6" style={{ textShadow: '0 4px 30px rgba(0,0,0,0.3)' }}>
+              About Ethio-Home
+            </h1>
+            <p className="text-xl md:text-2xl text-white/90 font-light leading-relaxed max-w-3xl mx-auto">
               Pioneering the future of real estate in Ethiopia through
               technology, trust, and transparency
             </p>
@@ -338,26 +360,34 @@ const About = () => {
           </div>
         </div>
       </section>
-      {/* Stats Section */}
-      <section className="py-16 bg-gradient-to-b from-muted/20 to-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-4">Our Achievements</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+      {/* Stats Section - Premium */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial-gold opacity-20"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16 animate-fade-in-up">
+            <div className="ethiopian-accent-bar w-16 mx-auto mb-6"></div>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4">Our Achievements</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
               Real numbers that reflect our commitment to excellence
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="bg-card rounded-xl border shadow-lg p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1"
+                className="group bg-card/95 backdrop-blur-sm rounded-2xl border border-border/60 p-8 text-center hover:shadow-luxury hover:border-gold-400/30 transition-all duration-500 hover:-translate-y-3 animate-fade-in-up"
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-ethiopian-yellow/20 to-ethiopian-yellow/10 text-ethiopian-yellow mb-4">
-                  <stat.icon className="h-8 w-8" />
+                {/* Glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-gold-400/0 to-gold-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+                
+                <div className="relative z-10">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 text-gold-500 mb-6 group-hover:scale-110 group-hover:shadow-glow-gold transition-all duration-500">
+                    <stat.icon className="h-10 w-10" />
+                  </div>
+                  <div className="font-serif text-4xl md:text-5xl font-bold text-gradient-gold mb-3">{stat.value}</div>
+                  <div className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">{stat.label}</div>
                 </div>
-                <div className="text-3xl md:text-4xl font-black text-foreground mb-2">{stat.value}</div>
-                <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">{stat.label}</div>
               </div>
             ))}
           </div>

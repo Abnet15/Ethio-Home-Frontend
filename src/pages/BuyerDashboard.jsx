@@ -425,12 +425,22 @@ const BuyerDashboard = () => {
   };
 
   const StatCard = ({ title, value, icon: Icon, color = 'primary', onClick }) => (
-    <div className="stat-card cursor-pointer" onClick={onClick}>
-      <div className="stat-header">
-        <h3 className="stat-title">{title}</h3>
-        <Icon className={`stat-icon text-${color}`} />
+    <div 
+      className="group relative bg-card/95 backdrop-blur-sm border border-border/60 rounded-2xl p-6 cursor-pointer hover:shadow-luxury hover:border-gold-400/30 transition-all duration-500 hover:-translate-y-2 overflow-hidden"
+      onClick={onClick}
+    >
+      {/* Glow effect on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gold-400/0 to-gold-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      <div className="relative z-10">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{title}</h3>
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center group-hover:scale-110 group-hover:shadow-glow-gold transition-all duration-500">
+            <Icon className="w-6 h-6 text-gold-500" />
+          </div>
+        </div>
+        <p className="text-3xl font-bold text-gradient-gold">{value}</p>
       </div>
-      <p className="stat-value">{value}</p>
     </div>
   );
 

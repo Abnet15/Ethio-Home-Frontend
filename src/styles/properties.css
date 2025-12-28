@@ -322,12 +322,39 @@
   margin-bottom: 40px;
 }
 
+/* Grid layout - FIXED 3 cards per row on large screens */
 .properties-container.grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
-  max-width: 1200px;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  max-width: 1400px;
   margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .properties-container.grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .properties-container.grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .properties-container.grid {
+    grid-template-columns: repeat(3, minmax(380px, 1fr));
+    gap: 32px;
+  }
+}
+
+.properties-container.grid > * {
+  width: 100%;
+  min-width: 0;
 }
 
 .properties-container.grid .property-card {

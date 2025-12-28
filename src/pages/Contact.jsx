@@ -203,13 +203,31 @@ const Contact = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-r from-ethiopian-green via-ethiopian-green/90 to-ethiopian-green text-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-black mb-6">Get in Touch</h1>
-            <p className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-10"
+             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+        <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] rounded-full opacity-10"
+             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.15) 0%, transparent 70%)', filter: 'blur(60px)' }} />
+      </div>
+      
+      {/* Hero Section - Cinematic */}
+      <section className="relative py-28 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-accent via-accent/95 to-foreground/90"></div>
+        <div className="absolute inset-0 bg-gradient-radial-gold opacity-30"></div>
+        
+        {/* Floating decorative elements */}
+        <div className="absolute top-10 left-10 w-60 h-60 bg-gold-400/20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-10 right-10 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '-3s' }}></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center max-w-4xl mx-auto animate-fade-in-up">
+            <div className="ethiopian-accent-bar w-24 mx-auto mb-8"></div>
+            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6" style={{ textShadow: '0 4px 30px rgba(0,0,0,0.3)' }}>
+              Get in Touch
+            </h1>
+            <p className="text-xl md:text-2xl text-white/90 font-light leading-relaxed max-w-3xl mx-auto">
               We're here to help you find your dream property. Contact us
               anytime and we'll get back to you as soon as possible.
             </p>

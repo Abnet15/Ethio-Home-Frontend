@@ -10,11 +10,14 @@ import {
   Image as ImageIcon,
   Upload,
   Trash2,
+  Sparkles,
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import PropertyCard from "../components/PropertyCard";
+import { PropertySkeletonGrid } from "../components/PropertyCardSkeleton";
 import PropertyImageManager from "../components/PropertyImageManager";
 import { useAuth } from "../context/AuthContext";
 import { useLanguage } from "../context/LanguageContext";
@@ -266,20 +269,20 @@ const Properties = () => {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="group px-4 py-3 bg-card border border-border/50 rounded-xl hover:bg-gold-400/10 hover:border-gold-400/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-card"
         >
-          <ChevronLeft className="h-5 w-5" />
+          <ChevronLeft className="h-5 w-5 group-hover:-translate-x-0.5 transition-transform" />
         </button>
 
         {startPage > 1 && (
           <>
             <button
               onClick={() => handlePageChange(1)}
-              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-muted transition-colors"
+              className="min-w-[44px] h-11 px-4 py-2 bg-card border border-border/50 rounded-xl hover:bg-gold-400/10 hover:border-gold-400/30 font-semibold transition-all duration-300"
             >
               1
             </button>
-            {startPage > 2 && <span className="px-2">...</span>}
+            {startPage > 2 && <span className="px-2 text-muted-foreground">...</span>}
           </>
         )}
 
@@ -287,10 +290,10 @@ const Properties = () => {
           <button
             key={page}
             onClick={() => handlePageChange(page)}
-            className={`px-4 py-2 border rounded-lg transition-colors ${
+            className={`min-w-[44px] h-11 px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${
               currentPage === page 
-                ? "bg-ethiopian-yellow text-white border-ethiopian-yellow" 
-                : "border-gray-300 hover:bg-muted"
+                ? "bg-gradient-to-r from-gold-400 to-gold-500 text-foreground border border-gold-500 shadow-glow-gold" 
+                : "bg-card border border-border/50 hover:bg-gold-400/10 hover:border-gold-400/30"
             }`}
           >
             {page}
@@ -299,10 +302,10 @@ const Properties = () => {
 
         {endPage < totalPages && (
           <>
-            {endPage < totalPages - 1 && <span className="px-2">...</span>}
+            {endPage < totalPages - 1 && <span className="px-2 text-muted-foreground">...</span>}
             <button
               onClick={() => handlePageChange(totalPages)}
-              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-muted transition-colors"
+              className="min-w-[44px] h-11 px-4 py-2 bg-card border border-border/50 rounded-xl hover:bg-gold-400/10 hover:border-gold-400/30 font-semibold transition-all duration-300"
             >
               {totalPages}
             </button>
@@ -312,9 +315,9 @@ const Properties = () => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="group px-4 py-3 bg-card border border-border/50 rounded-xl hover:bg-gold-400/10 hover:border-gold-400/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-card"
         >
-          <ChevronRight className="h-5 w-5" />
+          <ChevronRight className="h-5 w-5 group-hover:translate-x-0.5 transition-transform" />
         </button>
       </div>
     );
@@ -347,85 +350,80 @@ const Properties = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-8">
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-black text-foreground mb-3">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-20"
+             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full opacity-15"
+             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.2) 0%, transparent 70%)', filter: 'blur(60px)' }} />
+      </div>
+      
+      <div className="container mx-auto px-4 py-12 relative z-10">
+        {/* Premium Header */}
+        <div className="mb-12 text-center">
+          <div className="ethiopian-accent-bar w-24 mx-auto mb-6"></div>
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-4 animate-fade-in-up">
             {t("Properties")}
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
             {t("Discover your perfect property from our extensive collection")}
           </p>
-          
-          {/* Image Management Button for Property Owners */}
-          {/* {isAuthenticated && (
-            <div className="header-actions">
-              <button
-                onClick={() => setShowImageManager(true)}
-                className="btn btn-primary"
-                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-              >
-                <ImageIcon size={16} />
-                Manage Images
-              </button>
-            </div>
-          )} */}
         </div>
 
-        {/* Search and Filters */}
-        <div className="bg-card rounded-xl border shadow-lg p-6 mb-6">
-          <div className="flex flex-col md:flex-row gap-4 items-center">
-            <form onSubmit={handleSearch} className="flex-1 w-full flex gap-3">
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+        {/* Premium Search and Filters Card */}
+        <div className="glass-card rounded-3xl border border-border/50 shadow-luxury p-8 mb-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <div className="flex flex-col lg:flex-row gap-6 items-center">
+            <form onSubmit={handleSearch} className="flex-1 w-full flex gap-4">
+              <div className="relative flex-1 group">
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-gold-400 transition-colors" />
                 <input
                   type="text"
                   placeholder={t("Search properties...")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow focus:border-transparent"
+                  className="w-full pl-14 pr-6 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-muted-foreground"
                 />
               </div>
               <button 
                 type="submit" 
-                className="px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-lg transition-all flex items-center gap-2"
+                className="group px-8 py-4 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-2xl font-bold text-lg hover:shadow-glow-green transition-all duration-300 flex items-center gap-3 hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Search className="h-5 w-5" />
-                {t("Search")}
+                <Search className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                <span className="hidden md:inline">{t("Search")}</span>
               </button>
               <button
                 type="button"
                 onClick={() => setShowFilters(!showFilters)}
-                className={`px-6 py-3 border-2 rounded-lg font-semibold transition-all flex items-center gap-2 ${
+                className={`px-6 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 border-2 hover:scale-[1.02] ${
                   showFilters 
-                    ? "bg-ethiopian-yellow/20 border-ethiopian-yellow text-ethiopian-yellow" 
-                    : "border-gray-300 hover:border-ethiopian-yellow"
+                    ? "bg-gold-400/20 border-gold-400/50 text-gold-400 shadow-glow-gold" 
+                    : "border-border/50 hover:border-gold-400/30 text-foreground hover:bg-gold-400/10"
                 }`}
               >
                 <Filter className="h-5 w-5" />
-                {t("Filter")}
+                <span className="hidden md:inline">{t("Filter")}</span>
               </button>
             </form>
 
             {/* View Mode Toggle */}
-            <div className="flex gap-2 border border-gray-300 rounded-lg p-1">
+            <div className="flex gap-2 p-2 bg-secondary/50 backdrop-blur-sm rounded-2xl border border-border/50">
               <button
                 onClick={() => setViewMode("grid")}
-                className={`p-2 rounded transition-colors ${
+                className={`p-3 rounded-xl transition-all duration-300 ${
                   viewMode === "grid" 
-                    ? "bg-ethiopian-yellow text-white" 
-                    : "hover:bg-muted"
+                    ? "bg-gradient-to-r from-gold-400 to-gold-500 text-foreground shadow-glow-gold" 
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`}
               >
                 <Grid className="h-5 w-5" />
               </button>
               <button
                 onClick={() => setViewMode("list")}
-                className={`p-2 rounded transition-colors ${
+                className={`p-3 rounded-xl transition-all duration-300 ${
                   viewMode === "list" 
-                    ? "bg-ethiopian-yellow text-white" 
-                    : "hover:bg-muted"
+                    ? "bg-gradient-to-r from-gold-400 to-gold-500 text-foreground shadow-glow-gold" 
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`}
               >
                 <List className="h-5 w-5" />
@@ -434,26 +432,29 @@ const Properties = () => {
           </div>
         </div>
 
-        {/* Filter Panel */}
+        {/* Premium Filter Panel */}
         {showFilters && (
-          <div className="bg-card rounded-xl border shadow-lg p-6 mb-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold">{t("Filter Properties")}</h3>
+          <div className="glass-card rounded-3xl border border-border/50 shadow-luxury p-8 mb-10 animate-fade-in-down">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h3 className="font-serif text-2xl font-bold text-foreground">{t("Filter Properties")}</h3>
+                <p className="text-muted-foreground mt-1">{t("Refine your search with advanced filters")}</p>
+              </div>
               <button
                 onClick={() => setShowFilters(false)}
-                className="p-2 hover:bg-muted rounded-lg transition-colors"
+                className="p-3 hover:bg-muted rounded-xl transition-all duration-300 text-muted-foreground hover:text-foreground"
               >
-                <X className="h-5 w-5" />
+                <X className="h-6 w-6" />
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-semibold">{t("Property Type")}</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("Property Type")}</label>
                 <select
                   value={filters.type}
                   onChange={(e) => handleFilterChange("type", e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-yellow focus:border-transparent"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground"
                 >
                   <option value="">{t("All Types")}</option>
                   <option value="house">{t("House")}</option>
@@ -464,12 +465,12 @@ const Properties = () => {
                 </select>
               </div>
 
-              <div className="filter-group">
-                <label>{t("Status")}</label>
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("Status")}</label>
                 <select
                   value={filters.status}
                   onChange={(e) => handleFilterChange("status", e.target.value)}
-                  className="filter-select"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground"
                 >
                   <option value="">{t("All Status")}</option>
                   <option value="for-sale">{t("For Sale")}</option>
@@ -477,8 +478,8 @@ const Properties = () => {
                 </select>
               </div>
 
-              <div className="filter-group">
-                <label>{t("Location")}</label>
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("Location")}</label>
                 <input
                   type="text"
                   placeholder={t("Enter location")}
@@ -486,12 +487,12 @@ const Properties = () => {
                   onChange={(e) =>
                     handleFilterChange("location", e.target.value)
                   }
-                  className="filter-input"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-muted-foreground"
                 />
               </div>
 
-              <div className="filter-group">
-                <label>{t("Min Price (ETB)")}</label>
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("Min Price (ETB)")}</label>
                 <input
                   type="number"
                   placeholder={t("Min price")}
@@ -499,12 +500,12 @@ const Properties = () => {
                   onChange={(e) =>
                     handleFilterChange("minPrice", e.target.value)
                   }
-                  className="filter-input"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-muted-foreground"
                 />
               </div>
 
-              <div className="filter-group">
-                <label>{t("Max Price (ETB)")}</label>
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("Max Price (ETB)")}</label>
                 <input
                   type="number"
                   placeholder={t("Max price")}
@@ -512,18 +513,18 @@ const Properties = () => {
                   onChange={(e) =>
                     handleFilterChange("maxPrice", e.target.value)
                   }
-                  className="filter-input"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-muted-foreground"
                 />
               </div>
 
-              <div className="filter-group">
-                <label>{t("Bedrooms")}</label>
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("Bedrooms")}</label>
                 <select
                   value={filters.bedrooms}
                   onChange={(e) =>
                     handleFilterChange("bedrooms", e.target.value)
                   }
-                  className="filter-select"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground"
                 >
                   <option value="">{t("Any")}</option>
                   <option value="1">{t("1+")}</option>
@@ -534,14 +535,14 @@ const Properties = () => {
                 </select>
               </div>
 
-              <div className="filter-group">
-                <label>{t("Bathrooms")}</label>
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("Bathrooms")}</label>
                 <select
                   value={filters.bathrooms}
                   onChange={(e) =>
                     handleFilterChange("bathrooms", e.target.value)
                   }
-                  className="filter-select"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground"
                 >
                   <option value="">{t("Any")}</option>
                   <option value="1">{t("1+")}</option>
@@ -551,8 +552,8 @@ const Properties = () => {
                 </select>
               </div>
 
-              <div className="filter-group">
-                <label>{t("Min Area (m²)")}</label>
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("Min Area (m²)")}</label>
                 <input
                   type="number"
                   placeholder={t("Min area")}
@@ -560,12 +561,12 @@ const Properties = () => {
                   onChange={(e) =>
                     handleFilterChange("minArea", e.target.value)
                   }
-                  className="filter-input"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-muted-foreground"
                 />
               </div>
 
-              <div className="filter-group">
-                <label>{t("Max Area (m²)")}</label>
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("Max Area (m²)")}</label>
                 <input
                   type="number"
                   placeholder={t("Max area")}
@@ -573,14 +574,17 @@ const Properties = () => {
                   onChange={(e) =>
                     handleFilterChange("maxArea", e.target.value)
                   }
-                  className="filter-input"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-muted-foreground"
                 />
               </div>
             </div>
 
-            <div className="filter-actions">
-              <button onClick={clearFilters} className="clear-filters-btn">
-                {t("Clear All")}
+            <div className="flex justify-end pt-6 border-t border-border/30 mt-6">
+              <button 
+                onClick={clearFilters} 
+                className="px-6 py-3 bg-muted hover:bg-destructive/10 text-foreground hover:text-destructive border border-border hover:border-destructive/30 rounded-xl font-semibold transition-all duration-300"
+              >
+                {t("Clear All Filters")}
               </button>
             </div>
           </div>
@@ -605,49 +609,74 @@ const Properties = () => {
 
         {/* Properties Grid/List */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p className="text-muted-foreground">{t("Loading properties...")}</p>
-          </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="space-y-6"
+          >
+            <div className="flex items-center justify-center gap-3 py-4">
+              <Sparkles className="w-5 h-5 text-gold-400 animate-pulse" />
+              <span className="text-muted-foreground font-medium">{t("Loading amazing properties...")}</span>
+            </div>
+            <PropertySkeletonGrid count={6} viewMode={viewMode} />
+          </motion.div>
         ) : filteredProperties.length > 0 ? (
           <>
-            <div className={`grid ${
-              viewMode === "grid" 
-                ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" 
-                : "grid-cols-1 gap-6"
-            }`}>
-              {currentProperties.map((property) => (
-                <PropertyCard
+            <motion.div 
+              className={`properties-container ${viewMode}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              {currentProperties.map((property, index) => (
+                <motion.div
                   key={property._id}
-                  property={property}
-                  isFavorite={favorites.has(property._id)}
-                  onToggleFavorite={() => toggleFavorite(property._id)}
-                  viewMode={viewMode}
-                  onImageManage={() => openImageManager(property)}
-                  canManageImages={isAuthenticated && (
-                    user?.role === 'admin' || 
-                    user?.role === 'employee' || 
-                    (user?._id === property?.owner?._id || user?._id === property?.owner)
-                  )}
-                />
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                >
+                  <PropertyCard
+                    property={property}
+                    isFavorite={favorites.has(property._id)}
+                    onToggleFavorite={() => toggleFavorite(property._id)}
+                    viewMode={viewMode}
+                    onImageManage={() => openImageManager(property)}
+                    canManageImages={isAuthenticated && (
+                      user?.role === 'admin' || 
+                      user?.role === 'employee' || 
+                      (user?._id === property?.owner?._id || user?._id === property?.owner)
+                    )}
+                  />
+                </motion.div>
               ))}
-            </div>
-            <div className="mt-8">
+            </motion.div>
+            <motion.div 
+              className="mt-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+            >
               {renderPagination()}
-            </div>
+            </motion.div>
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Search className="h-16 w-16 text-muted-foreground mb-4" />
-            <h3 className="text-2xl font-bold mb-2">{t("No properties found")}</h3>
-            <p className="text-muted-foreground mb-6">{t("Try adjusting your search criteria or filters")}</p>
+          <motion.div 
+            className="flex flex-col items-center justify-center py-24"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+          >
+            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center mb-8 shadow-luxury">
+              <Search className="h-16 w-16 text-muted-foreground/50" />
+            </div>
+            <h3 className="font-serif text-3xl font-bold text-foreground mb-4">{t("No properties found")}</h3>
+            <p className="text-lg text-muted-foreground mb-8 text-center max-w-lg">{t("Try adjusting your search criteria or filters")}</p>
             <button 
               onClick={clearFilters} 
-              className="px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-lg transition-all"
+              className="px-10 py-4 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-2xl font-bold text-lg hover:shadow-glow-green transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               {t("Clear Filters")}
             </button>
-          </div>
+          </motion.div>
         )}
 
         {/* Image Manager Modal */}

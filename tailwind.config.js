@@ -24,11 +24,12 @@ export default {
         },
         // Ethiopian Flag Colors
         ethiopian: {
-          green: '#007A33',
-          yellow: '#FCD20A',
-          red: '#DA121A',
+          green: 'hsl(145 63% 32%)',
+          yellow: 'hsl(48 96% 53%)',
+          red: 'hsl(0 85% 47%)',
           blue: '#0066FF', // Additional accent
         },
+        'ethiopian-green': 'hsl(145 63% 32%)',
         // Chocolate/Orange tones
         chocolate: {
           50: '#fff7ed',
@@ -104,6 +105,9 @@ export default {
         'gradient-ethiopian': 'linear-gradient(135deg, #007A33 0%, #FCD20A 50%, #DA121A 100%)',
         'gradient-warm-dark': 'linear-gradient(135deg, #2C1A12 0%, #4d250c 50%, #6b3510 100%)',
         'gradient-glass': 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+        'gradient-gold': 'linear-gradient(135deg, hsl(48 96% 53%) 0%, hsl(36 93% 40%) 100%)',
+        'gradient-luxury': 'linear-gradient(135deg, hsl(25 85% 45%) 0%, hsl(48 96% 53%) 100%)',
+        'gradient-radial-gold': 'radial-gradient(ellipse at center, hsl(48 96% 53% / 0.15) 0%, transparent 70%)',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
