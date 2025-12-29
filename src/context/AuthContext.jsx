@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { userService } from "@/services/userService";
 
 import { authService } from "../services/authService";
+import socketService from "../services/socketService";
 
 export const AuthContext = createContext(null);
 
@@ -35,10 +36,23 @@ export const AuthProvider = ({ children }) => {
         imagesUrl: storedUser.imagesUrl
       }); */
       setUser(storedUser);
+      
+      // Connect socket if user is logged in
+      const token = localStorage.getItem('token');
+      if (token) {
+        socketService.connect(token);
+      }
     } else {
       console.log("AuthContext: No stored user data found");
+      // Disconnect socket if no user
+      socketService.disconnect();
     }
     setLoading(false);
+
+    // Cleanup on unmount
+    return () => {
+      // Don't disconnect on unmount, only on logout
+    };
   }, []);
 
   // Ensure children is provided
@@ -56,6 +70,9 @@ export const AuthProvider = ({ children }) => {
 
       authService.storeAuthData(token, userData);
       setUser(userData);
+
+      // Connect socket after successful login
+      socketService.connect(token);
 
       return { success: true, user: userData };
     }
@@ -81,6 +98,8 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
+      // Disconnect socket on logout
+      socketService.disconnect();
       authService.clearAuthData();
       setUser(null);
     }

@@ -44,6 +44,8 @@ import {
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { motion, AnimatePresence } from 'framer-motion';
+
 import PropertyCard from '../components/PropertyCard';
 import UserContactForm from '../components/UserContactForm';
 import { useAuth } from '../context/AuthContext';
@@ -238,21 +240,101 @@ const AgentDashboard = () => {
     setShowPropertyDetails(true);
   };
 
-  // Stat Card Component
-  const StatCard = ({ title, value, icon: Icon, color = 'primary', onClick }) => (
-    <div 
-      className={`stat-card stat-${color} ${onClick ? 'clickable' : ''}`}
-      onClick={onClick}
-    >
-      <div className="stat-icon">
-        <Icon size={24} />
-      </div>
-      <div className="stat-content">
-        <div className="stat-value">{value}</div>
-        <div className="stat-label">{title}</div>
-      </div>
-    </div>
-  );
+  // WOW UPGRADE: Animated Stat Card with glassmorphism
+  const StatCard = ({ title, value, icon: Icon, color = 'primary', onClick }) => {
+    const [displayValue, setDisplayValue] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
+    
+    useEffect(() => {
+      const numValue = typeof value === 'string' 
+        ? parseFloat(value.replace(/[^0-9.]/g, '')) || 0
+        : value || 0;
+      
+      if (!isNaN(numValue) && numValue > 0) {
+        const duration = 1500;
+        const steps = 60;
+        const increment = numValue / steps;
+        let current = 0;
+        
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= numValue) {
+            setDisplayValue(numValue);
+            clearInterval(timer);
+          } else {
+            setDisplayValue(Math.floor(current));
+          }
+        }, duration / steps);
+        
+        return () => clearInterval(timer);
+      } else {
+        setDisplayValue(value);
+      }
+    }, [value]);
+
+    const formatDisplayValue = () => {
+      if (typeof value === 'string') {
+        if (value.includes('%')) return `${displayValue}%`;
+        if (value.includes('ETB') || value.includes('$')) {
+          return value.replace(/[\d,]+/, displayValue.toLocaleString());
+        }
+        return value;
+      }
+      return displayValue.toLocaleString();
+    };
+
+    const colorClasses = {
+      primary: 'from-ethiopian-green/20 to-emerald-500/20 border-ethiopian-green/30',
+      success: 'from-green-500/20 to-emerald-500/20 border-green-500/30',
+      warning: 'from-gold-400/20 to-amber-500/20 border-gold-400/30',
+      error: 'from-ethiopian-red/20 to-red-500/20 border-ethiopian-red/30',
+    };
+
+    return (
+      <motion.div
+        className={`relative overflow-hidden rounded-2xl p-6 glass-dark border backdrop-blur-md cursor-pointer group bg-gradient-to-br ${
+          colorClasses[color] || colorClasses.primary
+        } ${onClick ? 'hover:scale-105' : ''}`}
+        onClick={onClick}
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ y: -4, scale: 1.02 }}
+        transition={{ duration: 0.3, type: 'spring', stiffness: 300 }}
+      >
+        <div className="flex items-center justify-between relative z-10">
+          <div className="flex-1">
+            <p className="text-sm text-muted-foreground mb-2 font-medium">{title}</p>
+            <motion.p
+              className="text-3xl font-bold text-foreground"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+            >
+              {formatDisplayValue()}
+            </motion.p>
+          </div>
+          <motion.div
+            className={`p-3 rounded-xl bg-gradient-to-br ${colorClasses[color] || colorClasses.primary} border`}
+            whileHover={{ rotate: 5, scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 400 }}
+          >
+            <Icon size={24} className="text-foreground" />
+          </motion.div>
+        </div>
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-gold-400/0 to-ethiopian-green/0 pointer-events-none"
+          animate={{
+            background: isHovered
+              ? 'linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(4, 120, 87, 0.1) 100%)'
+              : 'linear-gradient(135deg, rgba(212, 175, 55, 0) 0%, rgba(4, 120, 87, 0) 100%)',
+          }}
+          transition={{ duration: 0.3 }}
+        />
+      </motion.div>
+    );
+  };
 
   // Appointment Card Component
   const AppointmentCard = ({ appointment, onStatusUpdate, onDelete }) => {
@@ -494,11 +576,22 @@ const AgentDashboard = () => {
   };
 
 
+  // WOW UPGRADE: Navigation items for glassmorphism sidebar
+  const navItems = [
+    { id: 'overview', label: 'Overview', icon: Home },
+    { id: 'listings', label: 'My Listings', icon: Building },
+    { id: 'appointments', label: 'Appointments', icon: Calendar },
+    { id: 'selling', label: 'Selling Properties', icon: TrendingUp },
+    { id: 'messages', label: 'Messages', icon: MessageSquare, action: () => navigate('/messages') },
+    { id: 'profile', label: 'Profile', icon: User, action: () => navigate('/profile') },
+    { id: 'contact', label: 'Contact Support', icon: Mail },
+  ];
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-gold-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-muted-foreground">Loading dashboard...</p>
         </div>
       </div>
@@ -506,679 +599,512 @@ const AgentDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-      <div className="flex">
-        {/* Sidebar */}
-        <div className="w-64 bg-card border-r shadow-lg min-h-screen p-6">
-          <div className="mb-8">
-            <h2 className="text-2xl font-black text-foreground mb-2 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/80 bg-clip-text text-transparent">Agent Dashboard</h2>
-            <p className="text-sm text-muted-foreground">Welcome back, {user?.name}</p>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
+      {/* WOW UPGRADE: Glassmorphism sidebar */}
+      <motion.aside
+        className="fixed left-0 top-0 h-screen w-64 glass-dark border-r border-border/30 z-40 overflow-y-auto"
+        initial={{ x: -100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5, type: 'spring' }}
+      >
+        <div className="p-6 mb-8 border-b border-border/20">
+          <motion.h2
+            className="text-2xl font-bold bg-gradient-to-r from-ethiopian-green to-gold-400 bg-clip-text text-transparent mb-2"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            Agent Dashboard
+          </motion.h2>
+          <motion.p
+            className="text-sm text-muted-foreground"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            Welcome back, {user?.name}
+          </motion.p>
         </div>
-        <nav className="nav-menu">
-          <div className="nav-item">
-            <a 
-              href="#overview" 
-              className={`nav-link ${activeTab === 'overview' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('overview'); }}
-            >
-              <Home size={20} />
-              Overview
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#listings" 
-              className={`nav-link ${activeTab === 'listings' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('listings'); }}
-            >
-              <Building size={20} />
-              My Listings
-            </a>
-          </div>
-          {/* <div className="nav-item">
-            <a 
-              href="#clients" 
-              className={`nav-link ${activeTab === 'clients' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('clients'); }}
-            >
-              <Users size={20} />
-              Clients
-            </a>
-          </div> */}
-          <div className="nav-item">
-            <a 
-              href="#appointments" 
-              className={`nav-link ${activeTab === 'appointments' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('appointments'); }}
-            >
-              <Calendar size={20} />
-              Appointments
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#selling" 
-              className={`nav-link ${activeTab === 'selling' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('selling'); }}
-            >
-              <TrendingUp size={20} />
-              Selling Properties
-            </a>
-          </div>
-          {/* <div className="nav-item">
-            <a 
-              href="#commissions" 
-              className={`nav-link ${activeTab === 'commissions' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('commissions'); }}
-            >
-              <DollarSign size={20} />
-              Commissions
-            </a>
-          </div> */}
-          {/* <div className="nav-item">
-            <a 
-              href="#leads" 
-              className={`nav-link ${activeTab === 'leads' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('leads'); }}
-            >
-              <Target size={20} />
-              Leads
-            </a>
-          </div> */}
-          <div className="nav-item">
-            <a 
-              href="#messages" 
-              className="nav-link"
-              onClick={(e) => { e.preventDefault(); navigate('/messages'); }}
-            >
-              <MessageSquare size={20} />
-              Messages
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#profile" 
-              className="nav-link"
-              onClick={(e) => { e.preventDefault(); navigate('/profile'); }}
-            >
-              <User size={20} />
-              Profile
-            </a>
-          </div>
-          <div className="nav-item">
-            <a 
-              href="#contact" 
-              className={`nav-link ${activeTab === 'contact' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('contact'); }}
-            >
-              <Mail size={20} />
-              Contact Support
-            </a>
-          </div>
+
+        <nav className="px-4 space-y-2">
+          {navItems.map((item, index) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            
+            return (
+              <motion.a
+                key={item.id}
+                href={`#${item.id}`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 relative overflow-hidden ${
+                  isActive
+                    ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/80 text-white shadow-lg'
+                    : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (item.action) {
+                    item.action();
+                  } else {
+                    setActiveTab(item.id);
+                  }
+                }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 * index, duration: 0.3 }}
+                whileHover={{ scale: 1.02, x: 4 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Icon size={20} className="flex-shrink-0" />
+                <span className="font-medium">{item.label}</span>
+                {isActive && (
+                  <motion.div
+                    className="absolute right-0 top-0 bottom-0 w-1 bg-gold-400"
+                    layoutId="agentActiveIndicator"
+                    initial={false}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  />
+                )}
+              </motion.a>
+            );
+          })}
         </nav>
-      </div>
+      </motion.aside>
 
-      {/* Main Content */}
-      <div className="dashboard-main">
-        {/* Header */}
-        <div className="dashboard-header">
-          <div>
-            <h1 className="dashboard-title">
-              {activeTab === 'overview' && 'Dashboard Overview'}
-              {activeTab === 'listings' && 'My Listings'}
-              {/* {activeTab === 'clients' && 'Client Management'} */}
-              {activeTab === 'appointments' && 'Appointments'}
-              {/* {activeTab === 'commissions' && 'Commission Tracking'} */}
-              {/* {activeTab === 'leads' && 'Lead Management'} */}
-            </h1>
-            <p className="text-neutral-600">
-              {activeTab === 'overview' && 'Track your listings performance and manage your real estate business'}
-              {activeTab === 'listings' && 'Manage your property listings and track their performance'}
-              {/* {activeTab === 'clients' && 'Manage your client relationships and communications'} */}
-              {activeTab === 'appointments' && 'Schedule and manage property viewings and consultations'}
-              {/* {activeTab === 'commissions' && 'Track your earnings and commission history'} */}
-              {/* {activeTab === 'leads' && 'Manage potential clients and inquiries'} */}
-            </p>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="btn btn-secondary">
-              <Bell size={16} />
-              Notifications
-            </button>
-            <button className="btn btn-secondary" onClick={() => navigate('/properties/new')}>
-              <Plus size={16} />
-              Add Property
-            </button>
-          </div>
-        </div>
-
-        {/* Overview Tab */}
-        {activeTab === 'overview' && (
-          <>
-            {/* Stats Grid */}
-            <div className="stats-grid">
-              <StatCard
-                title="Total Listings"
-                value={stats.totalListings}
-                icon={Building}
-                color="primary"
-                onClick={() => setActiveTab('listings')}
-              />
-              <StatCard
-                title="Active Listings"
-                value={stats.activeListings}
-                icon={CheckCircle}
-                color="success"
-                onClick={() => setActiveTab('listings')}
-              />
-              <StatCard
-                title="Total Commission"
-                value={`ETB ${stats.totalCommission.toLocaleString()}`}
-                icon={DollarSign}
-                color="warning"
-                onClick={() => setActiveTab('commissions')}
-              />
-              <StatCard
-                title="Pending Interests"
-                value={stats.pendingInterests}
-                icon={Heart}
-                color="error"
-                onClick={() => setActiveTab('appointments')}
-              />
+      {/* WOW UPGRADE: Main content with proper spacing */}
+      <div className="ml-64 min-h-screen">
+        <div className="p-8">
+          {/* WOW UPGRADE: Animated header */}
+          <motion.div
+            className="mb-8 flex items-center justify-between"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div>
+              <motion.h1
+                className="text-4xl font-bold bg-gradient-to-r from-ethiopian-green to-gold-400 bg-clip-text text-transparent mb-2"
+                key={activeTab}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {activeTab === 'overview' && 'Dashboard Overview'}
+                {activeTab === 'listings' && 'My Listings'}
+                {activeTab === 'appointments' && 'Appointments'}
+                {activeTab === 'selling' && 'Selling Properties'}
+                {activeTab === 'contact' && 'Contact Support'}
+              </motion.h1>
+              <motion.p
+                className="text-muted-foreground text-lg"
+                key={`${activeTab}-desc`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                {activeTab === 'overview' && 'Track your listings performance and manage your real estate business'}
+                {activeTab === 'listings' && 'Manage your property listings and track their performance'}
+                {activeTab === 'appointments' && 'Schedule and manage property viewings and consultations'}
+                {activeTab === 'selling' && 'View and manage properties currently for sale'}
+                {activeTab === 'contact' && 'Get in touch with our support team'}
+              </motion.p>
             </div>
-
-            {/* Content Sections */}
-            <div className="content-sections">
-              <div className="content-section">
-                <div className="section-header">
-                  <h3>Recent Listings</h3>
-                  <button className="btn btn-secondary" onClick={() => setActiveTab('listings')}>
-                    View All
-                  </button>
-                </div>
-                <div className="properties-grid">
-                  {myListings.slice(0, 3).map(property => (
-                    <PropertyCard key={property._id} property={property} />
-                  ))}
-                  {myListings.length === 0 && (
-                    <div className="empty-state">
-                      <Building size={48} />
-                      <h3>No listings yet</h3>
-                      <p>Start by adding your first property listing</p>
-                      <button className="btn btn-primary" onClick={() => navigate('/properties/add')}>
-                        <Plus size={16} />
-                        Add Property
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="content-section">
-                <div className="section-header">
-                  <h3>Recent Appointments</h3>
-                  <button className="btn btn-secondary" onClick={() => setActiveTab('appointments')}>
-                    View All
-                  </button>
-                </div>
-                <div className="appointments-list">
-                  {appointments.slice(0, 5).map(appointment => (
-                    <div key={appointment._id || appointment.id} className="appointment-item">
-                      <div className="appointment-info">
-                        <div className="appointment-client">{appointment.client}</div>
-                        <div className="appointment-property">{appointment.property}</div>
-                        <div className="appointment-time">
-                          <Calendar size={14} />
-                          {appointment.date} at {appointment.time}
-                        </div>
-                      </div>
-                      <div className="appointment-status">
-                        <span className={`status-badge ${appointment.status}`}>
-                          {appointment.status}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                  {appointments.length === 0 && (
-                    <div className="empty-state">
-                      <Calendar size={48} />
-                      <h3>No appointments</h3>
-                      <p>You have no scheduled appointments</p>
-                    </div>
-                  )}
-                </div>
-              </div>
+            <div className="flex items-center gap-4">
+              <motion.button
+                className="px-4 py-2 glass-dark border border-border/30 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Bell size={16} />
+                Notifications
+              </motion.button>
+              <motion.button
+                className="px-6 py-2 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/80 text-white rounded-lg shadow-lg hover:shadow-xl flex items-center gap-2 font-medium"
+                onClick={() => navigate('/properties/new')}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Plus size={16} />
+                Add Property
+              </motion.button>
             </div>
-          </>
-        )}
+          </motion.div>
 
-        {/* Listings Tab */}
-        {activeTab === 'listings' && (
-          <div className="content-section">
-            <div className="section-header">
-              <h3>My Property Listings</h3>
-              <div className="view-controls">
-                <button 
-                  className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-                  onClick={() => setViewMode('grid')}
+          {/* Overview Tab */}
+          <AnimatePresence mode="wait">
+            {activeTab === 'overview' && (
+              <motion.div
+                key="overview"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Stats Grid */}
+                <motion.div
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                      opacity: 1,
+                      transition: { staggerChildren: 0.1 },
+                    },
+                  }}
                 >
-                  <Grid size={16} />
-                </button>
-                <button 
-                  className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
-                  onClick={() => setViewMode('list')}
-                >
-                  <List size={16} />
-                </button>
-              </div>
-            </div>
-            
-            {viewMode === 'grid' ? (
-              <div className="properties-grid">
-                {myListings.map(property => (
-                  <div key={property._id} className="admin-card" data-status={property.status}>
-                    <PropertyCard 
-                      property={property}
-                      onToggleFavorite={() => {}}
-                      viewMode={viewMode}
-                      onImageManage={null}
-                      canManageImages={false}
+                  <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+                    <StatCard
+                      title="Total Listings"
+                      value={stats.totalListings}
+                      icon={Building}
+                      color="primary"
+                      onClick={() => setActiveTab('listings')}
                     />
-                    <div className="property-card-actions admin-card-actions" style={{ marginTop: '8px' }}>
-                      <button
-                        className="card-action-btn view"
-                        title="View Details"
-                        onClick={(e) => { e.stopPropagation(); navigate(`/properties/${property._id}`); }}
-                      >
-                        <Eye size={16} />
-                      </button>
-                      <button
-                        className="card-action-btn edit"
-                        title="Edit Property"
-                        onClick={(e) => { e.stopPropagation(); navigate(`/properties/${property._id}/edit`); }}
-                      >
-                        <Edit size={16} />
-                      </button>
-                      <button
-                        className="card-action-btn delete"
-                        title="Delete Property"
-                        onClick={(e) => { e.stopPropagation(); handleDeleteProperty(property._id); }}
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="properties-list">
-                {myListings.map(property => (
-                  <div key={property._id} className="admin-card" data-status={property.status}>
-                    <PropertyCard 
-                      property={property}
-                      onToggleFavorite={() => {}}
-                      viewMode="list"
-                      onImageManage={null}
-                      canManageImages={false}
+                  </motion.div>
+                  <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+                    <StatCard
+                      title="Active Listings"
+                      value={stats.activeListings}
+                      icon={CheckCircle}
+                      color="success"
+                      onClick={() => setActiveTab('listings')}
                     />
-                    <div className="property-card-actions admin-card-actions" style={{ marginTop: '8px' }}>
-                      <button
-                        className="card-action-btn view"
-                        title="View Details"
-                        onClick={(e) => { e.stopPropagation(); navigate(`/properties/${property._id}`); }}
+                  </motion.div>
+                  <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+                    <StatCard
+                      title="Total Commission"
+                      value={`ETB ${stats.totalCommission.toLocaleString()}`}
+                      icon={DollarSign}
+                      color="warning"
+                    />
+                  </motion.div>
+                  <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+                    <StatCard
+                      title="Pending Interests"
+                      value={stats.pendingInterests}
+                      icon={Heart}
+                      color="error"
+                      onClick={() => setActiveTab('appointments')}
+                    />
+                  </motion.div>
+                </motion.div>
+
+                {/* Content Sections */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Recent Listings */}
+                  <motion.div
+                    className="glass-card rounded-2xl p-6 border border-border/30"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-xl font-bold text-foreground">Recent Listings</h3>
+                      <motion.button
+                        className="px-4 py-2 text-sm bg-muted/50 text-muted-foreground hover:text-foreground rounded-lg transition-all"
+                        onClick={() => setActiveTab('listings')}
+                        whileHover={{ scale: 1.05 }}
                       >
-                        <Eye size={16} />
-                      </button>
-                      <button
-                        className="card-action-btn edit"
-                        title="Edit Property"
-                        onClick={(e) => { e.stopPropagation(); navigate(`/properties/${property._id}/edit`); }}
-                      >
-                        <Edit size={16} />
-                      </button>
-                      <button
-                        className="card-action-btn delete"
-                        title="Delete Property"
-                        onClick={(e) => { e.stopPropagation(); handleDeleteProperty(property._id); }}
-                      >
-                        <Trash2 size={16} />
-                      </button>
+                        View All
+                      </motion.button>
                     </div>
-                  </div>
-                ))}
-              </div>
+                    <div className="space-y-4">
+                      {Array.isArray(myListings) && myListings.slice(0, 3).map((listing, index) => (
+                        <motion.div
+                          key={listing._id}
+                          className="flex items-center gap-4 p-4 bg-muted/30 rounded-xl hover:bg-muted/50 transition-all cursor-pointer"
+                          onClick={() => openPropertyDetails(listing)}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.1 * index }}
+                          whileHover={{ x: 4 }}
+                        >
+                          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-ethiopian-green/20 to-gold-400/20 flex items-center justify-center overflow-hidden">
+                            {listing.images?.[0] ? (
+                              <img 
+                                src={`${SERVER_BASE_URL}${listing.images[0]}`} 
+                                alt={listing.title}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <Building size={24} className="text-ethiopian-green" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-foreground truncate">{listing.title}</h4>
+                            <p className="text-sm text-muted-foreground">ETB {listing.price?.toLocaleString()}</p>
+                          </div>
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            listing.status === 'approved' ? 'bg-green-500/20 text-green-400' :
+                            listing.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                            'bg-muted text-muted-foreground'
+                          }`}>
+                            {listing.status}
+                          </span>
+                        </motion.div>
+                      ))}
+                      {(!myListings || myListings.length === 0) && (
+                        <p className="text-center text-muted-foreground py-8">No listings yet</p>
+                      )}
+                    </div>
+                  </motion.div>
+
+                  {/* Recent Appointments */}
+                  <motion.div
+                    className="glass-card rounded-2xl p-6 border border-border/30"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-xl font-bold text-foreground">Recent Appointments</h3>
+                      <motion.button
+                        className="px-4 py-2 text-sm bg-muted/50 text-muted-foreground hover:text-foreground rounded-lg transition-all"
+                        onClick={() => setActiveTab('appointments')}
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        View All
+                      </motion.button>
+                    </div>
+                    <div className="space-y-4">
+                      {Array.isArray(recentInterests) && recentInterests.slice(0, 3).map((interest, index) => (
+                        <motion.div
+                          key={interest._id}
+                          className="flex items-center gap-4 p-4 bg-muted/30 rounded-xl"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.1 * index }}
+                        >
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-400/20 to-ethiopian-green/20 flex items-center justify-center">
+                            <Users size={20} className="text-gold-400" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-foreground truncate">{interest.contactInfo?.name || 'Anonymous'}</h4>
+                            <p className="text-sm text-muted-foreground truncate">{interest.propertyId?.title || 'Property'}</p>
+                          </div>
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            interest.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                            interest.status === 'contacted' ? 'bg-blue-500/20 text-blue-400' :
+                            interest.status === 'schedule' ? 'bg-green-500/20 text-green-400' :
+                            'bg-muted text-muted-foreground'
+                          }`}>
+                            {interest.status}
+                          </span>
+                        </motion.div>
+                      ))}
+                      {(!recentInterests || recentInterests.length === 0) && (
+                        <p className="text-center text-muted-foreground py-8">No appointments yet</p>
+                      )}
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
             )}
-          </div>
-        )}
 
-        {/* Clients Tab */}
-        {/* {activeTab === 'clients' && (
-          <div className="content-section">
-            <div className="section-header">
-              <h3>Client Management</h3>
-              <button className="btn btn-primary">
-                <Plus size={16} />
-                Add Client
-              </button>
-            </div>
-            
-            <div className="clients-grid">
-              {clients.map(client => (
-                <div key={client._id} className="client-card">
-                  <div className="client-avatar">
-                    {client.name?.charAt(0)?.toUpperCase()}
-                  </div>
-                  <div className="client-info">
-                    <h4>{client.name}</h4>
-                    <p>{client.email}</p>
-                    <p>{client.phone}</p>
-                  </div>
-                  <div className="client-actions">
-                    <button className="btn btn-sm btn-primary">Contact</button>
-                    <button className="btn btn-sm btn-secondary">View Profile</button>
+            {/* Listings Tab */}
+            {activeTab === 'listings' && (
+              <motion.div
+                key="listings"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-4">
+                    <motion.button
+                      className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-ethiopian-green text-white' : 'bg-muted/50 text-muted-foreground'}`}
+                      onClick={() => setViewMode('grid')}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Grid size={20} />
+                    </motion.button>
+                    <motion.button
+                      className={`p-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-ethiopian-green text-white' : 'bg-muted/50 text-muted-foreground'}`}
+                      onClick={() => setViewMode('list')}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <List size={20} />
+                    </motion.button>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        )} */}
+                
+                <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
+                  {Array.isArray(myListings) && myListings.map((listing, index) => (
+                    <motion.div
+                      key={listing._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.05 * index }}
+                    >
+                      <PropertyCard property={listing} />
+                    </motion.div>
+                  ))}
+                  {(!myListings || myListings.length === 0) && (
+                    <div className="col-span-full text-center py-12 glass-card rounded-2xl">
+                      <Building size={48} className="mx-auto mb-4 text-muted-foreground" />
+                      <h3 className="text-xl font-semibold mb-2">No listings yet</h3>
+                      <p className="text-muted-foreground mb-4">Start by adding your first property listing</p>
+                      <motion.button
+                        className="px-6 py-2 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/80 text-white rounded-lg"
+                        onClick={() => navigate('/properties/new')}
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <Plus size={16} className="inline mr-2" />
+                        Add Property
+                      </motion.button>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
 
-        {/* Appointments Tab */}
-        {activeTab === 'appointments' && (
-          <div className="content-section">
-            <div className="section-header">
-              <h3>Appointments & Viewings ({appointments.length})</h3>
-              <div className="flex items-center gap-2">
-                <button className="btn btn-secondary">
-                  <Filter size={16} />
-                  Filter
-                </button>
-                <button className="btn btn-secondary">
-                  <Search size={16} />
-                  Search
-                </button>
-              </div>
-            </div>
-            
-            <div className="appointments-grid">
-              {appointments.length > 0 ? (
+            {/* Appointments Tab */}
+            {activeTab === 'appointments' && (
+              <motion.div
+                key="appointments"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {appointments.map((appointment) => (
-                    <AppointmentCard 
-                      key={appointment._id || appointment.id} 
-                      appointment={appointment} 
-                      onStatusUpdate={(appointmentId, newStatus, additionalData) => {
-                        setAppointments(prev => 
-                          prev.map(appointment => 
-                            appointment._id === appointmentId 
-                              ? { ...appointment, status: newStatus, ...additionalData }
-                              : appointment
-                          )
-                        );
-                        
-                        // Update stats
-                        if (newStatus === 'pending') {
-                          setStats(prev => ({ ...prev, pendingInterests: prev.pendingInterests + 1 }));
-                        } else if (appointment.status === 'pending' && newStatus !== 'pending') {
-                          setStats(prev => ({ ...prev, pendingInterests: prev.pendingInterests - 1 }));
-                        }
-                      }}
-                      onDelete={handleDeleteInterest}
-                    />
+                  {Array.isArray(appointments) && appointments.map((appointment, index) => (
+                    <motion.div
+                      key={appointment._id || index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.05 * index }}
+                    >
+                      <AppointmentCard 
+                        appointment={appointment}
+                        onStatusUpdate={(id, status) => {
+                          setAppointments(prev => prev.map(a => 
+                            a._id === id ? { ...a, status } : a
+                          ));
+                        }}
+                        onDelete={handleDeleteInterest}
+                      />
+                    </motion.div>
                   ))}
+                  {(!appointments || appointments.length === 0) && (
+                    <div className="col-span-full text-center py-12 glass-card rounded-2xl">
+                      <Calendar size={48} className="mx-auto mb-4 text-muted-foreground" />
+                      <h3 className="text-xl font-semibold mb-2">No appointments</h3>
+                      <p className="text-muted-foreground">Appointments will appear here when buyers express interest</p>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className="text-center py-12">
-                  <Calendar size={48} className="text-neutral-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-2">No appointments yet</h3>
-                  <p className="text-neutral-600 mb-4">Appointments will appear here when clients show interest in your properties</p>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+              </motion.div>
+            )}
 
-        {/* Commissions Tab */}
-        {/* {activeTab === 'commissions' && (
-          <div className="content-section">
-            <div className="section-header">
-              <h3>Commission Tracking</h3>
-              <div className="commission-summary">
-                <span>Total Earned: ETB {stats.totalCommission.toLocaleString()}</span>
-                <span>This Month: ETB {stats.monthlyCommission.toLocaleString()}</span>
-              </div>
-            </div>
-            
-            <div className="commissions-table">
-              <table className="data-table">
-                <thead>
-                  <tr>
-                    <th>Property</th>
-                    <th>Client</th>
-                    <th>Sale Price</th>
-                    <th>Commission</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {commissions.map(commission => (
-                    <tr key={commission.id}>
-                      <td>{commission.property}</td>
-                      <td>{commission.client}</td>
-                      <td>ETB {commission.salePrice}</td>
-                      <td>ETB {commission.commission}</td>
-                      <td>
-                        <span className={`status-badge ${commission.status}`}>
-                          {commission.status}
-                        </span>
-                      </td>
-                      <td>{commission.date}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )} */}
-
-        {/* Leads Tab */}
-        {/* {activeTab === 'leads' && (
-          <div className="content-section">
-            <div className="section-header">
-              <h3>Lead Management</h3>
-              <button className="btn btn-primary">
-                <Plus size={16} />
-                Add Lead
-              </button>
-            </div>
-            
-            <div className="leads-table">
-              <table className="data-table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Interest</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {leads.map(lead => (
-                    <tr key={lead._id}>
-                      <td>{lead.sender?.name || 'Unknown'}</td>
-                      <td>{lead.sender?.email || 'No email'}</td>
-                      <td>{lead.sender?.phone || 'No phone'}</td>
-                      <td>{lead.subject || 'General inquiry'}</td>
-                      <td>
-                        <span className={`status-badge ${lead.status || 'new'}`}>
-                          {lead.status || 'new'}
-                        </span>
-                      </td>
-                      <td>{new Date(lead.createdAt).toLocaleDateString()}</td>
-                      <td>
-                        <div className="action-buttons">
-                          <button className="btn btn-sm btn-primary">View</button>
-                          <button className="btn btn-sm btn-success">Contact</button>
-                          <button 
-                            className="btn btn-sm btn-secondary"
-                            onClick={() => handleLeadAction(lead._id, 'contacted')}
-                          >
-                            Mark Contacted
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )} */}
-
-        {/* Selling Properties Tab */}
-        {activeTab === 'selling' && (
-          <div className="content-section">
-            <div className="section-header">
-              <h3>Selling Properties ({myListings.filter(p => p.sold === false && p.isVerified === true).length})</h3>
-              <div className="flex items-center gap-2">
-                <button className="btn btn-secondary">
-                  <Filter size={16} />
-                  Filter
-                </button>
-                <button className="btn btn-secondary">
-                  <Search size={16} />
-                  Search
-                </button>
-              </div>
-            </div>
-            <div className="properties-grid">
-              {myListings.filter(p => p.sold === false && p.isVerified === true).length > 0 ? (
+            {/* Selling Tab */}
+            {activeTab === 'selling' && (
+              <motion.div
+                key="selling"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {myListings
-                    .filter(p => p.sold === false && p.isVerified === true)
-                    .map((property) => (
-                      <div key={property._id} className="property-card bg-white rounded-lg shadow-md overflow-hidden">
-                        <div className="property-image h-48 bg-neutral-200 flex items-center justify-center">
-                          {property.images?.[0] ? (
-                            <img 
-                              src={`${SERVER_BASE_URL}${property.images[0]}`}
-                              alt={property.title}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <Building size={48} className="text-neutral-400" />
-                          )}
-                        </div>
-                        <div className="property-details p-4">
-                          <h4 className="font-semibold text-lg text-neutral-900 mb-2">
-                            {property.title || 'Property Title'}
-                          </h4>
-                          <p className="text-neutral-600 mb-2 flex items-center">
-                            <MapPin size={16} className="mr-2" />
-                            {property.location || 'Location'}
-                          </p>
-                          <div className="property-stats grid grid-cols-2 gap-4 mb-3">
-                            <div className="flex items-center">
-                              <Home size={16} className="mr-2 text-neutral-500" />
-                              <span className="text-sm text-neutral-600">{property.features?.bedrooms || 0} beds</span>
-                            </div>
-                            <div className="flex items-center">
-                              <Bath size={16} className="mr-2 text-neutral-600" />
-                              <span className="text-sm text-neutral-600">{property.features?.bathrooms || 0} baths</span>
-                            </div>
-                          </div>
-                          <div className="price-info border-t pt-3 mb-3">
-                            <div className="flex justify-between items-center">
-                              <span className="text-sm font-medium text-neutral-700">Price:</span>
-                              <span className="text-lg font-semibold text-green-600">
-                                ${property.price?.toLocaleString() || 'N/A'}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <button 
-                              className="btn btn-sm btn-primary flex-1"
-                              onClick={() => openPropertyDetails(property)}
-                            >
-                              <Eye size={16} className="mr-2" />
-                              View Details
-                            </button>
-                            <button 
-                              className="btn btn-sm btn-secondary"
-                              onClick={() => navigate(`/properties/${property._id}/edit`)}
-                            >
-                              <Edit size={16} className="mr-2" />
-                              Edit
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                  {Array.isArray(myListings) && myListings.filter(l => l.status === 'approved').map((listing, index) => (
+                    <motion.div
+                      key={listing._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.05 * index }}
+                    >
+                      <PropertyCard property={listing} />
+                    </motion.div>
+                  ))}
+                  {(!myListings || myListings.filter(l => l.status === 'approved').length === 0) && (
+                    <div className="col-span-full text-center py-12 glass-card rounded-2xl">
+                      <TrendingUp size={48} className="mx-auto mb-4 text-muted-foreground" />
+                      <h3 className="text-xl font-semibold mb-2">No active listings</h3>
+                      <p className="text-muted-foreground">Your approved properties for sale will appear here</p>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className="text-center py-12">
-                  <TrendingUp size={48} className="text-neutral-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-2">No properties currently for sale</h3>
-                  <p className="text-neutral-600 mb-4">Properties you manage for sale will appear here</p>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+              </motion.div>
+            )}
 
-        {/* Contact Tab */}
-        {activeTab === 'contact' && (
-          <div className="space-y-6">
-            <UserContactForm />
-          </div>
-        )}
+            {/* Contact Tab */}
+            {activeTab === 'contact' && (
+              <motion.div
+                key="contact"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="max-w-2xl mx-auto"
+              >
+                <div className="glass-card rounded-2xl p-8 border border-border/30">
+                  <h3 className="text-2xl font-bold mb-6 text-foreground">Contact Support</h3>
+                  <UserContactForm />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Property Details Modal */}
       {showPropertyDetails && selectedProperty && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h2>{selectedProperty.title}</h2>
-              <button className="close-btn" onClick={() => setShowPropertyDetails(false)}>
-                <XCircle size={20} />
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <motion.div
+            className="glass-card rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+          >
+            <div className="flex items-center justify-between p-6 border-b border-border/30">
+              <h2 className="text-xl font-bold text-foreground">{selectedProperty.title}</h2>
+              <button 
+                className="p-2 hover:bg-muted/50 rounded-lg transition-colors"
+                onClick={() => setShowPropertyDetails(false)}
+              >
+                <X size={20} />
               </button>
             </div>
-            <div className="modal-body">
-              <div className="property-details-grid">
-                <div className="detail-section">
-                  <h3>Overview</h3>
-                  <div className="detail-row"><span className="detail-label">Status</span><span className="detail-value">{selectedProperty.status}</span></div>
-                  <div className="detail-row"><span className="detail-label">Type</span><span className="detail-value">{selectedProperty.type}</span></div>
-                  <div className="detail-row"><span className="detail-label">Price</span><span className="detail-value">ETB {selectedProperty.price?.toLocaleString()}</span></div>
-                  <div className="detail-row"><span className="detail-label">Created</span><span className="detail-value">{selectedProperty.createdAt ? new Date(selectedProperty.createdAt).toLocaleDateString() : '-'}</span></div>
-                  <div className="detail-row"><span className="detail-label">Views</span><span className="detail-value">{selectedProperty.views || 0}</span></div>
+            <div className="p-6 space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">Status</p>
+                  <p className="font-semibold">{selectedProperty.status}</p>
                 </div>
-                <div className="detail-section">
-                  <h3>Details</h3>
-                  <div className="detail-row"><span className="detail-label">Location</span><span className="detail-value">{selectedProperty.location}</span></div>
-                  <div className="detail-row"><span className="detail-label">Bedrooms</span><span className="detail-value">{selectedProperty.bedrooms}</span></div>
-                  <div className="detail-row"><span className="detail-label">Bathrooms</span><span className="detail-value">{selectedProperty.bathrooms}</span></div>
-                  <div className="detail-row"><span className="detail-label">Area</span><span className="detail-value">{selectedProperty.area} m²</span></div>
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">Price</p>
+                  <p className="font-semibold">ETB {selectedProperty.price?.toLocaleString()}</p>
                 </div>
-                <div className="detail-section">
-                  <h3>Owner</h3>
-                  <div className="detail-row"><span className="detail-label">Name</span><span className="detail-value">{selectedProperty.owner?.name || user?.name || 'Unknown'}</span></div>
-                  <div className="detail-row"><span className="detail-label">Email</span><span className="detail-value">{selectedProperty.owner?.email || '-'}</span></div>
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">Location</p>
+                  <p className="font-semibold">{selectedProperty.location}</p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">Type</p>
+                  <p className="font-semibold">{selectedProperty.type}</p>
                 </div>
               </div>
-              <p className="mt-3 text-neutral-700">{selectedProperty.description}</p>
+              <p className="text-muted-foreground">{selectedProperty.description}</p>
             </div>
-            <div className="modal-actions">
-              <button className="btn btn-secondary" onClick={() => navigate(`/properties/${selectedProperty._id}`)}>Open Full Page</button>
-              <button className="btn btn-primary" onClick={() => setShowPropertyDetails(false)}>Close</button>
+            <div className="flex gap-4 p-6 border-t border-border/30">
+              <button 
+                className="flex-1 py-2 bg-muted/50 text-foreground rounded-lg hover:bg-muted transition-colors"
+                onClick={() => navigate(`/properties/${selectedProperty._id}`)}
+              >
+                View Full Page
+              </button>
+              <button 
+                className="flex-1 py-2 bg-ethiopian-green text-white rounded-lg hover:bg-ethiopian-green/90 transition-colors"
+                onClick={() => setShowPropertyDetails(false)}
+              >
+                Close
+              </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
     </div>

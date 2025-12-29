@@ -758,17 +758,17 @@ const Home = () => {
           <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-white/80 font-light">
             {t("Join thousands of satisfied customers who found their perfect property with Ethio-Home")}
           </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+          <div className="flex flex-row flex-wrap gap-4 justify-center items-center">
             <Link 
               to="/properties" 
-              className="group px-10 py-5 bg-white text-accent rounded-2xl font-semibold text-lg hover:bg-white/95 transition-all duration-300 shadow-luxury hover:shadow-luxury-lg hover:scale-105 inline-flex items-center justify-center gap-3"
+              className="group px-8 py-4 bg-white text-accent rounded-xl font-semibold text-base hover:bg-white/95 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 inline-flex items-center justify-center gap-2"
             >
               {t("Browse Properties")}
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link 
               to="/signup" 
-              className="px-10 py-5 bg-transparent border-2 border-white/50 text-white rounded-2xl font-semibold text-lg hover:bg-white/10 hover:border-white transition-all duration-300 hover:scale-105"
+              className="px-8 py-4 bg-transparent border-2 border-white/50 text-white rounded-xl font-semibold text-base hover:bg-white/10 hover:border-white transition-all duration-300 hover:scale-105 inline-flex items-center justify-center"
             >
               {t("Get Started")}
             </Link>

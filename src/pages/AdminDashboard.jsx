@@ -42,6 +42,13 @@ import ReviewManagement from '../components/ReviewManagement';
 import SubscriptionManagement from '../components/SubscriptionManagement';
 import FAQManagement from '../components/FAQManagement';
 import DepartmentManagement from '../components/DepartmentManagement';
+import { 
+  RevenueChart, 
+  PropertyDistributionChart, 
+  UserGrowthChart, 
+  PropertyViewsChart,
+  SoldPropertiesChart 
+} from '../components/admin/AdminCharts';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { messageService } from '../services/messageService';
@@ -531,11 +538,22 @@ const AdminDashboard = () => {
               />
             </div>
 
+            {/* Analytics Charts Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              <RevenueChart />
+              <PropertyDistributionChart />
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              <UserGrowthChart />
+              <PropertyViewsChart />
+            </div>
+
             {/* Message Management Section */}
             <div className="card mb-8">
               <div className="card-header">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-neutral-900">Message Management</h3>
+                  <h3 className="text-lg font-semibold text-foreground">Message Management</h3>
                   <div className="flex items-center gap-4">
                     <button 
                       className="btn btn-sm btn-secondary"
@@ -550,7 +568,6 @@ const AdminDashboard = () => {
                 <MessageManagement userRole="admin" showStats={true} showActions={true} />
               </div>
             </div>
-
 
 
             {/* Content Grid */}

@@ -445,95 +445,102 @@ const BuyerDashboard = () => {
   );
 
   const PropertyCard = ({ property, isFavorite = false, showFavoriteButton = true }) => (
-    <div className="card">
-      <div className="relative">
+    <div className="group relative bg-card/95 backdrop-blur-xl border border-border/40 rounded-2xl overflow-hidden hover:border-gold-400/40 hover:shadow-2xl hover:shadow-gold-400/10 transition-all duration-500 hover:-translate-y-2">
+      {/* Glow effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gold-400/0 via-gold-400/5 to-ethiopian-green/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" />
+      
+      <div className="relative h-52 overflow-hidden">
         <img
           src={property.imagesUrl?.[0] || property.images?.[0] || '/hero-bg-1.jpg'}
           alt={property.title}
-          className="w-full h-48 object-cover"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
         {showFavoriteButton && (
           <button
-            className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition ${isFavorite
-                ? 'bg-error-500 text-white'
-                : 'bg-white/80 text-neutral-600 hover:bg-white'
+            className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-lg ${isFavorite
+                ? 'bg-ethiopian-red text-white'
+                : 'bg-white/20 text-white hover:bg-white/40'
               }`}
             onClick={() => isFavorite ? handleRemoveFromFavorites(property._id) : handleAddToFavorites(property._id)}
           >
-            <Heart size={16} fill={isFavorite ? 'currentColor' : 'none'} />
+            <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
           </button>
         )}
-        <div className="absolute bottom-3 left-3">
-          <span className="badge badge-success">{property.status}</span>
+        <div className="absolute bottom-4 left-4 flex gap-2">
+          <span className="px-3 py-1 rounded-full text-xs font-bold bg-ethiopian-green/90 text-white backdrop-blur-sm">{property.status}</span>
+        </div>
+        <div className="absolute bottom-4 right-4">
+          <span className="text-2xl font-bold text-white drop-shadow-lg">{formatCurrency(property.price)}</span>
         </div>
       </div>
-      <div className="card-body">
-        <h3 className="font-semibold text-neutral-900 mb-2">{property.title}</h3>
-        <div className="flex items-center gap-2 text-neutral-600 mb-3">
-          <MapPin size={16} />
+      
+      <div className="relative z-20 p-5">
+        <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-gold-400 transition-colors">{property.title}</h3>
+        <div className="flex items-center gap-2 text-muted-foreground mb-4">
+          <MapPin size={14} className="text-gold-500" />
           <span className="text-sm">{property.location}</span>
         </div>
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-2xl font-bold text-primary-600">
-            {formatCurrency(property.price)}
-          </span>
-          <span className="badge badge-info">{property.type}</span>
-        </div>
-        <div className="flex items-center gap-4 text-sm text-neutral-600 mb-4">
-          <div className="flex items-center gap-1">
-            <Home size={16} />
+        
+        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-5 pb-4 border-b border-border/40">
+          <div className="flex items-center gap-1.5">
+            <Home size={14} className="text-gold-500" />
             <span>{property.bedrooms} beds</span>
           </div>
-          <div className="flex items-center gap-1">
-            <Bath size={16} />
+          <div className="flex items-center gap-1.5">
+            <Bath size={14} className="text-gold-500" />
             <span>{property.bathrooms} baths</span>
           </div>
-          <div className="flex items-center gap-1">
-            <Maximize size={16} />
+          <div className="flex items-center gap-1.5">
+            <Maximize size={14} className="text-gold-500" />
             <span>{property.area} m²</span>
           </div>
         </div>
-        <div className="flex gap-2">
-          <button
-            className="btn btn-secondary flex-1"
-            onClick={() => navigate(`/properties/${property._id}`)}
-          >
-            View Details
-          </button>
-          {/* <button className="btn btn-secondary">
-            <MessageSquare size={16} />
-          </button> */}
-        </div>
+        
+        <button
+          className="w-full py-3 rounded-xl bg-gradient-to-r from-gold-400/10 to-gold-500/5 border border-gold-400/30 text-gold-500 font-semibold hover:from-gold-400/20 hover:to-gold-500/10 hover:border-gold-400/50 transition-all duration-300"
+          onClick={() => navigate(`/properties/${property._id}`)}
+        >
+          View Details
+        </button>
       </div>
     </div>
   );
 
   const VisitCard = ({ visit }) => (
-    <div className="card">
-      <div className="card-body">
-        <div className="flex items-start justify-between mb-3">
+    <div className="group relative bg-card/95 backdrop-blur-xl border border-border/40 rounded-2xl overflow-hidden hover:border-gold-400/40 hover:shadow-xl hover:shadow-gold-400/10 transition-all duration-500">
+      <div className="absolute inset-0 bg-gradient-to-br from-gold-400/0 to-gold-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      
+      <div className="relative z-10 p-5">
+        <div className="flex items-start justify-between mb-4">
           <div>
-            <h3 className="font-semibold text-neutral-900">{visit.propertyId?.title}</h3>
-            <div className="flex items-center gap-2 text-neutral-600 mt-1">
-              <MapPin size={14} />
+            <h3 className="font-bold text-lg text-foreground group-hover:text-gold-400 transition-colors">{visit.propertyId?.title}</h3>
+            <div className="flex items-center gap-2 text-muted-foreground mt-1">
+              <MapPin size={14} className="text-gold-500" />
               <span className="text-sm">{visit.propertyId?.location}</span>
             </div>
           </div>
-          <span className={`badge ${visit.status === 'confirmed' ? 'badge-success' :
-              visit.status === 'pending' ? 'badge-warning' : 'badge-error'
+          <span className={`px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm ${visit.status === 'confirmed' ? 'bg-ethiopian-green/20 text-green-400 border border-ethiopian-green/30' :
+              visit.status === 'pending' ? 'bg-gold-400/20 text-gold-400 border border-gold-400/30' : 'bg-ethiopian-red/20 text-red-400 border border-ethiopian-red/30'
             }`}>
             {visit.status}
           </span>
         </div>
-        <div className="flex items-center gap-2 text-neutral-600 mb-3">
-          <Calendar size={16} />
-          <span className="text-sm">{visit.visitDate ? new Date(visit.visitDate).toLocaleDateString() : 'TBD'}</span>
-          <Clock size={16} />
-          <span className="text-sm">{visit.visitDate ? new Date(visit.visitDate).toLocaleTimeString() : 'TBD'}</span>
+        
+        <div className="flex items-center gap-4 text-muted-foreground mb-5 p-3 rounded-xl bg-muted/30 border border-border/30">
+          <div className="flex items-center gap-2">
+            <Calendar size={16} className="text-gold-500" />
+            <span className="text-sm">{visit.visitDate ? new Date(visit.visitDate).toLocaleDateString() : 'TBD'}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Clock size={16} className="text-gold-500" />
+            <span className="text-sm">{visit.visitDate ? new Date(visit.visitDate).toLocaleTimeString() : 'TBD'}</span>
+          </div>
         </div>
+        
         <div className="flex gap-2">
           <button
-            className="btn btn-sm btn-secondary flex-1"
+            className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-gold-400/10 to-gold-500/5 border border-gold-400/30 text-gold-500 font-semibold text-sm hover:from-gold-400/20 hover:to-gold-500/10 transition-all duration-300"
             onClick={() => {
               const pid = visit.propertyId?._id || visit.propertyId;
               if (pid) navigate(`/properties/${pid}`);
@@ -541,10 +548,10 @@ const BuyerDashboard = () => {
           >
             View Property
           </button>
-          <button className="btn btn-sm btn-secondary" onClick={() => openEditVisit(visit)}>
+          <button className="px-4 py-2.5 rounded-xl bg-muted/50 border border-border/40 text-muted-foreground font-semibold text-sm hover:bg-muted hover:text-foreground transition-all duration-300" onClick={() => openEditVisit(visit)}>
             Reschedule
           </button>
-          <button className="btn btn-sm btn-outline" onClick={() => deleteVisit(visit._id)}>
+          <button className="px-4 py-2.5 rounded-xl bg-ethiopian-red/10 border border-ethiopian-red/30 text-red-400 font-semibold text-sm hover:bg-ethiopian-red/20 transition-all duration-300" onClick={() => deleteVisit(visit._id)}>
             Delete
           </button>
         </div>
@@ -564,13 +571,30 @@ const BuyerDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-      <div className="flex">
-        {/* Sidebar */}
-        <div className="w-64 bg-card border-r shadow-lg min-h-screen sticky top-0">
-          <div className="p-6 border-b">
-            <h2 className="text-2xl font-black text-foreground mb-1">Buyer Dashboard</h2>
-            <p className="text-sm text-muted-foreground">Welcome back, {user?.name}</p>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/10 relative overflow-hidden">
+      {/* Premium animated background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full opacity-15 animate-pulse-slow"
+             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 60%)', filter: 'blur(100px)' }} />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full opacity-15 animate-pulse-slow"
+             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.15) 0%, transparent 60%)', filter: 'blur(80px)', animationDelay: '-5s' }} />
+      </div>
+      
+      <div className="flex relative z-10">
+        {/* Premium Glassmorphism Sidebar */}
+        <div className="w-72 bg-card/80 backdrop-blur-2xl border-r border-border/30 min-h-screen sticky top-0 shadow-2xl">
+          <div className="p-6 border-b border-border/30">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-ethiopian-green to-ethiopian-green/80 flex items-center justify-center shadow-lg shadow-ethiopian-green/30">
+                <User className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-foreground">Buyer</h2>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">Dashboard</p>
+              </div>
+            </div>
+            <div className="ethiopian-accent-bar w-full mb-4"></div>
+            <p className="text-sm text-muted-foreground">Welcome back, <span className="text-gold-400 font-semibold">{user?.name}</span></p>
           </div>
 
           <nav className="p-4 space-y-2">
@@ -1249,19 +1273,19 @@ const BuyerDashboard = () => {
                         </p>
 
                         {/* Action Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                           <button
-                            className="btn btn-primary bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 transform hover:scale-105 transition-all duration-300 px-8 py-3 rounded-xl font-semibold"
+                            className="inline-flex items-center gap-2 bg-gradient-to-r from-gold-400 to-gold-500 text-slate-900 hover:from-gold-300 hover:to-gold-400 transform hover:scale-105 transition-all duration-300 px-8 py-3 rounded-xl font-semibold shadow-lg shadow-gold-400/30 w-auto"
                             onClick={() => navigate('/properties')}
                           >
-                            <Search size={16} className="mr-2" />
+                            <Search size={16} />
                             Browse Properties
                           </button>
                           <button
-                            className="btn btn-outline border-2 border-primary-200 text-primary-700 hover:bg-primary-50 hover:border-primary-300 transform hover:scale-105 transition-all duration-300 px-8 py-3 rounded-xl font-semibold"
+                            className="inline-flex items-center gap-2 border-2 border-gold-400/50 text-gold-500 hover:bg-gold-400/10 hover:border-gold-400 transform hover:scale-105 transition-all duration-300 px-8 py-3 rounded-xl font-semibold w-auto"
                             onClick={() => navigate('/favorites')}
                           >
-                            <Heart size={16} className="mr-2" />
+                            <Heart size={16} />
                             View Favorites
                           </button>
                         </div>

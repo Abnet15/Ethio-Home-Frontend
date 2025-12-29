@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
 import { messageService } from "../services/messageService";
+import socketService from "../services/socketService";
 
 import "../styles/admin-dashboard.css";
 import "../styles/messages.css";
@@ -63,6 +64,12 @@ const Messages = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("inbox"); // inbox, sent, received
+  
+  // Real-time features
+  const [typingUsers, setTypingUsers] = useState({}); // { userId: { isTyping, name } }
+  const [onlineUsers, setOnlineUsers] = useState(new Set()); // Set of online user IDs
+  const typingTimeoutRef = useRef(null);
+  const [isTyping, setIsTyping] = useState(false);
 
   // Fetch messages when component mounts or tab changes
   useEffect(() => {
@@ -70,6 +77,113 @@ const Messages = () => {
       fetchMessages();
     }
   }, [isAuthenticated, activeTab]);
+
+  // Set up real-time socket listeners
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    // New message received
+    const handleNewMessage = (message) => {
+      setMessages(prev => {
+        // Check if message already exists (avoid duplicates)
+        const exists = prev.some(msg => msg._id === message._id);
+        if (exists) return prev;
+        return [...prev, message];
+      });
+      
+      // Auto-scroll to bottom if this conversation is selected
+      if (selectedConversation) {
+        const otherPartyId = selectedConversation.otherParty?.id;
+        const messageSenderId = typeof message.sender === 'object' ? message.sender._id : message.sender;
+        const messageRecipientId = typeof message.recipient === 'object' ? message.recipient._id : message.recipient;
+        
+        if (messageSenderId === otherPartyId || messageRecipientId === otherPartyId) {
+          setTimeout(() => {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+        }
+      }
+    };
+
+    // Message updated
+    const handleMessageUpdated = (updatedMessage) => {
+      setMessages(prev => prev.map(msg => 
+        msg._id === updatedMessage._id ? updatedMessage : msg
+      ));
+    };
+
+    // Message deleted
+    const handleMessageDeleted = (data) => {
+      setMessages(prev => prev.filter(msg => msg._id !== data.messageId));
+    };
+
+    // Message read receipt
+    const handleMessageRead = (data) => {
+      setMessages(prev => prev.map(msg => {
+        if (msg._id === data.messageId) {
+          return { ...msg, isRead: true, readAt: data.readAt };
+        }
+        return msg;
+      }));
+    };
+
+    // Typing indicator
+    const handleTyping = (data) => {
+      if (data.senderId === user?._id) return; // Don't show own typing
+      
+      setTypingUsers(prev => ({
+        ...prev,
+        [data.senderId]: {
+          isTyping: data.isTyping,
+          name: data.sender?.name || 'Someone'
+        }
+      }));
+
+      // Clear typing after 3 seconds
+      if (data.isTyping) {
+        setTimeout(() => {
+          setTypingUsers(prev => {
+            const updated = { ...prev };
+            delete updated[data.senderId];
+            return updated;
+          });
+        }, 3000);
+      }
+    };
+
+    // User online/offline
+    const handleUserOnline = (data) => {
+      setOnlineUsers(prev => new Set([...prev, data.userId]));
+    };
+
+    const handleUserOffline = (data) => {
+      setOnlineUsers(prev => {
+        const updated = new Set(prev);
+        updated.delete(data.userId);
+        return updated;
+      });
+    };
+
+    // Register socket listeners
+    socketService.on('message:new', handleNewMessage);
+    socketService.on('message:updated', handleMessageUpdated);
+    socketService.on('message:deleted', handleMessageDeleted);
+    socketService.on('message:read', handleMessageRead);
+    socketService.on('message:typing', handleTyping);
+    socketService.on('user:online', handleUserOnline);
+    socketService.on('user:offline', handleUserOffline);
+
+    // Cleanup
+    return () => {
+      socketService.off('message:new', handleNewMessage);
+      socketService.off('message:updated', handleMessageUpdated);
+      socketService.off('message:deleted', handleMessageDeleted);
+      socketService.off('message:read', handleMessageRead);
+      socketService.off('message:typing', handleTyping);
+      socketService.off('user:online', handleUserOnline);
+      socketService.off('user:offline', handleUserOffline);
+    };
+  }, [isAuthenticated, user, selectedConversation]);
 
     // Scroll to bottom when messages change
   /*  useEffect(() => {
@@ -346,6 +460,43 @@ const Messages = () => {
     );
   }
 
+  // Handle typing indicator
+  useEffect(() => {
+    if (!selectedConversation?.otherParty?.id) return;
+
+    // Clear existing timeout
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    if (newMessage.trim()) {
+      if (!isTyping) {
+        setIsTyping(true);
+        socketService.startTyping(selectedConversation.otherParty.id);
+      }
+      
+      // Reset typing indicator after 2 seconds of no typing
+      typingTimeoutRef.current = setTimeout(() => {
+        setIsTyping(false);
+        socketService.stopTyping(selectedConversation.otherParty.id);
+      }, 2000);
+    } else {
+      if (isTyping) {
+        setIsTyping(false);
+        socketService.stopTyping(selectedConversation.otherParty.id);
+      }
+    }
+
+    return () => {
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+      if (isTyping && selectedConversation?.otherParty?.id) {
+        socketService.stopTyping(selectedConversation.otherParty.id);
+      }
+    };
+  }, [newMessage, selectedConversation, isTyping]);
+
   const handleSendMessage = async () => {
     if (!canSend) return;
     if (!newMessage.trim() || !selectedConversation) return;
@@ -355,6 +506,13 @@ const Messages = () => {
       alert("Invalid conversation data. Please refresh and try again.");
       return;
     }
+
+    // Stop typing indicator
+    setIsTyping(false);
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+    socketService.stopTyping(selectedConversation.otherParty.id);
 
     // Store the message content before clearing input
     const messageContent = newMessage.trim();
@@ -419,19 +577,22 @@ const Messages = () => {
       console.log(result);
 
       if (result.success) {
-        /* // Replace optimistic message with real message from API
-          if (selectedConversation.messages) {
-            console.log(selectedConversation, optimisticMessage);
-          const updatedConversation = {
-            ...selectedConversation,
-            messages: result.data.data.messages
-          };
-          //setNewMessage(result.data.data.messages);
-          setSelectedConversation(updatedConversation);
-          
-        } */
-        await fetchMessages();
-        // Fetch updated messages to ensure consistency
+        // Mark message as read if recipient is viewing
+        if (selectedConversation.otherParty?.id) {
+          const sentMessage = result.data?.data?.message;
+          if (sentMessage && sentMessage._id) {
+            // The message will be added via socket event, no need to fetch
+            // But we can mark it as read if viewing
+            setTimeout(() => {
+              messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+          }
+        }
+        // Don't fetch immediately - let socket handle real-time update
+        // Only fetch if socket doesn't update within 2 seconds
+        setTimeout(() => {
+          fetchMessages();
+        }, 2000);
       } else {
         // If API call failed, remove optimistic message and show error
         if (selectedConversation.messages) {
@@ -627,12 +788,20 @@ const Messages = () => {
                   <div className="thread-details">
                     <h3>
                       {selectedConversation.otherParty?.name || "Unknown User"}
+                      {onlineUsers.has(selectedConversation.otherParty?.id) && (
+                        <span className="online-indicator" title="Online">
+                          <span className="online-dot"></span>
+                        </span>
+                      )}
                     </h3>
                     <p>
                       <User size={14} />
                       {selectedConversation.otherParty?.role === "owner"
                         ? "Property Owner"
                         : "Potential Buyer"}
+                      {!onlineUsers.has(selectedConversation.otherParty?.id) && (
+                        <span className="offline-text"> • Offline</span>
+                      )}
                     </p>
                   </div>
                 </div>
@@ -688,6 +857,11 @@ const Messages = () => {
                           </div>
                           <div className="message-content">
                             {message.content || "No content"}
+                            {message.sender?._id === user?._id && message.isRead && (
+                              <span className="read-receipt" title="Read">
+                                <CheckCircle size={12} />
+                              </span>
+                            )}
                           </div>
                           <div className="message-actions">
                             <button className="message-action-btn">
@@ -703,6 +877,23 @@ const Messages = () => {
                         </div>
                       </div>
                     ))}
+                    {/* Typing indicator */}
+                    {selectedConversation.otherParty?.id && typingUsers[selectedConversation.otherParty.id]?.isTyping && (
+                      <div className="message-item other typing-indicator">
+                        <div className="message-avatar">
+                          <div className="avatar-circle small">
+                            {typingUsers[selectedConversation.otherParty.id].name?.charAt(0)?.toUpperCase() || "?"}
+                          </div>
+                        </div>
+                        <div className="message-content-wrapper">
+                          <div className="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                     <div ref={messagesEndRef} />
                   </>
                 )}
