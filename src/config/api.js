@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 // API Base URL
-const API_BASE_URL = 'https://ethio-home-backend-2.onrender.com/api/v1';
+const API_BASE_URL = 'https://ethio-home-backend.onrender.com';
 // Server Base URL (for static files like uploads)
-export const SERVER_BASE_URL = 'https://ethio-home-backend-2.onrender.com';
+export const SERVER_BASE_URL = 'https://ethio-home-backend.onrender.com';
 
 // Create axios instance
 const api = axios.create({
