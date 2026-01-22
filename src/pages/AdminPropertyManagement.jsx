@@ -203,17 +203,11 @@ const AdminPropertyManagement = () => {
       );
 
       if (result.success) {
-        // Update local state
-        setProperties(
-          properties.map((property) =>
-            property._id === selectedProperty._id
-              ? { ...property, ...editForm }
-              : property
-          )
-        );
-
-        // Update selected property
+        // Update selected property for immediate UI feedback
         setSelectedProperty({ ...selectedProperty, ...editForm });
+
+        // Refetch properties to update the list
+        refetchProperties();
 
         alert("Property updated successfully!");
         setActiveTab("overview");
@@ -261,14 +255,7 @@ const AdminPropertyManagement = () => {
           images: updatedImages,
         };
         
-        // Update properties list
-        setProperties(prevProperties => 
-          prevProperties.map((property) =>
-            property._id === selectedProperty._id ? updatedProperty : property
-          )
-        );
-        
-        // Update selected property
+        // Update selected property for immediate UI feedback
         setSelectedProperty(updatedProperty);
 
         // Clear the file input
@@ -320,14 +307,7 @@ const AdminPropertyManagement = () => {
         // Update local state
         const updatedProperty = { ...selectedProperty, images: updatedImages };
         
-        // Update properties list
-        setProperties(prevProperties => 
-          prevProperties.map((property) =>
-            property._id === selectedProperty._id ? updatedProperty : property
-          )
-        );
-        
-        // Update selected property
+        // Update selected property for immediate UI feedback
         setSelectedProperty(updatedProperty);
 
         alert("Image removed successfully!");
@@ -692,7 +672,7 @@ const AdminPropertyManagement = () => {
           <div className="flex flex-col items-center justify-center py-16 bg-red-400/10 border border-red-400/30 rounded-2xl">
             <p className="text-red-400 font-medium mb-4">Error: {error}</p>
             <button 
-              onClick={() => setRefreshTrigger(prev => prev + 1)}
+              onClick={() => refetchProperties()}
               className="px-6 py-2.5 bg-red-400/20 text-red-400 border border-red-400/30 rounded-xl font-semibold hover:bg-red-400/30 transition-all duration-300"
             >
               Retry
