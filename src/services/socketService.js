@@ -41,6 +41,15 @@ class SocketService {
     });
 
     this.socket.on('connect_error', (error) => {
+      // Handle "User no longer exists" error gracefully
+      if (error.message && error.message.includes('User no longer exists')) {
+        console.warn('Socket connection: User session expired, disconnecting...');
+        this.disconnect();
+        // Clear auth data if user no longer exists
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        return;
+      }
       console.error('Socket connection error:', error);
       this._emit('socket:error', error);
     });

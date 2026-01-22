@@ -20,18 +20,18 @@ import {
   User,
   MoreVertical,
 } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
-import { messageService } from "../services/messageService";
-import { userService } from "../services/userService";
+import { useAllMessagesQuery, useMessageTemplatesQuery, useMessageStatsQuery, useDeleteMessage, useToggleMessageArchive, useMarkMessageAsRead, useSendBulkMessage } from "../hooks/useMessagesQuery";
+import { useUsersQuery } from "../hooks/useUsersQuery";
 
 import "../styles/admin-dashboard.css";
 import "../styles/messages.css";
 
 const AdminMessages = () => {
-  const { user, isAdmin, isEmployee } = useAuth();
+  const { user, isAdmin, isEmployee, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("conversations");
   const [selectedConversation, setSelectedConversation] = useState(null);
@@ -40,22 +40,50 @@ const AdminMessages = () => {
   const [showBulkMessageModal, setShowBulkMessageModal] = useState(false);
   const [showTemplatesModal, setShowTemplatesModal] = useState(false);
 
-  // Real data from API
-  const [messages, setMessages] = useState([]);
-  const [templates, setTemplates] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [stats, setStats] = useState(null);
-  const [permissions, setPermissions] = useState({
-    canDelete: false,
-    canUpdate: false,
-    canViewAll: true,
-    canSendBulk: false,
-  });
+  // React Query hooks for data fetching
+  const { data: messagesData, isLoading: messagesLoading, error: messagesError, refetch: refetchMessages } = useAllMessagesQuery(
+    {},
+    { enabled: !authLoading && (isAdmin || isEmployee) && !!user }
+  );
+  const allMessages = messagesData || [];
+  const messages = useMemo(() => 
+    allMessages.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+    [allMessages]
+  );
 
-  // Users for bulk message recipients
-  const [users, setUsers] = useState([]);
-  const [usersLoading, setUsersLoading] = useState(false);
+  const { data: templatesData, isLoading: templatesLoading } = useMessageTemplatesQuery(
+    { enabled: !authLoading && (isAdmin || isEmployee) && !!user }
+  );
+  const templates = templatesData || [];
+
+  const { data: statsData, isLoading: statsLoading } = useMessageStatsQuery(
+    { enabled: !authLoading && (isAdmin || isEmployee) && !!user }
+  );
+  const stats = statsData || null;
+
+  const { data: usersData, isLoading: usersLoading } = useUsersQuery(
+    {},
+    { enabled: !authLoading && (isAdmin || isEmployee) && !!user }
+  );
+  const users = usersData?.users || [];
+
+  // Mutations
+  const deleteMessageMutation = useDeleteMessage();
+  const toggleArchiveMutation = useToggleMessageArchive();
+  const markAsReadMutation = useMarkMessageAsRead();
+  const sendBulkMessageMutation = useSendBulkMessage();
+
+  // Permissions based on user role
+  const permissions = useMemo(() => ({
+    canDelete: isAdmin,
+    canUpdate: isAdmin || isEmployee,
+    canViewAll: true,
+    canSendBulk: isAdmin,
+  }), [isAdmin, isEmployee]);
+
+  const loading = messagesLoading || templatesLoading || statsLoading || usersLoading;
+  const error = messagesError?.message || null;
+
   const [showUserDropdown, setShowUserDropdown] = useState(false);
 
   // Bulk message form
@@ -70,15 +98,7 @@ const AdminMessages = () => {
   // Track when last message was sent
   const [lastMessageSent, setLastMessageSent] = useState(null);
 
-  // Fetch data when component mounts
-  useEffect(() => {
-    if (isAdmin || isEmployee) {
-      fetchMessages();
-      fetchTemplates();
-      fetchStats();
-      fetchUsers();
-    }
-  }, [isAdmin, isEmployee]);
+  // No need for useEffect - React Query handles fetching automatically
 
   // Helper function to format timestamp
   const formatTimestamp = (timestamp) => {
@@ -100,100 +120,7 @@ const AdminMessages = () => {
     }
   };
 
-  // Fetch all users for bulk message recipients
-  const fetchUsers = async () => {
-    setUsersLoading(true);
-    try {
-      const result = await userService.getUsers();
-      //console.log("Users API result:", result);
-
-      if (result.success) {
-        const usersData = result.data?.data?.data || [];
-        //console.log("Users data extracted:", usersData);
-        setUsers(usersData);
-
-        if (usersData.length === 0) {
-          console.warn("No users found in API response");
-        }
-      } else {
-        console.error("Failed to fetch users:", result.error);
-        alert("Failed to load users for bulk message. Please try again.");
-      }
-    } catch (err) {
-      console.error("Error fetching users:", err);
-      alert("Error loading users. Please check console for details.");
-    } finally {
-      setUsersLoading(false);
-    }
-  };
-
-  // Fetch all messages
-  const fetchMessages = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await messageService.getAllMessages();
-      //console.log("API result 🥵🥵😱😱😱😰😰:", result);
-
-      if (result.success) {
-        const messagesData = result.data?.data?.messages || [];
-        //console.log("Messages data:", messagesData);
-        // Sort messages by creation date (newest first)
-        const sortedMessages = messagesData.sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
-
-        setMessages(sortedMessages);
-        // Set permissions based on user role
-        const userPermissions = {
-          canDelete: isAdmin,
-          canUpdate: isAdmin || isEmployee,
-          canViewAll: true,
-          canSendBulk: isAdmin,
-        };
-
-        //console.log("Setting permissions:", userPermissions);
-        setPermissions(userPermissions);
-      } else {
-        setError(result.error);
-      }
-    } catch (err) {
-      console.error("Error fetching messages:", err);
-      setError("Failed to fetch messages");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch message templates
-  const fetchTemplates = async () => {
-    try {
-      const result = await messageService.getMessageTemplates();
-      console.log("getMessageTemplates()😎😍😘😘😘",result)
-      if (result.success) {
-        setTemplates(
-          result.data?.data?.templates || result.data?.templates || []
-        );
-      }
-    } catch (err) {
-      console.error("Failed to fetch templates:", err);
-    }
-  };
-
-  // Fetch message statistics
-  const fetchStats = async () => {
-    try {
-      const result = await messageService.getMessageStats();
-      console.log("🤣🤣🤣🤣🤣🤣", result);
-
-      if (result.success) {
-        setStats(result.data?.data );
-      }
-    } catch (err) {
-      console.error("Failed to fetch stats:", err);
-    }
-  };
+  // Data fetching is now handled by React Query hooks above
 
   // Handle user selection for bulk message
   const handleUserSelect = (selectedUser) => {
@@ -236,25 +163,20 @@ const AdminMessages = () => {
         recipients: bulkMessageForm.recipients.map((r) => r._id),
       };
 
-      const result = await messageService.sendBulkMessage(messageData);
-      if (result.success) {
-        alert(
-          `Bulk message sent successfully to ${result.data.data.messages.length} recipients`
-        );
-        setShowBulkMessageModal(false);
-        setBulkMessageForm({
-          recipients: [],
-          subject: "",
-          content: "",
-          messageType: "general",
-          priority: "medium",
-        });
-        fetchMessages(); // Refresh messages
-      } else {
-        alert(result.error);
-      }
+      const result = await sendBulkMessageMutation.mutateAsync(messageData);
+      alert(
+        `Bulk message sent successfully to ${result?.messages?.length || bulkMessageForm.recipients.length} recipients`
+      );
+      setShowBulkMessageModal(false);
+      setBulkMessageForm({
+        recipients: [],
+        subject: "",
+        content: "",
+        messageType: "general",
+        priority: "medium",
+      });
     } catch (err) {
-      alert("Failed to send bulk message");
+      alert("Failed to send bulk message: " + (err.message || "Unknown error"));
     }
   };
 
@@ -282,72 +204,23 @@ const AdminMessages = () => {
             alert("You do not have permission to delete messages");
             return;
           }
-          console.log("Calling deleteMessage...");
-          response = await messageService.deleteMessage(messageId);
+          await deleteMessageMutation.mutateAsync(messageId);
+          // If the deleted message was in the selected conversation, clear it
+          if (selectedConversation && selectedConversation._id === messageId) {
+            setSelectedConversation(null);
+          }
+          alert("Message deleted successfully");
           break;
         case "archive":
-          console.log("Calling toggleArchive...");
-          response = await messageService.toggleArchive(messageId);
+          await toggleArchiveMutation.mutateAsync(messageId);
+          alert("Message archive status updated");
           break;
         case "markRead":
-          console.log("Calling markAsRead...");
-          response = await messageService.markAsRead(messageId);
+          await markAsReadMutation.mutateAsync(messageId);
           break;
         default:
           console.log("Unknown action:", action);
           return;
-      }
-
-      console.log("Response received:", response);
-
-      if (response && response.success) {
-        console.log(`${action} action successful`);
-
-        // Update local state immediately for better UX
-        if (action === "delete") {
-          // Remove deleted message from local state
-          setMessages((prevMessages) =>
-            prevMessages.filter((msg) => msg._id !== messageId)
-          );
-
-          // If the deleted message was in the selected conversation, remove it from there too
-          if (selectedConversation && selectedConversation.messages) {
-            setSelectedConversation((prev) => ({
-              ...prev,
-              messages: prev.messages.filter((msg) => msg._id !== messageId),
-            }));
-          }
-        } else if (action === "markRead") {
-          // Update message read status in local state
-          setMessages((prevMessages) =>
-            prevMessages.map((msg) =>
-              msg._id === messageId ? { ...msg, isRead: true } : msg
-            )
-          );
-        } else if (action === "archive") {
-          // Update message archive status in local state
-          setMessages((prevMessages) =>
-            prevMessages.map((msg) =>
-              msg._id === messageId
-                ? { ...msg, isArchived: !msg.isArchived }
-                : msg
-            )
-          );
-        }
-
-        // Show success message
-        alert(
-          `${
-            action === "markRead"
-              ? "Marked as read"
-              : action === "archive"
-              ? "Archive status updated"
-              : "Message deleted"
-          } successfully`
-        );
-      } else {
-        console.error("Action failed:", response);
-        alert(response?.error || `Failed to ${action} message`);
       }
     } catch (error) {
       console.error(`Error performing ${action} on message:`, error);
@@ -537,8 +410,20 @@ const AdminMessages = () => {
     }
   };
 
+  // Wait for auth to finish loading
+  if (authLoading) {
+    return (
+      <div className="admin-container">
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
   // Check if user has access
-  if (!isAdmin && !isEmployee) {
+  if ((!isAdmin && !isEmployee) || !user) {
     return (
       <div className="admin-container">
         <div className="access-denied">

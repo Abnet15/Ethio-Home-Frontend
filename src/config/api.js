@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // API Base URL
-const API_BASE_URL = 'https://ethio-home-backend.onrender.com';
+const API_BASE_URL = 'https://ethio-home-backend.onrender.com/api/v1';
 // Server Base URL (for static files like uploads)
 export const SERVER_BASE_URL = 'https://ethio-home-backend.onrender.com';
 
@@ -36,10 +36,12 @@ api.interceptors.response.use(
     // Do not force-redirect on 401 globally; public pages (e.g., property details)
     // may request restricted resources (like an owner profile) that should not
     // kick the whole app back to login. Let callers handle it gracefully.
+    // Only clear auth data if we're sure the token is invalid (not just expired)
+    // Let PrivateRoute and components handle authentication state
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      // Leave navigation decisions to route guards/components
+      // Don't clear localStorage here - let the auth context handle it
+      // This prevents race conditions where auth is cleared before context updates
+      console.warn('API 401 error - authentication may be required');
     }
     return Promise.reject(error);
   }

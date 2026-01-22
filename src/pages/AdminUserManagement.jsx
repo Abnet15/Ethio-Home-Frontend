@@ -19,7 +19,15 @@ import {
   Save,
   X,
   ArrowLeft,
-  Activity
+  Activity,
+  Menu,
+  Shield,
+  BarChart3,
+  MessageSquare,
+  TrendingUp,
+  Star,
+  Bell,
+  Mail as MailIcon
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -30,9 +38,10 @@ import { userService } from '../services/userService';
 
 
 const AdminUserManagement = () => {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, loading: authLoading } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -461,7 +470,19 @@ const AdminUserManagement = () => {
     }
   };
 
-  if (!isAdmin) {
+  // Wait for auth to finish loading
+  if (authLoading) {
+    return (
+      <div className="admin-container">
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAdmin || !user) {
     return (
       <div className="admin-container">
         <div className="access-denied">
@@ -484,48 +505,154 @@ const AdminUserManagement = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
-      {/* Animated background orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-10 w-[500px] h-[500px] rounded-full opacity-20"
-             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.4) 0%, transparent 70%)', filter: 'blur(80px)' }} />
-        <div className="absolute bottom-20 left-10 w-[400px] h-[400px] rounded-full opacity-15"
-             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.3) 0%, transparent 70%)', filter: 'blur(60px)' }} />
-      </div>
-
-      {/* Premium Header */}
-      <div className="relative bg-gradient-to-r from-emerald-900/90 via-emerald-800/80 to-emerald-900/90 backdrop-blur-xl border-b border-emerald-500/20 shadow-2xl shadow-emerald-900/30">
-        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/50 to-transparent" />
-        
-        <div className="relative container mx-auto px-6 py-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-5">
-              <button 
-                className="group p-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-gold-400/40 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gold-400/20"
-                onClick={() => navigate('/admin-dashboard')}
-              >
-                <ArrowLeft size={20} className="text-white group-hover:text-gold-400 transition-colors" />
-              </button>
-              <div>
-                <h1 className="text-4xl font-black mb-2 font-serif tracking-tight bg-gradient-to-r from-white via-gold-200 to-white bg-clip-text text-transparent">
-                  User Management
-                </h1>
-                <p className="text-emerald-100/80 font-medium">Create and manage user accounts</p>
-              </div>
-            </div>
-            <button
-              className="group px-6 py-3.5 bg-gradient-to-r from-gold-400 to-gold-500 text-slate-900 rounded-xl font-bold hover:from-gold-300 hover:to-gold-400 transition-all duration-300 flex items-center gap-2.5 shadow-lg shadow-gold-400/30 hover:shadow-xl hover:shadow-gold-400/40 hover:scale-105"
-              onClick={() => setShowCreateForm(true)}
-            >
-              <Plus size={18} className="group-hover:rotate-90 transition-transform duration-300" />
-              Create User
-            </button>
-          </div>
-        </div>
+    <div className="admin-dashboard-premium min-h-screen bg-gradient-to-br from-background via-background to-muted/10 relative overflow-hidden">
+      {/* Premium animated background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[900px] h-[900px] rounded-full opacity-20 animate-pulse-slow"
+             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 60%)', filter: 'blur(120px)' }} />
+        <div className="absolute bottom-0 left-0 w-[700px] h-[700px] rounded-full opacity-20 animate-pulse-slow"
+             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.15) 0%, transparent 60%)', filter: 'blur(100px)', animationDelay: '-5s' }} />
       </div>
       
-      <div className="relative container mx-auto px-6 py-10">
+      <div className="flex relative z-10 min-h-screen">
+        {/* Mobile Sidebar Toggle Button */}
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-card/90 backdrop-blur-xl border border-border/30 shadow-lg flex items-center justify-center hover:bg-card transition-all duration-300"
+          aria-label="Toggle sidebar"
+        >
+          {isSidebarOpen ? <X className="w-6 h-6 text-foreground" /> : <Menu className="w-6 h-6 text-foreground" />}
+        </button>
+
+        {/* Sidebar Overlay for Mobile */}
+        {isSidebarOpen && (
+          <div
+            className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
+        {/* Premium Glassmorphism Sidebar */}
+        <aside className={`admin-sidebar ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:sticky lg:top-0 flex flex-col w-80 bg-card/80 backdrop-blur-2xl border-r border-border/30 h-screen p-8 shadow-2xl relative overflow-hidden z-40 transition-transform duration-300`}>
+          {/* Sidebar gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-gold-400/5 via-transparent to-ethiopian-green/5 pointer-events-none" />
+          
+          {/* Sidebar header */}
+          <div className="relative z-10 mb-10">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-lg shadow-gold-400/30">
+                  <Shield className="w-6 h-6 text-background" />
+                </div>
+                <div>
+                  <h2 className="font-serif text-2xl font-bold text-gradient-gold">Admin</h2>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Control Panel</p>
+                </div>
+              </div>
+              {/* Close button for mobile */}
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="lg:hidden w-8 h-8 rounded-lg bg-muted/50 hover:bg-muted flex items-center justify-center transition-colors"
+                aria-label="Close sidebar"
+              >
+                <X className="w-5 h-5 text-foreground" />
+              </button>
+            </div>
+            <div className="ethiopian-accent-bar w-full mb-6"></div>
+            <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-muted/50 to-transparent border border-border/30">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ethiopian-green to-ethiopian-green/70 flex items-center justify-center text-white font-bold text-sm">
+                {user?.name?.charAt(0) || 'A'}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-foreground truncate">{user?.name}</p>
+                <p className="text-xs text-muted-foreground">Administrator</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Premium Navigation */}
+          <nav className="relative z-10 flex-1 space-y-2">
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 px-3">Navigation</p>
+            
+            {[
+              { id: 'overview', icon: BarChart3, label: 'Overview', onClick: () => { navigate('/admin-dashboard'); setIsSidebarOpen(false); } },
+              { id: 'users', icon: Users, label: 'Users', onClick: () => { navigate('/admin/users'); setIsSidebarOpen(false); } },
+              { id: 'properties', icon: Building, label: 'Properties', onClick: () => { navigate('/admin/properties'); setIsSidebarOpen(false); } },
+              { id: 'messages', icon: MessageSquare, label: 'Messages', onClick: () => { navigate('/admin/messages'); setIsSidebarOpen(false); } },
+              { id: 'selling', icon: TrendingUp, label: 'All Sales', onClick: () => { navigate('/admin-dashboard?tab=selling'); setIsSidebarOpen(false); } },
+              { id: 'reviews', icon: Star, label: 'Reviews', onClick: () => { navigate('/admin-dashboard?tab=reviews'); setIsSidebarOpen(false); } },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={item.onClick}
+                className={`admin-nav-item group w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
+                  item.id === 'users'
+                    ? 'bg-gradient-to-r from-gold-400/20 to-gold-400/5 text-gold-400 border border-gold-400/30 shadow-lg shadow-gold-400/10' 
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                }`}
+              >
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                  item.id === 'users'
+                    ? 'bg-gold-400/20' 
+                    : 'bg-muted/50 group-hover:bg-muted'
+                }`}>
+                  <item.icon size={18} className={item.id === 'users' ? 'text-gold-400' : ''} />
+                </div>
+                <span className="font-medium">{item.label}</span>
+                {item.id === 'users' && (
+                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
+                )}
+              </button>
+            ))}
+          </nav>
+          
+          {/* Sidebar footer */}
+          <div className="relative z-10 pt-6 border-t border-border/30 mt-auto">
+            <button 
+              onClick={() => { navigate('/admin-dashboard'); setIsSidebarOpen(false); }}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-300"
+            >
+              <Settings size={18} />
+              <span className="font-medium">Settings</span>
+            </button>
+          </div>
+        </aside>
+
+        {/* Main Content */}
+        <div className="dashboard-main flex-1 lg:ml-0">
+          {/* Premium Header */}
+          <div className="relative bg-gradient-to-r from-emerald-900/90 via-emerald-800/80 to-emerald-900/90 backdrop-blur-xl border-b border-emerald-500/20 shadow-2xl shadow-emerald-900/30">
+            <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/50 to-transparent" />
+            
+            <div className="relative container mx-auto px-6 py-8">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-5">
+                  <button 
+                    className="group p-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-gold-400/40 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gold-400/20"
+                    onClick={() => navigate('/admin-dashboard')}
+                  >
+                    <ArrowLeft size={20} className="text-white group-hover:text-gold-400 transition-colors" />
+                  </button>
+                  <div>
+                    <h1 className="text-4xl font-black mb-2 font-serif tracking-tight bg-gradient-to-r from-white via-gold-200 to-white bg-clip-text text-transparent">
+                      User Management
+                    </h1>
+                    <p className="text-emerald-100/80 font-medium">Create and manage user accounts</p>
+                  </div>
+                </div>
+                <button
+                  className="group px-6 py-3.5 bg-gradient-to-r from-gold-400 to-gold-500 text-slate-900 rounded-xl font-bold hover:from-gold-300 hover:to-gold-400 transition-all duration-300 flex items-center gap-2.5 shadow-lg shadow-gold-400/30 hover:shadow-xl hover:shadow-gold-400/40 hover:scale-105"
+                  onClick={() => setShowCreateForm(true)}
+                >
+                  <Plus size={18} className="group-hover:rotate-90 transition-transform duration-300" />
+                  Create User
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div className="relative container mx-auto px-6 py-10">
 
       {message && (
         <div className={`message ${messageType === 'success' ? 'success' : 'error'}`}>
@@ -1779,6 +1906,8 @@ const AdminUserManagement = () => {
           .actions-cell::before { content: "Actions: "; font-weight: 600; }
         }
       `}</style>
+          </div>
+        </div>
       </div>
     </div>
   );

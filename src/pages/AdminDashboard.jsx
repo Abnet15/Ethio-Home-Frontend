@@ -57,12 +57,15 @@ import { sellingService } from '../services/sellingService';
 import { userService } from '../services/userService';
 import { SERVER_BASE_URL } from '../config/api';
 
+import { Menu, X } from 'lucide-react';
+
 const AdminDashboard = () => {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, loading: authLoading } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalProperties: 0,
@@ -82,12 +85,14 @@ const AdminDashboard = () => {
 
 
   useEffect(() => {
-    if (!isAdmin) {
+    // Wait for auth to finish loading before checking
+    if (authLoading) return;
+    if (!isAdmin || !user) {
       navigate('/unauthorized');
       return;
     }
     fetchDashboardData();
-  }, [isAdmin, navigate]);
+  }, [isAdmin, user, authLoading, navigate]);
 
   const fetchDashboardData = async () => {
     setLoading(true);
@@ -356,8 +361,25 @@ const AdminDashboard = () => {
       </div>
       
       <div className="flex relative z-10 min-h-screen">
+        {/* Mobile sidebar toggle button */}
+        <button
+          className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-card/90 backdrop-blur-xl border border-border/30 shadow-lg flex items-center justify-center hover:bg-card transition-all duration-300"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          aria-label="Toggle sidebar"
+        >
+          {sidebarOpen ? <X size={20} className="text-gold-400" /> : <Menu size={20} className="text-foreground" />}
+        </button>
+
+        {/* Mobile overlay */}
+        {sidebarOpen && (
+          <div 
+            className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-40"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
         {/* Premium Glassmorphism Sidebar */}
-        <aside className="admin-sidebar hidden lg:flex flex-col w-80 bg-card/80 backdrop-blur-2xl border-r border-border/30 min-h-screen p-8 shadow-2xl relative overflow-hidden">
+        <aside className={`admin-sidebar fixed lg:relative z-50 lg:z-auto flex flex-col w-80 bg-card/95 lg:bg-card/80 backdrop-blur-2xl border-r border-border/30 min-h-screen p-8 shadow-2xl overflow-hidden transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
           {/* Sidebar gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-gold-400/5 via-transparent to-ethiopian-green/5 pointer-events-none" />
           
@@ -465,9 +487,8 @@ const AdminDashboard = () => {
             </button>
           </div>
         </aside>
-      </div>
-      {/* Main Content */}
-      <div className="dashboard-main">
+        {/* Main Content */}
+        <div className="dashboard-main flex-1 p-6 lg:p-8 pt-20 lg:pt-8">
         {activeTab === 'overview' && (
           <>
             {/* Header */}
@@ -1266,6 +1287,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

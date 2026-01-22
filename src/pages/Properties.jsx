@@ -12,7 +12,7 @@ import {
   Trash2,
   Sparkles,
 } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -22,7 +22,7 @@ import PropertyImageManager from "../components/PropertyImageManager";
 import { useAuth } from "../context/AuthContext";
 import { useLanguage } from "../context/LanguageContext";
 import { favoritesService } from "../services/favoritesService";
-import { propertyService } from "../services/propertyService";
+import { usePropertiesQuery } from "../hooks/usePropertiesQuery";
 
 
 const Properties = () => {
@@ -31,44 +31,38 @@ const Properties = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Use React Query to fetch properties
+  const { data: propertiesData, isLoading: loading, error: propertiesError } = usePropertiesQuery(
+    { isVerified: true, sold: false },
+    { staleTime: 2 * 60 * 1000 } // 2 minutes
+  );
+
+  // Memoize allProperties to avoid creating new array reference on every render
+  const allProperties = useMemo(() => {
+    return propertiesData?.properties ?? [];
+  }, [propertiesData]);
+
+  // Memoize verified properties to avoid creating new array reference on every render
+  const verifiedProperties = useMemo(() => {
+    return allProperties.filter(p => p.isVerified === true);
+  }, [allProperties]);
+
   // State management
-  const [properties, setProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState("grid");
   const [favorites, setFavorites] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
   
   // Image management state
   const [showImageManager, setShowImageManager] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
 
-  // Fetch properties from API
+  // Update filtered properties when properties data changes
   useEffect(() => {
-    const fetchProperties = async () => {
-      setLoading(true);
-      try {
-        const result = await propertyService.getProperties({isVerified: true, sold: false});
-        if (result.success) {
-          // Backend returns: { status: 'success', data: { data: [...] } }
-          const fetchedProperties = result.data?.data?.data || [];
-          // Show only verified properties
-          const verifiedProperties = fetchedProperties.filter(p => p.isVerified === true);
-          setProperties(verifiedProperties);
-          setFilteredProperties(verifiedProperties);
-        } else {
-          console.error("Error fetching properties:", result.error);
-        }
-      } catch (error) {
-        console.error("Error fetching properties:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProperties();
-  }, []);
+    setFilteredProperties(verifiedProperties);
+  }, [verifiedProperties]);
 
   // Load favorites from API
   useEffect(() => {
@@ -115,7 +109,7 @@ const Properties = () => {
 
   // Apply filters and search
   useEffect(() => {
-    let filtered = [...properties];
+    let filtered = [...verifiedProperties];
 
     // Apply search query
     if (searchQuery.trim()) {
@@ -184,7 +178,7 @@ const Properties = () => {
 
     setFilteredProperties(filtered);
     setCurrentPage(1); // Reset to first page when filters change
-  }, [properties, searchQuery, filters]);
+  }, [verifiedProperties, searchQuery, filters]);
 
   // Pagination settings
   const ITEMS_PER_PAGE = 6;

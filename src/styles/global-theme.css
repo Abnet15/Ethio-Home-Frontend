@@ -1,0 +1,597 @@
+/* Global Theme Overrides - Ensures consistent light/dark theme across all pages */
+
+/* ============================================ */
+/* LIGHT THEME - Clean Purple Theme */
+/* ============================================ */
+
+[data-theme="light"],
+.light {
+  /* Core backgrounds */
+  --bg-primary: hsl(260 20% 99%);
+  --bg-secondary: hsl(260 15% 96%);
+  --bg-tertiary: hsl(260 12% 93%);
+  --card-bg: hsl(0 0% 100%);
+  --input-bg: hsl(0 0% 100%);
+  --bg-color: hsl(260 20% 99%);
+  
+  /* Text colors */
+  --text-primary: hsl(256 30% 15%);
+  --text-secondary: hsl(256 20% 40%);
+  --text-tertiary: hsl(256 15% 55%);
+  
+  /* Border colors */
+  --border-primary: hsl(260 15% 88%);
+  --border-secondary: hsl(260 12% 82%);
+  --border-color: hsl(260 15% 88%);
+  
+  /* Primary colors */
+  --color-primary: hsl(270 60% 55%);
+  --primary-color: hsl(270 60% 55%);
+  --color-primary-hover: hsl(270 60% 48%);
+  --primary-hover: hsl(270 60% 48%);
+  --primary-dark: hsl(270 60% 45%);
+  --color-primary-light: hsl(270 60% 92%);
+  --primary-50: hsl(270 60% 95%);
+  --primary-100: hsl(270 60% 90%);
+  
+  /* Accent colors */
+  --accent-color: hsl(270 55% 60%);
+  
+  /* Status colors */
+  --color-success: hsl(145 65% 40%);
+  --color-warning: hsl(32 95% 50%);
+  --color-danger: hsl(0 84% 55%);
+  --color-danger-hover: hsl(0 84% 48%);
+  
+  /* Effects */
+  --shadow: 0 4px 20px hsl(256 30% 15% / 0.08);
+  --shadow-sm: 0 2px 8px hsl(256 30% 15% / 0.05);
+  --shadow-md: 0 4px 16px hsl(256 30% 15% / 0.08);
+  --shadow-lg: 0 8px 32px hsl(256 30% 15% / 0.1);
+  --shadow-hover: 0 12px 40px hsl(256 30% 15% / 0.12);
+  
+  /* Glass effects */
+  --glass-bg: hsl(0 0% 100% / 0.9);
+  --glass-border: hsl(260 15% 88%);
+  
+  /* Hover states */
+  --hover-bg: hsl(260 15% 96%);
+}
+
+/* Light theme body */
+[data-theme="light"] body,
+.light body {
+  background-color: hsl(260 20% 99%) !important;
+  color: hsl(256 30% 15%) !important;
+}
+
+/* ============================================ */
+/* DARK THEME - Deep Purple Theme */
+/* ============================================ */
+
+[data-theme="dark"],
+.dark {
+  /* Core backgrounds */
+  --bg-primary: hsl(256 30% 8%);
+  --bg-secondary: hsl(256 28% 10%);
+  --bg-tertiary: hsl(256 25% 14%);
+  --card-bg: hsl(256 28% 12%);
+  --input-bg: hsl(256 25% 14%);
+  --bg-color: hsl(256 30% 8%);
+  
+  /* Text colors */
+  --text-primary: hsl(0 0% 96%);
+  --text-secondary: hsl(256 15% 70%);
+  --text-tertiary: hsl(256 10% 55%);
+  
+  /* Border colors */
+  --border-primary: hsl(256 20% 22%);
+  --border-secondary: hsl(270 30% 28%);
+  --border-color: hsl(256 20% 22%);
+  
+  /* Primary colors */
+  --color-primary: hsl(270 60% 60%);
+  --primary-color: hsl(270 60% 60%);
+  --color-primary-hover: hsl(270 60% 65%);
+  --primary-hover: hsl(270 60% 65%);
+  --primary-dark: hsl(270 60% 50%);
+  --color-primary-light: hsl(270 50% 25%);
+  --primary-50: hsl(270 40% 20%);
+  --primary-100: hsl(270 40% 25%);
+  
+  /* Accent colors */
+  --accent-color: hsl(270 55% 55%);
+  
+  /* Status colors */
+  --color-success: hsl(145 65% 45%);
+  --color-warning: hsl(32 95% 55%);
+  --color-danger: hsl(0 84% 60%);
+  --color-danger-hover: hsl(0 84% 55%);
+  
+  /* Effects */
+  --shadow: 0 4px 20px hsl(0 0% 0% / 0.4);
+  --shadow-sm: 0 2px 8px hsl(0 0% 0% / 0.3);
+  --shadow-md: 0 4px 16px hsl(0 0% 0% / 0.4);
+  --shadow-lg: 0 8px 32px hsl(0 0% 0% / 0.5);
+  --shadow-hover: 0 12px 40px hsl(0 0% 0% / 0.5);
+  
+  /* Glass effects */
+  --glass-bg: hsl(256 28% 12% / 0.9);
+  --glass-border: hsl(270 30% 28%);
+  
+  /* Hover states */
+  --hover-bg: hsl(256 25% 16%);
+}
+
+/* Dark theme body */
+[data-theme="dark"] body,
+.dark body {
+  background-color: hsl(256 30% 8%) !important;
+  color: hsl(0 0% 96%) !important;
+}
+
+/* ============================================ */
+/* COMPONENT OVERRIDES - Light Theme */
+/* ============================================ */
+
+/* Cards */
+[data-theme="light"] .card,
+[data-theme="light"] .glass-card,
+[data-theme="light"] .glass-card-premium,
+[data-theme="light"] .overview-card,
+[data-theme="light"] .stat-card,
+[data-theme="light"] .feature-card,
+[data-theme="light"] .buyer-section {
+  background: hsl(0 0% 100%) !important;
+  border-color: hsl(260 15% 88%) !important;
+  box-shadow: 0 4px 20px hsl(256 30% 15% / 0.08) !important;
+}
+
+/* Form inputs */
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] select,
+[data-theme="light"] .search-input,
+[data-theme="light"] .filter-input,
+[data-theme="light"] .filter-select {
+  background: hsl(0 0% 100%) !important;
+  border-color: hsl(260 15% 88%) !important;
+  color: hsl(256 30% 15%) !important;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: hsl(256 15% 55%) !important;
+}
+
+/* Tables */
+[data-theme="light"] .buyer-table,
+[data-theme="light"] table {
+  background: hsl(0 0% 100%) !important;
+}
+
+[data-theme="light"] .buyer-table th,
+[data-theme="light"] table th {
+  background: hsl(270 60% 55%) !important;
+  color: white !important;
+}
+
+[data-theme="light"] .buyer-table td,
+[data-theme="light"] table td {
+  border-color: hsl(260 15% 88%) !important;
+  color: hsl(256 30% 15%) !important;
+}
+
+/* Sidebar/Navigation */
+[data-theme="light"] .sidebar,
+[data-theme="light"] [class*="sidebar"] {
+  background: hsl(0 0% 100%) !important;
+  border-color: hsl(260 15% 88%) !important;
+}
+
+[data-theme="light"] .sidebar-item,
+[data-theme="light"] [class*="sidebar"] a,
+[data-theme="light"] [class*="sidebar"] button {
+  color: hsl(256 30% 25%) !important;
+}
+
+[data-theme="light"] .sidebar-item:hover,
+[data-theme="light"] [class*="sidebar"] a:hover {
+  background: hsl(260 15% 96%) !important;
+}
+
+[data-theme="light"] .sidebar-item.active,
+[data-theme="light"] [class*="sidebar"] a.active {
+  background: hsl(270 60% 92%) !important;
+  color: hsl(270 60% 55%) !important;
+}
+
+/* Buttons */
+[data-theme="light"] .btn-primary,
+[data-theme="light"] .search-button,
+[data-theme="light"] button[class*="primary"] {
+  background: hsl(270 60% 55%) !important;
+  color: white !important;
+}
+
+[data-theme="light"] .btn-secondary,
+[data-theme="light"] .filter-button,
+[data-theme="light"] button[class*="secondary"] {
+  background: hsl(0 0% 100%) !important;
+  border-color: hsl(260 15% 88%) !important;
+  color: hsl(256 30% 25%) !important;
+}
+
+/* Headings */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6 {
+  color: hsl(256 30% 15%) !important;
+}
+
+/* Sections */
+[data-theme="light"] section,
+[data-theme="light"] .section,
+[data-theme="light"] main {
+  background: hsl(260 20% 99%);
+}
+
+[data-theme="light"] .hero-section,
+[data-theme="light"] [class*="hero"] {
+  background: linear-gradient(180deg, hsl(270 40% 25%), hsl(256 30% 12%)) !important;
+}
+
+/* Property Cards */
+[data-theme="light"] .property-card {
+  background: hsl(0 0% 100%) !important;
+  border-color: hsl(260 15% 88%) !important;
+}
+
+/* Dashboard specific */
+[data-theme="light"] .dashboard-header h1 {
+  color: hsl(270 60% 55%) !important;
+}
+
+[data-theme="light"] .overview-card::before {
+  background: linear-gradient(90deg, hsl(270 60% 55%), hsl(270 55% 65%)) !important;
+}
+
+/* Stats */
+[data-theme="light"] .stat-item {
+  background: hsl(0 0% 100%) !important;
+  border-color: hsl(260 15% 88%) !important;
+}
+
+[data-theme="light"] .stat-number {
+  color: hsl(270 60% 55%) !important;
+  background: linear-gradient(135deg, hsl(270 60% 55%), hsl(270 55% 65%)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Filter panel */
+[data-theme="light"] .filter-panel {
+  background: hsl(0 0% 100%) !important;
+  border-color: hsl(260 15% 88%) !important;
+}
+
+/* View mode buttons */
+[data-theme="light"] .view-mode-btn {
+  background: hsl(0 0% 100%) !important;
+  border-color: hsl(260 15% 88%) !important;
+  color: hsl(256 30% 25%) !important;
+}
+
+[data-theme="light"] .view-mode-btn.active {
+  background: hsl(270 60% 55%) !important;
+  color: white !important;
+}
+
+/* ============================================ */
+/* COMPONENT OVERRIDES - Dark Theme */
+/* ============================================ */
+
+/* Cards */
+[data-theme="dark"] .card,
+[data-theme="dark"] .glass-card,
+[data-theme="dark"] .glass-card-premium,
+[data-theme="dark"] .overview-card,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .feature-card,
+[data-theme="dark"] .buyer-section {
+  background: linear-gradient(145deg, hsl(256 30% 15%), hsl(256 28% 12%)) !important;
+  border-color: hsl(270 30% 28%) !important;
+}
+
+/* Form inputs */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select,
+[data-theme="dark"] .search-input,
+[data-theme="dark"] .filter-input,
+[data-theme="dark"] .filter-select {
+  background: hsl(256 25% 14%) !important;
+  border-color: hsl(270 30% 28%) !important;
+  color: hsl(0 0% 96%) !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: hsl(256 15% 50%) !important;
+}
+
+/* Tables */
+[data-theme="dark"] .buyer-table,
+[data-theme="dark"] table {
+  background: hsl(256 28% 12%) !important;
+}
+
+[data-theme="dark"] .buyer-table th,
+[data-theme="dark"] table th {
+  background: hsl(270 50% 40%) !important;
+  color: white !important;
+}
+
+[data-theme="dark"] .buyer-table td,
+[data-theme="dark"] table td {
+  border-color: hsl(256 20% 22%) !important;
+  color: hsl(0 0% 90%) !important;
+}
+
+/* Sidebar/Navigation */
+[data-theme="dark"] .sidebar,
+[data-theme="dark"] [class*="sidebar"] {
+  background: hsl(256 28% 12%) !important;
+  border-color: hsl(256 20% 22%) !important;
+}
+
+[data-theme="dark"] .sidebar-item,
+[data-theme="dark"] [class*="sidebar"] a,
+[data-theme="dark"] [class*="sidebar"] button {
+  color: hsl(0 0% 90%) !important;
+}
+
+[data-theme="dark"] .sidebar-item:hover,
+[data-theme="dark"] [class*="sidebar"] a:hover {
+  background: hsl(256 25% 18%) !important;
+}
+
+[data-theme="dark"] .sidebar-item.active,
+[data-theme="dark"] [class*="sidebar"] a.active {
+  background: hsl(270 50% 30%) !important;
+  color: hsl(270 60% 80%) !important;
+}
+
+/* Property Cards */
+[data-theme="dark"] .property-card {
+  background: hsl(256 28% 12%) !important;
+  border-color: hsl(256 20% 22%) !important;
+}
+
+/* Stats */
+[data-theme="dark"] .stat-item {
+  background: linear-gradient(145deg, hsl(256 30% 15%), hsl(256 28% 12%)) !important;
+  border-color: hsl(270 30% 28%) !important;
+}
+
+/* Filter panel */
+[data-theme="dark"] .filter-panel {
+  background: hsl(256 28% 12%) !important;
+  border-color: hsl(256 20% 22%) !important;
+}
+
+/* View mode buttons */
+[data-theme="dark"] .view-mode-btn {
+  background: hsl(256 25% 14%) !important;
+  border-color: hsl(256 20% 22%) !important;
+  color: hsl(0 0% 90%) !important;
+}
+
+[data-theme="dark"] .view-mode-btn.active {
+  background: hsl(270 60% 55%) !important;
+  color: white !important;
+}
+
+/* ============================================ */
+/* UTILITY CLASSES */
+/* ============================================ */
+
+/* Smooth theme transitions */
+* {
+  transition: background-color 0.2s ease, 
+              border-color 0.2s ease, 
+              color 0.15s ease,
+              box-shadow 0.2s ease;
+}
+
+/* Ensure images don't have transitions */
+img, video, svg {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* ============================================ */
+/* PAGE SPECIFIC - ABOUT PAGE */
+/* ============================================ */
+
+[data-theme="light"] .about-page,
+[data-theme="light"] [class*="about"] section {
+  background: hsl(260 20% 99%);
+}
+
+[data-theme="light"] .team-card,
+[data-theme="light"] .value-card,
+[data-theme="light"] .journey-card,
+[data-theme="light"] .mission-card {
+  background: hsl(0 0% 100%) !important;
+  border-color: hsl(260 15% 88%) !important;
+}
+
+[data-theme="light"] .team-name,
+[data-theme="light"] .value-title {
+  color: hsl(256 30% 15%) !important;
+}
+
+[data-theme="light"] .team-role {
+  color: hsl(270 60% 55%) !important;
+}
+
+[data-theme="light"] .team-bio,
+[data-theme="light"] .value-description {
+  color: hsl(256 20% 45%) !important;
+}
+
+[data-theme="dark"] .about-page,
+[data-theme="dark"] [class*="about"] section {
+  background: hsl(256 30% 8%);
+}
+
+[data-theme="dark"] .team-card,
+[data-theme="dark"] .value-card,
+[data-theme="dark"] .journey-card,
+[data-theme="dark"] .mission-card {
+  background: linear-gradient(145deg, hsl(256 30% 14%), hsl(256 28% 11%)) !important;
+  border-color: hsl(270 30% 25%) !important;
+}
+
+[data-theme="dark"] .team-name,
+[data-theme="dark"] .value-title {
+  color: hsl(0 0% 96%) !important;
+}
+
+[data-theme="dark"] .team-role {
+  color: hsl(270 60% 70%) !important;
+}
+
+[data-theme="dark"] .team-bio,
+[data-theme="dark"] .value-description {
+  color: hsl(256 15% 65%) !important;
+}
+
+/* ============================================ */
+/* PAGE SPECIFIC - CONTACT PAGE */
+/* ============================================ */
+
+[data-theme="light"] .contact-page,
+[data-theme="light"] [class*="contact"] section {
+  background: hsl(260 20% 99%);
+}
+
+[data-theme="light"] .contact-form,
+[data-theme="light"] .contact-card,
+[data-theme="light"] .contact-info-card {
+  background: hsl(0 0% 100%) !important;
+  border-color: hsl(260 15% 88%) !important;
+}
+
+[data-theme="light"] .contact-title,
+[data-theme="light"] .contact-heading {
+  color: hsl(256 30% 15%) !important;
+}
+
+[data-theme="light"] .contact-description,
+[data-theme="light"] .contact-text {
+  color: hsl(256 20% 45%) !important;
+}
+
+[data-theme="light"] .faq-card,
+[data-theme="light"] .faq-item {
+  background: hsl(0 0% 100%) !important;
+  border-color: hsl(260 15% 88%) !important;
+}
+
+[data-theme="light"] .faq-question {
+  color: hsl(256 30% 15%) !important;
+}
+
+[data-theme="light"] .faq-answer {
+  color: hsl(256 20% 45%) !important;
+}
+
+[data-theme="dark"] .contact-page,
+[data-theme="dark"] [class*="contact"] section {
+  background: hsl(256 30% 8%);
+}
+
+[data-theme="dark"] .contact-form,
+[data-theme="dark"] .contact-card,
+[data-theme="dark"] .contact-info-card {
+  background: linear-gradient(145deg, hsl(256 30% 14%), hsl(256 28% 11%)) !important;
+  border-color: hsl(270 30% 25%) !important;
+}
+
+[data-theme="dark"] .contact-title,
+[data-theme="dark"] .contact-heading {
+  color: hsl(0 0% 96%) !important;
+}
+
+[data-theme="dark"] .contact-description,
+[data-theme="dark"] .contact-text {
+  color: hsl(256 15% 65%) !important;
+}
+
+[data-theme="dark"] .faq-card,
+[data-theme="dark"] .faq-item {
+  background: hsl(256 28% 12%) !important;
+  border-color: hsl(256 20% 22%) !important;
+}
+
+[data-theme="dark"] .faq-question {
+  color: hsl(0 0% 96%) !important;
+}
+
+[data-theme="dark"] .faq-answer {
+  color: hsl(256 15% 65%) !important;
+}
+
+/* ============================================ */
+/* ICONS AND DECORATIVE ELEMENTS */
+/* ============================================ */
+
+[data-theme="light"] .icon-container,
+[data-theme="light"] .feature-icon,
+[data-theme="light"] .contact-icon {
+  background: linear-gradient(135deg, hsl(270 60% 55%), hsl(270 55% 60%)) !important;
+  color: white !important;
+}
+
+[data-theme="dark"] .icon-container,
+[data-theme="dark"] .feature-icon,
+[data-theme="dark"] .contact-icon {
+  background: linear-gradient(135deg, hsl(270 60% 50%), hsl(280 60% 55%)) !important;
+  color: white !important;
+}
+
+/* ============================================ */
+/* ACCENT BADGES AND TAGS */
+/* ============================================ */
+
+[data-theme="light"] .badge,
+[data-theme="light"] .tag,
+[data-theme="light"] .section-badge {
+  background: hsl(270 60% 92%) !important;
+  color: hsl(270 60% 45%) !important;
+  border-color: hsl(270 50% 80%) !important;
+}
+
+[data-theme="dark"] .badge,
+[data-theme="dark"] .tag,
+[data-theme="dark"] .section-badge {
+  background: hsl(270 50% 25%) !important;
+  color: hsl(270 60% 75%) !important;
+  border-color: hsl(270 40% 35%) !important;
+}
+
+/* ============================================ */
+/* TEXT GRADIENTS */
+/* ============================================ */
+
+[data-theme="light"] .text-gradient-purple,
+[data-theme="light"] [class*="text-gradient"] {
+  background: linear-gradient(135deg, hsl(270 60% 45%), hsl(280 60% 55%)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}

@@ -15,16 +15,25 @@ import {
   Calendar,
   CreditCard,
   Globe,
+  Play,
+  Sparkles,
+  TrendingUp,
+  Award,
+  Zap,
 } from "lucide-react";
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
-import {userService} from "@/services/userService";
+import { userService } from "@/services/userService";
 
-import PropertyCard from "../components/PropertyCard";
+import PropertyCardEnhanced from "../components/PropertyCardEnhanced";
+import HeroVideo from "../components/HeroVideo";
+import { PropertyGridShimmer, StatsShimmer, FeatureCardShimmer, TestimonialCardShimmer } from "../components/PremiumShimmer";
 import { useLanguage } from "../context/LanguageContext";
-import { propertyService } from "../services/propertyService";
+import { usePropertiesQuery, usePropertyStatsQuery } from "../hooks/usePropertiesQuery";
 import { reviewService } from "../services/reviewService";
+import { useQuery } from "@tanstack/react-query";
 
 import "../styles/home-unbelievable.css";
 import "../styles/properties.css";
@@ -36,184 +45,98 @@ const Home = () => {
   const [locationFilter, setLocationFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [priceFilter, setPriceFilter] = useState("");
-  const [currentBgIndex, setCurrentBgIndex] = useState(0);
-  const [properties, setProperties] = useState([]);
-  const [stats , setStats]= useState([
-            { icon: Building, label: t("Properties Listed"), value: "Loading..." },
-            { icon: Users, label: t("Happy Clients"), value: "Loading..." },
-            { icon: CheckCircle, label: t("Verified Properties"), value: "Loading..." },
-            { icon: Shield, label: t("Secure Transactions"), value: "100%"},
-          ]);
-  const [testimonials, setTestimonials] = useState([]);
-  const [loading, setLoading] = useState({ properties: true, testimonials: true });
-  const [error, setError] = useState({ properties: "", testimonials: "" });
+  // Use React Query to fetch properties
+  const { data: propertiesData, isLoading: propertiesLoading, error: propertiesError } = usePropertiesQuery(
+    { isVerified: true },
+    { staleTime: 2 * 60 * 1000 } // 2 minutes
+  );
+  
+  // Use React Query to fetch property stats
+  const { data: statsData, isLoading: statsLoading } = usePropertyStatsQuery();
+  
+  // Use React Query to fetch testimonials
+  const { data: testimonialsData, isLoading: testimonialsLoading, error: testimonialsError } = useQuery({
+    queryKey: ['reviews', 'website-service', 6],
+    queryFn: async () => {
+      const result = await reviewService.getWebsiteServiceReviews(6);
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to fetch testimonials');
+      }
+      return result.data?.data?.reviews || [];
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 
-  const backgroundImages = ["/hero-bg-addis.jpg", "/hero-bg-modern.jpg"];
+  const properties = propertiesData?.properties || [];
+  const testimonials = testimonialsData || [];
+  const loading = {
+    properties: propertiesLoading,
+    testimonials: testimonialsLoading,
+  };
+  const error = {
+    properties: propertiesError?.message || "",
+    testimonials: testimonialsError?.message || "",
+  };
+
+  // Calculate stats from properties data
+  const [stats, setStats] = useState([
+    { icon: Building, label: t("Properties Listed"), value: "Loading..." },
+    { icon: Users, label: t("Happy Clients"), value: "Loading..." },
+    { icon: CheckCircle, label: t("Verified Properties"), value: "Loading..." },
+    { icon: Shield, label: t("Secure Transactions"), value: "100%" },
+  ]);
+
   const featuredProperties = useMemo(() => properties.slice(0, 6), [properties]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentBgIndex((prevIndex) => (prevIndex + 1) % backgroundImages.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [backgroundImages.length]);
+  // Scroll-based parallax
+  const { scrollY } = useScroll();
+  const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const heroScale = useTransform(scrollY, [0, 400], [1, 0.95]);
 
-   // Load real stats from database
-    useEffect(() => {
-      const loadStats = async () => {
-        try {
-          // Prefer lightweight public computations from existing endpoints
-          // 1) Properties list (public) to compute counts and verified %
-          const propsRes = await propertyService.getProperties({ limit: 500 });
-          const props = propsRes.success ? propsRes.data?.data?.data || [] : [];
-          const propertiesCount = props.length;
-          const verifiedCount = props.filter(
-            (p) => p.isVerified || p.status === "approved"
-          ).length;
-          const verifiedPercentage =
-            propertiesCount > 0
-              ? Math.round((verifiedCount / propertiesCount) * 100)
-              : 0;
-  
-          // 2) Users count (protected). Try; if fails, approximate by unique owners from properties
-          let usersCount = 0;
-          try {
-            const usersRes = await userService.getUsers();
-            //console.log(usersRes);
-            // Some backends include total in headers or response; try common shapes
-            usersCount = usersRes.success
-              ? usersRes.data?.results ||
-                usersRes.data?.total ||
-                usersRes.data?.data?.results ||
-                0
-              : 0;
-            if (!usersCount) {
-              const listRes = await userService.getUsers({ limit: 200 });
-              const users = listRes.success ? listRes.data?.data?.data || [] : [];
-              usersCount = users.length;
-            }
-          } catch (_) {
-            // Fallback: unique owners derived from properties
-            const uniqueOwners = new Set(
-              (props || []).map((p) => p.owner?._id || p.owner || "")
-            );
-            usersCount = Math.max(0, uniqueOwners.size);
-          }
-  
-          // Calculate years of experience (from 2016)
-          const currentYear = new Date().getFullYear();
-          const yearsOfExperience = currentYear - 2016;
-  
-          setStats([
-            {
-              icon: Building,
-              label: "Properties Listed",
-              value: `${propertiesCount.toLocaleString()}`,
-            },
-            {
-              icon: Users,
-              label: "Happy Clients",
-              value: `${usersCount.toLocaleString()}`,
-            },
-            {
-              icon: CheckCircle,
-              label: "Verified Properties",
-              value: `${verifiedPercentage}%`,
-            },
-            {
-              icon: Shield,
-              label: "Secure Transactions",
-              value: "100%",
-            },
-          ]);
-        } catch (error) {
-          console.error("Failed to load stats:", error);
-          // Fallback to static data if API fails
-          setStats([
-            { icon: Building, label: "Properties Listed", value: "0" },
-            { icon: Users, label: "Happy Clients", value: "0" },
-            { icon: CheckCircle, label: "Verified Properties", value: "0%" },
-            {
-              icon: Shield,
-              label: "Years of Experience",
-              value: `${new Date().getFullYear() - 2016}`,
-            },
-          ]);
-        }
-      };
-  
-      loadStats();
-    }, []);
-
-  useEffect(() => {
-    const fetchProperties = async () => {
-      setLoading((prev) => ({ ...prev, properties: true }));
-      setError((prev) => ({ ...prev, properties: "" }));
+  // Load stats from database using React Query
+  const { data: allPropertiesData } = usePropertiesQuery({ limit: 500 }, { enabled: !statsLoading });
+  const { data: usersData } = useQuery({
+    queryKey: ['users', 'stats'],
+    queryFn: async () => {
       try {
-        const result = await propertyService.getProperties({isVerified: true});
-        if (result.data.status=="success") {
-
-          //console.log("😋😋😋😊",result.data);
-          setProperties(result.data.data.data);
-        } else {
-          setError((prev) => ({
-            ...prev,
-            properties: t(result.error || "Failed to load properties. Please try again."),
-          }));
-          setProperties([]);
+        const usersRes = await userService.getUsers();
+        if (usersRes.success) {
+          return usersRes.data?.results || usersRes.data?.total || usersRes.data?.data?.results || 0;
         }
-      } catch (err) {
-        setError((prev) => ({
-          ...prev,
-          properties: t(
-            err.response?.data?.message || "Failed to load properties. Please try again ."
-          ),
-        }));
-        setProperties([]);
-      } finally {
-        setLoading((prev) => ({ ...prev, properties: false }));
+        const listRes = await userService.getUsers({ limit: 200 });
+        const users = listRes.success ? listRes.data?.data?.data || [] : [];
+        return users.length;
+      } catch (_) {
+        const props = allPropertiesData?.properties || [];
+        const uniqueOwners = new Set(props.map((p) => p.owner?._id || p.owner || ""));
+        return Math.max(0, uniqueOwners.size);
       }
-    };
-    fetchProperties();
-  }, [t]);
+    },
+    enabled: !statsLoading,
+    staleTime: 5 * 60 * 1000,
+  });
 
   useEffect(() => {
-    const fetchTestimonials = async () => {
-      setLoading((prev) => ({ ...prev, testimonials: true }));
-      setError((prev) => ({ ...prev, testimonials: "" }));
-      try {
-        const result = await reviewService.getWebsiteServiceReviews(6);
-        if (result.success && result.data.data.reviews) {
-          //console.log(result.data.data.reviews);
-          setTestimonials(result.data.data.reviews);
-        } else {
-          setError((prev) => ({
-            ...prev,
-            testimonials: t("Failed to load testimonials. Please try again."),
-          }));
-          setTestimonials([]);
-        }
-      } catch (err) {
-        setError((prev) => ({
-          ...prev,
-          testimonials: t(
-            err.response?.data?.message || "Failed to load testimonials. Please try again."
-          ),
-        }));
-        setTestimonials([]);
-      } finally {
-        setLoading((prev) => ({ ...prev, testimonials: false }));
-      }
-    };
-    fetchTestimonials();
-  }, [t]);
+    if (!statsLoading && allPropertiesData) {
+      const props = allPropertiesData.properties || [];
+      const propertiesCount = props.length;
+      const verifiedCount = props.filter((p) => p.isVerified || p.status === "approved").length;
+      const verifiedPercentage = propertiesCount > 0 ? Math.round((verifiedCount / propertiesCount) * 100) : 0;
+      const usersCount = usersData || 0;
+
+      setStats([
+        { icon: Building, label: "Properties Listed", value: `${propertiesCount.toLocaleString()}+` },
+        { icon: Users, label: "Happy Clients", value: `${usersCount.toLocaleString()}+` },
+        { icon: CheckCircle, label: "Verified Properties", value: `${verifiedPercentage}%` },
+        { icon: Shield, label: "Secure Transactions", value: "100%" },
+      ]);
+    }
+  }, [statsLoading, allPropertiesData, usersData]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     const queryParams = new URLSearchParams();
-    if (searchQuery.trim()) {
-      queryParams.append("search", searchQuery.trim());
-    }
+    if (searchQuery.trim()) queryParams.append("search", searchQuery.trim());
     if (locationFilter && ["Addis Ababa", "Bole", "Kazanchis", "Gerji"].includes(locationFilter)) {
       queryParams.append("location", locationFilter);
     }
@@ -227,552 +150,708 @@ const Home = () => {
   };
 
   const verificationSteps = [
-    {
-      icon: FileCheck,
-      title: t("Document Verification"),
-      description: t("All property documents are thoroughly checked for authenticity and legal compliance"),
-    },
-    {
-      icon: MapPin,
-      title: t("Physical Inspection"),
-      description: t("Our certified inspectors visit and verify the actual property condition and location"),
-    },
-    {
-      icon: Shield,
-      title: t("Owner Verification"),
-      description: t("Property owners undergo identity verification and ownership confirmation"),
-    },
-    {
-      icon: CheckCircle,
-      title: t("Final Approval"),
-      description: t("Only verified properties receive our trust badge and are listed on the platform"),
-    },
+    { icon: FileCheck, title: t("Document Verification"), description: t("All property documents are thoroughly checked for authenticity and legal compliance") },
+    { icon: MapPin, title: t("Physical Inspection"), description: t("Our certified inspectors visit and verify the actual property condition and location") },
+    { icon: Shield, title: t("Owner Verification"), description: t("Property owners undergo identity verification and ownership confirmation") },
+    { icon: CheckCircle, title: t("Final Approval"), description: t("Only verified properties receive our trust badge and are listed on the platform") },
   ];
 
   const platformFeatures = [
-    {
-      icon: Search,
-      title: t("Advanced Search"),
-      description: t("Find properties with powerful filters including location, price, type, and amenities"),
-    },
-    {
-      icon: Heart,
-      title: t("Save Favorites"),
-      description: t("Create your wishlist and get notified about price changes and similar properties"),
-    },
-    {
-      icon: MessageCircle,
-      title: t("Direct Communication"),
-      description: t("Chat directly with property owners and agents through our secure messaging system"),
-    },
-    {
-      icon: Calendar,
-      title: t("Schedule Visits"),
-      description: t("Book property visits at your convenience with our integrated scheduling system"),
-    },
-    {
-      icon: CreditCard,
-      title: t("Secure Payments"),
-      description: t("Complete transactions safely with multiple payment options and escrow protection"),
-    },
-    {
-      icon: Globe,
-      title: t("Bilingual Support"),
-      description: t("Full support in English and Amharic to serve all Ethiopian property seekers"),
-    },
+    { icon: Search, title: t("Advanced Search"), description: t("Find properties with powerful filters including location, price, type, and amenities") },
+    { icon: Heart, title: t("Save Favorites"), description: t("Create your wishlist and get notified about price changes and similar properties") },
+    { icon: MessageCircle, title: t("Direct Communication"), description: t("Chat directly with property owners and agents through our secure messaging system") },
+    { icon: Calendar, title: t("Schedule Visits"), description: t("Book property visits at your convenience with our integrated scheduling system") },
+    { icon: CreditCard, title: t("Secure Payments"), description: t("Complete transactions safely with multiple payment options and escrow protection") },
+    { icon: Globe, title: t("Bilingual Support"), description: t("Full support in English and Amharic to serve all Ethiopian property seekers") },
   ];
 
   const howItWorksSteps = [
-    {
-      step: 1,
-      title: t("Search Properties"),
-      description: t("Browse through our extensive collection of verified properties using advanced filters"),
-      icon: Search,
-    },
-    {
-      step: 2,
-      title: t("Schedule Visit"),
-      description: t("Book property visits and connect with our professional agents for guided tours"),
-      icon: Calendar,
-    },
-    {
-      step: 3,
-      title: t("Secure Purchase"),
-      description: t("Complete your transaction safely with our secure platform and legal support"),
-      icon: Shield,
-    },
+    { step: 1, title: t("Search Properties"), description: t("Browse through our extensive collection of verified properties using advanced filters"), icon: Search },
+    { step: 2, title: t("Schedule Visit"), description: t("Book property visits and connect with our professional agents for guided tours"), icon: Calendar },
+    { step: 3, title: t("Secure Purchase"), description: t("Complete your transaction safely with our secure platform and legal support"), icon: Shield },
   ];
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
-      {/* Hero Section - Cinematic & Luxurious with Parallax */}
-      <section
-        className="relative min-h-[95vh] w-full overflow-hidden flex items-center justify-center"
-        style={{
-          backgroundImage: `url(${backgroundImages[currentBgIndex]})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-        }}
+      {/* ============================================
+          HERO SECTION - Premium Video/Image Background
+          ============================================ */}
+      <HeroVideo
+        fallbackImages={["/hero-bg-addis.jpg", "/hero-bg-modern.jpg"]}
+        overlayOpacity={0.65}
+        parallaxStrength={0.4}
       >
-        {/* Multi-layer gradient overlays for cinematic depth */}
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/85 via-foreground/60 to-foreground/95"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-accent/30 via-transparent to-primary/20"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
-        
-        {/* Animated floating elements - parallax particles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Large gold accent orb - top left */}
-          <div 
-            className="absolute top-[10%] left-[10%] w-[500px] h-[500px] rounded-full opacity-20"
-            style={{
-              background: 'radial-gradient(circle, hsl(48 96% 53% / 0.3) 0%, transparent 70%)',
-              animation: 'float 8s ease-in-out infinite',
-              filter: 'blur(60px)',
-            }}
-          />
-          
-          {/* Green accent orb - bottom right */}
-          <div 
-            className="absolute bottom-[15%] right-[10%] w-[400px] h-[400px] rounded-full opacity-20"
-            style={{
-              background: 'radial-gradient(circle, hsl(145 63% 32% / 0.4) 0%, transparent 70%)',
-              animation: 'float 10s ease-in-out infinite',
-              animationDelay: '-3s',
-              filter: 'blur(50px)',
-            }}
-          />
-          
-          {/* Red accent orb - center right */}
-          <div 
-            className="absolute top-[40%] right-[20%] w-[250px] h-[250px] rounded-full opacity-15"
-            style={{
-              background: 'radial-gradient(circle, hsl(0 85% 47% / 0.3) 0%, transparent 70%)',
-              animation: 'float 6s ease-in-out infinite',
-              animationDelay: '-5s',
-              filter: 'blur(40px)',
-            }}
-          />
+        <motion.div 
+          className="flex-1 flex items-center justify-center px-4 py-32"
+          style={{ opacity: heroOpacity, scale: heroScale }}
+        >
+          <div className="container mx-auto text-center max-w-6xl">
+            {/* Ethiopian Accent Bar */}
+            <motion.div
+              className="relative w-32 mx-auto mb-10"
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <div className="h-1.5 rounded-full bg-gradient-to-r from-[hsl(var(--ethiopian-green))] via-[hsl(var(--ethiopian-yellow))] to-[hsl(var(--ethiopian-red))]" />
+              <div className="absolute inset-0 h-1.5 rounded-full bg-gradient-to-r from-[hsl(var(--ethiopian-green))] via-[hsl(var(--ethiopian-yellow))] to-[hsl(var(--ethiopian-red))] blur-md opacity-60" />
+            </motion.div>
 
-          {/* Floating small particles */}
-          <div className="absolute top-[20%] left-[30%] w-4 h-4 bg-gold-400/60 rounded-full animate-float" style={{ animationDelay: '-1s' }}></div>
-          <div className="absolute top-[60%] left-[15%] w-3 h-3 bg-gold-400/40 rounded-full animate-float" style={{ animationDelay: '-2s' }}></div>
-          <div className="absolute top-[35%] right-[25%] w-5 h-5 bg-accent/50 rounded-full animate-float" style={{ animationDelay: '-4s' }}></div>
-          <div className="absolute bottom-[30%] left-[40%] w-2 h-2 bg-gold-400/80 rounded-full animate-float" style={{ animationDelay: '-6s' }}></div>
-          <div className="absolute top-[70%] right-[35%] w-3 h-3 bg-white/30 rounded-full animate-float" style={{ animationDelay: '-3.5s' }}></div>
-        </div>
-        
-        {/* Animated gradient mesh overlay */}
-        <div 
-          className="absolute inset-0 opacity-30"
-          style={{
-            background: `
-              linear-gradient(45deg, transparent 25%, hsl(48 96% 53% / 0.05) 50%, transparent 75%),
-              linear-gradient(-45deg, transparent 25%, hsl(145 63% 32% / 0.05) 50%, transparent 75%)
-            `,
-            backgroundSize: '60px 60px',
-            animation: 'shimmer 20s linear infinite',
-          }}
-        />
-        
-        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
-          {/* Ethiopian accent bar with glow */}
-          <div className="relative w-32 mx-auto mb-10 animate-fade-in-down">
-            <div className="ethiopian-accent-bar h-1.5 rounded-full"></div>
-            <div className="absolute inset-0 ethiopian-accent-bar h-1.5 rounded-full blur-md opacity-60"></div>
+            {/* Main Headline */}
+            <motion.h1
+              className="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 leading-tight"
+              style={{
+                letterSpacing: "-0.02em",
+                textShadow: "0 4px 30px rgba(0,0,0,0.3), 0 0 60px hsl(var(--gold-400) / 0.2)",
+              }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              {t("heroTitle")}
+            </motion.h1>
+
+            {/* Subheadline */}
+            <motion.p
+              className="text-xl md:text-2xl lg:text-3xl text-white/85 mb-12 max-w-4xl mx-auto font-light tracking-wide"
+              style={{ textShadow: "0 2px 20px rgba(0,0,0,0.2)" }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              {t("heroSubtitle")}
+            </motion.p>
+
+            {/* Premium Search Card */}
+            <motion.div
+              className="w-full max-w-5xl mx-auto backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl p-8 md:p-10 border border-white/20"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+            >
+              <form onSubmit={handleSearch} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Location Filter */}
+                  <div className="space-y-2 text-left">
+                    <label className="text-sm font-semibold text-white/80 uppercase tracking-wider flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-gold-400" />
+                      {t("Location")}
+                    </label>
+                    <select
+                      value={locationFilter}
+                      onChange={(e) => setLocationFilter(e.target.value)}
+                      className="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:bg-white/15 backdrop-blur-sm"
+                    >
+                      <option value="" className="bg-gray-900">{t("All Locations")}</option>
+                      <option value="Addis Ababa" className="bg-gray-900">{t("Addis Ababa")}</option>
+                      <option value="Bole" className="bg-gray-900">{t("Bole")}</option>
+                      <option value="Kazanchis" className="bg-gray-900">{t("Kazanchis")}</option>
+                      <option value="Gerji" className="bg-gray-900">{t("Gerji")}</option>
+                    </select>
+                  </div>
+
+                  {/* Type Filter */}
+                  <div className="space-y-2 text-left">
+                    <label className="text-sm font-semibold text-white/80 uppercase tracking-wider flex items-center gap-2">
+                      <Building className="w-4 h-4 text-gold-400" />
+                      {t("Property Type")}
+                    </label>
+                    <select
+                      value={typeFilter}
+                      onChange={(e) => setTypeFilter(e.target.value)}
+                      className="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:bg-white/15 backdrop-blur-sm"
+                    >
+                      <option value="" className="bg-gray-900">{t("All Types")}</option>
+                      <option value="house" className="bg-gray-900">{t("house")}</option>
+                      <option value="apartment" className="bg-gray-900">{t("apartment")}</option>
+                      <option value="villa" className="bg-gray-900">{t("villa")}</option>
+                      <option value="commercial" className="bg-gray-900">{t("commercial")}</option>
+                    </select>
+                  </div>
+
+                  {/* Price Filter */}
+                  <div className="space-y-2 text-left">
+                    <label className="text-sm font-semibold text-white/80 uppercase tracking-wider flex items-center gap-2">
+                      <CreditCard className="w-4 h-4 text-gold-400" />
+                      {t("Price Range")}
+                    </label>
+                    <select
+                      value={priceFilter}
+                      onChange={(e) => setPriceFilter(e.target.value)}
+                      className="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:bg-white/15 backdrop-blur-sm"
+                    >
+                      <option value="" className="bg-gray-900">{t("Any Price")}</option>
+                      <option value="0-500000" className="bg-gray-900">{t("Under 500K ETB")}</option>
+                      <option value="500000-1000000" className="bg-gray-900">{t("500K - 1M ETB")}</option>
+                      <option value="1000000-2000000" className="bg-gray-900">{t("1M - 2M ETB")}</option>
+                      <option value="2000000+" className="bg-gray-900">{t("Above 2M ETB")}</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Search Input & Button */}
+                <div className="flex gap-4">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/60" />
+                    <input
+                      type="text"
+                      placeholder={t("Search by keywords...")}
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-14 pr-6 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 backdrop-blur-sm"
+                    />
+                  </div>
+                  <motion.button
+                    type="submit"
+                    className="group relative px-10 py-4 bg-gradient-to-r from-[hsl(var(--ethiopian-green))] to-[hsl(var(--accent))] text-white rounded-xl font-bold text-lg overflow-hidden flex items-center gap-3"
+                    whileHover={{ scale: 1.02, boxShadow: "0 0 30px hsl(var(--ethiopian-green) / 0.4)" }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                      initial={{ x: "-100%" }}
+                      whileHover={{ x: "100%" }}
+                      transition={{ duration: 0.6 }}
+                    />
+                    <Search className="h-5 w-5 relative z-10" />
+                    <span className="hidden md:inline relative z-10">{t("Search")}</span>
+                  </motion.button>
+                </div>
+              </form>
+            </motion.div>
+
+            {/* Quick Property Type Links */}
+            <motion.div
+              className="flex flex-wrap gap-4 mt-12 justify-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1 }}
+            >
+              {["house", "apartment", "villa", "commercial"].map((type, index) => (
+                <motion.div
+                  key={type}
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Link
+                    to={`/properties?type=${type}`}
+                    className="group relative px-8 py-4 backdrop-blur-md bg-white/10 text-white rounded-full font-medium overflow-hidden transition-all duration-300 border border-white/20 hover:border-gold-400/50 hover:shadow-[0_0_20px_hsl(var(--gold-400)/0.3)] flex items-center gap-2"
+                  >
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-gold-400/0 via-gold-400/20 to-gold-400/0"
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    <span className="relative z-10 capitalize">{t(type)}</span>
+                    <ArrowRight className="w-4 h-4 relative z-10 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
-          
-          {/* Main headline with letter-spacing and text shadow */}
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 leading-tight animate-fade-in-up"
-              style={{ 
-                letterSpacing: '-0.02em',
-                textShadow: '0 4px 30px rgba(0,0,0,0.3), 0 0 60px hsl(48 96% 53% / 0.2)'
-              }}>
-            <span className="block">{t("heroTitle")}</span>
-          </h1>
-          
-          {/* Subheadline with elegant styling */}
-          <p className="text-xl md:text-2xl lg:text-3xl text-white/85 mb-12 max-w-4xl mx-auto font-light tracking-wide animate-fade-in-up" 
-             style={{ animationDelay: '0.2s', textShadow: '0 2px 20px rgba(0,0,0,0.2)' }}>
-            {t("heroSubtitle")}
-          </p>
+        </motion.div>
+      </HeroVideo>
 
-          {/* Background image indicators with glow */}
-          <div className="flex gap-4 mb-12 justify-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
-            {backgroundImages.map((_, index) => (
-              <button
+      {/* ============================================
+          STATS SECTION - Floating Cards with Glow
+          ============================================ */}
+      <section className="py-24 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
+        {/* Background Glow Effects */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gold-400/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[100px]" />
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            {stats.map((stat, index) => (
+              <motion.div
                 key={index}
-                className={`relative h-2.5 rounded-full transition-all duration-500 hover:scale-110 ${
-                  index === currentBgIndex 
-                    ? "w-14 bg-gradient-to-r from-gold-400 to-gold-500" 
-                    : "w-4 bg-white/30 hover:bg-white/50"
-                }`}
-                onClick={() => setCurrentBgIndex(index)}
-                aria-label={`Select background image ${index + 1}`}
+                className="group relative"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                {index === currentBgIndex && (
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-gold-400 to-gold-500 blur-md animate-pulse-glow"></div>
-                )}
-              </button>
-            ))}
-          </div>
-
-          {/* Premium Search Card with Glassmorphism */}
-          <div className="w-full max-w-5xl mx-auto glass-card rounded-3xl shadow-luxury p-8 md:p-10 animate-fade-in-up border border-white/10" 
-               style={{ animationDelay: '0.4s' }}>
-            <form onSubmit={handleSearch} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-2 text-left">
-                  <label htmlFor="location-filter" className="text-sm font-semibold text-card-foreground/80 uppercase tracking-wider flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-gold-400" />
-                    {t("Location")}
-                  </label>
-                  <select
-                    id="location-filter"
-                    value={locationFilter}
-                    onChange={(e) => setLocationFilter(e.target.value)}
-                    className="w-full px-5 py-4 bg-background/60 border border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 hover:shadow-inner-glow backdrop-blur-sm"
-                  >
-                    <option value="">{t("All Locations")}</option>
-                    <option value="Addis Ababa">{t("Addis Ababa")}</option>
-                    <option value="Bole">{t("Bole")}</option>
-                    <option value="Kazanchis">{t("Kazanchis")}</option>
-                    <option value="Gerji">{t("Gerji")}</option>
-                  </select>
-                </div>
-
-                <div className="space-y-2 text-left">
-                  <label htmlFor="type-filter" className="text-sm font-semibold text-card-foreground/80 uppercase tracking-wider flex items-center gap-2">
-                    <Building className="w-4 h-4 text-gold-400" />
-                    {t("Property Type")}
-                  </label>
-                  <select
-                    id="type-filter"
-                    value={typeFilter}
-                    onChange={(e) => setTypeFilter(e.target.value)}
-                    className="w-full px-5 py-4 bg-background/60 border border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 hover:shadow-inner-glow backdrop-blur-sm"
-                  >
-                    <option value="">{t("All Types")}</option>
-                    <option value="house">{t("house")}</option>
-                    <option value="apartment">{t("apartment")}</option>
-                    <option value="villa">{t("villa")}</option>
-                    <option value="commercial">{t("commercial")}</option>
-                  </select>
-                </div>
-
-                <div className="space-y-2 text-left">
-                  <label htmlFor="price-filter" className="text-sm font-semibold text-card-foreground/80 uppercase tracking-wider flex items-center gap-2">
-                    <CreditCard className="w-4 h-4 text-gold-400" />
-                    {t("Price Range")}
-                  </label>
-                  <select
-                    id="price-filter"
-                    value={priceFilter}
-                    onChange={(e) => setPriceFilter(e.target.value)}
-                    className="w-full px-5 py-4 bg-background/60 border border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 hover:shadow-inner-glow backdrop-blur-sm"
-                  >
-                    <option value="">{t("Any Price")}</option>
-                    <option value="0-500000">{t("Under 500K ETB")}</option>
-                    <option value="500000-1000000">{t("500K - 1M ETB")}</option>
-                    <option value="1000000-2000000">{t("1M - 2M ETB")}</option>
-                    <option value="2000000+">{t("Above 2M ETB")}</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <input
-                    type="text"
-                    placeholder={t("Search by keywords...")}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-14 pr-6 py-4 bg-background/60 border border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 backdrop-blur-sm"
+                {/* Circular Gradient Background */}
+                <div className="absolute -inset-4 rounded-3xl overflow-hidden pointer-events-none">
+                  <motion.div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] rounded-full"
+                    style={{
+                      background: `radial-gradient(circle at center, hsl(var(--gold-400) / 0.15) 0%, hsl(var(--gold-500) / 0.05) 50%, transparent 70%)`,
+                    }}
+                    whileHover={{ scale: 1.2, opacity: 1 }}
+                    initial={{ opacity: 0.5 }}
+                    transition={{ duration: 0.4 }}
                   />
                 </div>
-                <button 
-                  type="submit" 
-                  className="group relative px-10 py-4 bg-gradient-to-r from-accent to-accent/90 text-accent-foreground rounded-xl font-bold text-lg hover:shadow-glow-green transition-all duration-300 flex items-center gap-3 overflow-hidden"
-                  aria-label={t("Search properties")}
+
+                <motion.div
+                  className="relative bg-card/90 backdrop-blur-md rounded-2xl border border-border/50 p-8 text-center overflow-hidden"
+                  whileHover={{
+                    y: -8,
+                    boxShadow: "0 25px 50px -12px hsl(var(--gold-400) / 0.15)",
+                    borderColor: "hsl(var(--gold-400) / 0.3)",
+                  }}
+                  transition={{ duration: 0.4 }}
                 >
-                  {/* Button glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                  <Search className="h-5 w-5 group-hover:scale-110 transition-transform relative z-10" />
-                  <span className="hidden md:inline relative z-10">{t("Search")}</span>
-                </button>
-              </div>
-            </form>
-          </div>
-
-          {/* Quick Property Type Links with hover effects */}
-          <div className="flex flex-wrap gap-4 mt-12 justify-center animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
-            {['house', 'apartment', 'villa', 'commercial'].map((type, index) => (
-              <Link 
-                key={type}
-                to={`/properties?type=${type}`} 
-                className="group relative px-8 py-4 glass text-white rounded-full font-medium overflow-hidden transition-all duration-300 hover:scale-105 border border-white/10 hover:border-gold-400/30"
-                style={{ animationDelay: `${0.6 + index * 0.1}s` }}
-              >
-                {/* Hover gradient */}
-                <div className="absolute inset-0 bg-gradient-to-r from-gold-400/0 via-gold-400/20 to-gold-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <span className="relative z-10">{t(type)}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-        
-        {/* Scroll indicator with enhanced animation */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
-          <div className="relative">
-            <div className="w-8 h-14 rounded-full border-2 border-white/40 flex items-start justify-center p-2">
-              <div className="w-2 h-4 bg-white/70 rounded-full animate-bounce"></div>
-            </div>
-            <div className="absolute -inset-2 rounded-full border border-white/10 animate-ping" style={{ animationDuration: '2s' }}></div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section - Floating Cards */}
-      <section className="py-24 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 bg-gradient-radial-gold opacity-30"></div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div 
-                key={index} 
-                className="group bg-card rounded-2xl border border-border shadow-lg p-8 text-center card-hover-lift hover:border-gold-400/50 transition-all duration-500"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 text-gold-500 mb-6 group-hover:scale-110 group-hover:shadow-glow-gold transition-all duration-500">
-                  <stat.icon className="h-10 w-10" />
-                </div>
-                <div className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-3 text-gradient-gold">{stat.value}</div>
-                <div className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">{stat.label}</div>
-              </div>
+                  <motion.div
+                    className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 text-gold-500 mb-6"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <stat.icon className="h-10 w-10" />
+                  </motion.div>
+                  <div className="font-serif text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-gold-400 via-gold-500 to-amber-500 bg-clip-text text-transparent">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">
+                    {stat.label}
+                  </div>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Verification Steps Section */}
-      <section className="verification-section">
-        <div className="verification-container">
-          <div className="section-header">
-            <h2 className="section-title">{t("Property Verification Process")}</h2>
-            <p className="section-subtitle">
-              {t("Every property on our platform goes through rigorous verification")}
-            </p>
-          </div>
-
-          <div className="verification-grid">
-            {verificationSteps.map((step, index) => (
-              <div key={index} className="verification-card">
-                <div className="verification-icon">
-                  <step.icon />
-                </div>
-                <h3 className="verification-title">{step.title}</h3>
-                <p className="verification-description">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Properties - Premium Layout */}
-      <section className="py-24 bg-background relative">
+      {/* ============================================
+          VERIFICATION PROCESS SECTION
+          ============================================ */}
+      <section className="py-24 bg-background relative overflow-hidden">
         <div className="container mx-auto px-4">
           {/* Section Header */}
-          <div className="text-center mb-16">
-            <div className="ethiopian-accent-bar w-16 mx-auto mb-6"></div>
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="h-1 w-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-[hsl(var(--ethiopian-green))] via-[hsl(var(--ethiopian-yellow))] to-[hsl(var(--ethiopian-red))]" />
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
+              {t("Property Verification Process")}
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
+              {t("Every property on our platform goes through rigorous verification")}
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {verificationSteps.map((step, index) => (
+              <motion.div
+                key={index}
+                className="group relative"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                {/* Circular Gradient Background */}
+                <div className="absolute -inset-3 rounded-3xl overflow-hidden pointer-events-none">
+                  <motion.div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] rounded-full"
+                    style={{
+                      background: `radial-gradient(circle at center, hsl(var(--accent) / 0.12) 0%, transparent 60%)`,
+                    }}
+                    whileHover={{ scale: 1.3 }}
+                    initial={{ scale: 1 }}
+                    transition={{ duration: 0.4 }}
+                  />
+                </div>
+
+                <motion.div
+                  className="relative bg-card/90 backdrop-blur-md rounded-2xl border border-border/50 p-8 h-full"
+                  whileHover={{
+                    y: -8,
+                    boxShadow: "0 25px 50px -12px hsl(var(--accent) / 0.15)",
+                    borderColor: "hsl(var(--accent) / 0.3)",
+                  }}
+                >
+                  {/* Step Number */}
+                  <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-gradient-to-br from-gold-400 to-gold-500 flex items-center justify-center text-gray-900 font-bold text-lg shadow-lg">
+                    {index + 1}
+                  </div>
+
+                  <motion.div
+                    className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/10 flex items-center justify-center text-accent mb-6"
+                    whileHover={{ scale: 1.1, rotate: -5 }}
+                  >
+                    <step.icon className="w-8 h-8" />
+                  </motion.div>
+                  <h3 className="text-xl font-bold text-foreground mb-3">{step.title}</h3>
+                  <p className="text-muted-foreground">{step.description}</p>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
+          FEATURED PROPERTIES SECTION
+          ============================================ */}
+      <section className="py-24 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-gold-400/5 rounded-full blur-[150px]" />
+        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[150px]" />
+
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="h-1 w-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-gold-400 to-gold-500" />
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
               {t("featuredProperties")}
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
               {t("Discover our handpicked selection of premium properties")}
             </p>
-          </div>
-          
+          </motion.div>
+
           {loading.properties ? (
-            <div className="flex flex-col items-center justify-center py-20">
-              <div className="w-20 h-20 border-4 border-gold-400 border-t-transparent rounded-full animate-spin mb-6"></div>
-              <p className="text-muted-foreground text-lg">{t("Loading properties...")}</p>
-            </div>
+            <PropertyGridShimmer count={6} viewMode="grid" />
           ) : featuredProperties.length > 0 ? (
-            <div className="properties-container grid mb-16">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-16">
               {featuredProperties.map((property, index) => (
-                <div key={property._id} className="animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <PropertyCard property={property} />
-                </div>
+                <PropertyCardEnhanced key={property._id} property={property} index={index} />
               ))}
             </div>
           ) : (
-            <div className="text-center py-20 glass-card rounded-3xl">
+            <motion.div
+              className="text-center py-20 bg-card/50 backdrop-blur-sm rounded-3xl border border-border/50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
               <p className="text-muted-foreground text-xl">{t("No properties available at the moment.")}</p>
-            </div>
+            </motion.div>
           )}
-          
-          <div className="text-center">
-            <Link 
-              to="/properties" 
-              className="group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-2xl font-semibold text-lg hover:shadow-glow-green transition-all duration-500 hover:scale-105"
+
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <Link
+              to="/properties"
+              className="group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-2xl font-semibold text-lg hover:shadow-[0_0_40px_hsl(var(--accent)/0.3)] transition-all duration-500 hover:scale-105"
             >
               {t("View All Properties")}
               <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
             </Link>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Platform Features Section */}
-      <section className="platform-features-section">
-        <div className="platform-features-container">
-          <div className="section-header">
-            <h2 className="section-title">{t("Why Choose Ethio-Home?")}</h2>
-            <p className="section-subtitle">
+      {/* ============================================
+          PLATFORM FEATURES SECTION
+          ============================================ */}
+      <section className="py-24 bg-background relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          {/* Section Header */}
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="h-1 w-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-[hsl(var(--ethiopian-green))] via-[hsl(var(--ethiopian-yellow))] to-[hsl(var(--ethiopian-red))]" />
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
+              {t("Why Choose Ethio-Home?")}
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
               {t("Comprehensive features designed for the Ethiopian real estate market")}
             </p>
-          </div>
+          </motion.div>
 
-          <div className="features-grid">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {platformFeatures.map((feature, index) => (
-              <div key={index} className="feature-card">
-                <div className="feature-icon">
-                  <feature.icon />
+              <motion.div
+                key={index}
+                className="group relative"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                {/* Circular Gradient Background */}
+                <div className="absolute -inset-3 rounded-3xl overflow-hidden pointer-events-none">
+                  <motion.div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] h-[100%] rounded-full"
+                    style={{
+                      background: `radial-gradient(circle at center, hsl(var(--gold-400) / 0.1) 0%, transparent 60%)`,
+                    }}
+                    whileHover={{ scale: 1.4 }}
+                    initial={{ scale: 1 }}
+                    transition={{ duration: 0.4 }}
+                  />
                 </div>
-                <h3 className="feature-title">{feature.title}</h3>
-                <p className="feature-description">{feature.description}</p>
-              </div>
+
+                <motion.div
+                  className="relative bg-card/90 backdrop-blur-md rounded-2xl border border-border/50 p-8 h-full"
+                  whileHover={{
+                    y: -8,
+                    boxShadow: "0 25px 50px -12px hsl(var(--gold-400) / 0.1)",
+                    borderColor: "hsl(var(--gold-400) / 0.3)",
+                  }}
+                >
+                  <motion.div
+                    className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center text-gold-500 mb-6"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                  >
+                    <feature.icon className="w-8 h-8" />
+                  </motion.div>
+                  <h3 className="text-xl font-bold text-foreground mb-3">{feature.title}</h3>
+                  <p className="text-muted-foreground">{feature.description}</p>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="how-it-works-section">
-        <div className="how-it-works-container">
-          <div className="section-header">
-            <h2 className="section-title">{t("How Ethio-Home Works")}</h2>
-            <p className="section-subtitle">{t("Simple steps to find your perfect property")}</p>
-          </div>
+      {/* ============================================
+          HOW IT WORKS SECTION
+          ============================================ */}
+      <section className="py-24 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          {/* Section Header */}
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="h-1 w-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-gold-400 to-gold-500" />
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
+              {t("How Ethio-Home Works")}
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
+              {t("Simple steps to find your perfect property")}
+            </p>
+          </motion.div>
 
-          <div className="steps-grid">
-            {howItWorksSteps.map((step) => (
-              <div key={step.step} className="step-card">
-                <div className="step-icon">
-                  <step.icon />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+            {/* Connection Line */}
+            <div className="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-transparent via-gold-400/30 to-transparent -translate-y-8" />
+
+            {howItWorksSteps.map((step, index) => (
+              <motion.div
+                key={step.step}
+                className="group relative"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+              >
+                {/* Circular Gradient Background */}
+                <div className="absolute -inset-4 rounded-3xl overflow-hidden pointer-events-none">
+                  <motion.div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] rounded-full"
+                    style={{
+                      background: `radial-gradient(circle at center, hsl(var(--primary) / 0.1) 0%, transparent 60%)`,
+                    }}
+                    whileHover={{ scale: 1.3 }}
+                    initial={{ scale: 1 }}
+                    transition={{ duration: 0.4 }}
+                  />
                 </div>
-                <div className="step-number">{t("Step")} {step.step}</div>
-                <h3 className="step-title">{step.title}</h3>
-                <p className="step-description">{step.description}</p>
-              </div>
+
+                <motion.div
+                  className="relative bg-card/90 backdrop-blur-md rounded-2xl border border-border/50 p-8 text-center"
+                  whileHover={{
+                    y: -8,
+                    boxShadow: "0 25px 50px -12px hsl(var(--primary) / 0.15)",
+                    borderColor: "hsl(var(--primary) / 0.3)",
+                  }}
+                >
+                  {/* Step Number Circle */}
+                  <motion.div
+                    className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-gold-400 to-gold-500 flex items-center justify-center text-gray-900 font-bold text-2xl mb-6 shadow-lg"
+                    whileHover={{ scale: 1.1, rotate: 10 }}
+                  >
+                    {step.step}
+                  </motion.div>
+
+                  <motion.div
+                    className="w-14 h-14 mx-auto rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-primary mb-4"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <step.icon className="w-7 h-7" />
+                  </motion.div>
+
+                  <h3 className="text-xl font-bold text-foreground mb-3">{step.title}</h3>
+                  <p className="text-muted-foreground">{step.description}</p>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="testimonials-section">
-        <div className="testimonials-container">
-          <div className="section-header">
-            <h2 className="section-title">{t("testimonials")}</h2>
-            <p className="section-subtitle">{t("See what our satisfied clients have to say")}</p>
-          </div>
+      {/* ============================================
+          TESTIMONIALS SECTION
+          ============================================ */}
+      <section className="py-24 bg-background relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          {/* Section Header */}
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="h-1 w-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-[hsl(var(--ethiopian-green))] via-[hsl(var(--ethiopian-yellow))] to-[hsl(var(--ethiopian-red))]" />
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
+              {t("testimonials")}
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
+              {t("See what our satisfied clients have to say")}
+            </p>
+          </motion.div>
 
           {loading.testimonials ? (
-            <div className="loading-container">
-              <div className="loading-spinner"></div>
-              <p>{t("Loading testimonials...")}</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[1, 2, 3].map((i) => (
+                <TestimonialCardShimmer key={i} />
+              ))}
             </div>
           ) : error.testimonials ? (
-            <div className="error-container">
-              <p>{error.testimonials}</p>
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">{error.testimonials}</p>
             </div>
           ) : Array.isArray(testimonials) && testimonials.length > 0 ? (
-            <div className="testimonials-section-content">
-              <div className="testimonials-grid">
-                {testimonials.slice(0, 3).map((testimonial) => (
-                  <div key={testimonial._id} className="testimonial-card">
-                    <div className="testimonial-rating">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {testimonials.slice(0, 3).map((testimonial, index) => (
+                <motion.div
+                  key={testimonial._id}
+                  className="group relative"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  {/* Circular Gradient Background */}
+                  <div className="absolute -inset-3 rounded-3xl overflow-hidden pointer-events-none">
+                    <motion.div
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] h-[100%] rounded-full"
+                      style={{
+                        background: `radial-gradient(circle at center, hsl(var(--gold-400) / 0.08) 0%, transparent 60%)`,
+                      }}
+                      whileHover={{ scale: 1.3 }}
+                      initial={{ scale: 1 }}
+                      transition={{ duration: 0.4 }}
+                    />
+                  </div>
+
+                  <motion.div
+                    className="relative bg-card/90 backdrop-blur-md rounded-2xl border border-border/50 p-8 h-full"
+                    whileHover={{
+                      y: -8,
+                      boxShadow: "0 25px 50px -12px hsl(var(--gold-400) / 0.1)",
+                      borderColor: "hsl(var(--gold-400) / 0.3)",
+                    }}
+                  >
+                    {/* Quote Icon */}
+                    <div className="absolute -top-4 -left-2 text-6xl text-gold-400/20 font-serif">"</div>
+
+                    {/* Rating Stars */}
+                    <div className="flex gap-1 mb-4">
                       {[...Array(testimonial.rating || 5)].map((_, i) => (
-                        <Star key={i} className="star" />
+                        <Star key={i} className="w-5 h-5 text-gold-400 fill-gold-400" />
                       ))}
                     </div>
-                    <p className="testimonial-message">
-                      "{testimonial.title ? `${testimonial.title}: ` : ''}{testimonial.review}"
+
+                    <p className="text-foreground mb-6 italic">
+                      "{testimonial.title ? `${testimonial.title}: ` : ""}{testimonial.review}"
                     </p>
-                    <div className="testimonial-author">
-                      <div className="author-name">{testimonial.buyer?.name || t("Anonymous User")}</div>
-                      <div className="author-location">{testimonial.location || t("Unknown Location")}</div>
+
+                    <div className="flex items-center gap-3 mt-auto">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-400 to-gold-500 flex items-center justify-center text-gray-900 font-bold text-lg">
+                        {(testimonial.buyer?.name || "A").charAt(0)}
+                      </div>
+                      <div>
+                        <div className="font-bold text-foreground">{testimonial.buyer?.name || t("Anonymous User")}</div>
+                        <div className="text-sm text-muted-foreground">{testimonial.location || t("Unknown Location")}</div>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-              
-              {testimonials.length > 3 && (
-                <div className="testimonials-navigation">
-                  <div className="nav-dots">
-                    {Array.from({ length: Math.ceil(testimonials.length / 3) }).map((_, index) => (
-                      <button
-                        key={index}
-                        className={`nav-dot ${index === 0 ? 'active' : ''}`}
-                        onClick={() => {
-                          // This would be implemented with state to show different sets of reviews
-                          console.log(`Navigate to review set ${index + 1}`);
-                        }}
-                      />
-                    ))}
-                  </div>
-                  <p className="nav-text">
-                    Showing 3 of {testimonials.length} reviews
-                  </p>
-                </div>
-              )}
+                  </motion.div>
+                </motion.div>
+              ))}
             </div>
           ) : (
-            <div className="no-testimonials">
-              <p>{t("No testimonials available at the moment.")}</p>
-              <p className="testimonial-subtitle">{t("Be the first to share your experience!")}</p>
+            <div className="text-center py-12">
+              <p className="text-muted-foreground text-lg">{t("No testimonials available at the moment.")}</p>
+              <p className="text-muted-foreground">{t("Be the first to share your experience!")}</p>
             </div>
           )}
         </div>
       </section>
 
-      {/* CTA Section - Luxurious Final Call */}
+      {/* ============================================
+          CTA SECTION - Final Call to Action
+          ============================================ */}
       <section className="py-28 relative overflow-hidden">
-        {/* Background with gradient and pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-accent via-accent/95 to-accent/80"></div>
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
-        
-        {/* Floating decorative elements */}
-        <div className="absolute top-10 left-10 w-40 h-40 bg-gold-400/20 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-10 right-10 w-60 h-60 bg-white/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '-2s' }}></div>
-        
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-accent via-accent/95 to-[hsl(var(--ethiopian-green))]" />
+
+        {/* Pattern Overlay */}
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage:
+              'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+          }}
+        />
+
+        {/* Floating Decorative Elements */}
+        <motion.div
+          className="absolute top-10 left-10 w-40 h-40 bg-gold-400/20 rounded-full blur-3xl"
+          animate={{ y: [0, -20, 0] }}
+          transition={{ duration: 6, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute bottom-10 right-10 w-60 h-60 bg-white/10 rounded-full blur-3xl"
+          animate={{ y: [0, 20, 0] }}
+          transition={{ duration: 8, repeat: Infinity, delay: 2 }}
+        />
+
         <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="ethiopian-accent-bar w-20 mx-auto mb-8"></div>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            {t("Ready to Find Your Dream Home?")}
-          </h2>
-          <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-white/80 font-light">
-            {t("Join thousands of satisfied customers who found their perfect property with Ethio-Home")}
-          </p>
-          <div className="flex flex-row flex-wrap gap-4 justify-center items-center">
-            <Link 
-              to="/properties" 
-              className="group px-8 py-4 bg-white text-accent rounded-xl font-semibold text-base hover:bg-white/95 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 inline-flex items-center justify-center gap-2"
-            >
-              {t("Browse Properties")}
-              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link 
-              to="/signup" 
-              className="px-8 py-4 bg-transparent border-2 border-white/50 text-white rounded-xl font-semibold text-base hover:bg-white/10 hover:border-white transition-all duration-300 hover:scale-105 inline-flex items-center justify-center"
-            >
-              {t("Get Started")}
-            </Link>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="h-1 w-20 mx-auto mb-8 rounded-full bg-gradient-to-r from-[hsl(var(--ethiopian-green))] via-[hsl(var(--ethiopian-yellow))] to-[hsl(var(--ethiopian-red))]" />
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+              {t("Ready to Find Your Dream Home?")}
+            </h2>
+            <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-white/80 font-light">
+              {t("Join thousands of satisfied customers who found their perfect property with Ethio-Home")}
+            </p>
+            <div className="flex flex-row flex-wrap gap-4 justify-center items-center">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  to="/properties"
+                  className="group px-8 py-4 bg-white text-accent rounded-xl font-semibold text-base hover:bg-white/95 transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center justify-center gap-2"
+                >
+                  {t("Browse Properties")}
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  to="/signup"
+                  className="px-8 py-4 bg-transparent border-2 border-white/50 text-white rounded-xl font-semibold text-base hover:bg-white/10 hover:border-white transition-all duration-300 inline-flex items-center justify-center"
+                >
+                  {t("Get Started")}
+                </Link>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>

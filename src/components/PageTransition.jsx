@@ -10,29 +10,40 @@ import { useLocation } from "react-router-dom";
 const pageVariants = {
   initial: {
     opacity: 0,
-    y: 30,
-    scale: 0.98,
+    y: 20,
+    scale: 0.99,
+    filter: "blur(4px)",
   },
   enter: {
     opacity: 1,
     y: 0,
     scale: 1,
+    filter: "blur(0px)",
     transition: {
       type: "spring",
-      stiffness: 260,
-      damping: 25,
-      duration: 0.5,
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
+      stiffness: 300,
+      damping: 30,
+      duration: 0.4,
+      staggerChildren: 0.08,
+      delayChildren: 0.15,
+      filter: {
+        duration: 0.4,
+        ease: [0.4, 0, 0.2, 1],
+      },
     },
   },
   exit: {
     opacity: 0,
-    y: -20,
-    scale: 0.98,
+    y: -15,
+    scale: 0.99,
+    filter: "blur(4px)",
     transition: {
-      duration: 0.3,
-      ease: "easeInOut",
+      duration: 0.25,
+      ease: [0.4, 0, 0.2, 1],
+      filter: {
+        duration: 0.25,
+        ease: [0.4, 0, 0.2, 1],
+      },
     },
   },
 };
@@ -121,7 +132,15 @@ export function PageTransition({ children, variant = "default" }) {
         exit="exit"
         variants={variants}
         className="page-transition-wrapper"
+        style={{ willChange: 'transform, opacity, filter' }}
       >
+        {/* Page overlay for smooth transitions */}
+        <motion.div
+          className="fixed inset-0 pointer-events-none z-50 bg-gradient-to-b from-background/80 to-transparent"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        />
         {children}
       </motion.div>
     </AnimatePresence>

@@ -26,7 +26,7 @@ import { userService } from '../services/userService';
 import '../styles/admin-dashboard.css';
 
 const AdminActivity = () => {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
@@ -40,7 +40,9 @@ const AdminActivity = () => {
 
   // Fetch activity data from API
   useEffect(() => {
-    if (!isAdmin) return;
+    // Wait for auth to finish loading before checking
+    if (authLoading) return;
+    if (!isAdmin || !user) return;
     const fetchActivityData = async () => {
       setLoading(true);
       setError(null);
@@ -89,7 +91,7 @@ const AdminActivity = () => {
       }
     };
     fetchActivityData();
-  }, [isAdmin]);
+  }, [isAdmin, user, authLoading]);
 
   const getTimeAgo = (date) => {
     const now = new Date();
@@ -103,7 +105,19 @@ const AdminActivity = () => {
     return date.toLocaleDateString();
   };
 
-  if (!isAdmin) {
+  // Wait for auth to finish loading
+  if (authLoading) {
+    return (
+      <div className="admin-container">
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAdmin || !user) {
     return (
       <div className="admin-container">
         <div className="access-denied">

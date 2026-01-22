@@ -1,84 +1,190 @@
-/* Dark mode dashboard hardening */
-[data-theme="dark"] .dashboard-layout { 
-  background: var(--bg-primary); 
+/* ============================================
+   WORLD-CLASS DASHBOARD STYLES
+   Premium Dark/Light Mode with Micro-Interactions
+   ============================================ */
+
+/* Base Dashboard Layout */
+.dashboard-layout { 
+  min-height: 100vh;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition: all 0.3s ease;
 }
 
-[data-theme="dark"] .dashboard-sidebar { 
-  background: #0e141e; 
-  border-right: 1px solid var(--border-primary); 
+.dashboard-sidebar { 
+  background: hsl(var(--card));
+  border-right: 1px solid hsl(var(--border) / 0.5);
+  transition: all 0.3s ease;
 }
 
-[data-theme="dark"] .dashboard-main { 
-  background: var(--bg-primary); 
+.dashboard-main { 
+  background: hsl(var(--background));
+  transition: all 0.3s ease;
 }
 
-[data-theme="dark"] .stat-card, 
-[data-theme="dark"] .table-container, 
-[data-theme="dark"] .settings-section { 
-  background: #1a1a1a !important; 
-  border-color: rgba(255,255,255,0.1) !important; 
-  color: #e5e7eb !important;
+/* Premium Stat Cards with Hover Effects */
+.stat-card { 
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border) / 0.5);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-[data-theme="dark"] .nav-link { 
-  color: var(--text-secondary); 
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, hsl(var(--gold-400) / 0.05) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-[data-theme="dark"] .nav-link:hover, 
-[data-theme="dark"] .nav-link.active { 
-  background: rgba(255,255,255,0.06); 
-  color: var(--text-primary); 
+.stat-card:hover {
+  transform: translateY(-8px);
+  border-color: hsl(var(--gold-400) / 0.3);
+  box-shadow: 
+    0 20px 40px -15px hsl(var(--shadow-color) / 0.2),
+    0 0 30px hsl(var(--gold-400) / 0.1);
 }
 
-/* Dark mode for dashboard cards */
-[data-theme="dark"] .card {
-  background: var(--card-bg, #1e293b) !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
-  color: var(--text-primary, #e5e7eb) !important;
+.stat-card:hover::before {
+  opacity: 1;
 }
 
-[data-theme="dark"] .card-body {
-  background: var(--card-bg, #1e293b) !important;
-  color: var(--text-primary, #e5e7eb) !important;
+.table-container { 
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border) / 0.5);
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-[data-theme="dark"] .card-header {
-  background: var(--card-bg, #1e293b) !important;
-  border-bottom-color: rgba(255,255,255,0.1) !important;
-  color: var(--text-primary, #e5e7eb) !important;
+.settings-section { 
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border) / 0.5);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
 }
 
-[data-theme="dark"] .card h3,
-[data-theme="dark"] .card h4,
-[data-theme="dark"] .card h5 {
-  color: var(--text-primary, #e5e7eb) !important;
+/* Navigation Links with Premium Effects */
+.nav-link { 
+  color: hsl(var(--muted-foreground));
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-[data-theme="dark"] .card p {
-  color: var(--text-secondary, #94a3b8) !important;
+.nav-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, hsl(var(--gold-400) / 0.1) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
 }
 
-/* Dark mode for property cards in all dashboards */
-[data-theme="dark"] .property-card {
-  background: #1a1a1a !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
-  color: #e5e7eb !important;
+.nav-link:hover { 
+  background: hsl(var(--muted) / 0.5);
+  color: hsl(var(--foreground));
+  transform: translateX(4px);
 }
 
-[data-theme="dark"] .property-details {
-  background: #1a1a1a !important;
-  color: #e5e7eb !important;
+.nav-link:hover::before {
+  opacity: 1;
 }
 
-[data-theme="dark"] .property-image {
-  background: #2a2a2a !important;
+.nav-link.active { 
+  background: linear-gradient(135deg, hsl(var(--gold-400) / 0.15) 0%, hsl(var(--gold-400) / 0.05) 100%);
+  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--gold-400) / 0.3);
 }
 
-/* Dark mode for dashboard sections */
-[data-theme="dark"] .dashboard-section {
-  background: #1a1a1a !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
-  color: #e5e7eb !important;
+/* Premium Card Styling */
+.card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border) / 0.5);
+  border-radius: 1rem;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card:hover {
+  border-color: hsl(var(--border));
+  box-shadow: 0 10px 30px -10px hsl(var(--shadow-color) / 0.15);
+}
+
+.card-body {
+  background: transparent;
+  padding: 1.5rem;
+}
+
+.card-header {
+  background: transparent;
+  border-bottom: 1px solid hsl(var(--border) / 0.5);
+  padding: 1.25rem 1.5rem;
+}
+
+.card h3,
+.card h4,
+.card h5 {
+  color: hsl(var(--foreground));
+}
+
+.card p {
+  color: hsl(var(--muted-foreground));
+}
+
+/* Premium Property Cards */
+.property-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border) / 0.5);
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.property-card:hover {
+  transform: translateY(-8px);
+  border-color: hsl(var(--gold-400) / 0.3);
+  box-shadow: 
+    0 20px 40px -15px hsl(var(--shadow-color) / 0.2),
+    0 0 30px hsl(var(--gold-400) / 0.1);
+}
+
+.property-details {
+  background: transparent;
+  padding: 1.25rem;
+}
+
+.property-image {
+  background: hsl(var(--muted));
+  position: relative;
+  overflow: hidden;
+}
+
+.property-image img {
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.property-card:hover .property-image img {
+  transform: scale(1.05);
+}
+
+/* Dashboard Sections with Glass Effect */
+.dashboard-section {
+  background: linear-gradient(135deg, hsl(var(--card) / 0.95) 0%, hsl(var(--card) / 0.85) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid hsl(var(--border) / 0.5);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  transition: all 0.3s ease;
 }
 /* Dashboard Styles */
 

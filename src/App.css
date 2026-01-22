@@ -2,6 +2,7 @@
 @import "./styles/global.css";
 @import "./styles/themes.css";
 @import "./styles/modern-ui.css";
+@import "./styles/micro-interactions.css";
 /* Switch to unbelievable, world-class visuals */
 @import "./styles/navbar-unbelievable.css";
 @import "./styles/footer.css";

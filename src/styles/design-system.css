@@ -828,6 +828,7 @@ body::before {
 
 .dashboard-main {
   padding: var(--space-8);
+  padding-top: 0;
   overflow-y: auto;
 }
 

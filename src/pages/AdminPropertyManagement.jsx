@@ -27,19 +27,20 @@ import {
   Settings,
   Clock,
 } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import PropertyCard from "../components/PropertyCard";
 import { useAuth } from "../context/AuthContext";
+import { usePropertiesQuery, useCreateProperty, useUpdateProperty, useDeleteProperty } from "../hooks/usePropertiesQuery";
+import { useUsersQuery } from "../hooks/useUsersQuery";
 import { propertyService } from "../services/propertyService";
-import { userService } from "../services/userService";
 import "../styles/admin-dashboard.css";
 import "../styles/properties.css";
 import "../styles/property-card.css";
 
 const AdminPropertyManagement = () => {
-  const { isAdmin } = useAuth();
+  const { isAdmin, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [showAddForm, setShowAddForm] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
@@ -49,12 +50,6 @@ const AdminPropertyManagement = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   const [viewMode, setViewMode] = useState("grid"); // grid or list
-
-  // Real data from API
-  const [users, setUsers] = useState([]);
-  const [properties, setProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const [newProperty, setNewProperty] = useState({
     title: "",
@@ -80,72 +75,52 @@ const AdminPropertyManagement = () => {
     area: "",
   });
 
-  const [stats, setStats] = useState({
-    total: 0,
-    approved: 0,
-    pending: 0,
-    rejected: 0,
-  });
+  // React Query hooks for data fetching
+  const { data: propertiesData, isLoading: propertiesLoading, error: propertiesError, refetch: refetchProperties } = usePropertiesQuery(
+    { isVerified: true, sold: false },
+    { enabled: !authLoading && isAdmin && !!user }
+  );
+  const properties = propertiesData?.properties || [];
 
-  // Add refresh trigger for forcing re-renders
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const { data: usersData, isLoading: usersLoading } = useUsersQuery(
+    {},
+    { enabled: !authLoading && isAdmin && !!user }
+  );
+  const allUsers = usersData?.users || [];
+  const users = useMemo(() => 
+    allUsers.filter((user) => ["seller", "agent"].includes(user.role)),
+    [allUsers]
+  );
 
-  // Fetch data from API
-  useEffect(() => {
-    if (!isAdmin) return;
+  // Mutations
+  const createPropertyMutation = useCreateProperty();
+  const updatePropertyMutation = useUpdateProperty();
+  const deletePropertyMutation = useDeleteProperty();
 
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
+  // Calculate stats from properties
+  const stats = useMemo(() => ({
+    total: properties.length,
+    approved: properties.filter((p) => p.status === "approved").length,
+    pending: properties.filter((p) => p.status === "pending").length,
+    rejected: properties.filter((p) => p.status === "rejected").length,
+  }), [properties]);
 
-      try {
-        // Fetch properties and users in parallel
-        const [propertiesResult, usersResult] = await Promise.all([
-          propertyService.getProperties({isVerified: true, sold: false}),
-          userService.getUsers(),
-        ]);
+  const loading = propertiesLoading || usersLoading;
+  const error = propertiesError?.message || null;
 
-        if (propertiesResult.success) {
-          const fetchedProperties =
-            propertiesResult.data?.data?.data ||
-            propertiesResult.data?.data ||
-            [];
-          setProperties(fetchedProperties);
+  // Wait for auth to finish loading
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-14 h-14 border-4 border-gold-400/30 border-t-gold-400 rounded-full animate-spin mb-4 mx-auto"></div>
+          <p className="text-slate-400 font-medium">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
 
-          // Update stats
-          setStats({
-            total: fetchedProperties.length,
-            approved: fetchedProperties.filter((p) => p.status === "approved")
-              .length,
-            pending: fetchedProperties.filter((p) => p.status === "pending")
-              .length,
-            rejected: fetchedProperties.filter((p) => p.status === "rejected")
-              .length,
-          });
-        } else {
-          setError(propertiesResult.error);
-        }
-
-        if (usersResult.success) {
-          const fetchedUsers =
-            usersResult.data?.data?.data || usersResult.data?.data || [];
-          // Filter only sellers and agents
-          const sellersAndAgents = fetchedUsers.filter((user) =>
-            ["seller", "agent"].includes(user.role)
-          );
-          setUsers(sellersAndAgents);
-        }
-      } catch {
-        setError("Failed to fetch data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [isAdmin, refreshTrigger]);
-
-  if (!isAdmin) {
+  if (!isAdmin || !user) {
     return (
       <div className="modern-property-management">
         <div className="access-denied">
@@ -170,44 +145,21 @@ const AdminPropertyManagement = () => {
         status: "pending",
       };
 
-      const result = await propertyService.createProperty(propertyData);
-
-      if (result.success) {
-        // Refresh properties list
-        const refreshResult = await propertyService.getProperties();
-        if (refreshResult.success) {
-          const refreshedProperties =
-            refreshResult.data?.data?.data || refreshResult.data?.data || [];
-          setProperties(refreshedProperties);
-
-          // Update stats
-          setStats({
-            total: refreshedProperties.length,
-            approved: refreshedProperties.filter((p) => p.status === "approved")
-              .length,
-            pending: refreshedProperties.filter((p) => p.status === "pending")
-              .length,
-            rejected: refreshedProperties.filter((p) => p.status === "rejected")
-              .length,
-          });
-        }
-
-        setNewProperty({
-          title: "",
-          description: "",
-          price: "",
-          location: "",
-          type: "Apartment",
-          bedrooms: "",
-          bathrooms: "",
-          area: "",
-          sellerId: "",
-          images: [],
-        });
-        setShowAddForm(false);
-      } else {
-        alert("Failed to create property: " + result.error);
-      }
+      await createPropertyMutation.mutateAsync(propertyData);
+      
+      setNewProperty({
+        title: "",
+        description: "",
+        price: "",
+        location: "",
+        type: "Apartment",
+        bedrooms: "",
+        bathrooms: "",
+        area: "",
+        sellerId: "",
+        images: [],
+      });
+      setShowAddForm(false);
     } catch (error) {
       alert("Failed to create property: " + error.message);
     }
@@ -215,43 +167,10 @@ const AdminPropertyManagement = () => {
 
   const handleStatusChange = async (propertyId, newStatus) => {
     try {
-      const result = await propertyService.updateProperty(propertyId, {
-        status: newStatus,
+      await updatePropertyMutation.mutateAsync({
+        id: propertyId,
+        propertyData: { status: newStatus },
       });
-
-      if (result.success) {
-        // Update local state
-        setProperties(
-          properties.map((property) =>
-            property._id === propertyId
-              ? { ...property, status: newStatus }
-              : property
-          )
-        );
-
-        // Update stats
-        setStats((prev) => ({
-          ...prev,
-          approved: properties.filter(
-            (p) =>
-              p.status === "approved" ||
-              (p._id === propertyId && newStatus === "approved")
-          ).length,
-          pending: properties.filter(
-            (p) =>
-              p.status === "pending" ||
-              (p._id === propertyId && newStatus === "pending")
-          ).length,
-          rejected: properties.filter(
-            (p) =>
-              p.status === "rejected" ||
-              (p._id === propertyId && newStatus === "rejected")
-          ).length,
-          total: properties.length,
-        }));
-      } else {
-        alert("Failed to update property status: " + result.error);
-      }
     } catch (error) {
       alert("Failed to update property status: " + error.message);
     }
@@ -260,25 +179,7 @@ const AdminPropertyManagement = () => {
   const handleDeleteProperty = async (propertyId) => {
     if (window.confirm("Are you sure you want to delete this property?")) {
       try {
-        const result = await propertyService.deleteProperty(propertyId);
-
-        if (result.success) {
-          // Remove from local state
-          const remaining = properties.filter(
-            (property) => property._id !== propertyId
-          );
-          setProperties(remaining);
-
-          // Update stats
-          setStats({
-            total: remaining.length,
-            approved: remaining.filter((p) => p.status === "approved").length,
-            pending: remaining.filter((p) => p.status === "pending").length,
-            rejected: remaining.filter((p) => p.status === "rejected").length,
-          });
-        } else {
-          alert("Failed to delete property: " + result.error);
-        }
+        await deletePropertyMutation.mutateAsync(propertyId);
       } catch (error) {
         alert("Failed to delete property: " + error.message);
       }
@@ -375,8 +276,8 @@ const AdminPropertyManagement = () => {
 
         alert("Images uploaded successfully!");
         
-        // Force a re-render by updating a state that triggers useEffect
-        setRefreshTrigger(prev => prev + 1);
+        // Refetch properties to update the list
+        refetchProperties();
       } else {
         console.error('Upload failed:', result.error);
         alert("Failed to upload images: " + result.error);
@@ -393,20 +294,29 @@ const AdminPropertyManagement = () => {
     try {
       console.log('Removing image at index:', imageIndex);
       
-      const updatedImages = selectedProperty.images.filter(
-        (_, index) => index !== imageIndex
-      );
-      
-      console.log('Updated images array:', updatedImages);
-      
-      const result = await propertyService.updateProperty(
+      const result = await propertyService.removePropertyImage(
         selectedProperty._id,
-        { images: updatedImages }
+        imageIndex
       );
 
       console.log('Remove image result:', result);
 
       if (result.success) {
+        // Extract updated images from response
+        let updatedImages = [];
+        if (result.data?.data?.images) {
+          updatedImages = result.data.data.images;
+        } else if (result.data?.images) {
+          updatedImages = result.data.images;
+        } else if (result.data?.data?.property?.images) {
+          updatedImages = result.data.data.property.images;
+        } else {
+          // Fallback: remove from local state
+          updatedImages = selectedProperty.images.filter(
+            (_, index) => index !== imageIndex
+          );
+        }
+        
         // Update local state
         const updatedProperty = { ...selectedProperty, images: updatedImages };
         
@@ -422,8 +332,8 @@ const AdminPropertyManagement = () => {
 
         alert("Image removed successfully!");
         
-        // Force a re-render
-        setRefreshTrigger(prev => prev + 1);
+        // Refetch properties to update the list
+        refetchProperties();
       } else {
         console.error('Remove image failed:', result.error);
         alert("Failed to remove image: " + result.error);
@@ -537,7 +447,7 @@ const AdminPropertyManagement = () => {
               </button>
               <button
                 className="group px-5 py-2.5 bg-white/10 backdrop-blur-sm border border-white/20 text-white rounded-xl font-semibold hover:bg-white/20 hover:border-gold-400/40 transition-all duration-300 flex items-center gap-2 hover:shadow-lg hover:shadow-gold-400/10"
-                onClick={() => setRefreshTrigger(prev => prev + 1)}
+                onClick={() => refetchProperties()}
               >
                 <RefreshCw size={16} className="group-hover:text-gold-400 group-hover:rotate-180 transition-all duration-500" />
                 <span className="group-hover:text-gold-400 transition-colors">Refresh</span>
@@ -598,8 +508,8 @@ const AdminPropertyManagement = () => {
           </div>
         )}
 
-        {/* Premium Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+        {/* Premium Stats Cards - Always 4 columns on large screens */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           <button
             type="button"
             className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 hover:border-gold-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-gold-400/10 text-left"
@@ -827,7 +737,7 @@ const AdminPropertyManagement = () => {
 
         {/* Properties Grid/List */}
         {!loading && !error && (
-          <div className={`properties-container ${viewMode}`}>
+          <div className={`${viewMode === 'grid' ? 'admin-properties-grid' : 'properties-container list'}`}>
             {filteredProperties.map((property) => (
               <div
                 key={property._id}

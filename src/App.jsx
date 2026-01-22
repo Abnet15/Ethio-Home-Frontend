@@ -5,12 +5,13 @@ import { AnimatePresence } from "framer-motion";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 
 import CustomCursor from "./components/CustomCursor";
+import CommandPalette from "./components/CommandPalette";
+import { ScrollProgressBar } from "./components/ScrollAnimations";
 import DashboardRedirect from "./components/DashboardRedirect";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { PageTransition } from "./components/PageTransition";
 import PrivateRoute from "./components/PrivateRoute";
-import TestConnection from "./components/TestConnection";
 import { LanguageProvider } from "./context/LanguageContext";
 import { ThemeProvider } from "./context/ThemeContext";
 // Pages
@@ -258,7 +259,9 @@ const AppContent = () => {
   return (
     <Router>
       <div className="App">
+        <ScrollProgressBar />
         <CustomCursor />
+        <CommandPalette />
         <Navbar key={`navbar-${isAuthenticated ? 'authenticated' : 'guest'}-${user?.role || 'none'}`} />
         <main className="app-main">
           <AnimatedRoutes />

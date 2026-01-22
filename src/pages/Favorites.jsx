@@ -9,20 +9,25 @@ import "./Favorites.css";
 
 const Favorites = () => {
   const { t } = useLanguage();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    // Wait for auth to finish loading
+    if (authLoading) {
+      return;
+    }
+    
+    if (!isAuthenticated || !user) {
       navigate("/login");
       return;
     }
-    console.log('here is life')
+    
     loadFavorites();
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user, authLoading, navigate]);
 
   const loadFavorites = async () => {
     try {
@@ -34,10 +39,22 @@ const Favorites = () => {
       if (result.success) {
         setFavorites(result.data.data.favorites);
       } else {
-        setError(t(result.error || "Failed to load favorites"));
+        // Check if error is authentication related
+        const errorMsg = result.error || "Failed to load favorites";
+        if (errorMsg.toLowerCase().includes('not logged in') || errorMsg.toLowerCase().includes('unauthorized') || errorMsg.toLowerCase().includes('401')) {
+          // Redirect to login instead of showing error
+          navigate("/login");
+          return;
+        }
+        setError(t(errorMsg));
       }
     } catch (err) {
       console.error("Failed to load favorites:", err);
+      // Check if error is authentication related
+      if (err.response?.status === 401 || err.message?.toLowerCase().includes('unauthorized')) {
+        navigate("/login");
+        return;
+      }
       setError(t("Failed to load favorites"));
     } finally {
       setLoading(false);
@@ -78,15 +95,21 @@ const Favorites = () => {
     }).format(price);
   };
 
-  if (loading) {
+  // Show loading while auth is loading or favorites are loading
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">{t("Loading favorites...")}</p>
+          <p className="text-muted-foreground">{authLoading ? t("Checking authentication...") : t("Loading favorites...")}</p>
         </div>
       </div>
     );
+  }
+
+  // If not authenticated after loading, show nothing (redirect will happen)
+  if (!isAuthenticated || !user) {
+    return null;
   }
 
   return (
@@ -212,9 +235,9 @@ const Favorites = () => {
                     {property.title}
                   </h3>
                   <p className="text-muted-foreground mb-5 flex items-center gap-2">
-                    <div className="p-1 rounded-md bg-gold-400/20">
+                    <span className="p-1 rounded-md bg-gold-400/20">
                       <MapPin className="h-4 w-4 text-gold-500" />
-                    </div>
+                    </span>
                     {property.location}
                   </p>
                   

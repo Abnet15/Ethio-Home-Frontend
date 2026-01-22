@@ -1,149 +1,100 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { 
+  usePropertiesQuery, 
+  usePropertyQuery, 
+  useUpdateProperty, 
+  useDeleteProperty 
+} from './usePropertiesQuery';
 
-import { propertyService } from '../services/propertyService';
-
+// Legacy hook wrapper - now uses React Query under the hood
 export const useProperties = (initialParams = {}) => {
-  const [properties, setProperties] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [pagination, setPagination] = useState({
+  const [filters, setFilters] = useState(initialParams);
+  const [page, setPage] = useState(1);
+  
+  const { data, isLoading, error, refetch } = usePropertiesQuery(
+    {
+      ...filters,
+      page,
+      limit: 12,
+    },
+    {
+      keepPreviousData: true, // Keep previous data while loading new page
+    }
+  );
+
+  const properties = data?.properties || [];
+  const pagination = data?.pagination || {
     page: 1,
-    limit: 12,
+    totalPages: 1,
     total: 0,
-    totalPages: 0
-  });
+    limit: 12,
+  };
 
   const fetchProperties = async (params = {}) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await propertyService.getProperties({
-        ...initialParams,
-        ...params,
-        page: pagination.page,
-        limit: pagination.limit
-      });
-
-      if (result.success) {
-        // Backend shape: { status, results, pageNumber, pages, data: { data: [...] } }
-        const list = result.data?.data?.data || [];
-        setProperties(list);
-
-        // Sync pagination based on backend fields
-        const pageNumber = result.data?.pageNumber;
-        const pages = result.data?.pages;
-        const resultsCount = result.data?.results;
-        setPagination(prev => ({
-          ...prev,
-          page: typeof pageNumber === 'number' ? pageNumber : prev.page,
-          totalPages: typeof pages === 'number' ? pages : prev.totalPages,
-          total: typeof resultsCount === 'number' ? resultsCount : prev.total
-        }));
-      } else {
-        setError(result.error);
-      }
-    } catch (err) {
-      setError('Failed to fetch properties');
-    } finally {
-      setLoading(false);
-    }
+    setFilters(prev => ({ ...prev, ...params }));
+    setPage(1);
+    await refetch();
   };
 
   const searchProperties = async (searchParams) => {
     await fetchProperties(searchParams);
   };
 
-  const loadMore = async () => {
-    if (pagination.page < pagination.totalPages) {
-      setPagination(prev => ({ ...prev, page: prev.page + 1 }));
+  const loadMore = () => {
+    if (page < pagination.totalPages) {
+      setPage(prev => prev + 1);
     }
   };
 
   const refresh = () => {
-    fetchProperties();
+    refetch();
   };
-
-  useEffect(() => {
-    fetchProperties();
-  }, [pagination.page]);
 
   return {
     properties,
-    loading,
-    error,
+    loading: isLoading,
+    error: error?.message || null,
     pagination,
     fetchProperties,
     searchProperties,
     loadMore,
     refresh,
-    hasMore: pagination.page < pagination.totalPages
+    hasMore: page < pagination.totalPages
   };
 };
 
+// Legacy hook wrapper - now uses React Query under the hood
 export const useProperty = (id) => {
-  const [property, setProperty] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const fetchProperty = async () => {
-    if (!id) return;
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await propertyService.getProperty(id);
-
-      if (result.success) {
-        // Backend shape: { status, data: { data: { ...property } } }
-        setProperty(result.data?.data?.data || null);
-      } else {
-        setError(result.error);
-      }
-    } catch (err) {
-      setError('Failed to fetch property');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: property, isLoading, error, refetch } = usePropertyQuery(id);
+  const updatePropertyMutation = useUpdateProperty();
+  const deletePropertyMutation = useDeleteProperty();
 
   const updateProperty = async (propertyData) => {
     try {
-      const result = await propertyService.updateProperty(id, propertyData);
-      
-      if (result.success) {
-        setProperty(result.data?.data?.data || null);
-        return { success: true };
-      } else {
-        return { success: false, error: result.error };
-      }
+      const result = await updatePropertyMutation.mutateAsync({ id, propertyData });
+      return { success: true, data: result };
     } catch (err) {
-      return { success: false, error: 'Failed to update property' };
+      return { success: false, error: err.message };
     }
   };
 
   const deleteProperty = async () => {
     try {
-      const result = await propertyService.deleteProperty(id);
+      const result = await deletePropertyMutation.mutateAsync(id);
       return result;
     } catch (err) {
-      return { success: false, error: 'Failed to delete property' };
+      return { success: false, error: err.message };
     }
   };
 
-  useEffect(() => {
-    fetchProperty();
-  }, [id]);
-
   return {
     property,
-    loading,
-    error,
-    fetchProperty,
+    loading: isLoading,
+    error: error?.message || null,
+    fetchProperty: refetch,
     updateProperty,
     deleteProperty,
-    refresh: fetchProperty
+    refresh: refetch
   };
 };
 

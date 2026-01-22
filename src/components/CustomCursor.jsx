@@ -1,11 +1,12 @@
 /* WOW UPGRADE: Custom cursor with trailing particles (desktop only) */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const CustomCursor = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [trails, setTrails] = useState([]);
   const [isDesktop, setIsDesktop] = useState(false);
   const trailLength = 8; // Move outside useEffect so it's accessible in JSX
+  const idCounterRef = useRef(0); // Use ref to maintain counter across renders
 
   useEffect(() => {
     // Only enable on desktop with fine pointer
@@ -19,10 +20,12 @@ const CustomCursor = () => {
     const handleMouseMove = (e) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
       
-      // Create trail particles
+      // Create trail particles with unique IDs
       setTrails((prev) => {
+        idCounterRef.current += 1;
+        const uniqueId = `trail-${idCounterRef.current}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
         const newTrails = [
-          { x: e.clientX, y: e.clientY, id: Date.now() },
+          { x: e.clientX, y: e.clientY, id: uniqueId },
           ...prev.slice(0, trailLength - 1),
         ];
         return newTrails;
@@ -56,7 +59,7 @@ const CustomCursor = () => {
       {/* Trail particles */}
       {trails.map((trail, index) => (
         <div
-          key={trail.id || index}
+          key={trail.id}
           className="cursor-trail"
           style={{
             left: `${trail.x}px`,
