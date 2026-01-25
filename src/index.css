@@ -2496,3 +2496,6 @@
     transform: translateX(0);
   }
 }
+
+/* Import Mobile Responsiveness System */
+@import './styles/mobile-responsive.css';
