@@ -232,37 +232,35 @@ const AdminDashboard = () => {
 
   const StatCard = ({ title, value, change, icon: Icon, color = 'primary', onClick }) => (
     <div 
-      className="group relative overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-3"
+      className="group relative overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-2 lg:hover:-translate-y-3"
       onClick={onClick}
     >
-      {/* Glassmorphism card */}
-      <div className="relative h-full rounded-2xl p-6 bg-gradient-to-br from-card/90 via-card/80 to-card/70 backdrop-blur-xl border border-border/40 shadow-xl hover:shadow-2xl hover:border-gold-400/40 transition-all duration-500">
+      {/* Glassmorphism card - responsive padding */}
+      <div className="relative h-full rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 bg-gradient-to-br from-card/90 via-card/80 to-card/70 backdrop-blur-xl border border-border/40 shadow-xl hover:shadow-2xl hover:border-gold-400/40 transition-all duration-500">
         
-        {/* Animated glow background */}
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gold-400/0 via-gold-400/5 to-ethiopian-green/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        {/* Animated glow background - hidden on mobile for perf */}
+        <div className="hidden sm:block absolute inset-0 rounded-2xl bg-gradient-to-br from-gold-400/0 via-gold-400/5 to-ethiopian-green/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         
-        {/* Floating orb decoration */}
-        <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-gradient-to-br from-gold-400/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        {/* Floating orb decoration - hidden on mobile */}
+        <div className="hidden lg:block absolute -top-8 -right-8 w-32 h-32 rounded-full bg-gradient-to-br from-gold-400/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         
         <div className="relative z-10">
-          {/* Header with icon */}
-          <div className="flex items-center justify-between mb-5">
-            <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] font-sans">{title}</h3>
+          {/* Header with icon - responsive sizes */}
+          <div className="flex items-center justify-between mb-3 sm:mb-4 lg:mb-5">
+            <h3 className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-[0.1em] sm:tracking-[0.15em] font-sans">{title}</h3>
             <div className="relative">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/30 via-gold-500/20 to-gold-600/10 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-gold-400/20">
-                <Icon className="w-7 h-7 text-gold-500 group-hover:text-gold-400 transition-colors duration-300" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-xl lg:rounded-2xl bg-gradient-to-br from-gold-400/30 via-gold-500/20 to-gold-600/10 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-gold-400/20">
+                <Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-gold-500 group-hover:text-gold-400 transition-colors duration-300" />
               </div>
-              {/* Pulse ring on hover */}
-              <div className="absolute inset-0 rounded-2xl border-2 border-gold-400/30 opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity duration-300" />
             </div>
           </div>
           
-          {/* Animated value */}
-          <div className="mb-4">
-            <p className="text-4xl font-bold font-serif tracking-tight bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 bg-clip-text text-transparent bg-[length:200%_100%] group-hover:animate-shimmer-fast">
+          {/* Animated value - responsive font size */}
+          <div className="mb-2 sm:mb-3 lg:mb-4">
+            <p className="text-2xl sm:text-3xl lg:text-4xl font-bold font-serif tracking-tight bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 bg-clip-text text-transparent bg-[length:200%_100%] group-hover:animate-shimmer-fast">
               {typeof value === 'string' && value.includes('ETB') ? (
                 <span className="flex items-baseline gap-1">
-                  <span className="text-2xl font-sans font-medium text-gold-500/80">ETB</span>
+                  <span className="text-lg sm:text-xl lg:text-2xl font-sans font-medium text-gold-500/80">ETB</span>
                   <AnimatedCounter value={value} />
                 </span>
               ) : (
@@ -271,17 +269,18 @@ const AdminDashboard = () => {
             </p>
           </div>
           
-          {/* Change indicator */}
+          {/* Change indicator - responsive sizing */}
           {change !== undefined && (
-            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-semibold backdrop-blur-sm ${
+            <div className={`inline-flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold backdrop-blur-sm ${
               change >= 0 
                 ? 'bg-ethiopian-green/20 text-green-400 border border-ethiopian-green/30' 
                 : 'bg-ethiopian-red/20 text-red-400 border border-ethiopian-red/30'
             }`}>
-              <div className={`w-5 h-5 rounded-full flex items-center justify-center ${change >= 0 ? 'bg-ethiopian-green/30' : 'bg-ethiopian-red/30'}`}>
-                {change >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+              <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center ${change >= 0 ? 'bg-ethiopian-green/30' : 'bg-ethiopian-red/30'}`}>
+                {change >= 0 ? <TrendingUp size={10} className="sm:w-3 sm:h-3" /> : <TrendingDown size={10} className="sm:w-3 sm:h-3" />}
               </div>
-              <span>{Math.abs(change)}% from last month</span>
+              <span className="hidden xs:inline">{Math.abs(change)}% from last month</span>
+              <span className="xs:hidden">{Math.abs(change)}%</span>
             </div>
           )}
         </div>
@@ -349,37 +348,35 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="admin-dashboard-premium min-h-screen bg-gradient-to-br from-background via-background to-muted/10 relative overflow-hidden">
-      {/* Premium animated background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[900px] h-[900px] rounded-full opacity-20 animate-pulse-slow"
+    <div className="admin-dashboard-premium min-h-screen min-h-[100dvh] bg-gradient-to-br from-background via-background to-muted/10 relative overflow-x-hidden">
+      {/* Premium animated background - hidden on mobile for performance */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none hidden sm:block">
+        <div className="absolute top-0 right-0 w-[600px] lg:w-[900px] h-[600px] lg:h-[900px] rounded-full opacity-20 animate-pulse-slow"
              style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 60%)', filter: 'blur(120px)' }} />
-        <div className="absolute bottom-0 left-0 w-[700px] h-[700px] rounded-full opacity-20 animate-pulse-slow"
+        <div className="absolute bottom-0 left-0 w-[400px] lg:w-[700px] h-[400px] lg:h-[700px] rounded-full opacity-20 animate-pulse-slow"
              style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.15) 0%, transparent 60%)', filter: 'blur(100px)', animationDelay: '-5s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-10"
-             style={{ background: 'radial-gradient(circle, hsl(0 72% 51% / 0.1) 0%, transparent 60%)', filter: 'blur(80px)' }} />
       </div>
       
-      <div className="flex relative z-10 min-h-screen">
-        {/* Mobile sidebar toggle button */}
+      <div className="flex relative z-10 min-h-screen min-h-[100dvh]">
+        {/* Mobile sidebar toggle button - positioned below navbar */}
         <button
-          className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-card/90 backdrop-blur-xl border border-border/30 shadow-lg flex items-center justify-center hover:bg-card transition-all duration-300"
+          className="lg:hidden fixed top-[5.5rem] left-3 z-[45] w-11 h-11 rounded-xl bg-card/95 backdrop-blur-xl border border-border/40 shadow-lg flex items-center justify-center hover:bg-card hover:scale-105 active:scale-95 transition-all duration-200"
           onClick={() => setSidebarOpen(!sidebarOpen)}
           aria-label="Toggle sidebar"
         >
-          {sidebarOpen ? <X size={20} className="text-gold-400" /> : <Menu size={20} className="text-foreground" />}
+          {sidebarOpen ? <X size={18} className="text-gold-400" /> : <Menu size={18} className="text-foreground" />}
         </button>
 
         {/* Mobile overlay */}
         {sidebarOpen && (
           <div 
-            className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-40"
+            className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-40 animate-in fade-in duration-200"
             onClick={() => setSidebarOpen(false)}
           />
         )}
 
         {/* Premium Glassmorphism Sidebar */}
-        <aside className={`admin-sidebar fixed lg:relative z-50 lg:z-auto flex flex-col w-80 bg-card/95 lg:bg-card/80 backdrop-blur-2xl border-r border-border/30 min-h-screen p-8 shadow-2xl overflow-hidden transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        <aside className={`admin-sidebar fixed lg:sticky lg:top-0 z-50 lg:z-auto flex flex-col w-[85vw] max-w-[320px] lg:w-80 lg:max-w-none bg-card/98 lg:bg-card/80 backdrop-blur-2xl border-r border-border/30 min-h-screen h-[100dvh] lg:h-auto p-4 sm:p-6 lg:p-8 shadow-2xl overflow-y-auto overflow-x-hidden transition-transform duration-300 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
           {/* Sidebar gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-gold-400/5 via-transparent to-ethiopian-green/5 pointer-events-none" />
           
@@ -487,30 +484,30 @@ const AdminDashboard = () => {
             </button>
           </div>
         </aside>
-        {/* Main Content */}
-        <div className="dashboard-main flex-1 p-6 lg:p-8 pt-20 lg:pt-8">
+        {/* Main Content - Fully responsive */}
+        <div className="dashboard-main flex-1 min-w-0 p-3 sm:p-4 lg:p-6 xl:p-8 pt-20 lg:pt-6">
         {activeTab === 'overview' && (
           <>
-            {/* Header */}
-            <div className="dashboard-header">
-              <div>
-                <h1 className="dashboard-title">Dashboard Overview</h1>
-                <p className="text-neutral-600">Monitor your platform's performance and manage operations</p>
+            {/* Header - Mobile Responsive */}
+            <div className="dashboard-header flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <div className="text-center sm:text-left">
+                <h1 className="dashboard-title text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Dashboard Overview</h1>
+                <p className="text-muted-foreground text-sm sm:text-base mt-1">Monitor your platform's performance and manage operations</p>
               </div>
-              <div className="flex items-center gap-4">
-                <button className="btn btn-secondary" onClick={fetchDashboardData}>
-                  <RefreshCw size={16} />
-                  Refresh
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                <button className="btn btn-secondary flex items-center justify-center gap-2 px-3 py-2 text-sm" onClick={fetchDashboardData}>
+                  <RefreshCw size={14} />
+                  <span>Refresh</span>
                 </button>
-                <button className="btn btn-secondary" onClick={() => navigate('/properties/new')}>
-                  <Download size={16} />
-                  Create Property
+                <button className="btn btn-secondary flex items-center justify-center gap-2 px-3 py-2 text-sm" onClick={() => navigate('/properties/new')}>
+                  <Plus size={14} />
+                  <span>Create Property</span>
                 </button>
               </div>
             </div>
 
-            {/* Stats Grid */}
-            <div className="stats-grid">
+            {/* Stats Grid - Responsive: 1 col mobile, 2 col tablet, 3 col desktop */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5 mb-6">
               <StatCard
                 title="Total Users"
                 value={formatNumber(stats.totalUsers)}
@@ -560,14 +557,23 @@ const AdminDashboard = () => {
             </div>
 
             {/* Analytics Charts Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              <RevenueChart />
-              <PropertyDistributionChart />
+            {/* Analytics Charts Section - Responsive */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 lg:mb-8">
+              <div className="min-h-[250px] sm:min-h-[300px]">
+                <RevenueChart />
+              </div>
+              <div className="min-h-[250px] sm:min-h-[300px]">
+                <PropertyDistributionChart />
+              </div>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              <UserGrowthChart />
-              <PropertyViewsChart />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 lg:mb-8">
+              <div className="min-h-[250px] sm:min-h-[300px]">
+                <UserGrowthChart />
+              </div>
+              <div className="min-h-[250px] sm:min-h-[300px]">
+                <PropertyViewsChart />
+              </div>
             </div>
 
             {/* Message Management Section */}
@@ -591,8 +597,8 @@ const AdminDashboard = () => {
             </div>
 
 
-            {/* Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Content Grid - Stack on mobile */}
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
               {/* Recent Activity */}
               <div className="card">
                 <div className="card-header">
