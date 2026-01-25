@@ -37,6 +37,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
+import AdminLayout from '../components/layouts/AdminLayout';
 import ContactManagement from '../components/ContactManagement';
 import MessageManagement from '../components/MessageManagement';
 import NotificationCenter from '../components/NotificationCenter';
@@ -59,15 +60,12 @@ import { sellingService } from '../services/sellingService';
 import { userService } from '../services/userService';
 import { SERVER_BASE_URL } from '../config/api';
 
-import { Menu, X } from 'lucide-react';
-
 const AdminDashboard = () => {
   const { user, isAdmin, loading: authLoading } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalProperties: 0,

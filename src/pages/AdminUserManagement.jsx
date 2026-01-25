@@ -35,7 +35,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { userService } from '../services/userService';
-
+import AdminLayout from '../components/layouts/AdminLayout';
+import '../styles/admin-dark-theme.css';
 
 const AdminUserManagement = () => {
   const { user, isAdmin, loading: authLoading } = useAuth();
@@ -505,154 +506,34 @@ const AdminUserManagement = () => {
   }
 
   return (
-    <div className="admin-dashboard-premium min-h-screen bg-gradient-to-br from-background via-background to-muted/10 relative overflow-hidden">
-      {/* Premium animated background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[900px] h-[900px] rounded-full opacity-20 animate-pulse-slow"
-             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 60%)', filter: 'blur(120px)' }} />
-        <div className="absolute bottom-0 left-0 w-[700px] h-[700px] rounded-full opacity-20 animate-pulse-slow"
-             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.15) 0%, transparent 60%)', filter: 'blur(100px)', animationDelay: '-5s' }} />
-      </div>
-      
-      <div className="flex relative z-10 min-h-screen">
-        {/* Mobile Sidebar Toggle Button */}
-        <button
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-card/90 backdrop-blur-xl border border-border/30 shadow-lg flex items-center justify-center hover:bg-card transition-all duration-300"
-          aria-label="Toggle sidebar"
-        >
-          {isSidebarOpen ? <X className="w-6 h-6 text-foreground" /> : <Menu className="w-6 h-6 text-foreground" />}
-        </button>
-
-        {/* Sidebar Overlay for Mobile */}
-        {isSidebarOpen && (
-          <div
-            className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
-            onClick={() => setIsSidebarOpen(false)}
-          />
-        )}
-
-        {/* Premium Glassmorphism Sidebar */}
-        <aside className={`admin-sidebar ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:sticky lg:top-0 flex flex-col w-80 bg-card/80 backdrop-blur-2xl border-r border-border/30 h-screen p-8 shadow-2xl relative overflow-hidden z-40 transition-transform duration-300`}>
-          {/* Sidebar gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-gold-400/5 via-transparent to-ethiopian-green/5 pointer-events-none" />
+    <AdminLayout activeTab="users">
+      <div className="admin-dashboard-premium">
+        {/* Premium Header */}
+        <div className="relative bg-gradient-to-r from-purple-900/90 via-purple-800/80 to-purple-900/90 backdrop-blur-xl rounded-2xl border border-purple-500/20 shadow-2xl shadow-purple-900/30 mb-6">
+          <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent rounded-2xl" />
+          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-400/50 to-transparent" />
           
-          {/* Sidebar header */}
-          <div className="relative z-10 mb-10">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-lg shadow-gold-400/30">
-                  <Shield className="w-6 h-6 text-background" />
-                </div>
-                <div>
-                  <h2 className="font-serif text-2xl font-bold text-gradient-gold">Admin</h2>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Control Panel</p>
-                </div>
+          <div className="relative px-6 py-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-2 font-serif tracking-tight bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent">
+                  User Management
+                </h1>
+                <p className="text-purple-200/80 font-medium">Create and manage user accounts</p>
               </div>
-              {/* Close button for mobile */}
               <button
-                onClick={() => setIsSidebarOpen(false)}
-                className="lg:hidden w-8 h-8 rounded-lg bg-muted/50 hover:bg-muted flex items-center justify-center transition-colors"
-                aria-label="Close sidebar"
+                className="group px-5 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl font-bold hover:from-purple-400 hover:to-purple-500 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 hover:scale-105"
+                onClick={() => setShowCreateForm(true)}
               >
-                <X className="w-5 h-5 text-foreground" />
+                <Plus size={18} className="group-hover:rotate-90 transition-transform duration-300" />
+                Create User
               </button>
             </div>
-            <div className="ethiopian-accent-bar w-full mb-6"></div>
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-muted/50 to-transparent border border-border/30">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ethiopian-green to-ethiopian-green/70 flex items-center justify-center text-white font-bold text-sm">
-                {user?.name?.charAt(0) || 'A'}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold text-foreground truncate">{user?.name}</p>
-                <p className="text-xs text-muted-foreground">Administrator</p>
-              </div>
-            </div>
           </div>
-
-          {/* Premium Navigation */}
-          <nav className="relative z-10 flex-1 space-y-2">
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 px-3">Navigation</p>
-            
-            {[
-              { id: 'overview', icon: BarChart3, label: 'Overview', onClick: () => { navigate('/admin-dashboard'); setIsSidebarOpen(false); } },
-              { id: 'users', icon: Users, label: 'Users', onClick: () => { navigate('/admin/users'); setIsSidebarOpen(false); } },
-              { id: 'properties', icon: Building, label: 'Properties', onClick: () => { navigate('/admin/properties'); setIsSidebarOpen(false); } },
-              { id: 'messages', icon: MessageSquare, label: 'Messages', onClick: () => { navigate('/admin/messages'); setIsSidebarOpen(false); } },
-              { id: 'selling', icon: TrendingUp, label: 'All Sales', onClick: () => { navigate('/admin-dashboard?tab=selling'); setIsSidebarOpen(false); } },
-              { id: 'reviews', icon: Star, label: 'Reviews', onClick: () => { navigate('/admin-dashboard?tab=reviews'); setIsSidebarOpen(false); } },
-            ].map((item) => (
-              <button
-                key={item.id}
-                onClick={item.onClick}
-                className={`admin-nav-item group w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
-                  item.id === 'users'
-                    ? 'bg-gradient-to-r from-gold-400/20 to-gold-400/5 text-gold-400 border border-gold-400/30 shadow-lg shadow-gold-400/10' 
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-                }`}
-              >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                  item.id === 'users'
-                    ? 'bg-gold-400/20' 
-                    : 'bg-muted/50 group-hover:bg-muted'
-                }`}>
-                  <item.icon size={18} className={item.id === 'users' ? 'text-gold-400' : ''} />
-                </div>
-                <span className="font-medium">{item.label}</span>
-                {item.id === 'users' && (
-                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
-                )}
-              </button>
-            ))}
-          </nav>
-          
-          {/* Sidebar footer */}
-          <div className="relative z-10 pt-6 border-t border-border/30 mt-auto">
-            <button 
-              onClick={() => { navigate('/admin-dashboard'); setIsSidebarOpen(false); }}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-300"
-            >
-              <Settings size={18} />
-              <span className="font-medium">Settings</span>
-            </button>
-          </div>
-        </aside>
-
-        {/* Main Content */}
-        <div className="dashboard-main flex-1 lg:ml-0 p-4 sm:p-5 lg:p-6 xl:p-8 pt-20 lg:pt-6">
-          {/* Premium Header */}
-          <div className="relative bg-gradient-to-r from-emerald-900/90 via-emerald-800/80 to-emerald-900/90 backdrop-blur-xl border-b border-emerald-500/20 shadow-2xl shadow-emerald-900/30">
-            <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/50 to-transparent" />
-            
-            <div className="relative container mx-auto px-6 py-8">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-5">
-                  <button 
-                    className="group p-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-gold-400/40 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gold-400/20"
-                    onClick={() => navigate('/admin-dashboard')}
-                  >
-                    <ArrowLeft size={20} className="text-white group-hover:text-gold-400 transition-colors" />
-                  </button>
-                  <div>
-                    <h1 className="text-4xl font-black mb-2 font-serif tracking-tight bg-gradient-to-r from-white via-gold-200 to-white bg-clip-text text-transparent">
-                      User Management
-                    </h1>
-                    <p className="text-emerald-100/80 font-medium">Create and manage user accounts</p>
-                  </div>
-                </div>
-                <button
-                  className="group px-6 py-3.5 bg-gradient-to-r from-gold-400 to-gold-500 text-slate-900 rounded-xl font-bold hover:from-gold-300 hover:to-gold-400 transition-all duration-300 flex items-center gap-2.5 shadow-lg shadow-gold-400/30 hover:shadow-xl hover:shadow-gold-400/40 hover:scale-105"
-                  onClick={() => setShowCreateForm(true)}
-                >
-                  <Plus size={18} className="group-hover:rotate-90 transition-transform duration-300" />
-                  Create User
-                </button>
-              </div>
-            </div>
-          </div>
-          
-          <div className="relative container mx-auto px-6 py-10">
+        </div>
+        
+        {/* Main Content Section */}
+        <div className="space-y-6">
 
       {message && (
         <div className={`message ${messageType === 'success' ? 'success' : 'error'}`}>
@@ -945,22 +826,22 @@ const AdminUserManagement = () => {
       {/* Premium Filters Section */}
       <div className="flex flex-col md:flex-row gap-4 mb-8">
         <div className="relative flex-1">
-          <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-400" />
           <input
             type="text"
             placeholder="Search users by name or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-4 py-3.5 bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-gold-400/50 focus:ring-2 focus:ring-gold-400/20 transition-all duration-300"
+            className="w-full pl-12 pr-4 py-3.5 bg-purple-950/60 backdrop-blur-xl border border-purple-700/50 rounded-xl text-white placeholder-purple-300/50 focus:outline-none focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 transition-all duration-300"
           />
         </div>
 
         <div className="relative">
-          <Filter size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Filter size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-400" />
           <select 
             value={roleFilter} 
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="pl-12 pr-10 py-3.5 bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-xl text-white appearance-none cursor-pointer focus:outline-none focus:border-gold-400/50 focus:ring-2 focus:ring-gold-400/20 transition-all duration-300"
+            className="pl-12 pr-10 py-3.5 bg-purple-950/60 backdrop-blur-xl border border-purple-700/50 rounded-xl text-white appearance-none cursor-pointer focus:outline-none focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 transition-all duration-300"
           >
             <option value="all">All Roles</option>
             <option value="buyer">Buyers</option>
@@ -972,24 +853,24 @@ const AdminUserManagement = () => {
       </div>
 
       {/* Premium Data Table */}
-      <div className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl overflow-hidden shadow-2xl shadow-slate-900/50">
+      <div className="bg-purple-950/40 backdrop-blur-xl border border-purple-700/50 rounded-2xl overflow-hidden shadow-2xl shadow-purple-900/50">
         {/* Table Header */}
-        <div className="grid grid-cols-5 gap-4 px-6 py-4 bg-slate-800/60 border-b border-slate-700/50">
-          <div className="text-xs font-bold text-gold-400 uppercase tracking-wider">User</div>
-          <div className="text-xs font-bold text-gold-400 uppercase tracking-wider">Role</div>
-          <div className="text-xs font-bold text-gold-400 uppercase tracking-wider">Contact</div>
-          <div className="text-xs font-bold text-gold-400 uppercase tracking-wider">Location</div>
-          <div className="text-xs font-bold text-gold-400 uppercase tracking-wider text-right">Actions</div>
+        <div className="hidden md:grid grid-cols-5 gap-4 px-6 py-4 bg-purple-900/60 border-b border-purple-700/50">
+          <div className="text-xs font-bold text-purple-300 uppercase tracking-wider">User</div>
+          <div className="text-xs font-bold text-purple-300 uppercase tracking-wider">Role</div>
+          <div className="text-xs font-bold text-purple-300 uppercase tracking-wider">Contact</div>
+          <div className="text-xs font-bold text-purple-300 uppercase tracking-wider">Location</div>
+          <div className="text-xs font-bold text-purple-300 uppercase tracking-wider text-right">Actions</div>
         </div>
 
         {/* Table Rows */}
-        <div className="divide-y divide-slate-700/30">
+        <div className="divide-y divide-purple-700/30">
           {filteredUsers.map((user, index) => {
             const RoleIcon = getRoleIcon(user.role);
             return (
               <div 
                 key={user.id} 
-                className="group grid grid-cols-5 gap-4 px-6 py-4 hover:bg-gradient-to-r hover:from-gold-400/5 hover:to-transparent cursor-pointer transition-all duration-300"
+                className="group grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-4 px-4 md:px-6 py-4 hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-transparent cursor-pointer transition-all duration-300"
                 onClick={() => {
                   setSelectedUser(user);
                   setShowUserDetails(true);
@@ -997,16 +878,16 @@ const AdminUserManagement = () => {
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center text-gold-400 font-bold text-sm">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/30 to-purple-600/20 flex items-center justify-center text-purple-300 font-bold text-sm border border-purple-500/30">
                     {user.name?.charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <div className="font-semibold text-white group-hover:text-gold-400 transition-colors">{user.name}</div>
-                    <div className="text-xs text-slate-400">{user.email}</div>
+                    <div className="font-semibold text-white group-hover:text-purple-300 transition-colors">{user.name}</div>
+                    <div className="text-xs text-purple-300/60">{user.email}</div>
                   </div>
                 </div>
                 
-                <div className="flex items-center">
+                <div className="flex items-center md:justify-start">
                   <span 
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white"
                     style={{ backgroundColor: getRoleColor(user.role) + '40', borderColor: getRoleColor(user.role), borderWidth: '1px' }}
@@ -1016,24 +897,26 @@ const AdminUserManagement = () => {
                   </span>
                 </div>
                 
-                <div className="flex items-center text-sm text-slate-300">
+                <div className="flex items-center text-sm text-purple-200/80">
+                  <span className="md:hidden text-purple-400 mr-2">Contact:</span>
                   {user.phone}
                 </div>
                 
-                <div className="flex items-center text-sm text-slate-300">
+                <div className="flex items-center text-sm text-purple-200/80">
+                  <span className="md:hidden text-purple-400 mr-2">Location:</span>
                   {user.location || '—'}
                 </div>
                 
                 <div className="flex items-center justify-end gap-2">
                   <button
-                    className="p-2 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-gold-400/20 hover:text-gold-400 transition-all duration-300"
+                    className="p-2 rounded-lg bg-purple-800/50 text-purple-300 hover:bg-purple-500/30 hover:text-purple-200 transition-all duration-300"
                     onClick={(e) => { e.stopPropagation(); handleEdit(user); }}
                     title="Edit user"
                   >
                     <Edit size={16} />
                   </button>
                   <button
-                    className="p-2 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-red-400/20 hover:text-red-400 transition-all duration-300"
+                    className="p-2 rounded-lg bg-purple-800/50 text-purple-300 hover:bg-red-500/30 hover:text-red-400 transition-all duration-300"
                     onClick={(e) => { e.stopPropagation(); handleDelete(user.id); }}
                     title="Delete user"
                   >
@@ -1047,11 +930,11 @@ const AdminUserManagement = () => {
 
         {filteredUsers.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="w-20 h-20 rounded-2xl bg-slate-700/30 flex items-center justify-center mb-4">
-              <Users size={40} className="text-slate-500" />
+            <div className="w-20 h-20 rounded-2xl bg-purple-800/30 flex items-center justify-center mb-4">
+              <Users size={40} className="text-purple-400" />
             </div>
             <h3 className="text-lg font-semibold text-white mb-2">No users found</h3>
-            <p className="text-slate-400 text-sm">No users match your current search and filter criteria.</p>
+            <p className="text-purple-300/60 text-sm">No users match your current search and filter criteria.</p>
           </div>
         )}
       </div>
@@ -1906,10 +1789,9 @@ const AdminUserManagement = () => {
           .actions-cell::before { content: "Actions: "; font-weight: 600; }
         }
       `}</style>
-          </div>
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

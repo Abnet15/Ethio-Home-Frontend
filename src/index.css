@@ -100,6 +100,47 @@
     --gold-500: 40 96% 50%;
   }
 
+  /* Dark Purple Admin Theme */
+  .admin-layout,
+  [data-admin-theme="purple"] {
+    --background: 265 50% 4%;
+    --foreground: 270 20% 95%;
+    --card: 265 45% 7%;
+    --card-foreground: 270 20% 95%;
+    --popover: 265 45% 7%;
+    --popover-foreground: 270 20% 95%;
+    
+    /* Purple Primary Palette */
+    --primary: 270 70% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 265 40% 12%;
+    --secondary-foreground: 270 20% 90%;
+    --muted: 265 35% 12%;
+    --muted-foreground: 270 15% 60%;
+    --accent: 280 70% 55%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 265 30% 18%;
+    --input: 265 30% 15%;
+    --ring: 270 70% 60%;
+    
+    /* Purple tones */
+    --purple-50: 270 100% 98%;
+    --purple-100: 270 95% 92%;
+    --purple-200: 270 90% 82%;
+    --purple-300: 270 85% 70%;
+    --purple-400: 270 80% 60%;
+    --purple-500: 270 75% 50%;
+    --purple-600: 270 70% 45%;
+    --purple-700: 265 65% 35%;
+    --purple-800: 265 60% 25%;
+    --purple-900: 265 55% 15%;
+    --purple-950: 265 50% 8%;
+  }
+
   /* =====================================================
      Legacy Variable Mappings for Theme Consistency
      Maps old CSS variables to new semantic tokens
