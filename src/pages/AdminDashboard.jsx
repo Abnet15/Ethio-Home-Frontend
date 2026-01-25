@@ -31,7 +31,9 @@ import {
   Maximize,
   Edit,
   Phone,
-  Zap
+  Zap,
+  X,
+  Menu
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -82,6 +84,7 @@ const AdminDashboard = () => {
   const [recentUsers, setRecentUsers] = useState([]);
   const [recentProperties, setRecentProperties] = useState([]);
   const [soldProperties, setSoldProperties] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
 
   useEffect(() => {

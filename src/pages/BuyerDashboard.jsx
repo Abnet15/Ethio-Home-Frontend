@@ -561,126 +561,125 @@ const BuyerDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading dashboard...</p>
+          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/10 relative overflow-hidden">
-      {/* Premium animated background */}
+    <div className="min-h-screen bg-gray-950 relative overflow-hidden">
+      {/* Dark mode animated background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full opacity-15 animate-pulse-slow"
-             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 60%)', filter: 'blur(100px)' }} />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full opacity-15 animate-pulse-slow"
-             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.15) 0%, transparent 60%)', filter: 'blur(80px)', animationDelay: '-5s' }} />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-20"
+             style={{ background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%)', filter: 'blur(100px)', animation: 'pulse 4s infinite' }} />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full opacity-15"
+             style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 60%)', filter: 'blur(80px)', animation: 'pulse 4s infinite', animationDelay: '-2s' }} />
       </div>
       
       <div className="flex relative z-10">
-        {/* Premium Glassmorphism Sidebar */}
-        <div className="w-72 bg-card/80 backdrop-blur-2xl border-r border-border/30 min-h-screen sticky top-0 shadow-2xl">
-          <div className="p-6 border-b border-border/30">
+        {/* Mobile Sidebar Toggle */}
+        <button
+          onClick={() => setActiveTab(activeTab)}
+          className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-gray-900/95 backdrop-blur-xl border border-gray-700 shadow-xl flex items-center justify-center hover:bg-gray-800 transition-all"
+        >
+          <Home className="w-5 h-5 text-gray-300" />
+        </button>
+
+        {/* Dark Glassmorphism Sidebar */}
+        <div className="hidden lg:block w-72 bg-gray-900/95 backdrop-blur-2xl border-r border-gray-800 min-h-screen sticky top-0 shadow-2xl">
+          <div className="p-6 border-b border-gray-800">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-ethiopian-green to-ethiopian-green/80 flex items-center justify-center shadow-lg shadow-ethiopian-green/30">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-lg shadow-purple-500/20">
                 <User className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-foreground">Buyer</h2>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Dashboard</p>
+                <h2 className="text-xl font-bold text-white">Buyer</h2>
+                <p className="text-xs text-gray-400 uppercase tracking-wider">Dashboard</p>
               </div>
             </div>
-            <div className="ethiopian-accent-bar w-full mb-4"></div>
-            <p className="text-sm text-muted-foreground">Welcome back, <span className="text-gold-400 font-semibold">{user?.name}</span></p>
+            <div className="h-1 w-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-full mb-4"></div>
+            <p className="text-sm text-gray-400">Welcome back, <span className="text-purple-400 font-semibold">{user?.name}</span></p>
           </div>
 
           <nav className="p-4 space-y-2">
-            <button
-              onClick={() => setActiveTab('overview')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${activeTab === 'overview'
-                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+            {[
+              { id: 'overview', icon: Home, label: 'Overview' },
+              { id: 'favorites', icon: Heart, label: 'Favorites' },
+              { id: 'visits', icon: Calendar, label: 'Scheduled Visits' },
+              { id: 'purchased', icon: ShoppingBag, label: 'Purchased' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                  activeTab === item.id
+                    ? 'bg-gradient-to-r from-purple-600/30 to-purple-500/20 text-purple-400 border border-purple-500/30 shadow-lg shadow-purple-500/10'
+                    : 'text-gray-400 hover:bg-gray-800/70 hover:text-gray-200'
                 }`}
-            >
-              <Home size={20} />
-              Overview
-            </button>
-            {/* <div className="nav-item">
-            <a 
-              href="#search" 
-              className={`nav-link ${activeTab === 'search' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('search'); }}
-            >
-              <Search size={20} />
-              Search Properties
-            </a>
-          </div> */}
-            <button
-              onClick={() => setActiveTab('favorites')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${activeTab === 'favorites'
-                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                }`}
-            >
-              <Heart size={20} />
-              Favorites
-            </button>
-            <button
-              onClick={() => setActiveTab('visits')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${activeTab === 'visits'
-                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                }`}
-            >
-              <Calendar size={20} />
-              Scheduled Visits
-            </button>
-            <button
-              onClick={() => setActiveTab('purchased')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${activeTab === 'purchased'
-                  ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                }`}
-            >
-              <ShoppingBag size={20} />
-              Purchased
-            </button>
-            <div className="pt-4 border-t mt-4">
+              >
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                  activeTab === item.id ? 'bg-purple-500/20' : 'bg-gray-800'
+                }`}>
+                  <item.icon size={16} />
+                </div>
+                {item.label}
+                {activeTab === item.id && (
+                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                )}
+              </button>
+            ))}
+            
+            <div className="pt-4 border-t border-gray-800 mt-4 space-y-2">
               <button
                 onClick={() => navigate('/messages')}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800/70 hover:text-gray-200 transition-all"
               >
-                <MessageSquare size={20} />
+                <div className="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center">
+                  <MessageSquare size={16} />
+                </div>
                 Messages
               </button>
               <button
                 onClick={() => navigate('/profile')}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800/70 hover:text-gray-200 transition-all"
               >
-                <User size={20} />
+                <div className="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center">
+                  <User size={16} />
+                </div>
                 Profile
               </button>
               <button
                 onClick={() => setActiveTab('contact')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${activeTab === 'contact'
-                    ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                  }`}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                  activeTab === 'contact'
+                    ? 'bg-gradient-to-r from-purple-600/30 to-purple-500/20 text-purple-400 border border-purple-500/30'
+                    : 'text-gray-400 hover:bg-gray-800/70 hover:text-gray-200'
+                }`}
               >
-                <Mail size={20} />
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                  activeTab === 'contact' ? 'bg-purple-500/20' : 'bg-gray-800'
+                }`}>
+                  <Mail size={16} />
+                </div>
                 Contact Support
               </button>
               <button
                 onClick={() => setActiveTab('help')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${activeTab === 'help'
-                    ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                  }`}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                  activeTab === 'help'
+                    ? 'bg-gradient-to-r from-purple-600/30 to-purple-500/20 text-purple-400 border border-purple-500/30'
+                    : 'text-gray-400 hover:bg-gray-800/70 hover:text-gray-200'
+                }`}
               >
-                <MessageSquare size={20} />
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                  activeTab === 'help' ? 'bg-purple-500/20' : 'bg-gray-800'
+                }`}>
+                  <MessageSquare size={16} />
+                </div>
                 Help Center
               </button>
             </div>
@@ -688,12 +687,12 @@ const BuyerDashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-4 sm:p-6 lg:p-8">
           {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
+          <div className="mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
               <div>
-                <h1 className="text-4xl font-black text-foreground mb-2">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
                   {activeTab === 'overview' && 'Dashboard Overview'}
                   {activeTab === 'search' && 'Search Properties'}
                   {activeTab === 'favorites' && 'Favorite Properties'}
@@ -702,7 +701,7 @@ const BuyerDashboard = () => {
                   {activeTab === 'contact' && 'Contact Support'}
                   {activeTab === 'help' && 'Help Center'}
                 </h1>
-                <p className="text-lg text-muted-foreground">
+                <p className="text-sm sm:text-base text-gray-400">
                   {activeTab === 'overview' && 'Track your property search progress and manage your interests'}
                   {activeTab === 'search' && 'Find your perfect property with advanced search filters'}
                   {activeTab === 'favorites' && 'Manage your saved properties and wishlist'}
@@ -713,16 +712,16 @@ const BuyerDashboard = () => {
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <button className="px-4 py-2 border-2 border-ethiopian-yellow/50 rounded-lg hover:bg-ethiopian-yellow/10 transition-colors flex items-center gap-2 font-semibold">
+                <button className="px-4 py-2 border border-gray-700 rounded-xl hover:bg-gray-800 transition-colors flex items-center gap-2 font-medium text-gray-300">
                   <Bell size={18} />
-                  Notifications
+                  <span className="hidden sm:inline">Notifications</span>
                 </button>
                 <button
-                  className="px-6 py-2 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg hover:shadow-lg transition-all flex items-center gap-2 font-semibold"
+                  className="px-4 sm:px-6 py-2 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-xl hover:from-purple-500 hover:to-purple-400 transition-all flex items-center gap-2 font-medium shadow-lg shadow-purple-500/20"
                   onClick={() => navigate('/properties')}
                 >
                   <Search size={18} />
-                  Browse Properties
+                  <span className="hidden sm:inline">Browse Properties</span>
                 </button>
               </div>
             </div>
@@ -732,133 +731,145 @@ const BuyerDashboard = () => {
           {activeTab === 'overview' && (
             <>
               {/* Stats Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6">
                 <div
                   onClick={() => setActiveTab('favorites')}
-                  className="bg-card rounded-xl border shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1"
+                  className="bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 shadow-lg p-5 cursor-pointer hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
-                      <Heart className="h-6 w-6 text-red-600" />
+                    <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center">
+                      <Heart className="h-6 w-6 text-red-400" />
                     </div>
                   </div>
-                  <div className="text-3xl font-black text-foreground mb-1">{stats.favoriteProperties}</div>
-                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Favorite Properties</div>
+                  <div className="text-3xl font-bold text-white mb-1">{stats.favoriteProperties}</div>
+                  <div className="text-xs font-medium text-gray-400 uppercase tracking-wide">Favorite Properties</div>
                 </div>
                 <div
                   onClick={() => setActiveTab('visits')}
-                  className="bg-card rounded-xl border shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1"
+                  className="bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 shadow-lg p-5 cursor-pointer hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
-                      <Calendar className="h-6 w-6 text-blue-600" />
+                    <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                      <Calendar className="h-6 w-6 text-blue-400" />
                     </div>
                   </div>
-                  <div className="text-3xl font-black text-foreground mb-1">{stats.scheduledVisits}</div>
-                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Scheduled Visits</div>
+                  <div className="text-3xl font-bold text-white mb-1">{stats.scheduledVisits}</div>
+                  <div className="text-xs font-medium text-gray-400 uppercase tracking-wide">Scheduled Visits</div>
                 </div>
-                <div className="bg-card rounded-xl border shadow-lg p-6 hover:shadow-xl transition-all hover:-translate-y-1">
+                <div className="bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 shadow-lg p-5 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all hover:-translate-y-1">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
-                      <Eye className="h-6 w-6 text-green-600" />
+                    <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
+                      <Eye className="h-6 w-6 text-green-400" />
                     </div>
                   </div>
-                  <div className="text-3xl font-black text-foreground mb-1">{stats.viewedProperties}</div>
-                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Properties Viewed</div>
+                  <div className="text-3xl font-bold text-white mb-1">{stats.viewedProperties}</div>
+                  <div className="text-xs font-medium text-gray-400 uppercase tracking-wide">Properties Viewed</div>
                 </div>
                 <div
                   onClick={() => setActiveTab('search')}
-                  className="bg-card rounded-xl border shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1"
+                  className="bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 shadow-lg p-5 cursor-pointer hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
-                      <Bookmark className="h-6 w-6 text-yellow-600" />
+                    <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                      <Bookmark className="h-6 w-6 text-purple-400" />
                     </div>
                   </div>
-                  <div className="text-3xl font-black text-foreground mb-1">{stats.savedSearches}</div>
-                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Saved Searches</div>
+                  <div className="text-3xl font-bold text-white mb-1">{stats.savedSearches}</div>
+                  <div className="text-xs font-medium text-gray-400 uppercase tracking-wide">Saved Searches</div>
                 </div>
               </div>
 
               {/* Content Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Recently Viewed */}
-                <div className="bg-card rounded-xl border shadow-lg p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-xl font-bold text-foreground">Recently Viewed</h3>
-                    <button className="text-sm font-semibold text-ethiopian-green hover:underline">
+                <div className="bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 shadow-lg p-5">
+                  <div className="flex items-center justify-between mb-5">
+                    <h3 className="text-lg font-semibold text-white">Recently Viewed</h3>
+                    <button className="text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors">
                       View All
                     </button>
                   </div>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {recentlyViewed.slice(0, 3).map((property) => (
                       <div
                         key={property._id}
-                        className="flex items-center gap-4 p-4 hover:bg-muted rounded-xl transition cursor-pointer border border-transparent hover:border-ethiopian-yellow/30"
+                        className="flex items-center gap-4 p-3 hover:bg-gray-800/70 rounded-xl transition cursor-pointer border border-transparent hover:border-purple-500/30"
                         onClick={() => navigate(`/properties/${property._id}`)}
                       >
                         <img
                           src={property.imagesUrl?.[0] || property.images?.[0] || '/hero-bg-1.jpg'}
                           alt={property.title}
-                          className="w-20 h-20 object-cover rounded-lg"
+                          className="w-16 h-16 object-cover rounded-lg"
                         />
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-foreground mb-1">{property.title}</h4>
-                          <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                            <MapPin size={14} />
-                            <span className="text-sm">{property.location}</span>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-white mb-1 truncate">{property.title}</h4>
+                          <div className="flex items-center gap-2 text-gray-400 mb-1">
+                            <MapPin size={12} />
+                            <span className="text-xs truncate">{property.location}</span>
                           </div>
-                          <p className="font-bold text-ethiopian-green">
+                          <p className="font-semibold text-purple-400 text-sm">
                             {formatCurrency(property.price)}
                           </p>
                         </div>
-                        <ChevronRight size={20} className="text-muted-foreground" />
+                        <ChevronRight size={18} className="text-gray-500 flex-shrink-0" />
                       </div>
                     ))}
+                    {recentlyViewed.length === 0 && (
+                      <div className="text-center py-8 text-gray-500">
+                        <Eye size={32} className="mx-auto mb-2 opacity-50" />
+                        <p className="text-sm">No recently viewed properties</p>
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 {/* Recommended Properties */}
-                <div className="bg-card rounded-xl border shadow-lg p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-xl font-bold text-foreground">Recommended for You</h3>
-                    <button className="text-sm font-semibold text-ethiopian-green hover:underline">
+                <div className="bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 shadow-lg p-5">
+                  <div className="flex items-center justify-between mb-5">
+                    <h3 className="text-lg font-semibold text-white">Recommended for You</h3>
+                    <button className="text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors">
                       View All
                     </button>
                   </div>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {recommendedProperties.slice(0, 3).map((property) => (
                       <div
                         key={property._id}
-                        className="flex items-center gap-4 p-4 hover:bg-muted rounded-xl transition cursor-pointer border border-transparent hover:border-ethiopian-yellow/30"
+                        className="flex items-center gap-4 p-3 hover:bg-gray-800/70 rounded-xl transition cursor-pointer border border-transparent hover:border-purple-500/30"
                         onClick={() => navigate(`/properties/${property._id}`)}
                       >
                         <img
                           src={property.imagesUrl?.[0] || property.images?.[0] || '/hero-bg-1.jpg'}
                           alt={property.title}
-                          className="w-20 h-20 object-cover rounded-lg"
+                          className="w-16 h-16 object-cover rounded-lg"
                         />
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-foreground mb-1">{property.title}</h4>
-                          <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                            <MapPin size={14} />
-                            <span className="text-sm">{property.location}</span>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-white mb-1 truncate">{property.title}</h4>
+                          <div className="flex items-center gap-2 text-gray-400 mb-1">
+                            <MapPin size={12} />
+                            <span className="text-xs truncate">{property.location}</span>
                           </div>
-                          <p className="font-bold text-ethiopian-green">
+                          <p className="font-semibold text-purple-400 text-sm">
                             {formatCurrency(property.price)}
                           </p>
                         </div>
                         <button
-                          className="p-2 hover:bg-muted rounded-lg transition-colors"
+                          className="p-2 hover:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleAddToFavorites(property._id);
                           }}
                         >
-                          <Heart size={18} className="text-ethiopian-yellow" />
+                          <Heart size={16} className="text-purple-400" />
                         </button>
                       </div>
                     ))}
+                    {recommendedProperties.length === 0 && (
+                      <div className="text-center py-8 text-gray-500">
+                        <Star size={32} className="mx-auto mb-2 opacity-50" />
+                        <p className="text-sm">No recommendations yet</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
