@@ -357,26 +357,26 @@ const AdminDashboard = () => {
              style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.15) 0%, transparent 60%)', filter: 'blur(100px)', animationDelay: '-5s' }} />
       </div>
       
+      {/* Mobile sidebar toggle button - FLOATING above all content */}
+      <button
+        className="lg:hidden fixed top-20 left-4 z-[60] w-12 h-12 rounded-xl bg-card/95 backdrop-blur-xl border border-border/50 shadow-xl flex items-center justify-center hover:bg-card hover:scale-105 active:scale-95 transition-all duration-200 hover:shadow-[0_0_20px_hsl(var(--gold-400)/0.3)]"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        aria-label="Toggle sidebar"
+      >
+        {sidebarOpen ? <X size={20} className="text-gold-400" /> : <Menu size={20} className="text-foreground" />}
+      </button>
+
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-[55] animate-in fade-in duration-200"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      
       <div className="flex relative z-10 min-h-screen min-h-[100dvh]">
-        {/* Mobile sidebar toggle button - positioned below navbar */}
-        <button
-          className="lg:hidden fixed top-[5.5rem] left-3 z-[45] w-11 h-11 rounded-xl bg-card/95 backdrop-blur-xl border border-border/40 shadow-lg flex items-center justify-center hover:bg-card hover:scale-105 active:scale-95 transition-all duration-200"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          aria-label="Toggle sidebar"
-        >
-          {sidebarOpen ? <X size={18} className="text-gold-400" /> : <Menu size={18} className="text-foreground" />}
-        </button>
-
-        {/* Mobile overlay */}
-        {sidebarOpen && (
-          <div 
-            className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-40 animate-in fade-in duration-200"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
-
-        {/* Premium Glassmorphism Sidebar */}
-        <aside className={`admin-sidebar fixed lg:sticky lg:top-0 z-50 lg:z-auto flex flex-col w-[85vw] max-w-[320px] lg:w-80 lg:max-w-none bg-card/98 lg:bg-card/80 backdrop-blur-2xl border-r border-border/30 min-h-screen h-[100dvh] lg:h-auto p-4 sm:p-6 lg:p-8 shadow-2xl overflow-y-auto overflow-x-hidden transition-transform duration-300 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        {/* Premium Glassmorphism Sidebar - Hidden completely on mobile, only shows as overlay */}
+        <aside className={`admin-sidebar fixed lg:relative top-0 left-0 z-[56] lg:z-auto flex flex-col w-[85vw] max-w-[300px] lg:w-72 xl:w-80 bg-card/98 lg:bg-card/80 backdrop-blur-2xl border-r border-border/30 min-h-screen h-[100dvh] p-4 sm:p-5 lg:p-6 shadow-2xl lg:shadow-none overflow-y-auto overflow-x-hidden transition-transform duration-300 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
           {/* Sidebar gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-gold-400/5 via-transparent to-ethiopian-green/5 pointer-events-none" />
           
@@ -484,8 +484,8 @@ const AdminDashboard = () => {
             </button>
           </div>
         </aside>
-        {/* Main Content - Fully responsive */}
-        <div className="dashboard-main flex-1 min-w-0 p-3 sm:p-4 lg:p-6 xl:p-8 pt-20 lg:pt-6">
+        {/* Main Content - Takes full width on mobile, no left margin */}
+        <div className="dashboard-main flex-1 min-w-0 w-full lg:w-auto p-4 sm:p-5 lg:p-6 xl:p-8 pt-6 lg:pt-6">
         {activeTab === 'overview' && (
           <>
             {/* Header - Mobile Responsive */}
@@ -671,14 +671,14 @@ const AdminDashboard = () => {
             </div>
 
             {/* Recent Users and Properties */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mt-6 lg:mt-8">
               {/* Recent Users */}
-              <div className="table-container">
-                <div className="p-6 border-b border-neutral-200">
+              <div className="bg-card rounded-xl sm:rounded-2xl border border-border/50 overflow-hidden shadow-lg">
+                <div className="p-4 sm:p-6 border-b border-border/50 bg-muted/30">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-neutral-900">Recent Users</h3>
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground">Recent Users</h3>
                     <button 
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-secondary text-xs sm:text-sm"
                       onClick={() => navigate('/admin/users')}
                     >
                       View All
@@ -686,40 +686,40 @@ const AdminDashboard = () => {
                   </div>
                 </div>
                 <div className="overflow-x-auto">
-                  <table className="table">
-                    <thead>
+                  <table className="w-full">
+                    <thead className="bg-muted/20">
                       <tr>
-                        <th>User</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Joined</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">User</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Role</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Status</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Joined</th>
                       </tr>
                     </thead>
                     <tbody>
                       {recentUsers.map((user) => (
-                        <tr key={user._id}>
-                          <td>
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                                <span className="text-sm font-medium text-primary-700">
+                        <tr key={user._id} className="border-t border-border/30 hover:bg-muted/20 transition-colors">
+                          <td className="p-3 sm:p-4">
+                            <div className="flex items-center gap-2 sm:gap-3">
+                              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                                <span className="text-xs sm:text-sm font-medium text-primary">
                                   {user.name?.charAt(0).toUpperCase()}
                                 </span>
                               </div>
                               <div>
-                                <p className="font-medium text-neutral-900">{user.name}</p>
-                                <p className="text-sm text-neutral-500">{user.email}</p>
+                                <p className="font-medium text-foreground text-xs sm:text-sm">{user.name}</p>
+                                <p className="text-[10px] sm:text-xs text-muted-foreground">{user.email}</p>
                               </div>
                             </div>
                           </td>
-                          <td>
-                            <span className="badge badge-info">{user.role}</span>
+                          <td className="p-3 sm:p-4">
+                            <span className="inline-flex px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full bg-accent/20 text-accent">{user.role}</span>
                           </td>
-                          <td>
-                            <span className={`badge ${user.active ? 'badge-success' : 'badge-error'}`}>
+                          <td className="p-3 sm:p-4">
+                            <span className={`inline-flex px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full ${user.active ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'}`}>
                               {user.active ? 'Active' : 'Inactive'}
                             </span>
                           </td>
-                          <td className="text-sm text-neutral-600">
+                          <td className="p-3 sm:p-4 text-[10px] sm:text-xs text-muted-foreground">
                             {new Date(user.createdAt).toLocaleDateString()}
                           </td>
                         </tr>
@@ -730,12 +730,12 @@ const AdminDashboard = () => {
               </div>
 
               {/* Recent Properties */}
-              <div className="table-container">
-                <div className="p-6 border-b border-neutral-200">
+              <div className="bg-card rounded-xl sm:rounded-2xl border border-border/50 overflow-hidden shadow-lg">
+                <div className="p-4 sm:p-6 border-b border-border/50 bg-muted/30">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-neutral-900">Recent Properties</h3>
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground">Recent Properties</h3>
                     <button 
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-secondary text-xs sm:text-sm"
                       onClick={() => navigate('/admin/properties')}
                     >
                       View All
@@ -743,21 +743,21 @@ const AdminDashboard = () => {
                   </div>
                 </div>
                 <div className="overflow-x-auto">
-                  <table className="table">
-                    <thead>
+                  <table className="w-full">
+                    <thead className="bg-muted/20">
                       <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th>Price</th>
-                        <th>Status</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Property</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Type</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Price</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {recentProperties.map((property) => (
-                        <tr key={property._id}>
-                          <td>
-                            <div className="flex items-center gap-3">
-                              <div className="w-12 h-12 bg-neutral-200 rounded-lg overflow-hidden">
+                        <tr key={property._id} className="border-t border-border/30 hover:bg-muted/20 transition-colors">
+                          <td className="p-3 sm:p-4">
+                            <div className="flex items-center gap-2 sm:gap-3">
+                              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-muted rounded-lg overflow-hidden flex-shrink-0">
                                 {property.images?.[0] ? (
                                   <img 
                                     src={property.images[0]} 
@@ -766,26 +766,26 @@ const AdminDashboard = () => {
                                   />
                                 ) : (
                                   <div className="w-full h-full flex items-center justify-center">
-                                    <Home size={16} className="text-neutral-400" />
+                                    <Home size={14} className="text-muted-foreground" />
                                   </div>
                                 )}
                               </div>
-                              <div>
-                                <p className="font-medium text-neutral-900">{property.title}</p>
-                                <p className="text-sm text-neutral-500">{property.location}</p>
+                              <div className="min-w-0">
+                                <p className="font-medium text-foreground text-xs sm:text-sm truncate">{property.title}</p>
+                                <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{property.location}</p>
                               </div>
                             </div>
                           </td>
-                          <td>
-                            <span className="badge badge-info">{property.type}</span>
+                          <td className="p-3 sm:p-4">
+                            <span className="inline-flex px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full bg-accent/20 text-accent">{property.type}</span>
                           </td>
-                          <td className="font-medium text-neutral-900">
+                          <td className="p-3 sm:p-4 font-medium text-foreground text-xs sm:text-sm">
                             {formatCurrency(property.price)}
                           </td>
-                          <td>
-                            <span className={`badge ${
-                              property.status === 'active' ? 'badge-success' :
-                              property.status === 'pending' ? 'badge-warning' : 'badge-error'
+                          <td className="p-3 sm:p-4">
+                            <span className={`inline-flex px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full ${
+                              property.status === 'active' ? 'bg-green-500/20 text-green-500' :
+                              property.status === 'pending' ? 'bg-amber-500/20 text-amber-500' : 'bg-red-500/20 text-red-500'
                             }`}>
                               {property.status}
                             </span>

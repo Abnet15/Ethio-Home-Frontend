@@ -182,24 +182,35 @@ const Home = () => {
         parallaxStrength={0.4}
       >
         <motion.div 
-          className="flex-1 flex items-center justify-center px-4 py-32"
+          className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32"
           style={{ opacity: heroOpacity, scale: heroScale }}
         >
           <div className="container mx-auto text-center max-w-6xl">
-            {/* Ethiopian Accent Bar */}
+            {/* Ethiopian Accent Bar - Premium Animation */}
             <motion.div
-              className="relative w-32 mx-auto mb-10"
+              className="relative w-24 sm:w-32 mx-auto mb-8 sm:mb-10"
               initial={{ opacity: 0, scaleX: 0 }}
               animate={{ opacity: 1, scaleX: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div className="h-1.5 rounded-full bg-gradient-to-r from-[hsl(var(--ethiopian-green))] via-[hsl(var(--ethiopian-yellow))] to-[hsl(var(--ethiopian-red))]" />
-              <div className="absolute inset-0 h-1.5 rounded-full bg-gradient-to-r from-[hsl(var(--ethiopian-green))] via-[hsl(var(--ethiopian-yellow))] to-[hsl(var(--ethiopian-red))] blur-md opacity-60" />
+              <div className="h-1 sm:h-1.5 rounded-full bg-gradient-to-r from-[hsl(var(--ethiopian-green))] via-[hsl(var(--ethiopian-yellow))] to-[hsl(var(--ethiopian-red))]" />
+              <div className="absolute inset-0 h-1 sm:h-1.5 rounded-full bg-gradient-to-r from-[hsl(var(--ethiopian-green))] via-[hsl(var(--ethiopian-yellow))] to-[hsl(var(--ethiopian-red))] blur-md opacity-60" />
             </motion.div>
 
-            {/* Main Headline */}
+            {/* Animated Badge */}
+            <motion.div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <Sparkles className="w-4 h-4 text-gold-400" />
+              <span className="text-sm font-medium text-white/90">{t("Ethiopia's Premier Real Estate Platform")}</span>
+            </motion.div>
+
+            {/* Main Headline - Responsive Typography */}
             <motion.h1
-              className="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 leading-tight"
+              className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-6 sm:mb-8 leading-[1.1]"
               style={{
                 letterSpacing: "-0.02em",
                 textShadow: "0 4px 30px rgba(0,0,0,0.3), 0 0 60px hsl(var(--gold-400) / 0.2)",
@@ -211,9 +222,9 @@ const Home = () => {
               {t("heroTitle")}
             </motion.h1>
 
-            {/* Subheadline */}
+            {/* Subheadline - Responsive */}
             <motion.p
-              className="text-xl md:text-2xl lg:text-3xl text-white/85 mb-12 max-w-4xl mx-auto font-light tracking-wide"
+              className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/85 mb-8 sm:mb-12 max-w-4xl mx-auto font-light tracking-wide leading-relaxed"
               style={{ textShadow: "0 2px 20px rgba(0,0,0,0.2)" }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -222,88 +233,88 @@ const Home = () => {
               {t("heroSubtitle")}
             </motion.p>
 
-            {/* Premium Search Card */}
+            {/* Premium Search Card - Fully Responsive */}
             <motion.div
-              className="w-full max-w-5xl mx-auto backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl p-8 md:p-10 border border-white/20"
+              className="w-full max-w-5xl mx-auto backdrop-blur-xl bg-white/10 rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 md:p-8 lg:p-10 border border-white/20"
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              <form onSubmit={handleSearch} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <form onSubmit={handleSearch} className="space-y-4 sm:space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
                   {/* Location Filter */}
                   <div className="space-y-2 text-left">
-                    <label className="text-sm font-semibold text-white/80 uppercase tracking-wider flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-gold-400" />
+                    <label className="text-xs sm:text-sm font-semibold text-white/80 uppercase tracking-wider flex items-center gap-2">
+                      <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-gold-400" />
                       {t("Location")}
                     </label>
                     <select
                       value={locationFilter}
                       onChange={(e) => setLocationFilter(e.target.value)}
-                      className="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:bg-white/15 backdrop-blur-sm"
+                      className="w-full px-4 sm:px-5 py-3 sm:py-4 bg-white/10 border border-white/20 rounded-lg sm:rounded-xl text-white text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:bg-white/15 backdrop-blur-sm"
                     >
-                      <option value="" className="bg-gray-900">{t("All Locations")}</option>
-                      <option value="Addis Ababa" className="bg-gray-900">{t("Addis Ababa")}</option>
-                      <option value="Bole" className="bg-gray-900">{t("Bole")}</option>
-                      <option value="Kazanchis" className="bg-gray-900">{t("Kazanchis")}</option>
-                      <option value="Gerji" className="bg-gray-900">{t("Gerji")}</option>
+                      <option value="" className="bg-gray-900 text-white">{t("All Locations")}</option>
+                      <option value="Addis Ababa" className="bg-gray-900 text-white">{t("Addis Ababa")}</option>
+                      <option value="Bole" className="bg-gray-900 text-white">{t("Bole")}</option>
+                      <option value="Kazanchis" className="bg-gray-900 text-white">{t("Kazanchis")}</option>
+                      <option value="Gerji" className="bg-gray-900 text-white">{t("Gerji")}</option>
                     </select>
                   </div>
 
                   {/* Type Filter */}
                   <div className="space-y-2 text-left">
-                    <label className="text-sm font-semibold text-white/80 uppercase tracking-wider flex items-center gap-2">
-                      <Building className="w-4 h-4 text-gold-400" />
+                    <label className="text-xs sm:text-sm font-semibold text-white/80 uppercase tracking-wider flex items-center gap-2">
+                      <Building className="w-3 h-3 sm:w-4 sm:h-4 text-gold-400" />
                       {t("Property Type")}
                     </label>
                     <select
                       value={typeFilter}
                       onChange={(e) => setTypeFilter(e.target.value)}
-                      className="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:bg-white/15 backdrop-blur-sm"
+                      className="w-full px-4 sm:px-5 py-3 sm:py-4 bg-white/10 border border-white/20 rounded-lg sm:rounded-xl text-white text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:bg-white/15 backdrop-blur-sm"
                     >
-                      <option value="" className="bg-gray-900">{t("All Types")}</option>
-                      <option value="house" className="bg-gray-900">{t("house")}</option>
-                      <option value="apartment" className="bg-gray-900">{t("apartment")}</option>
-                      <option value="villa" className="bg-gray-900">{t("villa")}</option>
-                      <option value="commercial" className="bg-gray-900">{t("commercial")}</option>
+                      <option value="" className="bg-gray-900 text-white">{t("All Types")}</option>
+                      <option value="house" className="bg-gray-900 text-white">{t("house")}</option>
+                      <option value="apartment" className="bg-gray-900 text-white">{t("apartment")}</option>
+                      <option value="villa" className="bg-gray-900 text-white">{t("villa")}</option>
+                      <option value="commercial" className="bg-gray-900 text-white">{t("commercial")}</option>
                     </select>
                   </div>
 
                   {/* Price Filter */}
-                  <div className="space-y-2 text-left">
-                    <label className="text-sm font-semibold text-white/80 uppercase tracking-wider flex items-center gap-2">
-                      <CreditCard className="w-4 h-4 text-gold-400" />
+                  <div className="space-y-2 text-left sm:col-span-2 lg:col-span-1">
+                    <label className="text-xs sm:text-sm font-semibold text-white/80 uppercase tracking-wider flex items-center gap-2">
+                      <CreditCard className="w-3 h-3 sm:w-4 sm:h-4 text-gold-400" />
                       {t("Price Range")}
                     </label>
                     <select
                       value={priceFilter}
                       onChange={(e) => setPriceFilter(e.target.value)}
-                      className="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:bg-white/15 backdrop-blur-sm"
+                      className="w-full px-4 sm:px-5 py-3 sm:py-4 bg-white/10 border border-white/20 rounded-lg sm:rounded-xl text-white text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:bg-white/15 backdrop-blur-sm"
                     >
-                      <option value="" className="bg-gray-900">{t("Any Price")}</option>
-                      <option value="0-500000" className="bg-gray-900">{t("Under 500K ETB")}</option>
-                      <option value="500000-1000000" className="bg-gray-900">{t("500K - 1M ETB")}</option>
-                      <option value="1000000-2000000" className="bg-gray-900">{t("1M - 2M ETB")}</option>
-                      <option value="2000000+" className="bg-gray-900">{t("Above 2M ETB")}</option>
+                      <option value="" className="bg-gray-900 text-white">{t("Any Price")}</option>
+                      <option value="0-500000" className="bg-gray-900 text-white">{t("Under 500K ETB")}</option>
+                      <option value="500000-1000000" className="bg-gray-900 text-white">{t("500K - 1M ETB")}</option>
+                      <option value="1000000-2000000" className="bg-gray-900 text-white">{t("1M - 2M ETB")}</option>
+                      <option value="2000000+" className="bg-gray-900 text-white">{t("Above 2M ETB")}</option>
                     </select>
                   </div>
                 </div>
 
                 {/* Search Input & Button */}
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                   <div className="relative flex-1">
-                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/60" />
+                    <Search className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-white/60" />
                     <input
                       type="text"
                       placeholder={t("Search by keywords...")}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-14 pr-6 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 backdrop-blur-sm"
+                      className="w-full pl-11 sm:pl-14 pr-4 sm:pr-6 py-3 sm:py-4 bg-white/10 border border-white/20 rounded-lg sm:rounded-xl text-white text-sm sm:text-base placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 backdrop-blur-sm"
                     />
                   </div>
                   <motion.button
                     type="submit"
-                    className="group relative px-10 py-4 bg-gradient-to-r from-[hsl(var(--ethiopian-green))] to-[hsl(var(--accent))] text-white rounded-xl font-bold text-lg overflow-hidden flex items-center gap-3"
+                    className="group relative px-6 sm:px-8 lg:px-10 py-3 sm:py-4 bg-gradient-to-r from-[hsl(var(--ethiopian-green))] to-[hsl(var(--accent))] text-white rounded-lg sm:rounded-xl font-bold text-sm sm:text-base lg:text-lg overflow-hidden flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto"
                     whileHover={{ scale: 1.02, boxShadow: "0 0 30px hsl(var(--ethiopian-green) / 0.4)" }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -313,16 +324,16 @@ const Home = () => {
                       whileHover={{ x: "100%" }}
                       transition={{ duration: 0.6 }}
                     />
-                    <Search className="h-5 w-5 relative z-10" />
-                    <span className="hidden md:inline relative z-10">{t("Search")}</span>
+                    <Search className="h-4 w-4 sm:h-5 sm:w-5 relative z-10" />
+                    <span className="relative z-10">{t("Search")}</span>
                   </motion.button>
                 </div>
               </form>
             </motion.div>
 
-            {/* Quick Property Type Links */}
+            {/* Quick Property Type Links - Responsive */}
             <motion.div
-              className="flex flex-wrap gap-4 mt-12 justify-center"
+              className="flex flex-wrap gap-2 sm:gap-3 lg:gap-4 mt-8 sm:mt-10 lg:mt-12 justify-center px-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1 }}
@@ -335,7 +346,7 @@ const Home = () => {
                 >
                   <Link
                     to={`/properties?type=${type}`}
-                    className="group relative px-8 py-4 backdrop-blur-md bg-white/10 text-white rounded-full font-medium overflow-hidden transition-all duration-300 border border-white/20 hover:border-gold-400/50 hover:shadow-[0_0_20px_hsl(var(--gold-400)/0.3)] flex items-center gap-2"
+                    className="group relative px-4 sm:px-6 lg:px-8 py-2 sm:py-3 lg:py-4 backdrop-blur-md bg-white/10 text-white rounded-full font-medium text-xs sm:text-sm lg:text-base overflow-hidden transition-all duration-300 border border-white/20 hover:border-gold-400/50 hover:shadow-[0_0_20px_hsl(var(--gold-400)/0.3)] flex items-center gap-1.5 sm:gap-2"
                   >
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-gold-400/0 via-gold-400/20 to-gold-400/0"
@@ -344,7 +355,7 @@ const Home = () => {
                       transition={{ duration: 0.3 }}
                     />
                     <span className="relative z-10 capitalize">{t(type)}</span>
-                    <ArrowRight className="w-4 h-4 relative z-10 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 relative z-10 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                   </Link>
                 </motion.div>
               ))}
@@ -354,15 +365,15 @@ const Home = () => {
       </HeroVideo>
 
       {/* ============================================
-          STATS SECTION - Floating Cards with Glow
+          STATS SECTION - Responsive Floating Cards
           ============================================ */}
-      <section className="py-24 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
+      <section className="py-12 sm:py-16 lg:py-24 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
         {/* Background Glow Effects */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gold-400/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[100px]" />
+        <div className="absolute top-0 left-1/4 w-48 sm:w-72 lg:w-96 h-48 sm:h-72 lg:h-96 bg-gold-400/10 rounded-full blur-[80px] sm:blur-[100px]" />
+        <div className="absolute bottom-0 right-1/4 w-48 sm:w-72 lg:w-96 h-48 sm:h-72 lg:h-96 bg-accent/10 rounded-full blur-[80px] sm:blur-[100px]" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 xl:gap-8">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
@@ -373,7 +384,7 @@ const Home = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 {/* Circular Gradient Background */}
-                <div className="absolute -inset-4 rounded-3xl overflow-hidden pointer-events-none">
+                <div className="absolute -inset-2 sm:-inset-3 lg:-inset-4 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
                   <motion.div
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] rounded-full"
                     style={{
@@ -386,7 +397,7 @@ const Home = () => {
                 </div>
 
                 <motion.div
-                  className="relative bg-card/90 backdrop-blur-md rounded-2xl border border-border/50 p-8 text-center overflow-hidden"
+                  className="relative bg-card/90 backdrop-blur-md rounded-xl sm:rounded-2xl border border-border/50 p-4 sm:p-6 lg:p-8 text-center overflow-hidden"
                   whileHover={{
                     y: -8,
                     boxShadow: "0 25px 50px -12px hsl(var(--gold-400) / 0.15)",
@@ -395,16 +406,16 @@ const Home = () => {
                   transition={{ duration: 0.4 }}
                 >
                   <motion.div
-                    className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 text-gold-500 mb-6"
+                    className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-xl sm:rounded-2xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 text-gold-500 mb-3 sm:mb-4 lg:mb-6"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <stat.icon className="h-10 w-10" />
+                    <stat.icon className="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10" />
                   </motion.div>
-                  <div className="font-serif text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-gold-400 via-gold-500 to-amber-500 bg-clip-text text-transparent">
+                  <div className="font-serif text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1.5 sm:mb-2 lg:mb-3 bg-gradient-to-r from-gold-400 via-gold-500 to-amber-500 bg-clip-text text-transparent">
                     {stat.value}
                   </div>
-                  <div className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">
+                  <div className="text-[10px] sm:text-xs lg:text-sm font-semibold text-muted-foreground uppercase tracking-wider sm:tracking-widest">
                     {stat.label}
                   </div>
                 </motion.div>
@@ -489,24 +500,24 @@ const Home = () => {
       {/* ============================================
           FEATURED PROPERTIES SECTION
           ============================================ */}
-      <section className="py-24 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
+      <section className="py-12 sm:py-16 lg:py-24 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
         {/* Background Effects */}
-        <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-gold-400/5 rounded-full blur-[150px]" />
-        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[150px]" />
+        <div className="absolute top-1/4 left-0 w-[300px] sm:w-[400px] lg:w-[500px] h-[300px] sm:h-[400px] lg:h-[500px] bg-gold-400/5 rounded-full blur-[100px] sm:blur-[150px]" />
+        <div className="absolute bottom-1/4 right-0 w-[300px] sm:w-[400px] lg:w-[500px] h-[300px] sm:h-[400px] lg:h-[500px] bg-accent/5 rounded-full blur-[100px] sm:blur-[150px]" />
 
         <div className="container mx-auto px-4 relative z-10">
           {/* Section Header */}
           <motion.div
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-12 lg:mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="h-1 w-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-gold-400 to-gold-500" />
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
+            <div className="h-1 w-12 sm:w-16 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-r from-gold-400 to-gold-500" />
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-3 sm:mb-4 lg:mb-6">
               {t("featuredProperties")}
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
+            <p className="text-sm sm:text-base lg:text-xl text-muted-foreground max-w-2xl mx-auto font-light">
               {t("Discover our handpicked selection of premium properties")}
             </p>
           </motion.div>
@@ -514,18 +525,18 @@ const Home = () => {
           {loading.properties ? (
             <PropertyGridShimmer count={6} viewMode="grid" />
           ) : featuredProperties.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 xl:gap-8 mb-8 sm:mb-12 lg:mb-16">
               {featuredProperties.map((property, index) => (
                 <PropertyCardEnhanced key={property._id} property={property} index={index} />
               ))}
             </div>
           ) : (
             <motion.div
-              className="text-center py-20 bg-card/50 backdrop-blur-sm rounded-3xl border border-border/50"
+              className="text-center py-12 sm:py-16 lg:py-20 bg-card/50 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-border/50"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <p className="text-muted-foreground text-xl">{t("No properties available at the moment.")}</p>
+              <p className="text-muted-foreground text-base sm:text-lg lg:text-xl">{t("No properties available at the moment.")}</p>
             </motion.div>
           )}
 
@@ -537,10 +548,10 @@ const Home = () => {
           >
             <Link
               to="/properties"
-              className="group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-2xl font-semibold text-lg hover:shadow-[0_0_40px_hsl(var(--accent)/0.3)] transition-all duration-500 hover:scale-105"
+              className="group inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-base lg:text-lg hover:shadow-[0_0_40px_hsl(var(--accent)/0.3)] transition-all duration-500 hover:scale-105"
             >
               {t("View All Properties")}
-              <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
+              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-2 transition-transform" />
             </Link>
           </motion.div>
         </div>
@@ -549,25 +560,25 @@ const Home = () => {
       {/* ============================================
           PLATFORM FEATURES SECTION
           ============================================ */}
-      <section className="py-24 bg-background relative overflow-hidden">
+      <section className="py-12 sm:py-16 lg:py-24 bg-background relative overflow-hidden">
         <div className="container mx-auto px-4">
           {/* Section Header */}
           <motion.div
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-12 lg:mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="h-1 w-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-[hsl(var(--ethiopian-green))] via-[hsl(var(--ethiopian-yellow))] to-[hsl(var(--ethiopian-red))]" />
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
+            <div className="h-1 w-12 sm:w-16 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-r from-[hsl(var(--ethiopian-green))] via-[hsl(var(--ethiopian-yellow))] to-[hsl(var(--ethiopian-red))]" />
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-3 sm:mb-4 lg:mb-6">
               {t("Why Choose Ethio-Home?")}
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
+            <p className="text-sm sm:text-base lg:text-xl text-muted-foreground max-w-2xl mx-auto font-light">
               {t("Comprehensive features designed for the Ethiopian real estate market")}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 xl:gap-8">
             {platformFeatures.map((feature, index) => (
               <motion.div
                 key={index}
