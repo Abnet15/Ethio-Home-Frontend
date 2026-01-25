@@ -1,0 +1,299 @@
+/* ============================================
+   GLOBAL MOBILE RESPONSIVE FIXES
+   Ensures 2 cards per row on mobile, proper theme consistency
+   ============================================ */
+
+/* =============================================
+   MOBILE CARD GRID - 2 CARDS PER ROW
+   ============================================= */
+
+/* Override all grid layouts on mobile to show 2 cards per row */
+@media (max-width: 639px) {
+  /* Properties container grid */
+  .properties-container.grid,
+  .properties-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Generic card grids - enforce 2 columns on mobile */
+  .grid.grid-cols-1,
+  .grid.sm\:grid-cols-2,
+  .grid.md\:grid-cols-2,
+  .grid.lg\:grid-cols-3,
+  .grid.lg\:grid-cols-4,
+  .grid.xl\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Feature cards, verification steps, etc */
+  .grid.gap-4,
+  .grid.gap-5,
+  .grid.gap-6,
+  .grid.gap-8 {
+    gap: 0.75rem !important;
+  }
+
+  /* Property cards - compact for mobile 2-column */
+  .property-card,
+  .glass-card {
+    padding: 0.5rem !important;
+  }
+
+  .property-card .property-image {
+    height: 120px !important;
+    min-height: 100px !important;
+  }
+
+  .property-card .property-content {
+    padding: 0.5rem !important;
+  }
+
+  .property-card .property-title {
+    font-size: 0.75rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .property-card .property-location {
+    font-size: 0.65rem !important;
+  }
+
+  .property-card .property-price {
+    font-size: 0.8rem !important;
+  }
+
+  .property-card .property-features {
+    gap: 0.25rem !important;
+    font-size: 0.6rem !important;
+  }
+
+  /* Stat cards responsive */
+  .stat-card,
+  .stats-section .grid > div {
+    padding: 0.75rem !important;
+  }
+
+  .stat-card .stat-value,
+  .stats-section h3 {
+    font-size: 1.25rem !important;
+  }
+
+  .stat-card .stat-label {
+    font-size: 0.6rem !important;
+  }
+}
+
+/* =============================================
+   ADMIN SIDEBAR - OVERLAY MODE ON MOBILE
+   ============================================= */
+
+/* Mobile sidebar - overlay style, no space taken */
+@media (max-width: 1023px) {
+  .admin-sidebar,
+  .admin-sidebar-premium,
+  aside.admin-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 85vw !important;
+    max-width: 320px !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 60 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    background: hsl(var(--card)) !important;
+    border-right: 1px solid hsl(var(--border)) !important;
+    box-shadow: 4px 0 30px hsl(var(--foreground) / 0.1) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .admin-sidebar.open,
+  .admin-sidebar.translate-x-0,
+  aside.admin-sidebar.translate-x-0 {
+    transform: translateX(0) !important;
+  }
+
+  /* Dashboard content - full width on mobile */
+  .admin-dashboard-premium .flex > main,
+  .dashboard-content,
+  .admin-main-content {
+    width: 100% !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  /* Remove left margin/padding from dashboard layout */
+  .admin-dashboard-premium > .flex,
+  .dashboard-layout {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+}
+
+/* Desktop sidebar - normal sticky behavior */
+@media (min-width: 1024px) {
+  .admin-sidebar,
+  .admin-sidebar-premium,
+  aside.admin-sidebar {
+    position: sticky !important;
+    top: 0 !important;
+    transform: translateX(0) !important;
+    z-index: auto !important;
+  }
+}
+
+/* =============================================
+   HAMBURGER MENU BUTTON - FLOAT ABOVE CONTENT
+   ============================================= */
+
+.mobile-sidebar-toggle-btn {
+  position: fixed !important;
+  top: 5rem !important;
+  left: 1rem !important;
+  z-index: 55 !important;
+  width: 3rem !important;
+  height: 3rem !important;
+  border-radius: 0.75rem !important;
+  background: hsl(var(--card) / 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid hsl(var(--border) / 0.5) !important;
+  box-shadow: 0 4px 20px hsl(var(--foreground) / 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.mobile-sidebar-toggle-btn:hover {
+  background: hsl(var(--card)) !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 0 20px hsl(var(--gold-400) / 0.3) !important;
+}
+
+/* Hide toggle on desktop */
+@media (min-width: 1024px) {
+  .mobile-sidebar-toggle-btn {
+    display: none !important;
+  }
+}
+
+/* =============================================
+   DARK/LIGHT THEME CONSISTENCY
+   ============================================= */
+
+/* Ensure all cards follow theme */
+.card,
+.glass-card,
+.property-card,
+.stat-card,
+.feature-card,
+.testimonial-card {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+/* Text colors follow theme */
+.card h1, .card h2, .card h3, .card h4, .card h5, .card h6,
+.glass-card h1, .glass-card h2, .glass-card h3,
+.property-card h1, .property-card h2, .property-card h3 {
+  color: hsl(var(--foreground)) !important;
+}
+
+.card p,
+.glass-card p,
+.property-card p {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Form inputs follow theme */
+input, textarea, select {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Dropdown menus follow theme */
+.dropdown-menu,
+.user-menu,
+.language-menu,
+select option {
+  background-color: hsl(var(--popover)) !important;
+  color: hsl(var(--popover-foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+/* =============================================
+   SECTION BACKGROUNDS - THEME AWARE
+   ============================================= */
+
+section {
+  background-color: hsl(var(--background));
+}
+
+.bg-muted,
+.bg-secondary {
+  background-color: hsl(var(--muted)) !important;
+}
+
+/* =============================================
+   MOBILE TYPOGRAPHY SCALING
+   ============================================= */
+
+@media (max-width: 639px) {
+  /* Hero text */
+  .font-serif {
+    font-size: clamp(1.5rem, 6vw, 2.5rem) !important;
+  }
+
+  /* Section headers */
+  section h2 {
+    font-size: clamp(1.25rem, 5vw, 2rem) !important;
+  }
+
+  /* Regular text */
+  section p {
+    font-size: clamp(0.75rem, 3vw, 1rem) !important;
+  }
+}
+
+/* =============================================
+   FIX HEADER SPACING
+   ============================================= */
+
+/* Ensure content starts below fixed navbar */
+main {
+  padding-top: 0;
+}
+
+.page-content {
+  min-height: calc(100vh - 70px);
+}
+
+/* =============================================
+   BUTTON RESPONSIVE SIZES
+   ============================================= */
+
+@media (max-width: 639px) {
+  .btn,
+  button {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  .btn-lg {
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.875rem !important;
+  }
+}

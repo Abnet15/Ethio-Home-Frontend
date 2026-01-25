@@ -373,7 +373,7 @@ const Home = () => {
         <div className="absolute bottom-0 right-1/4 w-48 sm:w-72 lg:w-96 h-48 sm:h-72 lg:h-96 bg-accent/10 rounded-full blur-[80px] sm:blur-[100px]" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 xl:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 xl:gap-8">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
@@ -446,7 +446,7 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
             {verificationSteps.map((step, index) => (
               <motion.div
                 key={index}
@@ -525,7 +525,7 @@ const Home = () => {
           {loading.properties ? (
             <PropertyGridShimmer count={6} viewMode="grid" />
           ) : featuredProperties.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 xl:gap-8 mb-8 sm:mb-12 lg:mb-16">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 xl:gap-8 mb-8 sm:mb-12 lg:mb-16">
               {featuredProperties.map((property, index) => (
                 <PropertyCardEnhanced key={property._id} property={property} index={index} />
               ))}
@@ -578,7 +578,7 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 xl:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 xl:gap-8">
             {platformFeatures.map((feature, index) => (
               <motion.div
                 key={index}
@@ -645,7 +645,7 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 relative">
             {/* Connection Line */}
             <div className="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-transparent via-gold-400/30 to-transparent -translate-y-8" />
 
@@ -725,7 +725,7 @@ const Home = () => {
           </motion.div>
 
           {loading.testimonials ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
               {[1, 2, 3].map((i) => (
                 <TestimonialCardShimmer key={i} />
               ))}
@@ -735,7 +735,7 @@ const Home = () => {
               <p className="text-muted-foreground">{error.testimonials}</p>
             </div>
           ) : Array.isArray(testimonials) && testimonials.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
               {testimonials.slice(0, 3).map((testimonial, index) => (
                 <motion.div
                   key={testimonial._id}
