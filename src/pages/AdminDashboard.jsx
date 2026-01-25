@@ -35,6 +35,7 @@ import {
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import AdminLayout from '../components/layouts/AdminLayout';
 import ContactManagement from '../components/ContactManagement';
 import MessageManagement from '../components/MessageManagement';
 import NotificationCenter from '../components/NotificationCenter';
@@ -57,15 +58,12 @@ import { sellingService } from '../services/sellingService';
 import { userService } from '../services/userService';
 import { SERVER_BASE_URL } from '../config/api';
 
-import { Menu, X } from 'lucide-react';
-
 const AdminDashboard = () => {
   const { user, isAdmin, loading: authLoading } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalProperties: 0,
@@ -348,144 +346,8 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="admin-dashboard-premium min-h-screen min-h-[100dvh] bg-gradient-to-br from-background via-background to-muted/10 relative overflow-x-hidden">
-      {/* Premium animated background - hidden on mobile for performance */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none hidden sm:block">
-        <div className="absolute top-0 right-0 w-[600px] lg:w-[900px] h-[600px] lg:h-[900px] rounded-full opacity-20 animate-pulse-slow"
-             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 60%)', filter: 'blur(120px)' }} />
-        <div className="absolute bottom-0 left-0 w-[400px] lg:w-[700px] h-[400px] lg:h-[700px] rounded-full opacity-20 animate-pulse-slow"
-             style={{ background: 'radial-gradient(circle, hsl(145 63% 32% / 0.15) 0%, transparent 60%)', filter: 'blur(100px)', animationDelay: '-5s' }} />
-      </div>
-      
-      {/* Mobile sidebar toggle button - FLOATING above all content */}
-      <button
-        className="lg:hidden fixed top-20 left-4 z-[60] w-12 h-12 rounded-xl bg-card/95 backdrop-blur-xl border border-border/50 shadow-xl flex items-center justify-center hover:bg-card hover:scale-105 active:scale-95 transition-all duration-200 hover:shadow-[0_0_20px_hsl(var(--gold-400)/0.3)]"
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        aria-label="Toggle sidebar"
-      >
-        {sidebarOpen ? <X size={20} className="text-gold-400" /> : <Menu size={20} className="text-foreground" />}
-      </button>
-
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div 
-          className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-[55] animate-in fade-in duration-200"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-      
-      <div className="flex relative z-10 min-h-screen min-h-[100dvh]">
-        {/* Premium Glassmorphism Sidebar - Hidden completely on mobile, only shows as overlay */}
-        <aside className={`admin-sidebar fixed lg:relative top-0 left-0 z-[56] lg:z-auto flex flex-col w-[85vw] max-w-[300px] lg:w-72 xl:w-80 bg-card/98 lg:bg-card/80 backdrop-blur-2xl border-r border-border/30 min-h-screen h-[100dvh] p-4 sm:p-5 lg:p-6 shadow-2xl lg:shadow-none overflow-y-auto overflow-x-hidden transition-transform duration-300 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
-          {/* Sidebar gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-gold-400/5 via-transparent to-ethiopian-green/5 pointer-events-none" />
-          
-          {/* Sidebar header */}
-          <div className="relative z-10 mb-10">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-lg shadow-gold-400/30">
-                <Shield className="w-6 h-6 text-background" />
-              </div>
-              <div>
-                <h2 className="font-serif text-2xl font-bold text-gradient-gold">Admin</h2>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Control Panel</p>
-              </div>
-            </div>
-            <div className="ethiopian-accent-bar w-full mb-6"></div>
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-muted/50 to-transparent border border-border/30">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ethiopian-green to-ethiopian-green/70 flex items-center justify-center text-white font-bold text-sm">
-                {user?.name?.charAt(0) || 'A'}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold text-foreground truncate">{user?.name}</p>
-                <p className="text-xs text-muted-foreground">Administrator</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Premium Navigation */}
-          <nav className="relative z-10 flex-1 space-y-2">
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 px-3">Navigation</p>
-            
-            {[
-              { id: 'overview', icon: BarChart3, label: 'Overview', onClick: () => setActiveTab('overview') },
-              { id: 'users', icon: Users, label: 'Users', onClick: () => navigate('/admin/users') },
-              { id: 'properties', icon: Building, label: 'Properties', onClick: () => navigate('/admin/properties') },
-              { id: 'messages', icon: MessageSquare, label: 'Messages', onClick: () => navigate('/admin/messages') },
-              { id: 'selling', icon: TrendingUp, label: 'All Sales', onClick: () => setActiveTab('selling') },
-              { id: 'reviews', icon: Star, label: 'Reviews', onClick: () => setActiveTab('reviews') },
-              { id: 'activity', icon: Activity, label: 'Activity', onClick: () => navigate('/admin/activity') },
-            ].map((item) => (
-              <button
-                key={item.id}
-                onClick={item.onClick}
-                className={`admin-nav-item group w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
-                  activeTab === item.id 
-                    ? 'bg-gradient-to-r from-gold-400/20 to-gold-400/5 text-gold-400 border border-gold-400/30 shadow-lg shadow-gold-400/10' 
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-                }`}
-              >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                  activeTab === item.id 
-                    ? 'bg-gold-400/20' 
-                    : 'bg-muted/50 group-hover:bg-muted'
-                }`}>
-                  <item.icon size={18} className={activeTab === item.id ? 'text-gold-400' : ''} />
-                </div>
-                <span className="font-medium">{item.label}</span>
-                {activeTab === item.id && (
-                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
-                )}
-              </button>
-            ))}
-            
-            <div className="pt-4 mt-4 border-t border-border/30">
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 px-3">Management</p>
-              
-              {[
-                { id: 'subscriptions', icon: Bell, label: 'Subscriptions', onClick: () => setActiveTab('subscriptions') },
-                { id: 'contacts', icon: Mail, label: 'Contact Forms', onClick: () => setActiveTab('contacts') },
-                { id: 'faqs', icon: MessageSquare, label: 'FAQ Management', onClick: () => setActiveTab('faqs') },
-                { id: 'departments', icon: Building, label: 'Departments', onClick: () => setActiveTab('departments') },
-              ].map((item) => (
-                <button
-                  key={item.id}
-                  onClick={item.onClick}
-                  className={`admin-nav-item group w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-300 ${
-                    activeTab === item.id 
-                      ? 'bg-gradient-to-r from-gold-400/20 to-gold-400/5 text-gold-400 border border-gold-400/30 shadow-lg shadow-gold-400/10' 
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-                  }`}
-                >
-                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                    activeTab === item.id 
-                      ? 'bg-gold-400/20' 
-                      : 'bg-muted/50 group-hover:bg-muted'
-                  }`}>
-                    <item.icon size={18} className={activeTab === item.id ? 'text-gold-400' : ''} />
-                  </div>
-                  <span className="font-medium">{item.label}</span>
-                  {activeTab === item.id && (
-                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
-                  )}
-                </button>
-              ))}
-            </div>
-          </nav>
-          
-          {/* Sidebar footer */}
-          <div className="relative z-10 pt-6 border-t border-border/30 mt-auto">
-            <button 
-              onClick={() => navigate('/admin/settings')}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-300"
-            >
-              <Settings size={18} />
-              <span className="font-medium">Settings</span>
-            </button>
-          </div>
-        </aside>
-        {/* Main Content - Takes full width on mobile, no left margin */}
-        <div className="dashboard-main flex-1 min-w-0 w-full lg:w-auto p-4 sm:p-5 lg:p-6 xl:p-8 pt-20 lg:pt-6">
+    <AdminLayout activeTab={activeTab} onTabChange={setActiveTab}>
+      <div className="admin-dashboard-content">
         {activeTab === 'overview' && (
           <>
             {/* Header - Mobile Responsive */}
@@ -1293,9 +1155,8 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
-        </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 
