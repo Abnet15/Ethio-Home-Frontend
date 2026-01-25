@@ -442,7 +442,7 @@ const Properties = () => {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="space-y-3">
                 <label className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("Property Type")}</label>
                 <select

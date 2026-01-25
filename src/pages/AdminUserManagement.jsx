@@ -619,7 +619,7 @@ const AdminUserManagement = () => {
         </aside>
 
         {/* Main Content */}
-        <div className="dashboard-main flex-1 lg:ml-0">
+        <div className="dashboard-main flex-1 lg:ml-0 p-4 sm:p-5 lg:p-6 xl:p-8 pt-20 lg:pt-6">
           {/* Premium Header */}
           <div className="relative bg-gradient-to-r from-emerald-900/90 via-emerald-800/80 to-emerald-900/90 backdrop-blur-xl border-b border-emerald-500/20 shadow-2xl shadow-emerald-900/30">
             <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent" />

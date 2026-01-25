@@ -485,7 +485,7 @@ const AdminDashboard = () => {
           </div>
         </aside>
         {/* Main Content - Takes full width on mobile, no left margin */}
-        <div className="dashboard-main flex-1 min-w-0 w-full lg:w-auto p-4 sm:p-5 lg:p-6 xl:p-8 pt-6 lg:pt-6">
+        <div className="dashboard-main flex-1 min-w-0 w-full lg:w-auto p-4 sm:p-5 lg:p-6 xl:p-8 pt-20 lg:pt-6">
         {activeTab === 'overview' && (
           <>
             {/* Header - Mobile Responsive */}
@@ -603,7 +603,7 @@ const AdminDashboard = () => {
               <div className="card">
                 <div className="card-header">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-neutral-900">Recent Activity</h3>
+                    <h3 className="text-lg font-semibold text-foreground">Recent Activity</h3>
                     <button className="btn btn-sm btn-secondary">
                       View All
                     </button>
@@ -619,7 +619,7 @@ const AdminDashboard = () => {
               {/* Quick Actions */}
               <div className="card">
                 <div className="card-header">
-                  <h3 className="text-lg font-semibold text-neutral-900">Quick Actions</h3>
+                  <h3 className="text-lg font-semibold text-foreground">Quick Actions</h3>
                 </div>
                 <div className="card-body">
                   <div className="space-y-4">
@@ -855,14 +855,14 @@ const AdminDashboard = () => {
             {/* Modern Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Total Sold Properties */}
-              <div className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200">
+              <div className="group bg-card rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-border hover:border-blue-200">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
                     <TrendingUp size={24} className="text-white" />
                   </div>
                   <div className="text-right">
-                    <p className="text-gray-600 text-sm font-medium">Total Sold</p>
-                    <p className="text-3xl font-bold text-gray-900">{soldProperties.length}</p>
+                    <p className="text-muted-foreground text-sm font-medium">Total Sold</p>
+                    <p className="text-3xl font-bold text-foreground">{soldProperties.length}</p>
                   </div>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
@@ -871,7 +871,7 @@ const AdminDashboard = () => {
                     style={{width: `${Math.min((soldProperties.length / 50) * 100, 100)}%`}}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">Properties sold this year</p>
+                <p className="text-xs text-muted-foreground mt-2">Properties sold this year</p>
               </div>
 
               {/* Total Revenue */}
@@ -882,7 +882,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className="text-right">
                     <p className="text-gray-600 text-sm font-medium">Total Revenue</p>
-                    <p className="text-3xl font-bold text-gray-900">
+                    <p className="text-3xl font-bold text-foreground">
                       {formatCurrency(soldProperties.reduce((sum, property) => sum + (property.price || 0), 0))}
                     </p>
                   </div>
@@ -893,7 +893,7 @@ const AdminDashboard = () => {
                     style={{width: `${Math.min((soldProperties.reduce((sum, property) => sum + (property.price || 0), 0) / 10000000) * 100, 100)}%`}}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">Revenue generated from sales</p>
+                <p className="text-xs text-muted-foreground mt-2">Revenue generated from sales</p>
               </div>
 
               {/* Average Sale Price */}
@@ -904,7 +904,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className="text-right">
                     <p className="text-gray-600 text-sm font-medium">Avg Sale Price</p>
-                    <p className="text-3xl font-bold text-gray-900">
+                    <p className="text-3xl font-bold text-foreground">
                       {soldProperties.length > 0 ? formatCurrency(Math.round(soldProperties.reduce((sum, property) => sum + (property.price || 0), 0) / soldProperties.length)) : formatCurrency(0)}
                     </p>
                   </div>
@@ -922,7 +922,7 @@ const AdminDashboard = () => {
                     }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">Average property value</p>
+                <p className="text-xs text-muted-foreground mt-2">Average property value</p>
               </div>
 
               {/* This Month Sales */}
@@ -933,7 +933,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className="text-right">
                     <p className="text-gray-600 text-sm font-medium">This Month</p>
-                    <p className="text-3xl font-bold text-gray-900">{(() => {
+                    <p className="text-3xl font-bold text-foreground">{(() => {
                         const currentMonth = new Date().getMonth();
                         const currentYear = new Date().getFullYear();
                         return soldProperties.filter(property => {
@@ -961,20 +961,20 @@ const AdminDashboard = () => {
                     }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">Sales this month</p>
+                <p className="text-xs text-muted-foreground mt-2">Sales this month</p>
               </div>
             </div>
 
             {/* Analytics Charts Section */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Property Type Distribution */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-gray-900 flex items-center">
+                  <h3 className="text-xl font-bold text-foreground flex items-center">
                     <PieChart size={24} className="mr-3 text-blue-600" />
                     Property Types
                   </h3>
-                  <div className="text-sm text-gray-500">
+                    <div className="text-sm text-muted-foreground">
                     {soldProperties.length} total properties
                   </div>
                 </div>
@@ -1000,18 +1000,18 @@ const AdminDashboard = () => {
                       const color = colors[index % colors.length];
                       
                       return (
-                        <div key={type} className="group p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300">
+                        <div key={type} className="group p-4 bg-muted/50 rounded-xl hover:bg-muted transition-all duration-300">
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center">
                               <div className={`w-3 h-3 rounded-full ${color.bg} mr-3`}></div>
-                              <span className="font-semibold text-gray-900">{type}</span>
+                              <span className="font-semibold text-foreground">{type}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <span className="text-sm font-bold text-gray-900">{count}</span>
-                              <span className="text-xs text-gray-500">({percentage.toFixed(1)}%)</span>
+                              <span className="text-sm font-bold text-foreground">{count}</span>
+                              <span className="text-xs text-muted-foreground">({percentage.toFixed(1)}%)</span>
                             </div>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="w-full bg-muted rounded-full h-2">
                             <div 
                               className={`h-2 rounded-full ${color.bg} transition-all duration-1000 group-hover:shadow-sm`}
                               style={{width: `${percentage}%`}}
@@ -1025,13 +1025,13 @@ const AdminDashboard = () => {
               </div>
 
               {/* Price Range Analysis */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-gray-900 flex items-center">
+                  <h3 className="text-xl font-bold text-foreground flex items-center">
                     <BarChart3 size={24} className="mr-3 text-green-600" />
                     Price Ranges
                   </h3>
-                  <div className="text-sm text-gray-500">
+                    <div className="text-sm text-muted-foreground">
                     Distribution by value
                   </div>
                 </div>
@@ -1055,15 +1055,15 @@ const AdminDashboard = () => {
                     const maxCount = Math.max(...rangeCounts.map(r => r.count));
                     
                     return rangeCounts.map((range, index) => (
-                      <div key={range.label} className="group p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300">
+                      <div key={range.label} className="group p-4 bg-muted/50 rounded-xl hover:bg-muted transition-all duration-300">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="font-semibold text-gray-900">{range.label}</span>
+                          <span className="font-semibold text-foreground">{range.label}</span>
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-bold text-gray-900">{range.count}</span>
-                            <span className="text-xs text-gray-500">properties</span>
+                            <span className="text-sm font-bold text-foreground">{range.count}</span>
+                            <span className="text-xs text-muted-foreground">properties</span>
                           </div>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="w-full bg-muted rounded-full h-2">
                           <div 
                             className={`h-2 rounded-full ${range.color.bg} transition-all duration-1000 group-hover:shadow-sm`}
                             style={{width: `${maxCount > 0 ? (range.count / maxCount) * 100 : 0}%`}}
@@ -1084,8 +1084,8 @@ const AdminDashboard = () => {
                     <Building size={20} className="text-white" />
                     </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900">Sold Properties</h3>
-                    <p className="text-sm text-gray-600">Complete list of all sold properties</p>
+                    <h3 className="text-xl font-bold text-foreground">Sold Properties</h3>
+                    <p className="text-sm text-muted-foreground">Complete list of all sold properties</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -1100,11 +1100,11 @@ const AdminDashboard = () => {
               </div>
 
               {soldProperties.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {soldProperties.map((property, index) => (
                     <div 
                       key={property._id} 
-                      className="group bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-blue-300 overflow-hidden"
+                      className="group bg-card rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-border hover:border-blue-300 overflow-hidden"
                     >
                         {/* Property Image */}
                       <div className="relative h-48 overflow-hidden">
@@ -1115,7 +1115,7 @@ const AdminDashboard = () => {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
                           ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                          <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
                             <Building size={48} className="text-gray-400" />
                             </div>
                           )}
@@ -1138,21 +1138,21 @@ const AdminDashboard = () => {
                         {/* Property Details */}
                       <div className="p-4">
                         {/* Title and Location */}
-                        <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
+                        <h3 className="font-bold text-foreground mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
                                 {property.title || 'Property Title'}
                         </h3>
-                        <p className="text-gray-600 text-sm mb-3 flex items-center">
+                        <p className="text-muted-foreground text-sm mb-3 flex items-center">
                           <MapPin size={14} className="mr-1 text-blue-500" />
                                 {property.location || 'Location not specified'}
                               </p>
                               
                               {/* Property Features */}
                         <div className="grid grid-cols-2 gap-2 mb-3">
-                          <div className="flex items-center text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded">
+                          <div className="flex items-center text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded">
                             <Home size={12} className="mr-1 text-blue-500" />
                             <span>{property.features?.bedrooms || 0} beds</span>
                                 </div>
-                          <div className="flex items-center text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded">
+                          <div className="flex items-center text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded">
                             <Bath size={12} className="mr-1 text-green-500" />
                             <span>{property.features?.bathrooms || 0} baths</span>
                                 </div>
@@ -1172,18 +1172,18 @@ const AdminDashboard = () => {
                                 </div>
 
                         {/* Owner Info */}
-                        <div className="mb-3 p-2 bg-gray-50 rounded-lg">
+                        <div className="mb-3 p-2 bg-muted/50 rounded-lg">
                           <div className="flex items-center mb-1">
-                            <Users size={12} className="mr-1 text-gray-500" />
-                            <span className="text-xs font-medium text-gray-700">Owner</span>
+                            <Users size={12} className="mr-1 text-muted-foreground" />
+                            <span className="text-xs font-medium text-foreground">Owner</span>
                                 </div>
-                          <p className="text-xs text-gray-600 truncate">
+                          <p className="text-xs text-muted-foreground truncate">
                             {property.owner?.name || 'Owner Name'}
                           </p>
                             </div>
 
                         {/* Date Sold */}
-                        <div className="mb-3 flex items-center text-xs text-gray-500">
+                        <div className="mb-3 flex items-center text-xs text-muted-foreground">
                           <Calendar size={12} className="mr-1" />
                           <span>Sold: {property.updatedAt ? new Date(property.updatedAt).toLocaleDateString() : 'N/A'}</span>
                               </div>
@@ -1202,12 +1202,12 @@ const AdminDashboard = () => {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <div className="bg-gray-50 rounded-xl p-8 max-w-md mx-auto">
-                    <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <TrendingUp size={32} className="text-gray-400" />
+                  <div className="bg-muted/50 rounded-xl p-8 max-w-md mx-auto">
+                    <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                      <TrendingUp size={32} className="text-muted-foreground" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No Sold Properties</h3>
-                  <p className="text-gray-600 mb-6">There are currently no sold properties to display.</p>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">No Sold Properties</h3>
+                  <p className="text-muted-foreground mb-6">There are currently no sold properties to display.</p>
                   <button 
                     onClick={fetchSoldPropertiesData}
                       className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 flex items-center mx-auto"
@@ -1226,7 +1226,7 @@ const AdminDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Review Management</h3>
+                <h3 className="text-lg font-semibold text-foreground">Review Management</h3>
                {/*  <div className="flex items-center gap-2">
                   <button className="btn btn-sm btn-secondary" onClick={() => navigate('/admin/reviews')}>Open Full Reviews</button>
                 </div> */}
@@ -1242,8 +1242,8 @@ const AdminDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Contact Forms</h3>
-                <p className="text-sm text-neutral-600">Answer inquiries and follow up via messages</p>
+                <h3 className="text-lg font-semibold text-foreground">Contact Forms</h3>
+                <p className="text-sm text-muted-foreground">Answer inquiries and follow up via messages</p>
               </div>
             </div>
             <div className="card-body">
@@ -1256,8 +1256,8 @@ const AdminDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Subscription Management</h3>
-                <p className="text-sm text-neutral-600">Manage platform subscriptions</p>
+                <h3 className="text-lg font-semibold text-foreground">Subscription Management</h3>
+                <p className="text-sm text-muted-foreground">Manage platform subscriptions</p>
               </div>
             </div>
             <div className="card-body">
@@ -1270,8 +1270,8 @@ const AdminDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">FAQ Management</h3>
-                <p className="text-sm text-neutral-600">Manage frequently asked questions and answers</p>
+                <h3 className="text-lg font-semibold text-foreground">FAQ Management</h3>
+                <p className="text-sm text-muted-foreground">Manage frequently asked questions and answers</p>
               </div>
             </div>
             <div className="card-body">
@@ -1284,8 +1284,8 @@ const AdminDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Department Management</h3>
-                <p className="text-sm text-neutral-600">Manage contact departments and their information</p>
+                <h3 className="text-lg font-semibold text-foreground">Department Management</h3>
+                <p className="text-sm text-muted-foreground">Manage contact departments and their information</p>
               </div>
             </div>
             <div className="card-body">

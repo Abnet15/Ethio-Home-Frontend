@@ -376,7 +376,7 @@
 
 @media (min-width: 1280px) {
   .admin-properties-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
   }
 }
