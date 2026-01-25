@@ -650,9 +650,26 @@ html, body {
   }
   
   /* Main content area adjustments when sidebar closed */
-  .admin-dashboard-premium .dashboard-main-content {
-    margin-left: 0;
-    width: 100%;
+  .admin-dashboard-premium .dashboard-main-content,
+  .admin-dashboard-premium .dashboard-main {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    width: 100% !important;
+  }
+  
+  /* Ensure flex container doesn't leave space */
+  .admin-dashboard-premium > .flex {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+  
+  /* Ensure main content takes full width */
+  .admin-dashboard-premium .flex > .dashboard-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 }
 

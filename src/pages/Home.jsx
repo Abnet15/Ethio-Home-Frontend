@@ -208,18 +208,33 @@ const Home = () => {
               <span className="text-sm font-medium text-white/90">{t("Ethiopia's Premier Real Estate Platform")}</span>
             </motion.div>
 
-            {/* Main Headline - Responsive Typography */}
+            {/* Main Headline - Responsive Typography - AMAZING DESIGN */}
             <motion.h1
-              className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-6 sm:mb-8 leading-[1.1]"
+              className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-6 sm:mb-8 leading-[1.1] relative"
               style={{
                 letterSpacing: "-0.02em",
-                textShadow: "0 4px 30px rgba(0,0,0,0.3), 0 0 60px hsl(var(--gold-400) / 0.2)",
+                textShadow: "0 4px 30px rgba(0,0,0,0.5), 0 0 80px hsl(var(--gold-400) / 0.3), 0 0 120px hsl(var(--gold-400) / 0.2)",
               }}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              {t("heroTitle")}
+              <span className="relative z-10 bg-gradient-to-r from-white via-gold-100 to-white bg-clip-text text-transparent">
+                {t("heroTitle")}
+              </span>
+              {/* Glowing effect behind text */}
+              <motion.span
+                className="absolute inset-0 bg-gradient-to-r from-gold-400/20 via-gold-300/30 to-gold-400/20 blur-3xl -z-0"
+                animate={{
+                  opacity: [0.3, 0.6, 0.3],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
             </motion.h1>
 
             {/* Subheadline - Responsive */}

@@ -30,10 +30,12 @@ import {
   Bath,
   Maximize,
   Edit,
-  Phone
+  Phone,
+  Zap
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import ContactManagement from '../components/ContactManagement';
 import MessageManagement from '../components/MessageManagement';
@@ -231,64 +233,113 @@ const AdminDashboard = () => {
   };
 
   const StatCard = ({ title, value, change, icon: Icon, color = 'primary', onClick }) => (
-    <div 
-      className="group relative overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-2 lg:hover:-translate-y-3"
+    <motion.div 
+      className="group relative overflow-hidden cursor-pointer"
       onClick={onClick}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -8, scale: 1.02 }}
+      transition={{ duration: 0.3, type: "spring", stiffness: 300 }}
     >
       {/* Glassmorphism card - responsive padding */}
-      <div className="relative h-full rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 bg-gradient-to-br from-card/90 via-card/80 to-card/70 backdrop-blur-xl border border-border/40 shadow-xl hover:shadow-2xl hover:border-gold-400/40 transition-all duration-500">
+      <div className="relative h-full rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-xl border border-border/50 shadow-2xl hover:shadow-[0_20px_60px_-15px_hsl(var(--gold-400)/0.2)] hover:border-gold-400/50 transition-all duration-500 overflow-hidden">
         
-        {/* Animated glow background - hidden on mobile for perf */}
-        <div className="hidden sm:block absolute inset-0 rounded-2xl bg-gradient-to-br from-gold-400/0 via-gold-400/5 to-ethiopian-green/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        {/* Animated gradient background */}
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-br from-gold-400/0 via-gold-400/8 to-ethiopian-green/8 opacity-0 group-hover:opacity-100"
+          transition={{ duration: 0.5 }}
+        />
         
         {/* Floating orb decoration - hidden on mobile */}
-        <div className="hidden lg:block absolute -top-8 -right-8 w-32 h-32 rounded-full bg-gradient-to-br from-gold-400/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        <motion.div 
+          className="hidden lg:block absolute -top-12 -right-12 w-40 h-40 rounded-full bg-gradient-to-br from-gold-400/25 to-transparent blur-3xl opacity-0 group-hover:opacity-100"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0]
+          }}
+          transition={{ 
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        
+        {/* Top accent line */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
         <div className="relative z-10">
           {/* Header with icon - responsive sizes */}
           <div className="flex items-center justify-between mb-3 sm:mb-4 lg:mb-5">
-            <h3 className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-[0.1em] sm:tracking-[0.15em] font-sans">{title}</h3>
-            <div className="relative">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-xl lg:rounded-2xl bg-gradient-to-br from-gold-400/30 via-gold-500/20 to-gold-600/10 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-gold-400/20">
-                <Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-gold-500 group-hover:text-gold-400 transition-colors duration-300" />
+            <h3 className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] sm:tracking-[0.2em] font-sans">{title}</h3>
+            <motion.div 
+              className="relative"
+              whileHover={{ scale: 1.15, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 400 }}
+            >
+              <div className="w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl lg:rounded-2xl bg-gradient-to-br from-gold-400/35 via-gold-500/25 to-gold-600/15 flex items-center justify-center shadow-lg shadow-gold-400/25 ring-2 ring-gold-400/20">
+                <Icon className="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-gold-400 group-hover:text-gold-300 transition-colors duration-300" />
               </div>
-            </div>
+              {/* Icon glow effect */}
+              <div className="absolute inset-0 rounded-xl lg:rounded-2xl bg-gold-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </motion.div>
           </div>
           
           {/* Animated value - responsive font size */}
           <div className="mb-2 sm:mb-3 lg:mb-4">
-            <p className="text-2xl sm:text-3xl lg:text-4xl font-bold font-serif tracking-tight bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 bg-clip-text text-transparent bg-[length:200%_100%] group-hover:animate-shimmer-fast">
+            <motion.p 
+              className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold font-serif tracking-tight bg-gradient-to-r from-gold-400 via-gold-300 to-gold-400 bg-clip-text text-transparent bg-[length:200%_100%]"
+              animate={{
+                backgroundPosition: ["0% 50%", "200% 50%", "0% 50%"]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            >
               {typeof value === 'string' && value.includes('ETB') ? (
-                <span className="flex items-baseline gap-1">
-                  <span className="text-lg sm:text-xl lg:text-2xl font-sans font-medium text-gold-500/80">ETB</span>
+                <span className="flex items-baseline gap-1.5">
+                  <span className="text-lg sm:text-xl lg:text-2xl font-sans font-medium text-gold-500/90">ETB</span>
                   <AnimatedCounter value={value} />
                 </span>
               ) : (
                 <AnimatedCounter value={value} />
               )}
-            </p>
+            </motion.p>
           </div>
           
           {/* Change indicator - responsive sizing */}
           {change !== undefined && (
-            <div className={`inline-flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold backdrop-blur-sm ${
-              change >= 0 
-                ? 'bg-ethiopian-green/20 text-green-400 border border-ethiopian-green/30' 
-                : 'bg-ethiopian-red/20 text-red-400 border border-ethiopian-red/30'
-            }`}>
-              <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center ${change >= 0 ? 'bg-ethiopian-green/30' : 'bg-ethiopian-red/30'}`}>
+            <motion.div 
+              className={`inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold backdrop-blur-md ${
+                change >= 0 
+                  ? 'bg-ethiopian-green/25 text-green-300 border border-ethiopian-green/40 shadow-lg shadow-green-500/10' 
+                  : 'bg-ethiopian-red/25 text-red-300 border border-ethiopian-red/40 shadow-lg shadow-red-500/10'
+              }`}
+              whileHover={{ scale: 1.05 }}
+            >
+              <motion.div 
+                className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center ${change >= 0 ? 'bg-ethiopian-green/40' : 'bg-ethiopian-red/40'}`}
+                animate={{ rotate: change >= 0 ? [0, -10, 10, 0] : [0, 10, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+              >
                 {change >= 0 ? <TrendingUp size={10} className="sm:w-3 sm:h-3" /> : <TrendingDown size={10} className="sm:w-3 sm:h-3" />}
-              </div>
+              </motion.div>
               <span className="hidden xs:inline">{Math.abs(change)}% from last month</span>
               <span className="xs:hidden">{Math.abs(change)}%</span>
-            </div>
+            </motion.div>
           )}
         </div>
         
         {/* Bottom accent line */}
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold-400/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <motion.div 
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/70 to-transparent"
+          initial={{ scaleX: 0 }}
+          whileHover={{ scaleX: 1 }}
+          transition={{ duration: 0.3 }}
+        />
       </div>
-    </div>
+    </motion.div>
   );
 
   const ActivityItem = ({ activity }) => {
@@ -374,33 +425,48 @@ const AdminDashboard = () => {
         />
       )}
       
-      <div className="flex relative z-10 min-h-screen min-h-[100dvh]">
+      <div className="flex relative z-10 min-h-screen min-h-[100dvh] w-full">
         {/* Premium Glassmorphism Sidebar - Hidden completely on mobile, only shows as overlay */}
         <aside className={`admin-sidebar fixed lg:relative top-0 left-0 z-[56] lg:z-auto flex flex-col w-[85vw] max-w-[300px] lg:w-72 xl:w-80 bg-card/98 lg:bg-card/80 backdrop-blur-2xl border-r border-border/30 min-h-screen h-[100dvh] p-4 sm:p-5 lg:p-6 shadow-2xl lg:shadow-none overflow-y-auto overflow-x-hidden transition-transform duration-300 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
           {/* Sidebar gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-gold-400/5 via-transparent to-ethiopian-green/5 pointer-events-none" />
           
-          {/* Sidebar header */}
-          <div className="relative z-10 mb-10">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-lg shadow-gold-400/30">
-                <Shield className="w-6 h-6 text-background" />
-              </div>
+          {/* Sidebar header - Enhanced Design */}
+          <div className="relative z-10 mb-8 sm:mb-10">
+            <motion.div 
+              className="flex items-center gap-3 mb-6"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <motion.div 
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-gold-400 via-gold-500 to-gold-600 flex items-center justify-center shadow-lg shadow-gold-400/40 ring-2 ring-gold-400/30"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
+                <Shield className="w-6 h-6 sm:w-7 sm:h-7 text-background" />
+              </motion.div>
               <div>
-                <h2 className="font-serif text-2xl font-bold text-gradient-gold">Admin</h2>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Control Panel</p>
+                <h2 className="font-serif text-xl sm:text-2xl font-bold bg-gradient-to-r from-gold-400 via-gold-300 to-gold-400 bg-clip-text text-transparent">Admin</h2>
+                <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-semibold">Control Panel</p>
               </div>
-            </div>
-            <div className="ethiopian-accent-bar w-full mb-6"></div>
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-muted/50 to-transparent border border-border/30">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ethiopian-green to-ethiopian-green/70 flex items-center justify-center text-white font-bold text-sm">
+            </motion.div>
+            <div className="h-[2px] w-full mb-6 rounded-full bg-gradient-to-r from-transparent via-gold-400/60 via-ethiopian-green/60 to-transparent"></div>
+            <motion.div 
+              className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-br from-muted/60 via-muted/40 to-transparent border border-border/40 backdrop-blur-sm shadow-lg"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              whileHover={{ scale: 1.02, borderColor: "hsl(var(--gold-400) / 0.4)" }}
+            >
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-ethiopian-green via-ethiopian-green/80 to-ethiopian-green/60 flex items-center justify-center text-white font-bold text-sm sm:text-base shadow-lg ring-2 ring-ethiopian-green/30">
                 {user?.name?.charAt(0) || 'A'}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-foreground truncate">{user?.name}</p>
+                <p className="font-semibold text-foreground truncate text-sm sm:text-base">{user?.name}</p>
                 <p className="text-xs text-muted-foreground">Administrator</p>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Premium Navigation */}
@@ -485,29 +551,103 @@ const AdminDashboard = () => {
           </div>
         </aside>
         {/* Main Content - Takes full width on mobile, no left margin */}
-        <div className="dashboard-main flex-1 min-w-0 w-full lg:w-auto p-4 sm:p-5 lg:p-6 xl:p-8 pt-20 lg:pt-6">
+        <div className="dashboard-main flex-1 min-w-0 w-full lg:w-auto p-4 sm:p-5 lg:p-6 xl:p-8 pt-20 lg:pt-6 ml-0 lg:ml-0">
         {activeTab === 'overview' && (
           <>
-            {/* Header - Mobile Responsive */}
-            <div className="dashboard-header flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-              <div className="text-center sm:text-left">
-                <h1 className="dashboard-title text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Dashboard Overview</h1>
-                <p className="text-muted-foreground text-sm sm:text-base mt-1">Monitor your platform's performance and manage operations</p>
+            {/* Premium Header - Mobile Responsive - PERFECT DESIGN */}
+            <motion.div 
+              className="relative mb-6 sm:mb-8 lg:mb-10"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {/* Animated background gradient effect */}
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-r from-gold-400/10 via-ethiopian-green/5 to-gold-400/10 rounded-2xl sm:rounded-3xl blur-3xl -z-0"
+                animate={{
+                  opacity: [0.3, 0.6, 0.3],
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              
+              <div className="relative bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-2xl border border-border/60 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-2xl overflow-hidden">
+                {/* Top accent line */}
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
+                
+                {/* Decorative corner elements */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-gold-400/5 to-transparent rounded-bl-full blur-2xl" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-ethiopian-green/5 to-transparent rounded-tr-full blur-2xl" />
+                
+                <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
+                  <div className="text-center sm:text-left space-y-3">
+                    <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-4">
+                      <motion.div 
+                        className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-2xl bg-gradient-to-br from-gold-400/30 via-gold-500/20 to-gold-600/15 flex items-center justify-center shadow-lg shadow-gold-400/30 ring-2 ring-gold-400/20"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <BarChart3 className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-gold-400" />
+                        <div className="absolute inset-0 rounded-2xl bg-gold-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </motion.div>
+                      <div>
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold font-serif bg-gradient-to-r from-foreground via-gold-400 to-foreground bg-clip-text text-transparent leading-tight">
+                          Dashboard Overview
+                        </h1>
+                        <div className="h-1 w-16 sm:w-20 mx-auto sm:mx-0 mt-2 rounded-full bg-gradient-to-r from-gold-400 via-ethiopian-green to-gold-400" />
+                      </div>
+                    </div>
+                    <p className="text-muted-foreground text-sm sm:text-base lg:text-lg font-medium max-w-2xl">
+                      Monitor your platform's performance and manage operations with real-time insights
+                    </p>
+                  </div>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                    <motion.button 
+                      className="group relative px-5 sm:px-6 py-3 sm:py-3.5 bg-card/90 backdrop-blur-md border-2 border-border/60 rounded-xl font-semibold text-sm sm:text-base text-foreground hover:bg-card hover:border-gold-400/50 hover:shadow-xl hover:shadow-gold-400/20 transition-all duration-300 flex items-center justify-center gap-2.5 overflow-hidden"
+                      onClick={fetchDashboardData}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-gold-400/0 via-gold-400/15 to-gold-400/0"
+                        initial={{ x: "-100%" }}
+                        whileHover={{ x: "100%" }}
+                        transition={{ duration: 0.6 }}
+                      />
+                      <RefreshCw size={16} className="relative z-10 group-hover:rotate-180 transition-transform duration-500" />
+                      <span className="relative z-10 font-semibold">Refresh</span>
+                    </motion.button>
+                    <motion.button 
+                      className="group relative px-5 sm:px-6 py-3 sm:py-3.5 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 text-slate-900 rounded-xl font-bold text-sm sm:text-base hover:shadow-xl hover:shadow-gold-400/40 transition-all duration-300 flex items-center justify-center gap-2.5 overflow-hidden"
+                      onClick={() => navigate('/properties/new')}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                        initial={{ x: "-100%" }}
+                        whileHover={{ x: "100%" }}
+                        transition={{ duration: 0.6 }}
+                      />
+                      <Plus size={18} className="relative z-10 group-hover:rotate-90 transition-transform duration-300" />
+                      <span className="relative z-10">Create Property</span>
+                    </motion.button>
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-                <button className="btn btn-secondary flex items-center justify-center gap-2 px-3 py-2 text-sm" onClick={fetchDashboardData}>
-                  <RefreshCw size={14} />
-                  <span>Refresh</span>
-                </button>
-                <button className="btn btn-secondary flex items-center justify-center gap-2 px-3 py-2 text-sm" onClick={() => navigate('/properties/new')}>
-                  <Plus size={14} />
-                  <span>Create Property</span>
-                </button>
-              </div>
-            </div>
+            </motion.div>
 
-            {/* Stats Grid - Responsive: 1 col mobile, 2 col tablet, 3 col desktop */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5 mb-6">
+            {/* Stats Grid - Responsive: 1 col mobile, 2 col tablet, 3 col desktop - PERFECT LAYOUT */}
+            <motion.div 
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 mb-8 sm:mb-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <StatCard
                 title="Total Users"
                 value={formatNumber(stats.totalUsers)}
@@ -554,75 +694,108 @@ const AdminDashboard = () => {
                 color="primary"
                 onClick={() => navigate('/admin/messages')}
               />
-            </div>
+            </motion.div>
 
-            {/* Analytics Charts Section */}
-            {/* Analytics Charts Section - Responsive */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 lg:mb-8">
+            {/* Analytics Charts Section - Enhanced Design */}
+            <motion.div 
+              className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8 mb-8 sm:mb-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
               <div className="min-h-[250px] sm:min-h-[300px]">
                 <RevenueChart />
               </div>
               <div className="min-h-[250px] sm:min-h-[300px]">
                 <PropertyDistributionChart />
               </div>
-            </div>
+            </motion.div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 lg:mb-8">
+            <motion.div 
+              className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8 mb-8 sm:mb-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
               <div className="min-h-[250px] sm:min-h-[300px]">
                 <UserGrowthChart />
               </div>
               <div className="min-h-[250px] sm:min-h-[300px]">
                 <PropertyViewsChart />
               </div>
-            </div>
+            </motion.div>
 
-            {/* Message Management Section */}
-            <div className="card mb-8">
-              <div className="card-header">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-foreground">Message Management</h3>
-                  <div className="flex items-center gap-4">
-                    <button 
-                      className="btn btn-sm btn-secondary"
-                      onClick={() => navigate('/admin/messages')}
-                    >
-                      View All Messages
-                    </button>
+            {/* Message Management Section - Enhanced */}
+            <motion.div 
+              className="relative bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-xl border border-border/60 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-2xl mb-8 sm:mb-10 overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
+              <div className="relative z-10">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center">
+                      <MessageSquare className="w-5 h-5 text-gold-400" />
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-foreground">Message Management</h3>
                   </div>
+                  <button 
+                    className="px-4 sm:px-5 py-2.5 sm:py-3 bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl font-semibold text-sm sm:text-base text-foreground hover:bg-card hover:border-gold-400/50 hover:shadow-lg hover:shadow-gold-400/10 transition-all duration-300"
+                    onClick={() => navigate('/admin/messages')}
+                  >
+                    View All Messages
+                  </button>
+                </div>
+                <div className="card-body p-0">
+                  <MessageManagement userRole="admin" showStats={true} showActions={true} />
                 </div>
               </div>
-              <div className="card-body">
-                <MessageManagement userRole="admin" showStats={true} showActions={true} />
-              </div>
-            </div>
+            </motion.div>
 
 
-            {/* Content Grid - Stack on mobile */}
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
-              {/* Recent Activity */}
-              <div className="card">
-                <div className="card-header">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-foreground">Recent Activity</h3>
-                    <button className="btn btn-sm btn-secondary">
+            {/* Content Grid - Stack on mobile - Enhanced Design */}
+            <motion.div 
+              className="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-6 lg:gap-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              {/* Recent Activity - Enhanced */}
+              <div className="relative bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-xl border border-border/60 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-2xl overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center">
+                        <Activity className="w-5 h-5 text-gold-400" />
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-bold text-foreground">Recent Activity</h3>
+                    </div>
+                    <button className="px-4 py-2.5 bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl font-semibold text-sm text-foreground hover:bg-card hover:border-gold-400/50 hover:shadow-lg transition-all duration-300">
                       View All
                     </button>
                   </div>
-                </div>
-                <div className="card-body p-0">
-                  {recentActivities.map((activity) => (
-                    <ActivityItem key={activity.id} activity={activity} />
-                  ))}
+                  <div className="space-y-2">
+                    {recentActivities.map((activity) => (
+                      <ActivityItem key={activity.id} activity={activity} />
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Quick Actions */}
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="text-lg font-semibold text-foreground">Quick Actions</h3>
-                </div>
-                <div className="card-body">
-                  <div className="space-y-4">
+              {/* Quick Actions - Enhanced */}
+              <div className="relative bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-xl border border-border/60 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-2xl overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center">
+                      <Zap className="w-5 h-5 text-gold-400" />
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-foreground">Quick Actions</h3>
+                  </div>
+                  <div className="space-y-3 sm:space-y-4">
                     <QuickActionCard
                       title="Manage Users"
                       description="Add, edit, or remove user accounts"
@@ -668,17 +841,28 @@ const AdminDashboard = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Recent Users and Properties */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mt-6 lg:mt-8">
-              {/* Recent Users */}
-              <div className="bg-card rounded-xl sm:rounded-2xl border border-border/50 overflow-hidden shadow-lg">
-                <div className="p-4 sm:p-6 border-b border-border/50 bg-muted/30">
+            {/* Recent Users and Properties - Enhanced Design */}
+            <motion.div 
+              className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8 mt-8 sm:mt-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+            >
+              {/* Recent Users - Enhanced */}
+              <div className="relative bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-xl border border-border/60 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
+                <div className="p-5 sm:p-6 border-b border-border/50 bg-muted/20">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-base sm:text-lg font-semibold text-foreground">Recent Users</h3>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center">
+                        <Users className="w-5 h-5 text-gold-400" />
+                      </div>
+                      <h3 className="text-lg sm:text-xl font-bold text-foreground">Recent Users</h3>
+                    </div>
                     <button 
-                      className="btn btn-sm btn-secondary text-xs sm:text-sm"
+                      className="px-4 py-2 bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl font-semibold text-xs sm:text-sm text-foreground hover:bg-card hover:border-gold-400/50 hover:shadow-lg transition-all duration-300"
                       onClick={() => navigate('/admin/users')}
                     >
                       View All
@@ -729,13 +913,19 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              {/* Recent Properties */}
-              <div className="bg-card rounded-xl sm:rounded-2xl border border-border/50 overflow-hidden shadow-lg">
-                <div className="p-4 sm:p-6 border-b border-border/50 bg-muted/30">
+              {/* Recent Properties - Enhanced */}
+              <div className="relative bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-xl border border-border/60 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
+                <div className="p-5 sm:p-6 border-b border-border/50 bg-muted/20">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-base sm:text-lg font-semibold text-foreground">Recent Properties</h3>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center">
+                        <Building className="w-5 h-5 text-gold-400" />
+                      </div>
+                      <h3 className="text-lg sm:text-xl font-bold text-foreground">Recent Properties</h3>
+                    </div>
                     <button 
-                      className="btn btn-sm btn-secondary text-xs sm:text-sm"
+                      className="px-4 py-2 bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl font-semibold text-xs sm:text-sm text-foreground hover:bg-card hover:border-gold-400/50 hover:shadow-lg transition-all duration-300"
                       onClick={() => navigate('/admin/properties')}
                     >
                       View All
@@ -796,7 +986,7 @@ const AdminDashboard = () => {
                   </table>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </>
         )}
 
