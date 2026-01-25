@@ -99,6 +99,72 @@
     --gold-500: 40 96% 50%;
   }
 
+  /* =====================================================
+     Legacy Variable Mappings for Theme Consistency
+     Maps old CSS variables to new semantic tokens
+     ===================================================== */
+  :root {
+    /* Background mappings */
+    --bg-primary: hsl(var(--background));
+    --bg-secondary: hsl(var(--muted));
+    --card-bg: hsl(var(--card));
+    --input-bg: hsl(var(--background));
+    
+    /* Text mappings */
+    --text-primary: hsl(var(--foreground));
+    --text-secondary: hsl(var(--muted-foreground));
+    --text-tertiary: hsl(var(--muted-foreground));
+    --text-muted: hsl(var(--muted-foreground));
+    
+    /* Border mappings */
+    --border-primary: hsl(var(--border));
+    --border-accent: hsl(var(--primary));
+    
+    /* Color mappings */
+    --color-primary: hsl(var(--primary));
+    --color-danger: hsl(var(--destructive));
+    --color-success: hsl(var(--accent));
+    --primary-50: hsl(var(--primary) / 0.1);
+    --primary-100: hsl(var(--primary) / 0.2);
+    
+    /* Transition timing */
+    --transition-smooth: 0.3s ease;
+    
+    /* Glass effects */
+    --glass-bg: hsl(var(--background) / 0.8);
+    --glass-backdrop: blur(20px) saturate(180%);
+    --glass-shadow: 0 8px 32px hsl(var(--foreground) / 0.1);
+    
+    /* Gradient mappings */
+    --gradient-glass-neon: linear-gradient(135deg, hsl(var(--muted) / 0.5) 0%, hsl(var(--muted) / 0.3) 100%);
+    --gradient-neon-blue: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(145 63% 40%) 100%);
+    --gradient-neon-purple: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(25 85% 50%) 100%);
+    --gradient-cyberpunk: linear-gradient(135deg, hsl(var(--gold-400)) 0%, hsl(var(--gold-500)) 100%);
+    
+    /* Shadow mappings */
+    --shadow-neon: 0 4px 20px hsl(var(--accent) / 0.3);
+    --shadow-neon-lg: 0 8px 30px hsl(var(--accent) / 0.4);
+    --shadow-cyber: 0 4px 20px hsl(var(--gold-400) / 0.3);
+    --shadow-glow-gold: 0 0 30px hsl(var(--gold-400) / 0.4);
+    
+    /* Z-index */
+    --z-dropdown: 100;
+  }
+  
+  [data-theme="dark"] {
+    /* Dark mode legacy variable overrides */
+    --bg-primary: hsl(var(--background));
+    --bg-secondary: hsl(var(--muted));
+    --card-bg: hsl(var(--card));
+    --input-bg: hsl(var(--background));
+    --text-primary: hsl(var(--foreground));
+    --text-secondary: hsl(var(--muted-foreground));
+    --text-tertiary: hsl(var(--muted-foreground));
+    --text-muted: hsl(var(--muted-foreground));
+    --border-primary: hsl(var(--border));
+    --glass-bg: hsl(var(--background) / 0.9);
+  }
+
   /* Theme Transition - Smooth color transitions for dark/light mode */
   *,
   *::before,
