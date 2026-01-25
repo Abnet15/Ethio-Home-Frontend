@@ -12,6 +12,8 @@
 @import "./styles/properties.css";
 @import "./styles/property-details.css";
 @import "./styles/dashboard.css";
+@import "./styles/mobile-responsive.css";
+@import "./styles/global-mobile.css";
 
 .App {
   width: 100vw;
