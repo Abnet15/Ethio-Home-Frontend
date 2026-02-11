@@ -19,7 +19,7 @@ import {
   HelpCircle,
   Layers
 } from 'lucide-react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from '@/components/ui/sheet';
+import { Sheet, SheetContent } from '../ui/sheet';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -171,7 +171,7 @@ const AdminLayout = ({ children, activeTab = 'overview', onTabChange }) => {
   );
 
   return (
-    <div className="admin-layout min-h-screen bg-[hsl(265_50%_4%)] relative">
+    <div className="admin-layout min-h-screen bg-gray-950 relative">
       {/* Animated background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div 
@@ -190,20 +190,20 @@ const AdminLayout = ({ children, activeTab = 'overview', onTabChange }) => {
         />
       </div>
 
-      {/* Mobile hamburger button - always visible on mobile */}
+      {/* Mobile hamburger button - always visible on mobile, positioned below navbar */}
       <button
-        className="lg:hidden fixed top-4 left-4 z-[60] w-11 h-11 rounded-xl bg-[hsl(265_45%_10%)]/95 backdrop-blur-xl border border-purple-700/50 shadow-xl flex items-center justify-center hover:bg-purple-800/80 hover:scale-105 active:scale-95 transition-all duration-200"
+        className="lg:hidden fixed top-20 left-4 z-[60] w-12 h-12 rounded-xl bg-gray-900/95 backdrop-blur-xl border border-gray-700 shadow-xl flex items-center justify-center hover:bg-gray-800 hover:border-purple-500/50 transition-all duration-200 hover:shadow-purple-500/20"
         onClick={() => setSidebarOpen(true)}
         aria-label="Open sidebar"
       >
-        <Menu size={20} className="text-purple-400" />
+        <Menu size={20} className="text-gray-300" />
       </button>
 
-      {/* Mobile Sheet Sidebar */}
+      {/* Mobile Sheet Sidebar - Overlay drawer */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
         <SheetContent 
           side="left" 
-          className="w-[280px] sm:w-[320px] p-0 bg-[hsl(265_45%_8%)] border-r border-purple-800/50"
+          className="w-[280px] sm:w-[320px] p-0 bg-gray-900 border-r border-gray-800"
         >
           <div className="h-full p-4 sm:p-5 overflow-y-auto">
             <SidebarContent />
@@ -213,13 +213,13 @@ const AdminLayout = ({ children, activeTab = 'overview', onTabChange }) => {
 
       <div className="flex relative z-10 min-h-screen">
         {/* Desktop Sidebar - hidden on mobile */}
-        <aside className="hidden lg:flex flex-col w-72 xl:w-80 bg-[hsl(265_45%_8%)]/80 backdrop-blur-2xl border-r border-purple-800/50 min-h-screen p-5 xl:p-6 sticky top-0 h-screen overflow-y-auto">
+        <aside className="hidden lg:flex flex-col w-72 xl:w-80 bg-gray-900/80 backdrop-blur-2xl border-r border-gray-800 min-h-screen p-5 xl:p-6 sticky top-0 h-screen overflow-y-auto">
           <SidebarContent />
         </aside>
 
         {/* Main Content */}
         <main className="flex-1 min-w-0 w-full">
-          <div className="p-4 sm:p-5 lg:p-6 xl:p-8 pt-16 lg:pt-6">
+          <div className="p-4 sm:p-5 lg:p-6 xl:p-8 pt-4 lg:pt-6">
             {children}
           </div>
         </main>

@@ -243,7 +243,7 @@ const AdminDashboard = () => {
       transition={{ duration: 0.3, type: "spring", stiffness: 300 }}
     >
       {/* Glassmorphism card - responsive padding */}
-      <div className="relative h-full rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-xl border border-border/50 shadow-2xl hover:shadow-[0_20px_60px_-15px_hsl(var(--gold-400)/0.2)] hover:border-gold-400/50 transition-all duration-500 overflow-hidden">
+      <div className="relative h-full rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 bg-gray-900/95 backdrop-blur-xl border border-gray-800 shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(250,204,21,0.2)] hover:border-gold-400/50 transition-all duration-500 overflow-hidden">
         
         {/* Animated gradient background */}
         <motion.div 
@@ -271,7 +271,7 @@ const AdminDashboard = () => {
         <div className="relative z-10">
           {/* Header with icon - responsive sizes */}
           <div className="flex items-center justify-between mb-3 sm:mb-4 lg:mb-5">
-            <h3 className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] sm:tracking-[0.2em] font-sans">{title}</h3>
+            <h3 className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] font-sans">{title}</h3>
             <motion.div 
               className="relative"
               whileHover={{ scale: 1.15, rotate: 5 }}
@@ -346,16 +346,16 @@ const AdminDashboard = () => {
   const ActivityItem = ({ activity }) => {
     const Icon = activity.icon;
     return (
-      <div className="group flex items-center gap-4 p-4 rounded-xl hover:bg-gradient-to-r hover:from-gold-400/10 hover:to-transparent cursor-pointer transition-all duration-300 border border-transparent hover:border-gold-400/20">
+      <div className="group flex items-center gap-4 p-4 rounded-xl bg-gray-900/50 hover:bg-gray-800/70 cursor-pointer transition-all duration-300 border border-gray-800 hover:border-gold-400/20">
         <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-400/30 to-gold-500/10 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-gold-400/20 transition-all duration-300">
           <Icon size={22} className="text-gold-500" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-semibold text-foreground group-hover:text-gold-400 transition-colors truncate">{activity.message}</p>
-          <p className="text-sm text-muted-foreground">{activity.time}</p>
+          <p className="font-semibold text-gray-200 group-hover:text-gold-400 transition-colors truncate">{activity.message}</p>
+          <p className="text-sm text-gray-400">{activity.time}</p>
         </div>
-        <div className="w-8 h-8 rounded-full bg-muted/50 flex items-center justify-center group-hover:bg-gold-400/20 transition-all duration-300">
-          <ChevronRight size={16} className="text-muted-foreground group-hover:text-gold-400 group-hover:translate-x-0.5 transition-all" />
+        <div className="w-8 h-8 rounded-full bg-gray-800/50 flex items-center justify-center group-hover:bg-gold-400/20 transition-all duration-300">
+          <ChevronRight size={16} className="text-gray-400 group-hover:text-gold-400 group-hover:translate-x-0.5 transition-all" />
         </div>
       </div>
     );
@@ -363,7 +363,7 @@ const AdminDashboard = () => {
 
   const QuickActionCard = ({ title, description, icon: Icon, onClick, color = 'primary' }) => (
     <div 
-      className="group relative p-4 rounded-xl cursor-pointer bg-gradient-to-br from-card/90 to-card/60 backdrop-blur-sm border border-border/40 hover:border-gold-400/40 hover:shadow-xl hover:shadow-gold-400/10 transition-all duration-500 overflow-hidden"
+      className="group relative p-4 rounded-xl cursor-pointer bg-gray-900/90 backdrop-blur-sm border border-gray-800 hover:border-gold-400/40 hover:shadow-xl hover:shadow-gold-400/10 transition-all duration-500 overflow-hidden"
       onClick={onClick}
     >
       {/* Hover glow effect */}
@@ -374,11 +374,11 @@ const AdminDashboard = () => {
           <Icon size={26} className="text-gold-500 group-hover:text-gold-400 transition-colors" />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-foreground group-hover:text-gold-400 transition-colors font-serif tracking-tight">{title}</h3>
-          <p className="text-sm text-muted-foreground line-clamp-1">{description}</p>
+          <h3 className="font-bold text-gray-200 group-hover:text-gold-400 transition-colors font-serif tracking-tight">{title}</h3>
+          <p className="text-sm text-gray-400 line-clamp-1">{description}</p>
         </div>
-        <div className="w-10 h-10 rounded-full bg-muted/30 flex items-center justify-center group-hover:bg-gold-400/20 group-hover:translate-x-1 transition-all duration-300">
-          <ChevronRight size={20} className="text-muted-foreground group-hover:text-gold-400 transition-colors" />
+        <div className="w-10 h-10 rounded-full bg-gray-800/30 flex items-center justify-center group-hover:bg-gold-400/20 group-hover:translate-x-1 transition-all duration-300">
+          <ChevronRight size={20} className="text-gray-400 group-hover:text-gold-400 transition-colors" />
         </div>
       </div>
     </div>
@@ -400,7 +400,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="admin-dashboard-premium min-h-screen min-h-[100dvh] bg-gradient-to-br from-background via-background to-muted/10 relative overflow-x-hidden">
+    <div className="admin-dashboard-premium min-h-screen min-h-[100dvh] bg-gray-950 relative overflow-x-hidden">
       {/* Premium animated background - hidden on mobile for performance */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none hidden sm:block">
         <div className="absolute top-0 right-0 w-[600px] lg:w-[900px] h-[600px] lg:h-[900px] rounded-full opacity-20 animate-pulse-slow"
@@ -428,7 +428,7 @@ const AdminDashboard = () => {
       
       <div className="flex relative z-10 min-h-screen min-h-[100dvh] w-full">
         {/* Premium Glassmorphism Sidebar - Hidden completely on mobile, only shows as overlay */}
-        <aside className={`admin-sidebar fixed lg:relative top-0 left-0 z-[56] lg:z-auto flex flex-col w-[85vw] max-w-[300px] lg:w-72 xl:w-80 bg-card/98 lg:bg-card/80 backdrop-blur-2xl border-r border-border/30 min-h-screen h-[100dvh] p-4 sm:p-5 lg:p-6 shadow-2xl lg:shadow-none overflow-y-auto overflow-x-hidden transition-transform duration-300 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+        <aside className={`admin-sidebar fixed lg:relative top-0 left-0 z-[56] lg:z-auto flex flex-col w-[85vw] max-w-[300px] lg:w-72 xl:w-80 bg-gray-900/98 lg:bg-gray-900/80 backdrop-blur-2xl border-r border-gray-800 min-h-screen h-[100dvh] p-4 sm:p-5 lg:p-6 shadow-2xl lg:shadow-none overflow-y-auto overflow-x-hidden transition-transform duration-300 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
           {/* Sidebar gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-gold-400/5 via-transparent to-ethiopian-green/5 pointer-events-none" />
           
@@ -552,7 +552,7 @@ const AdminDashboard = () => {
           </div>
         </aside>
         {/* Main Content - Takes full width on mobile, no left margin */}
-        <div className="dashboard-main flex-1 min-w-0 w-full lg:w-auto p-4 sm:p-5 lg:p-6 xl:p-8 pt-20 lg:pt-6 ml-0 lg:ml-0">
+        <div className="dashboard-main flex-1 min-w-0 w-full lg:w-auto p-4 sm:p-5 lg:p-6 xl:p-8 pt-4 lg:pt-6 ml-0 lg:ml-0">
         {activeTab === 'overview' && (
           <>
             {/* Premium Header - Mobile Responsive - PERFECT DESIGN */}
@@ -576,7 +576,7 @@ const AdminDashboard = () => {
                 }}
               />
               
-              <div className="relative bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-2xl border border-border/60 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-2xl overflow-hidden">
+              <div className="relative bg-gray-900/95 backdrop-blur-2xl border border-gray-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-2xl overflow-hidden">
                 {/* Top accent line */}
                 <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
                 
@@ -596,19 +596,19 @@ const AdminDashboard = () => {
                         <div className="absolute inset-0 rounded-2xl bg-gold-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                       </motion.div>
                       <div>
-                        <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold font-serif bg-gradient-to-r from-foreground via-gold-400 to-foreground bg-clip-text text-transparent leading-tight">
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold font-serif bg-gradient-to-r from-gray-100 via-gold-400 to-gray-100 bg-clip-text text-transparent leading-tight">
                           Dashboard Overview
                         </h1>
                         <div className="h-1 w-16 sm:w-20 mx-auto sm:mx-0 mt-2 rounded-full bg-gradient-to-r from-gold-400 via-ethiopian-green to-gold-400" />
                       </div>
                     </div>
-                    <p className="text-muted-foreground text-sm sm:text-base lg:text-lg font-medium max-w-2xl">
+                    <p className="text-gray-400 text-sm sm:text-base lg:text-lg font-medium max-w-2xl">
                       Monitor your platform's performance and manage operations with real-time insights
                     </p>
                   </div>
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                     <motion.button 
-                      className="group relative px-5 sm:px-6 py-3 sm:py-3.5 bg-card/90 backdrop-blur-md border-2 border-border/60 rounded-xl font-semibold text-sm sm:text-base text-foreground hover:bg-card hover:border-gold-400/50 hover:shadow-xl hover:shadow-gold-400/20 transition-all duration-300 flex items-center justify-center gap-2.5 overflow-hidden"
+                      className="group relative px-5 sm:px-6 py-3 sm:py-3.5 bg-gray-800/90 backdrop-blur-md border-2 border-gray-700 rounded-xl font-semibold text-sm sm:text-base text-gray-200 hover:bg-gray-700 hover:border-gold-400/50 hover:shadow-xl hover:shadow-gold-400/20 transition-all duration-300 flex items-center justify-center gap-2.5 overflow-hidden"
                       onClick={fetchDashboardData}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -728,7 +728,7 @@ const AdminDashboard = () => {
 
             {/* Message Management Section - Enhanced */}
             <motion.div 
-              className="relative bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-xl border border-border/60 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-2xl mb-8 sm:mb-10 overflow-hidden"
+              className="relative bg-gray-900/95 backdrop-blur-xl border border-gray-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-2xl mb-8 sm:mb-10 overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
@@ -740,10 +740,10 @@ const AdminDashboard = () => {
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center">
                       <MessageSquare className="w-5 h-5 text-gold-400" />
                     </div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-foreground">Message Management</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-200">Message Management</h3>
                   </div>
                   <button 
-                    className="px-4 sm:px-5 py-2.5 sm:py-3 bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl font-semibold text-sm sm:text-base text-foreground hover:bg-card hover:border-gold-400/50 hover:shadow-lg hover:shadow-gold-400/10 transition-all duration-300"
+                    className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-xl font-semibold text-sm sm:text-base text-gray-200 hover:bg-gray-700 hover:border-gold-400/50 hover:shadow-lg hover:shadow-gold-400/10 transition-all duration-300"
                     onClick={() => navigate('/admin/messages')}
                   >
                     View All Messages
@@ -764,7 +764,7 @@ const AdminDashboard = () => {
               transition={{ duration: 0.5, delay: 0.6 }}
             >
               {/* Recent Activity - Enhanced */}
-              <div className="relative bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-xl border border-border/60 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-2xl overflow-hidden">
+              <div className="relative bg-gray-900/95 backdrop-blur-xl border border-gray-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-2xl overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-6">
@@ -772,9 +772,9 @@ const AdminDashboard = () => {
                       <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center">
                         <Activity className="w-5 h-5 text-gold-400" />
                       </div>
-                      <h3 className="text-xl sm:text-2xl font-bold text-foreground">Recent Activity</h3>
+                      <h3 className="text-xl sm:text-2xl font-bold text-gray-200">Recent Activity</h3>
                     </div>
-                    <button className="px-4 py-2.5 bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl font-semibold text-sm text-foreground hover:bg-card hover:border-gold-400/50 hover:shadow-lg transition-all duration-300">
+                    <button className="px-4 py-2.5 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-xl font-semibold text-sm text-gray-200 hover:bg-gray-700 hover:border-gold-400/50 hover:shadow-lg transition-all duration-300">
                       View All
                     </button>
                   </div>
@@ -787,14 +787,14 @@ const AdminDashboard = () => {
               </div>
 
               {/* Quick Actions - Enhanced */}
-              <div className="relative bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-xl border border-border/60 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-2xl overflow-hidden">
+              <div className="relative bg-gray-900/95 backdrop-blur-xl border border-gray-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-2xl overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center">
                       <Zap className="w-5 h-5 text-gold-400" />
                     </div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-foreground">Quick Actions</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-200">Quick Actions</h3>
                   </div>
                   <div className="space-y-3 sm:space-y-4">
                     <QuickActionCard
@@ -852,18 +852,18 @@ const AdminDashboard = () => {
               transition={{ duration: 0.5, delay: 0.7 }}
             >
               {/* Recent Users - Enhanced */}
-              <div className="relative bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-xl border border-border/60 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
+              <div className="relative bg-gray-900/95 backdrop-blur-xl border border-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
                 <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
-                <div className="p-5 sm:p-6 border-b border-border/50 bg-muted/20">
+                <div className="p-5 sm:p-6 border-b border-gray-800 bg-gray-800/20">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center">
                         <Users className="w-5 h-5 text-gold-400" />
                       </div>
-                      <h3 className="text-lg sm:text-xl font-bold text-foreground">Recent Users</h3>
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-200">Recent Users</h3>
                     </div>
                     <button 
-                      className="px-4 py-2 bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl font-semibold text-xs sm:text-sm text-foreground hover:bg-card hover:border-gold-400/50 hover:shadow-lg transition-all duration-300"
+                      className="px-4 py-2 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-xl font-semibold text-xs sm:text-sm text-gray-200 hover:bg-gray-700 hover:border-gold-400/50 hover:shadow-lg transition-all duration-300"
                       onClick={() => navigate('/admin/users')}
                     >
                       View All
@@ -872,17 +872,17 @@ const AdminDashboard = () => {
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-muted/20">
+                    <thead className="bg-gray-800/20">
                       <tr>
-                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">User</th>
-                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Role</th>
-                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Status</th>
-                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Joined</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-gray-400">User</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-gray-400">Role</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-gray-400">Status</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-gray-400">Joined</th>
                       </tr>
                     </thead>
                     <tbody>
                       {recentUsers.map((user) => (
-                        <tr key={user._id} className="border-t border-border/30 hover:bg-muted/20 transition-colors">
+                        <tr key={user._id} className="border-t border-gray-800 hover:bg-gray-800/20 transition-colors">
                           <td className="p-3 sm:p-4">
                             <div className="flex items-center gap-2 sm:gap-3">
                               <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/20 rounded-full flex items-center justify-center">
@@ -891,20 +891,20 @@ const AdminDashboard = () => {
                                 </span>
                               </div>
                               <div>
-                                <p className="font-medium text-foreground text-xs sm:text-sm">{user.name}</p>
-                                <p className="text-[10px] sm:text-xs text-muted-foreground">{user.email}</p>
+                                <p className="font-medium text-gray-200 text-xs sm:text-sm">{user.name}</p>
+                                <p className="text-[10px] sm:text-xs text-gray-400">{user.email}</p>
                               </div>
                             </div>
                           </td>
                           <td className="p-3 sm:p-4">
-                            <span className="inline-flex px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full bg-accent/20 text-accent">{user.role}</span>
+                            <span className="inline-flex px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full bg-purple-500/20 text-purple-400">{user.role}</span>
                           </td>
                           <td className="p-3 sm:p-4">
-                            <span className={`inline-flex px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full ${user.active ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'}`}>
+                            <span className={`inline-flex px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full ${user.active ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
                               {user.active ? 'Active' : 'Inactive'}
                             </span>
                           </td>
-                          <td className="p-3 sm:p-4 text-[10px] sm:text-xs text-muted-foreground">
+                          <td className="p-3 sm:p-4 text-[10px] sm:text-xs text-gray-400">
                             {new Date(user.createdAt).toLocaleDateString()}
                           </td>
                         </tr>
@@ -915,18 +915,18 @@ const AdminDashboard = () => {
               </div>
 
               {/* Recent Properties - Enhanced */}
-              <div className="relative bg-gradient-to-br from-card/95 via-card/85 to-card/75 backdrop-blur-xl border border-border/60 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
+              <div className="relative bg-gray-900/95 backdrop-blur-xl border border-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
                 <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
-                <div className="p-5 sm:p-6 border-b border-border/50 bg-muted/20">
+                <div className="p-5 sm:p-6 border-b border-gray-800 bg-gray-800/20">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center">
                         <Building className="w-5 h-5 text-gold-400" />
                       </div>
-                      <h3 className="text-lg sm:text-xl font-bold text-foreground">Recent Properties</h3>
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-200">Recent Properties</h3>
                     </div>
                     <button 
-                      className="px-4 py-2 bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl font-semibold text-xs sm:text-sm text-foreground hover:bg-card hover:border-gold-400/50 hover:shadow-lg transition-all duration-300"
+                      className="px-4 py-2 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-xl font-semibold text-xs sm:text-sm text-gray-200 hover:bg-gray-700 hover:border-gold-400/50 hover:shadow-lg transition-all duration-300"
                       onClick={() => navigate('/admin/properties')}
                     >
                       View All
@@ -935,20 +935,20 @@ const AdminDashboard = () => {
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-muted/20">
+                    <thead className="bg-gray-800/20">
                       <tr>
-                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Property</th>
-                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Type</th>
-                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Price</th>
-                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Status</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-gray-400">Property</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-gray-400">Type</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-gray-400">Price</th>
+                        <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-semibold text-gray-400">Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {recentProperties.map((property) => (
-                        <tr key={property._id} className="border-t border-border/30 hover:bg-muted/20 transition-colors">
+                        <tr key={property._id} className="border-t border-gray-800 hover:bg-gray-800/20 transition-colors">
                           <td className="p-3 sm:p-4">
                             <div className="flex items-center gap-2 sm:gap-3">
-                              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-muted rounded-lg overflow-hidden flex-shrink-0">
+                              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 rounded-lg overflow-hidden flex-shrink-0">
                                 {property.images?.[0] ? (
                                   <img 
                                     src={property.images[0]} 
@@ -957,26 +957,26 @@ const AdminDashboard = () => {
                                   />
                                 ) : (
                                   <div className="w-full h-full flex items-center justify-center">
-                                    <Home size={14} className="text-muted-foreground" />
+                                    <Home size={14} className="text-gray-400" />
                                   </div>
                                 )}
                               </div>
                               <div className="min-w-0">
-                                <p className="font-medium text-foreground text-xs sm:text-sm truncate">{property.title}</p>
-                                <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{property.location}</p>
+                                <p className="font-medium text-gray-200 text-xs sm:text-sm truncate">{property.title}</p>
+                                <p className="text-[10px] sm:text-xs text-gray-400 truncate">{property.location}</p>
                               </div>
                             </div>
                           </td>
                           <td className="p-3 sm:p-4">
-                            <span className="inline-flex px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full bg-accent/20 text-accent">{property.type}</span>
+                            <span className="inline-flex px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full bg-purple-500/20 text-purple-400">{property.type}</span>
                           </td>
-                          <td className="p-3 sm:p-4 font-medium text-foreground text-xs sm:text-sm">
+                          <td className="p-3 sm:p-4 font-medium text-gray-200 text-xs sm:text-sm">
                             {formatCurrency(property.price)}
                           </td>
                           <td className="p-3 sm:p-4">
                             <span className={`inline-flex px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full ${
-                              property.status === 'active' ? 'bg-green-500/20 text-green-500' :
-                              property.status === 'pending' ? 'bg-amber-500/20 text-amber-500' : 'bg-red-500/20 text-red-500'
+                              property.status === 'active' ? 'bg-green-500/20 text-green-400' :
+                              property.status === 'pending' ? 'bg-amber-500/20 text-amber-400' : 'bg-red-500/20 text-red-400'
                             }`}>
                               {property.status}
                             </span>
