@@ -25,7 +25,8 @@ import {
   Settings,
   User,
   ShoppingBag,
-  Download
+  Download,
+  Menu
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -42,6 +43,7 @@ import { visitService } from '../services/visitService';
 import { sellingService } from '../services/sellingService';
 import UserContactForm from '../components/UserContactForm';
 import FAQViewer from '../components/FAQViewer';
+import { Sheet, SheetContent, SheetTrigger } from '../components/ui/sheet';
 
 const BuyerDashboard = () => {
   const { user } = useAuth();
@@ -50,6 +52,7 @@ const BuyerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [viewMode, setViewMode] = useState('grid');
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const [stats, setStats] = useState({
     favoriteProperties: 0,
@@ -581,13 +584,62 @@ const BuyerDashboard = () => {
       </div>
       
       <div className="flex relative z-10">
-        {/* Mobile Sidebar Toggle */}
-        <button
-          onClick={() => setActiveTab(activeTab)}
-          className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-gray-900/95 backdrop-blur-xl border border-gray-700 shadow-xl flex items-center justify-center hover:bg-gray-800 transition-all"
-        >
-          <Home className="w-5 h-5 text-gray-300" />
-        </button>
+        {/* Mobile Drawer */}
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <SheetTrigger asChild>
+            <button className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-gray-900/95 backdrop-blur-xl border border-gray-700 shadow-xl flex items-center justify-center hover:bg-gray-800 transition-all">
+              <Menu className="w-5 h-5 text-gray-300" />
+            </button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-72 bg-gray-900 border-gray-800 p-0">
+            <div className="p-6 border-b border-gray-800">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                  <User className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-white">Buyer</h2>
+                  <p className="text-xs text-gray-400">Dashboard</p>
+                </div>
+              </div>
+            </div>
+            <nav className="p-4 space-y-1">
+              {[
+                { id: 'overview', icon: Home, label: 'Overview' },
+                { id: 'favorites', icon: Heart, label: 'Favorites' },
+                { id: 'visits', icon: Calendar, label: 'Scheduled Visits' },
+                { id: 'purchased', icon: ShoppingBag, label: 'Purchased' },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => { setActiveTab(item.id); setMobileOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                    activeTab === item.id
+                      ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30'
+                      : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+                  }`}
+                >
+                  <item.icon size={18} />
+                  {item.label}
+                </button>
+              ))}
+              <div className="pt-4 border-t border-gray-800 mt-4 space-y-1">
+                <button onClick={() => { navigate('/messages'); setMobileOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-all">
+                  <MessageSquare size={18} />
+                  Messages
+                </button>
+                <button onClick={() => { navigate('/profile'); setMobileOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-all">
+                  <User size={18} />
+                  Profile
+                </button>
+                <button onClick={() => { setActiveTab('contact'); setMobileOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-all">
+                  <Mail size={18} />
+                  Contact Support
+                </button>
+              </div>
+            </nav>
+          </SheetContent>
+        </Sheet>
 
         {/* Dark Glassmorphism Sidebar */}
         <div className="hidden lg:block w-72 bg-gray-900/95 backdrop-blur-2xl border-r border-gray-800 min-h-screen sticky top-0 shadow-2xl">

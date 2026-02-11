@@ -46,6 +46,7 @@ import {
   MessageCircle,
   PhoneCall,
   LogOut,
+  Menu as MenuIcon,
   Bath,
   Maximize,
   Edit
@@ -65,6 +66,7 @@ import { propertyService } from '../services/propertyService';
 import { userService } from '../services/userService';
 import { SERVER_BASE_URL } from '../config/api';
 import '../styles/employee-dashboard.css';
+import { Sheet, SheetContent, SheetTrigger } from '../components/ui/sheet';
 
 const EmployeeDashboard = () => {
   const { user, logout } = useAuth();
@@ -86,6 +88,7 @@ const EmployeeDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [stats, setStats] = useState({
     pendingVerifications: 0,
     totalProperties: 0,
@@ -754,15 +757,17 @@ const EmployeeDashboard = () => {
   };
 
   const StatCard = ({ title, value, change, icon: Icon, color = 'primary', onClick }) => (
-    <div className="stat-card cursor-pointer" onClick={onClick}>
-      <div className="stat-header">
-        <h3 className="stat-title">{title}</h3>
-        <Icon className={`stat-icon text-${color}`} />
+    <div className="bg-gray-900/80 border border-gray-800 rounded-2xl p-6 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/5 transition-all duration-300 cursor-pointer hover:-translate-y-1" onClick={onClick}>
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">{title}</h3>
+        <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
+          <Icon className="w-5 h-5 text-purple-400" />
+        </div>
       </div>
-      <p className="stat-value">{value}</p>
+      <p className="text-3xl font-bold text-white mb-1">{value}</p>
       {change !== undefined && (
-        <div className={`stat-change ${change >= 0 ? 'positive' : 'negative'}`}>
-          {change >= 0 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
+        <div className={`flex items-center gap-1 text-sm ${change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+          {change >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
           <span>{Math.abs(change)}% from last month</span>
         </div>
       )}
@@ -772,134 +777,176 @@ const EmployeeDashboard = () => {
   const ActivityItem = ({ activity }) => {
     const Icon = activity.icon;
     return (
-      <div className="flex items-center gap-4 p-4 hover:bg-neutral-50 rounded-lg transition">
-        <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-          <Icon size={20} className="text-primary-600" />
+      <div className="flex items-center gap-4 p-4 hover:bg-gray-800/50 rounded-xl transition">
+        <div className="w-10 h-10 bg-purple-500/10 rounded-full flex items-center justify-center">
+          <Icon size={20} className="text-purple-400" />
         </div>
         <div className="flex-1">
-          <p className="font-medium text-neutral-900">{activity.message}</p>
-          <p className="text-sm text-neutral-500">{activity.time}</p>
+          <p className="font-medium text-gray-200">{activity.message}</p>
+          <p className="text-sm text-gray-500">{activity.time}</p>
         </div>
-        <ChevronRight size={16} className="text-neutral-400" />
+        <ChevronRight size={16} className="text-gray-600" />
       </div>
     );
   };
 
   const QuickActionCard = ({ title, description, icon: Icon, onClick, color = 'primary' }) => (
     <div 
-      className="quick-action-card cursor-pointer"
+      className="flex items-center gap-4 p-4 bg-gray-800/50 border border-gray-700/50 rounded-xl cursor-pointer hover:bg-gray-800 hover:border-purple-500/30 transition-all"
       onClick={onClick}
     >
-      <div className="quick-action-icon">
-        <Icon size={24} className={`text-${color}`} />
+      <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center">
+        <Icon size={24} className="text-purple-400" />
       </div>
-      <div className="quick-action-content">
-        <h4 className="quick-action-title">{title}</h4>
-        <p className="quick-action-description">{description}</p>
+      <div className="flex-1">
+        <h4 className="font-semibold text-gray-200 text-sm">{title}</h4>
+        <p className="text-gray-500 text-xs mt-0.5">{description}</p>
       </div>
-      <ArrowUpRight size={16} className="text-neutral-400" />
+      <ArrowUpRight size={16} className="text-gray-600" />
     </div>
   );
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading employee dashboard...</p>
+          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading employee dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-      <div className="flex">
-        {/* Sidebar */}
-        <div className={`bg-card border-r shadow-lg min-h-screen p-6 transition-all ${sidebarCollapsed ? 'w-20' : 'w-64'}`}>
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ethiopian-green to-ethiopian-green/80 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-950 relative overflow-hidden">
+      {/* Dark mode background effects */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-20"
+             style={{ background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%)', filter: 'blur(100px)' }} />
+      </div>
+
+      {/* Mobile Drawer */}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetTrigger asChild>
+          <button className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-gray-900/95 backdrop-blur-xl border border-gray-700 shadow-xl flex items-center justify-center hover:bg-gray-800 transition-all">
+            <MenuIcon className="w-5 h-5 text-gray-300" />
+          </button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-72 bg-gray-900 border-gray-800 p-0">
+          <div className="p-6 border-b border-gray-800">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
                 <Building size={24} className="text-white" />
               </div>
-              {!sidebarCollapsed && <h2 className="text-2xl font-black bg-gradient-to-r from-ethiopian-green to-ethiopian-green/80 bg-clip-text text-transparent">Employee Portal</h2>}
+              <div>
+                <h2 className="text-lg font-bold text-white">Employee Portal</h2>
+                <p className="text-xs text-gray-400">{user?.name || 'Employee'}</p>
+              </div>
+            </div>
+          </div>
+          <nav className="p-4 space-y-1">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => { setActiveTab(item.id); setMobileOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                    activeTab === item.id
+                      ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30'
+                      : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+                  }`}
+                >
+                  <Icon size={18} />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+        </SheetContent>
+      </Sheet>
+
+      <div className="flex">
+        {/* Desktop Sidebar */}
+        <div className={`hidden lg:flex flex-col bg-gray-900/95 backdrop-blur-xl border-r border-gray-800 min-h-screen sticky top-0 transition-all ${sidebarCollapsed ? 'w-20' : 'w-64'} p-6`}>
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                <Building size={24} className="text-white" />
+              </div>
+              {!sidebarCollapsed && <h2 className="text-xl font-bold text-white">Employee Portal</h2>}
             </div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-ethiopian-yellow/20 flex items-center justify-center">
-                <UserPlus size={20} className="text-ethiopian-yellow" />
+              <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+                <UserPlus size={20} className="text-purple-400" />
               </div>
               {!sidebarCollapsed && (
                 <div>
-                  <p className="font-bold text-foreground">{user?.name || 'Employee'}</p>
-                  <p className="text-xs text-muted-foreground">Employee</p>
+                  <p className="font-bold text-white">{user?.name || 'Employee'}</p>
+                  <p className="text-xs text-gray-400">Employee</p>
                 </div>
               )}
             </div>
             <button 
-              className="w-full p-2 rounded-lg hover:bg-muted transition-colors"
+              className="w-full p-2 rounded-lg hover:bg-gray-800 transition-colors"
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             >
-              <ChevronRight size={20} className={`text-muted-foreground transition-transform ${sidebarCollapsed ? '' : 'rotate-180'}`} />
+              <ChevronRight size={20} className={`text-gray-400 transition-transform ${sidebarCollapsed ? '' : 'rotate-180'}`} />
             </button>
           </div>
 
-        <nav className="nav-menu">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div key={item.id} className="nav-item">
-                <a 
-                  href={`#${item.id}`}
-                  className={`nav-link ${activeTab === item.id ? 'active' : ''}`}
-                  onClick={(e) => { 
-                    e.preventDefault(); 
-                    setActiveTab(item.id); 
-                  }}
-                  title={sidebarCollapsed ? item.label : ''}
-                >
-                  <Icon size={20} />
-                  {!sidebarCollapsed && <span>{item.label}</span>}
-                </a>
-                {!sidebarCollapsed && activeTab === item.id && (
-                  <div className="nav-description">
-                    {item.description}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </nav>
+          <nav className="space-y-1 flex-1">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.id}>
+                  <button 
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                      activeTab === item.id 
+                        ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30'
+                        : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+                    }`}
+                    onClick={() => setActiveTab(item.id)}
+                    title={sidebarCollapsed ? item.label : ''}
+                  >
+                    <Icon size={18} />
+                    {!sidebarCollapsed && <span>{item.label}</span>}
+                  </button>
+                </div>
+              );
+            })}
+          </nav>
 
-        <div className="sidebar-footer">
-          <button 
-            className="btn btn-outline w-full mb-2" 
-            onClick={() => navigate('/properties/new')}
-          >
-            <Plus size={16} />
-            {!sidebarCollapsed && 'Create Property'}
-          </button>
-          <button 
-            className="btn btn-secondary w-full" 
-            onClick={logout}
-          >
-            <LogOut size={16} />
-            {!sidebarCollapsed && 'Logout'}
-          </button>
+          <div className="mt-4 pt-4 border-t border-gray-800 space-y-2">
+            <button 
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-all" 
+              onClick={() => navigate('/properties/new')}
+            >
+              <Plus size={16} />
+              {!sidebarCollapsed && 'Create Property'}
+            </button>
+            <button 
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-all" 
+              onClick={logout}
+            >
+              <LogOut size={16} />
+              {!sidebarCollapsed && 'Logout'}
+            </button>
+          </div>
         </div>
-      </div>
 
       {/* Main Content */}
-      <div className="dashboard-main">
+      <div className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8" style={{ marginLeft: 0 }}>
         {activeTab === 'overview' && (
           <>
             {/* Header */}
-            <div className="dashboard-header">
+            <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 sm:p-6 rounded-2xl bg-gray-900/80 border border-gray-800">
               <div>
-                <h1 className="dashboard-title">Employee Dashboard</h1>
-                <p className="text-neutral-600">Manage property verifications, client relationships, and daily tasks</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-white">Employee Dashboard</h1>
+                <p className="text-gray-400 mt-1">Manage property verifications, client relationships, and daily tasks</p>
               </div>
               <div className="flex items-center gap-4">
-                <button className="btn btn-secondary" onClick={fetchDashboardData}>
+                <button className="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white rounded-xl flex items-center gap-2 transition-all" onClick={fetchDashboardData}>
                   <RefreshCw size={16} />
                   Refresh
                 </button>
@@ -907,7 +954,7 @@ const EmployeeDashboard = () => {
             </div>
 
             {/* Stats Grid */}
-            <div className="stats-grid">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
               <StatCard
                 title="Pending Verifications"
                 value={formatNumber(verifications.filter(v => v.status === 'pending').length)}
@@ -956,18 +1003,16 @@ const EmployeeDashboard = () => {
             </div>
 
             {/* Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Recent Activity */}
-              <div className="card">
-                <div className="card-header">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-neutral-900">Recent Activity</h3>
-                    <button className="btn btn-sm btn-secondary">
-                      View All
-                    </button>
-                  </div>
+              <div className="bg-gray-900/80 border border-gray-800 rounded-2xl overflow-hidden">
+                <div className="p-5 border-b border-gray-800 flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
+                  <button className="px-3 py-1.5 text-xs bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 rounded-lg transition-all">
+                    View All
+                  </button>
                 </div>
-                <div className="card-body p-0">
+                <div className="p-2">
                   {recentActivities.map((activity) => (
                     <ActivityItem key={activity.id} activity={activity} />
                   ))}
@@ -975,47 +1020,41 @@ const EmployeeDashboard = () => {
               </div>
 
               {/* Quick Actions */}
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="text-lg font-semibold text-neutral-900">Quick Actions</h3>
+              <div className="bg-gray-900/80 border border-gray-800 rounded-2xl overflow-hidden">
+                <div className="p-5 border-b border-gray-800">
+                  <h3 className="text-lg font-semibold text-white">Quick Actions</h3>
                 </div>
-                <div className="card-body">
-                  <div className="space-y-4">
+                <div className="p-5">
+                  <div className="space-y-3">
                     <QuickActionCard
                       title="Property Verifications"
                       description="Review and approve pending properties"
                       icon={FileCheck}
                       onClick={() => setActiveTab('verifications')}
-                      color="warning"
                     />
-                    {/** Quick action for inspections commented out **/}
                     <QuickActionCard
                       title="Client Management"
                       description="Manage client relationships and information"
                       icon={Users}
                       onClick={() => setActiveTab('clients')}
-                      color="primary"
                     />
                     <QuickActionCard
                       title="Message Center"
                       description="Handle user inquiries and messages"
                       icon={MessageCircle}
                       onClick={() => setActiveTab('messages')}
-                      color="secondary"
                     />
                     <QuickActionCard
                       title="Contact Forms"
                       description="Process contact form submissions"
                       icon={Mail}
                       onClick={() => setActiveTab('contacts')}
-                      color="accent"
                     />
                     <QuickActionCard
                       title="Generate Reports"
                       description="Create and submit activity reports"
                       icon={FileText}
                       onClick={() => setActiveTab('reports')}
-                      color="success"
                     />
                   </div>
                 </div>

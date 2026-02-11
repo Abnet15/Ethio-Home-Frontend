@@ -39,7 +39,8 @@ import {
   Heart,
   Bookmark,
   User,
-  X
+  X,
+  Menu
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -56,6 +57,7 @@ import { propertyService } from '../services/propertyService';
 import { sellingService } from '../services/sellingService';
 import { userService } from '../services/userService';
 import { SERVER_BASE_URL } from '../config/api';
+import { Sheet, SheetContent, SheetTrigger } from '../components/ui/sheet';
 
 const SellerDashboard = () => {
   const { user } = useAuth();
@@ -64,6 +66,7 @@ const SellerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [viewMode, setViewMode] = useState('grid');
+  const [mobileOpen, setMobileOpen] = useState(false);
   
   const [stats, setStats] = useState({
     totalProperties: 0,
@@ -483,39 +486,45 @@ const SellerDashboard = () => {
     };
 
     return (
-      <div className="card">
-        <div className="card-body">
+      <div className="bg-gray-900/80 border border-gray-800 rounded-2xl overflow-hidden hover:border-purple-500/30 transition-all">
+        <div className="p-5">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h3 className="font-semibold text-neutral-900">{interest.propertyId?.title}</h3>
-              <div className="flex items-center gap-2 text-neutral-600 mt-1">
+              <h3 className="font-semibold text-white">{interest.propertyId?.title}</h3>
+              <div className="flex items-center gap-2 text-gray-400 mt-1">
                 <Users size={14} />
                 <span className="text-sm">{interest.buyerId?.name || 'Anonymous Buyer'}</span>
               </div>
             </div>
-            <span className={`badge ${getStatusBadgeClass(interest.status)}`}>
+            <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+              interest.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
+              interest.status === 'contacted' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+              interest.status === 'visited' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
+              interest.status === 'rejected' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
+              'bg-purple-500/20 text-purple-400 border border-purple-500/30'
+            }`}>
               {getStatusDisplayName(interest.status)}
             </span>
           </div>
           
           <div className="space-y-2 mb-3">
-            <div className="flex items-center gap-2 text-neutral-600">
+            <div className="flex items-center gap-2 text-gray-400">
               <Calendar size={16} />
               <span className="text-sm">
                 {interest.visitDate ? new Date(interest.visitDate).toLocaleDateString() : 'No date set'}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-neutral-600">
+            <div className="flex items-center gap-2 text-gray-400">
               <Mail size={16} />
               <span className="text-sm">{interest.contactInfo?.email}</span>
             </div>
-            <div className="flex items-center gap-2 text-neutral-600">
+            <div className="flex items-center gap-2 text-gray-400">
               <MessageSquare size={16} />
               <span className="text-sm">{interest.contactInfo?.phone}</span>
             </div>
           </div>
           
-          <p className="text-sm text-neutral-600 mb-4">
+          <p className="text-sm text-gray-500 mb-4">
             {interest.message || 'No message provided'}
           </p>
           
@@ -614,22 +623,22 @@ const SellerDashboard = () => {
           
           {/* Schedule Visit Modal */}
           {showScheduleModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg p-6 w-96">
-                <h3 className="text-lg font-semibold mb-4">Schedule Visit</h3>
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+              <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 w-96 shadow-2xl">
+                <h3 className="text-lg font-semibold mb-4 text-white">Schedule Visit</h3>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2">Visit Date & Time</label>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Visit Date & Time</label>
                   <input
                     type="datetime-local"
                     value={visitDate}
                     onChange={(e) => setVisitDate(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none"
                     min={new Date().toISOString().slice(0, 16)}
                   />
                 </div>
                 <div className="flex gap-2 justify-end">
                   <button
-                    className="btn btn-secondary"
+                    className="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 rounded-xl transition-all"
                     onClick={() => {
                       setShowScheduleModal(false);
                       setVisitDate('');
@@ -638,7 +647,7 @@ const SellerDashboard = () => {
                     Cancel
                   </button>
                   <button
-                    className="btn btn-primary"
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl transition-all"
                     onClick={() => handleStatusUpdate('schedule')}
                     disabled={!visitDate || isProcessing}
                   >
@@ -714,39 +723,45 @@ const SellerDashboard = () => {
     };
 
     return (
-      <div className="card">
-        <div className="card-body">
+      <div className="bg-gray-900/80 border border-gray-800 rounded-2xl overflow-hidden hover:border-purple-500/30 transition-all">
+        <div className="p-5">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h3 className="font-semibold text-neutral-900">{appointment.propertyId?.title || appointment.subject || 'Unknown Property'}</h3>
-              <div className="flex items-center gap-2 text-neutral-600 mt-1">
+              <h3 className="font-semibold text-white">{appointment.propertyId?.title || appointment.subject || 'Unknown Property'}</h3>
+              <div className="flex items-center gap-2 text-gray-400 mt-1">
                 <Users size={14} />
                 <span className="text-sm">{appointment.contactInfo?.name || appointment.sender?.name || 'Anonymous Client'}</span>
               </div>
             </div>
-            <span className={`badge ${getStatusBadgeClass(appointment.status)}`}>
+            <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+              appointment.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
+              appointment.status === 'contacted' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+              appointment.status === 'visited' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
+              appointment.status === 'rejected' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
+              'bg-purple-500/20 text-purple-400 border border-purple-500/30'
+            }`}>
               {getStatusDisplayName(appointment.status)}
             </span>
           </div>
           
           <div className="space-y-2 mb-3">
-            <div className="flex items-center gap-2 text-neutral-600">
+            <div className="flex items-center gap-2 text-gray-400">
               <Calendar size={16} />
               <span className="text-sm">
                 {appointment.visitDate ? new Date(appointment.visitDate).toLocaleDateString() : 'No date set'}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-neutral-600">
+            <div className="flex items-center gap-2 text-gray-400">
               <Mail size={16} />
               <span className="text-sm">{appointment.contactInfo?.email || appointment.sender?.email}</span>
             </div>
-            <div className="flex items-center gap-2 text-neutral-600">
+            <div className="flex items-center gap-2 text-gray-400">
               <Phone size={16} />
               <span className="text-sm">{appointment.contactInfo?.phone || appointment.sender?.phone}</span>
             </div>
           </div>
           
-          <p className="text-sm text-neutral-600 mb-4">
+          <p className="text-sm text-gray-500 mb-4">
             {appointment.message || appointment.content || 'No message provided'}
           </p>
           
@@ -836,22 +851,22 @@ const SellerDashboard = () => {
           
           {/* Schedule Visit Modal */}
           {showScheduleModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg p-6 w-96">
-                <h3 className="text-lg font-semibold mb-4">Schedule Visit</h3>
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+              <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 w-96 shadow-2xl">
+                <h3 className="text-lg font-semibold mb-4 text-white">Schedule Visit</h3>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2">Visit Date & Time</label>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Visit Date & Time</label>
                   <input
                     type="datetime-local"
                     value={visitDate}
                     onChange={(e) => setVisitDate(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none"
                     min={new Date().toISOString().slice(0, 16)}
                   />
                 </div>
                 <div className="flex gap-2 justify-end">
                   <button
-                    className="btn btn-secondary"
+                    className="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 rounded-xl transition-all"
                     onClick={() => {
                       setShowScheduleModal(false);
                       setVisitDate('');
@@ -860,7 +875,7 @@ const SellerDashboard = () => {
                     Cancel
                   </button>
                   <button
-                    className="btn btn-primary"
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl transition-all"
                     onClick={() => handleStatusUpdate('schedule')}
                     disabled={!visitDate || isProcessing}
                   >
@@ -877,42 +892,10 @@ const SellerDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-        <div className="flex">
-          <div className="w-64 bg-card border-r shadow-lg min-h-screen sticky top-0">
-            <div className="p-6 border-b">
-              <h2 className="text-2xl font-black text-foreground mb-1">Seller Dashboard</h2>
-              <p className="text-sm text-muted-foreground">Welcome back, {user?.name}</p>
-            </div>
-            <nav className="p-4 space-y-2">
-              {['overview', 'properties', 'interests', 'sales', 'appointments', 'clients', 'leads'].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${
-                    activeTab === tab
-                      ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg'
-                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                  }`}
-                >
-                  {tab === 'overview' && <Home size={20} />}
-                  {tab === 'properties' && <Building size={20} />}
-                  {tab === 'interests' && <Heart size={20} />}
-                  {tab === 'sales' && <DollarSign size={20} />}
-                  {tab === 'appointments' && <Calendar size={20} />}
-                  {tab === 'clients' && <Users size={20} />}
-                  {tab === 'leads' && <Target size={20} />}
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </button>
-              ))}
-            </nav>
-          </div>
-          <div className="flex-1 p-8">
-            <div className="flex items-center justify-center h-full">
-              <div className="loading-spinner"></div>
-              <span className="ml-3 text-neutral-600">Loading dashboard...</span>
-            </div>
-          </div>
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading seller dashboard...</p>
         </div>
       </div>
     );
@@ -933,55 +916,68 @@ const SellerDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-warm-dark">
-      {/* WOW UPGRADE: Glassmorphism sidebar */}
+    <div className="min-h-screen bg-gray-950 relative overflow-hidden">
+      {/* Dark mode background effects */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-20"
+             style={{ background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%)', filter: 'blur(100px)' }} />
+      </div>
+
+      {/* Mobile Drawer */}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetTrigger asChild>
+          <button className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-gray-900/95 backdrop-blur-xl border border-gray-700 shadow-xl flex items-center justify-center hover:bg-gray-800 transition-all">
+            <Menu className="w-5 h-5 text-gray-300" />
+          </button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-72 bg-gray-900 border-gray-800 p-0">
+          <div className="p-6 border-b border-gray-800">
+            <h2 className="text-xl font-bold text-white mb-1">Seller Dashboard</h2>
+            <p className="text-sm text-gray-400">Welcome back, {user?.name}</p>
+          </div>
+          <nav className="p-4 space-y-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => { if (item.action) item.action(); else setActiveTab(item.id); setMobileOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                    activeTab === item.id ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30' : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+                  }`}
+                >
+                  <Icon size={18} />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+        </SheetContent>
+      </Sheet>
+
+      {/* Fixed Desktop Sidebar */}
       <motion.aside
-        className="fixed left-0 top-0 h-screen w-64 glass-dark border-r border-coffee-800/30 z-40 overflow-y-auto scrollbar-thin"
+        className="hidden lg:block fixed left-0 top-0 h-screen w-64 bg-gray-900/95 backdrop-blur-2xl border-r border-gray-800 z-40 overflow-y-auto"
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.5, type: 'spring' }}
       >
-        <div className="p-6 mb-8 border-b border-coffee-800/20">
-          <motion.h2
-            className="text-2xl font-bold text-gradient-coffee mb-2"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            Seller Dashboard
-          </motion.h2>
-          <motion.p
-            className="text-sm text-coffee-300/70"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            Welcome back, {user?.name}
-          </motion.p>
+        <div className="p-6 mb-8 border-b border-gray-800">
+          <motion.h2 className="text-2xl font-bold text-white mb-2">Seller Dashboard</motion.h2>
+          <motion.p className="text-sm text-gray-400">Welcome back, {user?.name}</motion.p>
         </div>
 
         <nav className="px-4 space-y-2">
           {navItems.map((item, index) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
-            
             return (
-              <motion.a
+              <motion.button
                 key={item.id}
-                href={`#${item.id}`}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 relative overflow-hidden ${
-                  isActive
-                    ? 'bg-gradient-coffee text-white shadow-lg shadow-coffee-500/20'
-                    : 'text-coffee-200/70 hover:bg-coffee-800/30 hover:text-white'
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden ${
+                  isActive ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30 shadow-lg shadow-purple-500/10' : 'text-gray-400 hover:bg-gray-800/50 hover:text-gray-200'
                 }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (item.action) {
-                    item.action();
-                  } else {
-                    setActiveTab(item.id);
-                  }
-                }}
+                onClick={() => { if (item.action) item.action(); else setActiveTab(item.id); }}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * index, duration: 0.3 }}
@@ -991,22 +987,17 @@ const SellerDashboard = () => {
                 <Icon size={20} className="flex-shrink-0" />
                 <span className="font-medium">{item.label}</span>
                 {isActive && (
-                  <motion.div
-                    className="absolute right-0 top-0 bottom-0 w-1 bg-gold-400"
-                    layoutId="activeIndicator"
-                    initial={false}
-                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                  />
+                  <motion.div className="absolute right-0 top-0 bottom-0 w-1 bg-purple-400" layoutId="sellerActiveIndicator" />
                 )}
-              </motion.a>
+              </motion.button>
             );
           })}
         </nav>
       </motion.aside>
 
-      {/* WOW UPGRADE: Main content with proper spacing for fixed sidebar */}
-      <div className="ml-64 min-h-screen">
-        <div className="p-8">
+      {/* Main content */}
+      <div className="lg:ml-64 min-h-screen relative z-10">
+        <div className="p-4 sm:p-6 lg:p-8">
           {/* WOW UPGRADE: Animated header */}
           <motion.div
             className="mb-8 flex items-center justify-between"
@@ -1016,7 +1007,7 @@ const SellerDashboard = () => {
           >
             <div>
               <motion.h1
-                className="text-4xl font-bold text-gradient-coffee mb-2"
+                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2"
                 key={activeTab}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -1033,7 +1024,7 @@ const SellerDashboard = () => {
                 {activeTab === 'help' && 'Help Center'}
               </motion.h1>
               <motion.p
-                className="text-coffee-300/70 text-lg"
+                className="text-gray-400 text-lg"
                 key={`${activeTab}-desc`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -1052,7 +1043,7 @@ const SellerDashboard = () => {
             </div>
             <div className="flex items-center gap-4">
               <motion.button
-                className="px-4 py-2 glass-dark border border-coffee-800/30 rounded-lg text-coffee-200 hover:text-white hover:bg-coffee-800/30 transition-all flex items-center gap-2"
+                className="px-4 py-2 bg-gray-800/80 border border-gray-700 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition-all flex items-center gap-2"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -1060,7 +1051,7 @@ const SellerDashboard = () => {
                 Notifications
               </motion.button>
               <motion.button
-                className="px-6 py-2 bg-gradient-coffee text-white rounded-lg shadow-lg hover:shadow-xl flex items-center gap-2 font-medium"
+                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-lg shadow-lg hover:shadow-xl flex items-center gap-2 font-medium"
                 onClick={() => navigate('/properties/new')}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
