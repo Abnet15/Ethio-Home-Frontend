@@ -297,3 +297,15 @@ main {
     font-size: 0.875rem !important;
   }
 }
+
+/* =============================================
+   FIX: Override employee-dashboard margin-left leak
+   into admin dashboard layouts
+   ============================================= */
+.admin-dashboard-premium .flex > div:not(.admin-sidebar):not(aside) {
+  margin-left: 0 !important;
+}
+
+.admin-layout .flex > main {
+  margin-left: 0 !important;
+}

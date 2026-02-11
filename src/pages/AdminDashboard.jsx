@@ -552,7 +552,7 @@ const AdminDashboard = () => {
           </div>
         </aside>
         {/* Main Content - Takes full width on mobile, no left margin */}
-        <div className="dashboard-main flex-1 min-w-0 w-full lg:w-auto p-4 sm:p-5 lg:p-6 xl:p-8 pt-4 lg:pt-6 ml-0 lg:ml-0">
+        <div className="flex-1 min-w-0 w-full lg:w-auto p-4 sm:p-5 lg:p-6 xl:p-8 pt-4 lg:pt-6" style={{ marginLeft: 0 }}>
         {activeTab === 'overview' && (
           <>
             {/* Premium Header - Mobile Responsive - PERFECT DESIGN */}
