@@ -495,34 +495,34 @@ const Home = () => {
           </motion.div>
 
           {/* 4 Process Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
             {verificationSteps.map((step, index) => {
               const StepIcon = step.icon;
               return (
                 <motion.div
                   key={index}
-                  className="relative group bg-white dark:bg-[#141A17] rounded-2xl p-7 border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm hover:shadow-xl hover:border-[#D4A017]/50 dark:hover:border-[#EAB308]/50 transition-all duration-300 flex flex-col justify-between"
+                  className="relative group bg-white dark:bg-[#141A17] rounded-2xl p-5 sm:p-6 border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm hover:shadow-xl hover:border-[#D4A017]/50 dark:hover:border-[#EAB308]/50 transition-all duration-300 flex flex-col justify-between"
                   initial={{ opacity: 0, y: 25 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  whileHover={{ y: -6 }}
+                  whileHover={{ y: -5 }}
                 >
                   <div>
                     {/* Top Step Number Badge & Icon */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="w-14 h-14 rounded-2xl bg-[#0B6E4F]/10 dark:bg-[#10B981]/15 text-[#0B6E4F] dark:text-[#10B981] flex items-center justify-center border border-[#0B6E4F]/20 dark:border-[#10B981]/20 group-hover:scale-105 transition-transform duration-200">
-                        <StepIcon className="w-7 h-7" />
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-12 h-12 rounded-xl bg-[#0B6E4F]/10 dark:bg-[#10B981]/15 text-[#0B6E4F] dark:text-[#10B981] flex items-center justify-center border border-[#0B6E4F]/20 dark:border-[#10B981]/20 group-hover:scale-105 transition-transform duration-200">
+                        <StepIcon className="w-6 h-6" />
                       </div>
-                      <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-[#D4A017]/15 dark:bg-[#EAB308]/15 text-[#D4A017] dark:text-[#EAB308] border border-[#D4A017]/30 dark:border-[#EAB308]/30">
+                      <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-[#D4A017]/15 dark:bg-[#EAB308]/15 text-[#D4A017] dark:text-[#EAB308] border border-[#D4A017]/30 dark:border-[#EAB308]/30">
                         0{index + 1}
                       </span>
                     </div>
 
-                    <h3 className="text-xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2.5">
+                    <h3 className="text-base sm:text-lg font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2">
                       {step.title}
                     </h3>
-                    <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE] leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[#4B5563] dark:text-[#A8B5AE] leading-relaxed">
                       {step.description}
                     </p>
                   </div>
@@ -653,28 +653,30 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 max-w-6xl mx-auto">
             {platformFeatures.map((feature, index) => {
               const FeatureIcon = feature.icon;
               return (
                 <motion.div
                   key={index}
-                  className="bg-white dark:bg-[#141A17] rounded-2xl p-6 border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm hover:shadow-xl hover:border-[#0B6E4F]/50 dark:hover:border-[#10B981]/50 transition-all duration-300 group w-full flex flex-col justify-between"
+                  className="bg-white dark:bg-[#141A17] rounded-2xl p-5 sm:p-6 border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm hover:shadow-xl hover:border-[#0B6E4F]/50 dark:hover:border-[#10B981]/50 transition-all duration-300 group w-full flex flex-col justify-between"
                   initial={{ opacity: 0, y: 25 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  whileHover={{ y: -6 }}
+                  whileHover={{ y: -5 }}
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-[#0B6E4F]/10 dark:bg-[#10B981]/15 text-[#0B6E4F] dark:text-[#10B981] flex items-center justify-center mb-6 border border-[#0B6E4F]/20 dark:border-[#10B981]/20 group-hover:scale-105 transition-transform">
-                    <FeatureIcon className="w-7 h-7" />
+                  <div>
+                    <div className="w-12 h-12 rounded-xl bg-[#0B6E4F]/10 dark:bg-[#10B981]/15 text-[#0B6E4F] dark:text-[#10B981] flex items-center justify-center mb-4 border border-[#0B6E4F]/20 dark:border-[#10B981]/20 group-hover:scale-105 transition-transform">
+                      <FeatureIcon className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-base sm:text-lg font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2">
+                      {feature.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#4B5563] dark:text-[#A8B5AE] leading-relaxed">
+                      {feature.description}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2.5">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE] leading-relaxed">
-                    {feature.description}
-                  </p>
                 </motion.div>
               );
             })}
@@ -708,29 +710,29 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 relative max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 relative max-w-5xl mx-auto">
             {howItWorksSteps.map((step, index) => {
               const StepIcon = step.icon;
               return (
                 <motion.div
                   key={step.step}
-                  className="relative bg-white dark:bg-[#141A17] rounded-3xl p-6 sm:p-7 border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm hover:shadow-xl hover:border-[#D4A017]/50 dark:hover:border-[#EAB308]/50 transition-all duration-300 text-center flex flex-col items-center w-full"
+                  className="relative bg-white dark:bg-[#141A17] rounded-2xl p-5 sm:p-6 border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm hover:shadow-xl hover:border-[#D4A017]/50 dark:hover:border-[#EAB308]/50 transition-all duration-300 text-center flex flex-col items-center w-full"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.15 }}
-                  whileHover={{ y: -6 }}
+                  whileHover={{ y: -5 }}
                 >
-                  <div className="w-16 h-16 rounded-full bg-[#D4A017] dark:bg-[#EAB308] text-[#0F1412] font-black text-xl flex items-center justify-center mb-6 shadow-md">
+                  <div className="w-12 h-12 rounded-full bg-[#D4A017] dark:bg-[#EAB308] text-[#0F1412] font-black text-base flex items-center justify-center mb-4 shadow-sm">
                     0{step.step}
                   </div>
-                  <div className="w-14 h-14 rounded-2xl bg-[#0B6E4F]/10 dark:bg-[#10B981]/15 text-[#0B6E4F] dark:text-[#10B981] flex items-center justify-center mb-4 border border-[#0B6E4F]/20 dark:border-[#10B981]/20">
-                    <StepIcon className="w-7 h-7" />
+                  <div className="w-11 h-11 rounded-xl bg-[#0B6E4F]/10 dark:bg-[#10B981]/15 text-[#0B6E4F] dark:text-[#10B981] flex items-center justify-center mb-3 border border-[#0B6E4F]/20 dark:border-[#10B981]/20">
+                    <StepIcon className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2.5">
+                  <h3 className="text-base sm:text-lg font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE] leading-relaxed">
+                  <p className="text-xs sm:text-sm text-[#4B5563] dark:text-[#A8B5AE] leading-relaxed">
                     {step.description}
                   </p>
                 </motion.div>
@@ -767,7 +769,7 @@ const Home = () => {
           </motion.div>
 
           {/* Testimonials Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-6xl mx-auto">
             {[
               {
                 name: "Abebe Kebede",
@@ -796,34 +798,34 @@ const Home = () => {
             ].map((item, index) => (
               <motion.div
                 key={index}
-                className="bg-white dark:bg-[#141A17] rounded-3xl p-8 border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm hover:shadow-xl hover:border-[#D4A017]/50 dark:hover:border-[#EAB308]/50 transition-all duration-300 flex flex-col justify-between"
+                className="bg-white dark:bg-[#141A17] rounded-2xl p-5 sm:p-6 border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm hover:shadow-xl hover:border-[#D4A017]/50 dark:hover:border-[#EAB308]/50 transition-all duration-300 flex flex-col justify-between"
                 initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                whileHover={{ y: -6 }}
+                whileHover={{ y: -5 }}
               >
                 <div>
                   {/* Star Rating */}
-                  <div className="flex items-center gap-1 mb-5">
+                  <div className="flex items-center gap-1 mb-3">
                     {[...Array(item.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-[#D4A017] dark:text-[#EAB308] fill-[#D4A017] dark:fill-[#EAB308]" />
+                      <Star key={i} className="w-3.5 h-3.5 text-[#D4A017] dark:text-[#EAB308] fill-[#D4A017] dark:fill-[#EAB308]" />
                     ))}
                   </div>
-                  <p className="text-sm sm:text-base text-[#1A1A1A] dark:text-[#F8F4EC] leading-relaxed italic mb-6">
+                  <p className="text-xs sm:text-sm text-[#1A1A1A] dark:text-[#F8F4EC] leading-relaxed italic mb-4">
                     "{item.review}"
                   </p>
                 </div>
 
-                <div className="flex items-center gap-3.5 pt-4 border-t border-[#E5E0D8]/60 dark:border-[#2A342E]/60">
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#0B6E4F] to-[#043324] dark:from-[#10B981] dark:to-[#0B6E4F] text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                <div className="flex items-center gap-3 pt-3 border-t border-[#E5E0D8]/60 dark:border-[#2A342E]/60">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#0B6E4F] to-[#043324] dark:from-[#10B981] dark:to-[#0B6E4F] text-white flex items-center justify-center font-bold text-xs shadow-sm flex-shrink-0">
                     {item.name.charAt(0)}
                   </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">
+                  <div className="overflow-hidden">
+                    <h4 className="font-bold text-xs sm:text-sm text-[#1A1A1A] dark:text-[#F8F4EC] truncate">
                       {item.name}
                     </h4>
-                    <p className="text-xs text-[#6B7280] dark:text-[#71717A]">
+                    <p className="text-[11px] text-[#6B7280] dark:text-[#A8B5AE] truncate">
                       {item.role}
                     </p>
                   </div>

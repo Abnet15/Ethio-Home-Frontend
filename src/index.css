@@ -2564,10 +2564,10 @@
 
 /* ========================================================
    ETHIO-HOME CORE BULLETPROOF NAVBAR & GRID RESPONSIVENESS
-   Guarantees full navigation on desktop / wide view (>= 600px)
-   and mobile hamburger on phone screens (< 600px)
+   Guarantees full navigation on desktop / wide view (>= 440px)
+   and mobile hamburger on phone screens (< 440px)
    ======================================================== */
-@media (min-width: 600px) {
+@media (min-width: 440px) {
   .ethio-desktop-nav {
     display: flex !important;
   }
@@ -2579,7 +2579,7 @@
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 439px) {
   .ethio-desktop-nav {
     display: none !important;
   }

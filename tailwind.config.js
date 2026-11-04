@@ -7,12 +7,12 @@ export default {
   ],
   theme: {
     screens: {
-      'xs': '380px',
-      'sm': '600px',
-      'md': '768px',
-      'lg': '992px',
-      'xl': '1200px',
-      '2xl': '1440px',
+      'xs': '360px',
+      'sm': '440px',
+      'md': '680px',
+      'lg': '900px',
+      'xl': '1100px',
+      '2xl': '1300px',
     },
     extend: {
       colors: {

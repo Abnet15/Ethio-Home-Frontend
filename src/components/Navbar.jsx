@@ -42,8 +42,8 @@ import {
  * Emerald: #0B6E4F | Gold: #D4A017 | Dark: #0B0F0D / #141A17 | Cream: #F8F4EC
  *
  * Responsiveness Rule:
- * - Desktop & Wide View (>= 600px): Full desktop navigation bar with links & controls, ZERO hamburger.
- * - Mobile Phone View (< 600px): Compact header with Theme Toggle + Hamburger drawer button.
+ * - Desktop & Wide View (>= 440px): Full desktop navigation bar with links & controls, ZERO hamburger.
+ * - Mobile Phone View (< 440px): Compact header with Theme Toggle + Hamburger drawer button.
  */
 const Navbar = () => {
   const { t, currentLanguage, switchLanguage } = useLanguage();
@@ -58,12 +58,12 @@ const Navbar = () => {
 
   // Responsive state guaranteeing correct mode even with browser zoom/Windows scaling
   const [isDesktop, setIsDesktop] = useState(
-    typeof window !== "undefined" ? window.innerWidth >= 600 : true
+    typeof window !== "undefined" ? window.innerWidth >= 440 : true
   );
 
   useEffect(() => {
     const handleResize = () => {
-      const desktop = window.innerWidth >= 600;
+      const desktop = window.innerWidth >= 440;
       setIsDesktop(desktop);
       if (desktop) {
         setIsMobileMenuOpen(false);
