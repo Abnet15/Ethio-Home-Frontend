@@ -188,21 +188,21 @@ const AdminActivity = () => {
                 onChange={(e) => setFilterType(e.target.value)} 
                 className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50"
               >
-                <option value="all" className="text-gray-900">All Types</option>
-                <option value="user" className="text-gray-900">User Activities</option>
-                <option value="property" className="text-gray-900">Property Activities</option>
-                <option value="sale" className="text-gray-900">Sales Activities</option>
-                <option value="approval" className="text-gray-900">Admin Actions</option>
+                <option value="all" className="text-[#1A1A1A] dark:text-[#F8F4EC]">All Types</option>
+                <option value="user" className="text-[#1A1A1A] dark:text-[#F8F4EC]">User Activities</option>
+                <option value="property" className="text-[#1A1A1A] dark:text-[#F8F4EC]">Property Activities</option>
+                <option value="sale" className="text-[#1A1A1A] dark:text-[#F8F4EC]">Sales Activities</option>
+                <option value="approval" className="text-[#1A1A1A] dark:text-[#F8F4EC]">Admin Actions</option>
               </select>
               <select 
                 value={filterDate} 
                 onChange={(e) => setFilterDate(e.target.value)} 
                 className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50"
               >
-                <option value="all" className="text-gray-900">All Time</option>
-                <option value="today" className="text-gray-900">Today</option>
-                <option value="yesterday" className="text-gray-900">Yesterday</option>
-                <option value="week" className="text-gray-900">This Week</option>
+                <option value="all" className="text-[#1A1A1A] dark:text-[#F8F4EC]">All Time</option>
+                <option value="today" className="text-[#1A1A1A] dark:text-[#F8F4EC]">Today</option>
+                <option value="yesterday" className="text-[#1A1A1A] dark:text-[#F8F4EC]">Yesterday</option>
+                <option value="week" className="text-[#1A1A1A] dark:text-[#F8F4EC]">This Week</option>
               </select>
             </div>
           </div>
@@ -218,12 +218,12 @@ const AdminActivity = () => {
             onClick={() => setFilterType('user')}
           >
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                <Users className="h-6 w-6 text-blue-600" />
+              <div className="w-12 h-12 rounded-full bg-[#0B6E4F]/10 dark:bg-[#0B6E4F]/10 flex items-center justify-center">
+                <Users className="h-6 w-6 text-[#0B6E4F] dark:text-[#0B6E4F]" />
               </div>
               <div>
                 <div className="text-3xl font-black text-foreground">{activities.filter(a => a.type === 'user').length}</div>
-                <div className="text-sm text-muted-foreground font-semibold">User Activities</div>
+                <div className="text-sm text-[#4B5563] dark:text-[#A8B5AE] font-semibold">User Activities</div>
               </div>
             </div>
           </button>
@@ -237,7 +237,7 @@ const AdminActivity = () => {
               </div>
               <div>
                 <div className="text-3xl font-black text-foreground">{activities.filter(a => a.type === 'property').length}</div>
-                <div className="text-sm text-muted-foreground font-semibold">Property Activities</div>
+                <div className="text-sm text-[#4B5563] dark:text-[#A8B5AE] font-semibold">Property Activities</div>
               </div>
             </div>
           </button>
@@ -251,7 +251,7 @@ const AdminActivity = () => {
               </div>
               <div>
                 <div className="text-3xl font-black text-foreground">{activities.filter(a => a.type === 'sale').length}</div>
-                <div className="text-sm text-muted-foreground font-semibold">Sales Activities</div>
+                <div className="text-sm text-[#4B5563] dark:text-[#A8B5AE] font-semibold">Sales Activities</div>
               </div>
             </div>
           </button>
@@ -260,12 +260,12 @@ const AdminActivity = () => {
             onClick={() => setFilterType('approval')}
           >
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-                <Shield className="h-6 w-6 text-purple-600" />
+              <div className="w-12 h-12 rounded-full bg-[#0B6E4F]/10 dark:bg-[#0B6E4F]/10 flex items-center justify-center">
+                <Shield className="h-6 w-6 text-[#0B6E4F] dark:text-[#0B6E4F]" />
               </div>
               <div>
                 <div className="text-3xl font-black text-foreground">{activities.filter(a => a.type === 'approval').length}</div>
-                <div className="text-sm text-muted-foreground font-semibold">Admin Actions</div>
+                <div className="text-sm text-[#4B5563] dark:text-[#A8B5AE] font-semibold">Admin Actions</div>
               </div>
             </div>
           </button>
@@ -274,7 +274,7 @@ const AdminActivity = () => {
         {loading && (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p className="text-muted-foreground">Loading activities...</p>
+            <p className="text-[#4B5563] dark:text-[#A8B5AE]">Loading activities...</p>
           </div>
         )}
         {error && (
@@ -291,27 +291,27 @@ const AdminActivity = () => {
 
         {!loading && !error && (
           <div className="bg-card rounded-xl border shadow-lg overflow-hidden">
-            <div className="p-6 border-b bg-muted/50">
+            <div className="p-6 border-b bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50">
               <h2 className="text-2xl font-black text-foreground">Recent Activities ({filteredActivities.length})</h2>
             </div>
             <div className="divide-y">
               {filteredActivities.map((activity) => (
-                <div key={activity.id} className="p-6 hover:bg-muted/50 transition-colors flex items-start gap-4">
+                <div key={activity.id} className="p-6 hover:bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 transition-colors flex items-start gap-4">
                   <div className="w-12 h-12 rounded-full flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: getStatusColor(activity.status) }}>
                     {getActivityIcon(activity.type)}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
                       <div className="font-bold text-lg text-foreground">{activity.action}</div>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2 text-sm text-[#4B5563] dark:text-[#A8B5AE]">
                         <Clock size={14} />
                         {activity.time}
                       </div>
                     </div>
-                    <div className="text-muted-foreground mb-2">
+                    <div className="text-[#4B5563] dark:text-[#A8B5AE] mb-2">
                       <span className="font-semibold">by {activity.user}</span> - {activity.details}
                     </div>
-                    <div className="text-xs text-muted-foreground">{activity.timestamp}</div>
+                    <div className="text-xs text-[#4B5563] dark:text-[#A8B5AE]">{activity.timestamp}</div>
                   </div>
                   <div>
                     <span className="px-3 py-1 rounded-full text-xs font-bold text-white" style={{ backgroundColor: getStatusColor(activity.status) }}>

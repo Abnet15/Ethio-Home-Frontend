@@ -29,7 +29,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative mt-20 overflow-hidden">
+    <footer className="relative mt-12 sm:mt-16 overflow-hidden">
       {/* Ethiopian accent bar */}
       <div className="ethiopian-accent-bar w-full" />
       
@@ -40,7 +40,7 @@ const Footer = () => {
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-radial-gold opacity-20 blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full blur-3xl pointer-events-none" style={{ background: 'radial-gradient(ellipse at center, hsl(145 63% 32% / 0.15) 0%, transparent 70%)' }} />
       
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-16 pb-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-10 sm:pt-12 pb-6">
         <motion.div 
           className="footer-grid-horizontal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10"
           variants={containerVariants}
@@ -56,7 +56,7 @@ const Footer = () => {
               </div>
               <span className="text-2xl font-display font-bold text-gradient-gold">Ethio-Home</span>
             </Link>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-[#4B5563] dark:text-[#A8B5AE] leading-relaxed">
               {t('heroSubtitle')}
             </p>
             <div className="flex gap-4">
@@ -69,7 +69,7 @@ const Footer = () => {
                 <a 
                   key={i}
                   href={social.href} 
-                  className="w-10 h-10 rounded-xl glass flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 hover:shadow-glow-gold transition-all duration-300 hover:-translate-y-1"
+                  className="w-10 h-10 rounded-xl glass flex items-center justify-center text-[#4B5563] dark:text-[#A8B5AE] hover:text-primary hover:border-primary/50 hover:shadow-glow-gold transition-all duration-300 hover:-translate-y-1"
                 >
                   <social.icon className="w-5 h-5" />
                 </a>
@@ -93,7 +93,7 @@ const Footer = () => {
                 <li key={i}>
                   <Link 
                     to={link.to} 
-                    className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="group flex items-center gap-2 text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground transition-colors"
                   >
                     <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-gold-400" />
                     <span className="relative">
@@ -122,7 +122,7 @@ const Footer = () => {
                 <li key={i}>
                   <Link 
                     to={link.to} 
-                    className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="group flex items-center gap-2 text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground transition-colors"
                   >
                     <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[hsl(145_63%_32%)]" />
                     <span className="relative">
@@ -151,7 +151,7 @@ const Footer = () => {
                   <div className="w-10 h-10 rounded-xl glass-card flex items-center justify-center flex-shrink-0 group-hover:border-primary/50 transition-colors">
                     <item.icon className="w-4 h-4 text-gold-400" />
                   </div>
-                  <span className="text-muted-foreground pt-2 group-hover:text-foreground transition-colors">
+                  <span className="text-[#4B5563] dark:text-[#A8B5AE] pt-2 group-hover:text-foreground transition-colors">
                     {item.text}
                   </span>
                 </div>
@@ -171,15 +171,15 @@ const Footer = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
         >
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">
             © {new Date().getFullYear()} Ethio-Home. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group">
+            <Link to="/privacy" className="text-sm text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground transition-colors relative group">
               Privacy Policy
               <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-gold-400 group-hover:w-full transition-all duration-300" />
             </Link>
-            <Link to="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group">
+            <Link to="/terms" className="text-sm text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground transition-colors relative group">
               Terms of Service
               <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-gold-400 group-hover:w-full transition-all duration-300" />
             </Link>

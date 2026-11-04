@@ -39,7 +39,7 @@ const Unauthorized = () => {
           {user?.role === 'buyer' && (
             <Link
               to="/buyer-dashboard"
-              className="block w-full py-4 border-2 border-gray-300 text-gray-700 bg-white rounded-xl font-semibold text-center hover:border-ethiopian-green hover:text-ethiopian-green transition-all"
+              className="block w-full py-4 border-2 border-[#E5E0D8] dark:border-[#2A342E] text-[#1A1A1A] dark:text-[#A8B5AE] bg-white rounded-xl font-semibold text-center hover:border-ethiopian-green hover:text-ethiopian-green transition-all"
             >
               Go to Buyer Dashboard
             </Link>
@@ -48,7 +48,7 @@ const Unauthorized = () => {
           {(user?.role === 'seller' || user?.role === 'agent') && (
             <Link
               to="/seller-dashboard"
-              className="block w-full py-4 border-2 border-gray-300 text-gray-700 bg-white rounded-xl font-semibold text-center hover:border-ethiopian-green hover:text-ethiopian-green transition-all"
+              className="block w-full py-4 border-2 border-[#E5E0D8] dark:border-[#2A342E] text-[#1A1A1A] dark:text-[#A8B5AE] bg-white rounded-xl font-semibold text-center hover:border-ethiopian-green hover:text-ethiopian-green transition-all"
             >
               Go to Seller Dashboard
             </Link>
@@ -57,7 +57,7 @@ const Unauthorized = () => {
           {user?.role === 'admin' && (
             <Link
               to="/admin-dashboard"
-              className="block w-full py-4 border-2 border-gray-300 text-gray-700 bg-white rounded-xl font-semibold text-center hover:border-ethiopian-green hover:text-ethiopian-green transition-all"
+              className="block w-full py-4 border-2 border-[#E5E0D8] dark:border-[#2A342E] text-[#1A1A1A] dark:text-[#A8B5AE] bg-white rounded-xl font-semibold text-center hover:border-ethiopian-green hover:text-ethiopian-green transition-all"
             >
               Go to Admin Dashboard
             </Link>

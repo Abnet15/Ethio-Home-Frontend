@@ -406,23 +406,23 @@ const Profile = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] text-[#1A1A1A] dark:text-[#F8F4EC] flex items-center justify-center transition-colors duration-200">
         <div className="bg-card rounded-xl border shadow-lg p-8 text-center">
-          <p className="text-muted-foreground">Please log in to view your profile.</p>
+          <p className="text-[#4B5563] dark:text-[#A8B5AE]">Please log in to view your profile.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-8">
+    <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] text-[#1A1A1A] dark:text-[#F8F4EC] py-10 transition-colors duration-200">
       <div className="container mx-auto px-4 max-w-4xl">
-        <div className="bg-card rounded-xl border shadow-lg overflow-hidden">
+        <div className="bg-white dark:bg-[#141A17] rounded-3xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-xl overflow-hidden">
           {/* Back Button */}
-          <div className="p-6 border-b">
+          <div className="p-6 border-b border-[#E5E0D8] dark:border-[#2A342E]">
             <button
               onClick={handleBack}
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors font-semibold"
+              className="flex items-center gap-2 text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground transition-colors font-semibold"
             >
               <ArrowLeft size={20} />
               Back
@@ -430,7 +430,7 @@ const Profile = () => {
           </div>
 
           {/* Profile Header */}
-          <div className="p-8 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white">
+          <div className="p-8 bg-gradient-to-br from-[#0B6E4F] via-[#095C42] to-[#043324] text-white">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-6">
                 <div className="relative">
@@ -467,11 +467,11 @@ const Profile = () => {
           </div>
 
           {/* Tab Navigation */}
-          <div className="flex border-b bg-muted/30">
+          <div className="flex border-b border-[#E5E0D8] dark:border-[#2A342E] bg-[#F0EDE6]/30 dark:bg-[#1C2420]/30">
             <button
               className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${activeTab === "profile"
-                  ? "bg-ethiopian-green text-white border-b-2 border-ethiopian-green"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "bg-ethiopian-green text-white border-b border-[#E5E0D8] dark:border-[#2A342E]-2 border-ethiopian-green"
+                  : "text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground hover:bg-[#F0EDE6] dark:bg-[#1C2420]"
                 }`}
               onClick={() => setActiveTab("profile")}
             >
@@ -480,8 +480,8 @@ const Profile = () => {
             </button>
             <button
               className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${activeTab === "photo"
-                  ? "bg-ethiopian-green text-white border-b-2 border-ethiopian-green"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "bg-ethiopian-green text-white border-b border-[#E5E0D8] dark:border-[#2A342E]-2 border-ethiopian-green"
+                  : "text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground hover:bg-[#F0EDE6] dark:bg-[#1C2420]"
                 }`}
               onClick={() => setActiveTab("photo")}
             >
@@ -490,8 +490,8 @@ const Profile = () => {
             </button>
             <button
               className={`flex-1 px-6 py-4 font-semibold transition-all flex items-center justify-center gap-2 ${activeTab === "password"
-                  ? "bg-ethiopian-green text-white border-b-2 border-ethiopian-green"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "bg-ethiopian-green text-white border-b border-[#E5E0D8] dark:border-[#2A342E]-2 border-ethiopian-green"
+                  : "text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground hover:bg-[#F0EDE6] dark:bg-[#1C2420]"
                 }`}
               onClick={() => setActiveTab("password")}
             >

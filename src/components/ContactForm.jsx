@@ -34,14 +34,14 @@ const FormField = ({
 }) => (
   <div className={`space-y-2 ${className}`}>
     <label className="text-sm font-semibold text-foreground flex items-center gap-2">
-      {Icon && <Icon className="w-4 h-4 text-muted-foreground" />}
+      {Icon && <Icon className="w-4 h-4 text-[#4B5563] dark:text-[#A8B5AE]" />}
       {label} {required && <span className="text-destructive">*</span>}
     </label>
     <div
       className={`relative rounded-xl border-2 transition-all duration-300 ${
         focused
           ? 'border-gold-400 shadow-[0_0_20px_hsl(var(--gold-400)/0.2)]'
-          : 'border-border hover:border-gold-400/50'
+          : 'border-[#E5E0D8] dark:border-[#2A342E] hover:border-gold-400/50'
       }`}
     >
       {children}
@@ -106,7 +106,7 @@ const ContactForm = ({
   };
 
   return (
-    <div className="relative bg-card/95 backdrop-blur-xl rounded-3xl border border-border/50 overflow-hidden shadow-2xl">
+    <div className="relative bg-card/95 backdrop-blur-xl rounded-3xl border border-[#E5E0D8] dark:border-[#2A342E]/50 overflow-hidden shadow-2xl">
       {/* Header */}
       <div className="relative bg-gradient-to-br from-accent via-accent/90 to-foreground/80 p-6 md:p-8 overflow-hidden">
         <div className="absolute -top-12 -right-12 w-40 h-40 bg-white/10 rounded-full" />
@@ -139,7 +139,7 @@ const ContactForm = ({
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-foreground">Login Required</h3>
-                  <p className="text-sm text-muted-foreground">Please log in to submit a message</p>
+                  <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Please log in to submit a message</p>
                 </div>
                 <Link
                   to="/login"
@@ -167,7 +167,7 @@ const ContactForm = ({
                 </div>
                 <div>
                   <h3 className="font-semibold text-emerald-600 dark:text-emerald-400">Message Sent!</h3>
-                  <p className="text-sm text-muted-foreground">We'll get back to you soon.</p>
+                  <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">We'll get back to you soon.</p>
                 </div>
               </div>
             </motion.div>
@@ -185,7 +185,7 @@ const ContactForm = ({
                 onChange={handleChange}
                 onFocus={() => setFocusedField('name')}
                 onBlur={() => setFocusedField(null)}
-                className="w-full px-4 py-3.5 bg-transparent rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none"
+                className="w-full px-4 py-3.5 bg-transparent rounded-xl text-foreground placeholder:text-[#4B5563] dark:text-[#A8B5AE] focus:outline-none"
                 placeholder="Enter your name"
                 required
               />
@@ -198,7 +198,7 @@ const ContactForm = ({
                 onChange={handleChange}
                 onFocus={() => setFocusedField('email')}
                 onBlur={() => setFocusedField(null)}
-                className="w-full px-4 py-3.5 bg-transparent rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none"
+                className="w-full px-4 py-3.5 bg-transparent rounded-xl text-foreground placeholder:text-[#4B5563] dark:text-[#A8B5AE] focus:outline-none"
                 placeholder="your@email.com"
                 required
               />
@@ -215,7 +215,7 @@ const ContactForm = ({
                 onChange={handleChange}
                 onFocus={() => setFocusedField('phone')}
                 onBlur={() => setFocusedField(null)}
-                className="w-full px-4 py-3.5 bg-transparent rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none"
+                className="w-full px-4 py-3.5 bg-transparent rounded-xl text-foreground placeholder:text-[#4B5563] dark:text-[#A8B5AE] focus:outline-none"
                 placeholder="+251 911 123 456"
               />
             </FormField>
@@ -235,7 +235,7 @@ const ContactForm = ({
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4B5563] dark:text-[#A8B5AE] pointer-events-none" />
               </div>
             </FormField>
           </div>
@@ -249,7 +249,7 @@ const ContactForm = ({
               onChange={handleChange}
               onFocus={() => setFocusedField('subject')}
               onBlur={() => setFocusedField(null)}
-              className="w-full px-4 py-3.5 bg-transparent rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none"
+              className="w-full px-4 py-3.5 bg-transparent rounded-xl text-foreground placeholder:text-[#4B5563] dark:text-[#A8B5AE] focus:outline-none"
               placeholder="What is this about?"
               required
             />
@@ -263,13 +263,13 @@ const ContactForm = ({
               onChange={handleChange}
               onFocus={() => setFocusedField('message')}
               onBlur={() => setFocusedField(null)}
-              className="w-full px-4 py-3.5 bg-transparent rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none resize-none min-h-[140px]"
+              className="w-full px-4 py-3.5 bg-transparent rounded-xl text-foreground placeholder:text-[#4B5563] dark:text-[#A8B5AE] focus:outline-none resize-none min-h-[140px]"
               placeholder="Tell us more about your inquiry..."
               required
             />
           </FormField>
           <div className="flex justify-end -mt-2">
-            <span className={`text-xs ${formData.message.length > 900 ? 'text-destructive' : 'text-muted-foreground'}`}>
+            <span className={`text-xs ${formData.message.length > 900 ? 'text-destructive' : 'text-[#4B5563] dark:text-[#A8B5AE]'}`}>
               {formData.message.length}/1000
             </span>
           </div>
@@ -307,7 +307,7 @@ const ContactForm = ({
             </span>
           </motion.button>
 
-          <p className="text-center text-sm text-muted-foreground">
+          <p className="text-center text-sm text-[#4B5563] dark:text-[#A8B5AE]">
             Fields marked with <span className="text-destructive">*</span> are required
           </p>
         </form>

@@ -469,10 +469,10 @@ const AdminMessages = () => {
                 onChange={(e) => setFilterStatus(e.target.value)}
                 className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50"
               >
-                <option value="all" className="text-gray-900">All Status</option>
-                <option value="unread" className="text-gray-900">Unread</option>
-                <option value="read" className="text-gray-900">Read</option>
-                <option value="archived" className="text-gray-900">Archived</option>
+                <option value="all" className="text-[#1A1A1A] dark:text-[#F8F4EC]">All Status</option>
+                <option value="unread" className="text-[#1A1A1A] dark:text-[#F8F4EC]">Unread</option>
+                <option value="read" className="text-[#1A1A1A] dark:text-[#F8F4EC]">Read</option>
+                <option value="archived" className="text-[#1A1A1A] dark:text-[#F8F4EC]">Archived</option>
               </select>
               {permissions.canSendBulk && (
                 <button

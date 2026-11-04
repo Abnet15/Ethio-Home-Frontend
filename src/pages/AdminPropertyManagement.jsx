@@ -114,7 +114,7 @@ const AdminPropertyManagement = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
         <div className="text-center">
           <div className="w-14 h-14 border-4 border-gold-400/30 border-t-gold-400 rounded-full animate-spin mb-4 mx-auto"></div>
-          <p className="text-slate-400 font-medium">Checking authentication...</p>
+          <p className="text-[#4B5563] dark:text-[#A8B5AE] font-medium">Checking authentication...</p>
         </div>
       </div>
     );
@@ -433,7 +433,7 @@ const AdminPropertyManagement = () => {
                 <span className="group-hover:text-gold-400 transition-colors">Refresh</span>
               </button>
               <button
-                className="group px-6 py-3 bg-gradient-to-r from-gold-400 to-gold-500 text-slate-900 rounded-xl font-bold hover:from-gold-300 hover:to-gold-400 transition-all duration-300 flex items-center gap-2.5 shadow-lg shadow-gold-400/30 hover:shadow-xl hover:shadow-gold-400/40 hover:scale-105"
+                className="group px-6 py-3 bg-gradient-to-r from-gold-400 to-gold-500 text-[#1A1A1A] dark:text-[#F8F4EC] rounded-xl font-bold hover:from-gold-300 hover:to-gold-400 transition-all duration-300 flex items-center gap-2.5 shadow-lg shadow-gold-400/30 hover:shadow-xl hover:shadow-gold-400/40 hover:scale-105"
                 onClick={() => setShowAddForm(true)}
               >
                 <Plus size={18} className="group-hover:rotate-90 transition-transform duration-300" />
@@ -492,7 +492,7 @@ const AdminPropertyManagement = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           <button
             type="button"
-            className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 hover:border-gold-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-gold-400/10 text-left"
+            className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-[#E5E0D8] dark:border-[#2A342E]/50 hover:border-gold-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-gold-400/10 text-left"
             onClick={() => setStatusFilter("all")}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-gold-400/0 to-gold-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -502,14 +502,14 @@ const AdminPropertyManagement = () => {
               </div>
               <div>
                 <div className="text-3xl font-bold font-serif bg-gradient-to-r from-gold-400 to-gold-500 bg-clip-text text-transparent">{stats.total}</div>
-                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Properties</div>
+                <div className="text-xs font-semibold text-[#4B5563] dark:text-[#A8B5AE] uppercase tracking-wider">Total Properties</div>
               </div>
             </div>
           </button>
           
           <button
             type="button"
-            className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 hover:border-emerald-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-400/10 text-left"
+            className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-[#E5E0D8] dark:border-[#2A342E]/50 hover:border-emerald-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-400/10 text-left"
             onClick={() => setStatusFilter("approved")}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/0 to-emerald-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -519,14 +519,14 @@ const AdminPropertyManagement = () => {
               </div>
               <div>
                 <div className="text-3xl font-bold font-serif bg-gradient-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent">{stats.approved}</div>
-                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Approved</div>
+                <div className="text-xs font-semibold text-[#4B5563] dark:text-[#A8B5AE] uppercase tracking-wider">Approved</div>
               </div>
             </div>
           </button>
           
           <button
             type="button"
-            className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 hover:border-amber-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-400/10 text-left"
+            className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-[#E5E0D8] dark:border-[#2A342E]/50 hover:border-amber-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-400/10 text-left"
             onClick={() => setStatusFilter("pending")}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-amber-400/0 to-amber-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -536,14 +536,14 @@ const AdminPropertyManagement = () => {
               </div>
               <div>
                 <div className="text-3xl font-bold font-serif bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">{stats.pending}</div>
-                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pending</div>
+                <div className="text-xs font-semibold text-[#4B5563] dark:text-[#A8B5AE] uppercase tracking-wider">Pending</div>
               </div>
             </div>
           </button>
           
           <button
             type="button"
-            className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 hover:border-red-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-red-400/10 text-left"
+            className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-[#E5E0D8] dark:border-[#2A342E]/50 hover:border-red-400/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-red-400/10 text-left"
             onClick={() => setStatusFilter("rejected")}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-red-400/0 to-red-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -553,25 +553,25 @@ const AdminPropertyManagement = () => {
               </div>
               <div>
                 <div className="text-3xl font-bold font-serif bg-gradient-to-r from-red-400 to-red-500 bg-clip-text text-transparent">{stats.rejected}</div>
-                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Rejected</div>
+                <div className="text-xs font-semibold text-[#4B5563] dark:text-[#A8B5AE] uppercase tracking-wider">Rejected</div>
               </div>
             </div>
           </button>
         </div>
 
         {/* Premium Filters and Search */}
-        <div className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 mb-8">
+        <div className="bg-[#F0EDE6] dark:bg-[#1C2420]/40 backdrop-blur-xl border border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-2xl p-6 mb-8">
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Search Input */}
             <div className="flex-1">
               <div className="relative">
-                <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#4B5563] dark:text-[#A8B5AE]" />
                 <input
                   type="text"
                   placeholder="Search properties by title or location..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3.5 bg-slate-900/50 border border-slate-700/50 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-gold-400/50 focus:ring-2 focus:ring-gold-400/20 transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-3.5 bg-[#F8F4EC] dark:bg-[#0B0F0D]/50 border border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-gold-400/50 focus:ring-2 focus:ring-gold-400/20 transition-all duration-300"
                 />
               </div>
             </div>
@@ -582,7 +582,7 @@ const AdminPropertyManagement = () => {
                 className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
                   statusFilter === "all" 
                     ? "bg-gold-400/20 text-gold-400 border border-gold-400/40" 
-                    : "bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:border-gold-400/30"
+                    : "bg-[#E5E0D8] dark:bg-[#2A342E]/50 text-[#4B5563] dark:text-[#A8B5AE] border border-[#E5E0D8] dark:border-[#2A342E]/50 hover:border-gold-400/30"
                 }`}
                 onClick={() => setStatusFilter("all")}
               >
@@ -592,7 +592,7 @@ const AdminPropertyManagement = () => {
                 className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
                   statusFilter === "pending" 
                     ? "bg-amber-400/20 text-amber-400 border border-amber-400/40" 
-                    : "bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:border-amber-400/30"
+                    : "bg-[#E5E0D8] dark:bg-[#2A342E]/50 text-[#4B5563] dark:text-[#A8B5AE] border border-[#E5E0D8] dark:border-[#2A342E]/50 hover:border-amber-400/30"
                 }`}
                 onClick={() => setStatusFilter("pending")}
               >
@@ -602,7 +602,7 @@ const AdminPropertyManagement = () => {
                 className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
                   statusFilter === "approved" 
                     ? "bg-emerald-400/20 text-emerald-400 border border-emerald-400/40" 
-                    : "bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:border-emerald-400/30"
+                    : "bg-[#E5E0D8] dark:bg-[#2A342E]/50 text-[#4B5563] dark:text-[#A8B5AE] border border-[#E5E0D8] dark:border-[#2A342E]/50 hover:border-emerald-400/30"
                 }`}
                 onClick={() => setStatusFilter("approved")}
               >
@@ -612,7 +612,7 @@ const AdminPropertyManagement = () => {
                 className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
                   statusFilter === "rejected" 
                     ? "bg-red-400/20 text-red-400 border border-red-400/40" 
-                    : "bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:border-red-400/30"
+                    : "bg-[#E5E0D8] dark:bg-[#2A342E]/50 text-[#4B5563] dark:text-[#A8B5AE] border border-[#E5E0D8] dark:border-[#2A342E]/50 hover:border-red-400/30"
                 }`}
                 onClick={() => setStatusFilter("rejected")}
               >
@@ -625,7 +625,7 @@ const AdminPropertyManagement = () => {
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="px-4 py-2.5 bg-slate-900/50 border border-slate-700/50 rounded-xl text-white appearance-none cursor-pointer focus:outline-none focus:border-gold-400/50 transition-all duration-300"
+                className="px-4 py-2.5 bg-[#F8F4EC] dark:bg-[#0B0F0D]/50 border border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl text-white appearance-none cursor-pointer focus:outline-none focus:border-gold-400/50 transition-all duration-300"
               >
                 <option value="all">All Types</option>
                 <option value="apartment">Apartments</option>
@@ -634,12 +634,12 @@ const AdminPropertyManagement = () => {
                 <option value="commercial">Commercial</option>
               </select>
               
-              <div className="flex rounded-xl overflow-hidden border border-slate-700/50">
+              <div className="flex rounded-xl overflow-hidden border border-[#E5E0D8] dark:border-[#2A342E]/50">
                 <button
                   className={`px-4 py-2.5 text-sm font-semibold transition-all duration-300 ${
                     viewMode === "grid" 
                       ? "bg-gold-400/20 text-gold-400" 
-                      : "bg-slate-800/50 text-slate-400 hover:text-gold-400"
+                      : "bg-[#F0EDE6] dark:bg-[#1C2420]/50 text-[#4B5563] dark:text-[#A8B5AE] hover:text-gold-400"
                   }`}
                   onClick={() => setViewMode("grid")}
                 >
@@ -649,7 +649,7 @@ const AdminPropertyManagement = () => {
                   className={`px-4 py-2.5 text-sm font-semibold transition-all duration-300 ${
                     viewMode === "list" 
                       ? "bg-gold-400/20 text-gold-400" 
-                      : "bg-slate-800/50 text-slate-400 hover:text-gold-400"
+                      : "bg-[#F0EDE6] dark:bg-[#1C2420]/50 text-[#4B5563] dark:text-[#A8B5AE] hover:text-gold-400"
                   }`}
                   onClick={() => setViewMode("list")}
                 >
@@ -664,7 +664,7 @@ const AdminPropertyManagement = () => {
         {loading && (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="w-14 h-14 border-4 border-gold-400/30 border-t-gold-400 rounded-full animate-spin mb-4"></div>
-            <p className="text-slate-400 font-medium">Loading properties...</p>
+            <p className="text-[#4B5563] dark:text-[#A8B5AE] font-medium">Loading properties...</p>
           </div>
         )}
 
@@ -717,11 +717,11 @@ const AdminPropertyManagement = () => {
 
         {/* Properties Grid/List */}
         {!loading && !error && (
-          <div className={`${viewMode === 'grid' ? 'admin-properties-grid' : 'properties-container list'}`}>
+          <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5' : 'space-y-4'}>
             {filteredProperties.map((property) => (
               <div
                 key={property._id}
-                className="admin-card"
+                className="flex flex-col space-y-2"
                 data-status={property.status}
               >
                 <PropertyCard
@@ -731,11 +731,10 @@ const AdminPropertyManagement = () => {
                   onStatusChange={handleStatusChange}
                 />
                 <div
-                  className="property-card-actions admin-card-actions"
-                  style={{ marginTop: "8px" }}
+                  className="flex items-center justify-end gap-1.5 px-1"
                 >
                   <button
-                    className="card-action-btn view"
+                    className="p-1.5 rounded-lg bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] text-[#4B5563] dark:text-[#A8B5AE] hover:text-[#0B6E4F] hover:border-[#0B6E4F] transition-all cursor-pointer shadow-xs"
                     title="View Details"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -743,10 +742,10 @@ const AdminPropertyManagement = () => {
                       setActiveTab("overview");
                     }}
                   >
-                    <Eye size={16} />
+                    <Eye size={15} />
                   </button>
                   <button
-                    className="card-action-btn edit"
+                    className="p-1.5 rounded-lg bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] text-[#4B5563] dark:text-[#A8B5AE] hover:text-[#D4A017] hover:border-[#D4A017] transition-all cursor-pointer shadow-xs"
                     title="Edit Property"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -754,17 +753,17 @@ const AdminPropertyManagement = () => {
                       setActiveTab("edit");
                     }}
                   >
-                    <Edit size={16} />
+                    <Edit size={15} />
                   </button>
                   <button
-                    className="card-action-btn delete"
+                    className="p-1.5 rounded-lg bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] text-[#C45C26] hover:bg-[#C45C26]/10 transition-all cursor-pointer shadow-xs"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDeleteProperty(property._id);
                     }}
                     title="Delete Property"
                   >
-                    <Trash2 size={16} />
+                    <Trash2 size={15} />
                   </button>
                 </div>
               </div>

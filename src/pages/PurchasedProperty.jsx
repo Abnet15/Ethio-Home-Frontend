@@ -27,7 +27,7 @@ const PurchasedProperty = () => {
           </button>
 
           <button
-            className="w-full py-4 border-2 border-gray-300 text-gray-700 bg-white rounded-xl font-semibold hover:border-ethiopian-green hover:text-ethiopian-green transition-all flex items-center justify-center gap-2"
+            className="w-full py-4 border-2 border-[#E5E0D8] dark:border-[#2A342E] text-[#1A1A1A] dark:text-[#A8B5AE] bg-white rounded-xl font-semibold hover:border-ethiopian-green hover:text-ethiopian-green transition-all flex items-center justify-center gap-2"
             onClick={() => navigate('/buyer-dashboard')}
           >
             <LayoutDashboard size={20} />
@@ -35,7 +35,7 @@ const PurchasedProperty = () => {
           </button>
 
           <button
-            className="w-full py-4 bg-muted text-foreground rounded-xl font-semibold hover:bg-muted/80 transition-all flex items-center justify-center gap-2"
+            className="w-full py-4 bg-[#F0EDE6] dark:bg-[#1C2420] text-foreground rounded-xl font-semibold hover:bg-[#F0EDE6] dark:bg-[#1C2420]/80 transition-all flex items-center justify-center gap-2"
             onClick={() => navigate('/')}
           >
             <ArrowRight size={20} />

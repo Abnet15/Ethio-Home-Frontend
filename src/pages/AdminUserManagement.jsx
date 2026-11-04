@@ -509,7 +509,7 @@ const AdminUserManagement = () => {
     <AdminLayout activeTab="users">
       <div className="admin-dashboard-premium">
         {/* Premium Header */}
-        <div className="relative bg-gradient-to-r from-purple-900/90 via-purple-800/80 to-purple-900/90 backdrop-blur-xl rounded-2xl border border-purple-500/20 shadow-2xl shadow-purple-900/30 mb-6">
+        <div className="relative bg-gradient-to-r from-[#0B6E4F]/90 via-purple-800/80 to-[#D4A017]/90 backdrop-blur-xl rounded-2xl border border-[#0B6E4F] dark:border-[#0B6E4F]/20 shadow-2xl shadow-purple-900/30 mb-6">
           <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent rounded-2xl" />
           <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-400/50 to-transparent" />
           
@@ -522,7 +522,7 @@ const AdminUserManagement = () => {
                 <p className="text-purple-200/80 font-medium">Create and manage user accounts</p>
               </div>
               <button
-                className="group px-5 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl font-bold hover:from-purple-400 hover:to-purple-500 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 hover:scale-105"
+                className="group px-5 py-3 bg-gradient-to-r from-[#0B6E4F] to-[#D4A017] text-white rounded-xl font-bold hover:from-[#0D8A62] hover:to-[#D4A017] transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-[#0B6E4F]/30 hover:shadow-xl hover:shadow-[#0B6E4F]/40 hover:scale-105"
                 onClick={() => setShowCreateForm(true)}
               >
                 <Plus size={18} className="group-hover:rotate-90 transition-transform duration-300" />
@@ -826,22 +826,22 @@ const AdminUserManagement = () => {
       {/* Premium Filters Section */}
       <div className="flex flex-col md:flex-row gap-4 mb-8">
         <div className="relative flex-1">
-          <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-400" />
+          <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#0B6E4F] dark:text-[#0D8A62]" />
           <input
             type="text"
             placeholder="Search users by name or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-4 py-3.5 bg-purple-950/60 backdrop-blur-xl border border-purple-700/50 rounded-xl text-white placeholder-purple-300/50 focus:outline-none focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 transition-all duration-300"
+            className="w-full pl-12 pr-4 py-3.5 bg-purple-950/60 backdrop-blur-xl border border-purple-700/50 rounded-xl text-white placeholder-purple-300/50 focus:outline-none focus:border-[#0D8A62] dark:border-[#0D8A62]/50 focus:ring-2 focus:ring-[#0D8A62] dark:focus:ring-[#0D8A62]/20 transition-all duration-300"
           />
         </div>
 
         <div className="relative">
-          <Filter size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-400" />
+          <Filter size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#0B6E4F] dark:text-[#0D8A62]" />
           <select 
             value={roleFilter} 
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="pl-12 pr-10 py-3.5 bg-purple-950/60 backdrop-blur-xl border border-purple-700/50 rounded-xl text-white appearance-none cursor-pointer focus:outline-none focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 transition-all duration-300"
+            className="pl-12 pr-10 py-3.5 bg-purple-950/60 backdrop-blur-xl border border-purple-700/50 rounded-xl text-white appearance-none cursor-pointer focus:outline-none focus:border-[#0D8A62] dark:border-[#0D8A62]/50 focus:ring-2 focus:ring-[#0D8A62] dark:focus:ring-[#0D8A62]/20 transition-all duration-300"
           >
             <option value="all">All Roles</option>
             <option value="buyer">Buyers</option>
@@ -855,12 +855,12 @@ const AdminUserManagement = () => {
       {/* Premium Data Table */}
       <div className="bg-purple-950/40 backdrop-blur-xl border border-purple-700/50 rounded-2xl overflow-hidden shadow-2xl shadow-purple-900/50">
         {/* Table Header */}
-        <div className="hidden md:grid grid-cols-5 gap-4 px-6 py-4 bg-purple-900/60 border-b border-purple-700/50">
-          <div className="text-xs font-bold text-purple-300 uppercase tracking-wider">User</div>
-          <div className="text-xs font-bold text-purple-300 uppercase tracking-wider">Role</div>
-          <div className="text-xs font-bold text-purple-300 uppercase tracking-wider">Contact</div>
-          <div className="text-xs font-bold text-purple-300 uppercase tracking-wider">Location</div>
-          <div className="text-xs font-bold text-purple-300 uppercase tracking-wider text-right">Actions</div>
+        <div className="hidden md:grid grid-cols-5 gap-4 px-6 py-4 bg-[#0B6E4F]/20 dark:bg-[#0B6E4F]/20/60 border-b border-purple-700/50">
+          <div className="text-xs font-bold text-[#0D8A62] dark:text-[#0D8A62] uppercase tracking-wider">User</div>
+          <div className="text-xs font-bold text-[#0D8A62] dark:text-[#0D8A62] uppercase tracking-wider">Role</div>
+          <div className="text-xs font-bold text-[#0D8A62] dark:text-[#0D8A62] uppercase tracking-wider">Contact</div>
+          <div className="text-xs font-bold text-[#0D8A62] dark:text-[#0D8A62] uppercase tracking-wider">Location</div>
+          <div className="text-xs font-bold text-[#0D8A62] dark:text-[#0D8A62] uppercase tracking-wider text-right">Actions</div>
         </div>
 
         {/* Table Rows */}
@@ -870,7 +870,7 @@ const AdminUserManagement = () => {
             return (
               <div 
                 key={user.id} 
-                className="group grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-4 px-4 md:px-6 py-4 hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-transparent cursor-pointer transition-all duration-300"
+                className="group grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-4 px-4 md:px-6 py-4 hover:bg-gradient-to-r hover:from-[#0B6E4F]/10 hover:to-transparent cursor-pointer transition-all duration-300"
                 onClick={() => {
                   setSelectedUser(user);
                   setShowUserDetails(true);
@@ -878,12 +878,12 @@ const AdminUserManagement = () => {
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/30 to-purple-600/20 flex items-center justify-center text-purple-300 font-bold text-sm border border-purple-500/30">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0B6E4F]/30 to-[#D4A017]/20 flex items-center justify-center text-[#0D8A62] dark:text-[#0D8A62] font-bold text-sm border border-[#0B6E4F] dark:border-[#0B6E4F]/30">
                     {user.name?.charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <div className="font-semibold text-white group-hover:text-purple-300 transition-colors">{user.name}</div>
-                    <div className="text-xs text-purple-300/60">{user.email}</div>
+                    <div className="font-semibold text-white group-hover:text-[#0D8A62] dark:hover:text-[#0D8A62] transition-colors">{user.name}</div>
+                    <div className="text-xs text-[#0D8A62] dark:text-[#0D8A62]/60">{user.email}</div>
                   </div>
                 </div>
                 
@@ -898,25 +898,25 @@ const AdminUserManagement = () => {
                 </div>
                 
                 <div className="flex items-center text-sm text-purple-200/80">
-                  <span className="md:hidden text-purple-400 mr-2">Contact:</span>
+                  <span className="md:hidden text-[#0B6E4F] dark:text-[#0D8A62] mr-2">Contact:</span>
                   {user.phone}
                 </div>
                 
                 <div className="flex items-center text-sm text-purple-200/80">
-                  <span className="md:hidden text-purple-400 mr-2">Location:</span>
+                  <span className="md:hidden text-[#0B6E4F] dark:text-[#0D8A62] mr-2">Location:</span>
                   {user.location || '—'}
                 </div>
                 
                 <div className="flex items-center justify-end gap-2">
                   <button
-                    className="p-2 rounded-lg bg-purple-800/50 text-purple-300 hover:bg-purple-500/30 hover:text-purple-200 transition-all duration-300"
+                    className="p-2 rounded-lg bg-[#0B6E4F] dark:bg-[#0B6E4F]/50 text-[#0D8A62] dark:text-[#0D8A62] hover:bg-[#0B6E4F] dark:bg-[#0B6E4F]/30 hover:text-purple-200 transition-all duration-300"
                     onClick={(e) => { e.stopPropagation(); handleEdit(user); }}
                     title="Edit user"
                   >
                     <Edit size={16} />
                   </button>
                   <button
-                    className="p-2 rounded-lg bg-purple-800/50 text-purple-300 hover:bg-red-500/30 hover:text-red-400 transition-all duration-300"
+                    className="p-2 rounded-lg bg-[#0B6E4F] dark:bg-[#0B6E4F]/50 text-[#0D8A62] dark:text-[#0D8A62] hover:bg-red-500/30 hover:text-red-400 transition-all duration-300"
                     onClick={(e) => { e.stopPropagation(); handleDelete(user.id); }}
                     title="Delete user"
                   >
@@ -930,11 +930,11 @@ const AdminUserManagement = () => {
 
         {filteredUsers.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="w-20 h-20 rounded-2xl bg-purple-800/30 flex items-center justify-center mb-4">
-              <Users size={40} className="text-purple-400" />
+            <div className="w-20 h-20 rounded-2xl bg-[#0B6E4F] dark:bg-[#0B6E4F]/30 flex items-center justify-center mb-4">
+              <Users size={40} className="text-[#0B6E4F] dark:text-[#0D8A62]" />
             </div>
             <h3 className="text-lg font-semibold text-white mb-2">No users found</h3>
-            <p className="text-purple-300/60 text-sm">No users match your current search and filter criteria.</p>
+            <p className="text-[#0D8A62] dark:text-[#0D8A62]/60 text-sm">No users match your current search and filter criteria.</p>
           </div>
         )}
       </div>

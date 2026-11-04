@@ -292,7 +292,7 @@ const AgentDashboard = () => {
 
     return (
       <motion.div
-        className={`relative overflow-hidden rounded-2xl p-6 glass-dark border backdrop-blur-md cursor-pointer group bg-gradient-to-br ${
+        className={`relative overflow-hidden rounded-2xl p-6 bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm backdrop-blur-md cursor-pointer group bg-gradient-to-br ${
           colorClasses[color] || colorClasses.primary
         } ${onClick ? 'hover:scale-105' : ''}`}
         onClick={onClick}
@@ -305,7 +305,7 @@ const AgentDashboard = () => {
       >
         <div className="flex items-center justify-between relative z-10">
           <div className="flex-1">
-            <p className="text-sm text-muted-foreground mb-2 font-medium">{title}</p>
+            <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE] mb-2 font-medium">{title}</p>
             <motion.p
               className="text-3xl font-bold text-foreground"
               initial={{ scale: 0 }}
@@ -409,8 +409,8 @@ const AgentDashboard = () => {
         <div className="card-body">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h3 className="font-semibold text-neutral-900">{appointment.propertyId?.title}</h3>
-              <div className="flex items-center gap-2 text-neutral-600 mt-1">
+              <h3 className="font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">{appointment.propertyId?.title}</h3>
+              <div className="flex items-center gap-2 text-[#4B5563] dark:text-[#A8B5AE] mt-1">
                 <Users size={14} />
                 <span className="text-sm">{appointment.contactInfo?.name || 'Anonymous Client'}</span>
               </div>
@@ -421,23 +421,23 @@ const AgentDashboard = () => {
           </div>
           
           <div className="space-y-2 mb-3">
-            <div className="flex items-center gap-2 text-neutral-600">
+            <div className="flex items-center gap-2 text-[#4B5563] dark:text-[#A8B5AE]">
               <Calendar size={16} />
               <span className="text-sm">
                 {appointment.visitDate ? new Date(appointment.visitDate).toLocaleDateString() : 'No date set'}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-neutral-600">
+            <div className="flex items-center gap-2 text-[#4B5563] dark:text-[#A8B5AE]">
               <Mail size={16} />
               <span className="text-sm">{appointment.contactInfo?.email}</span>
             </div>
-            <div className="flex items-center gap-2 text-neutral-600">
+            <div className="flex items-center gap-2 text-[#4B5563] dark:text-[#A8B5AE]">
               <Phone size={16} />
               <span className="text-sm">{appointment.contactInfo?.phone}</span>
             </div>
           </div>
           
-          <p className="text-sm text-neutral-600 mb-4">
+          <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE] mb-4">
             {appointment.message || 'No message provided'}
           </p>
           
@@ -545,7 +545,7 @@ const AgentDashboard = () => {
                     type="datetime-local"
                     value={visitDate}
                     onChange={(e) => setVisitDate(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-md"
                     min={new Date().toISOString().slice(0, 16)}
                   />
                 </div>
@@ -592,22 +592,22 @@ const AgentDashboard = () => {
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-gold-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading dashboard...</p>
+          <p className="text-[#4B5563] dark:text-[#A8B5AE]">Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
+    <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] text-[#1A1A1A] dark:text-[#F8F4EC] transition-colors duration-200">
       {/* WOW UPGRADE: Glassmorphism sidebar */}
       <motion.aside
-        className="fixed left-0 top-0 h-screen w-64 glass-dark border-r border-border/30 z-40 overflow-y-auto"
+        className="fixed left-0 top-0 h-screen w-64 bg-white dark:bg-[#141A17] border-r border-[#E5E0D8] dark:border-[#2A342E] z-40 overflow-y-auto transition-colors duration-200"
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.5, type: 'spring' }}
       >
-        <div className="p-6 mb-8 border-b border-border/20">
+        <div className="p-6 mb-8 border-b border-[#E5E0D8] dark:border-[#2A342E]">
           <motion.h2
             className="text-2xl font-bold bg-gradient-to-r from-ethiopian-green to-gold-400 bg-clip-text text-transparent mb-2"
             initial={{ opacity: 0, y: -10 }}
@@ -617,7 +617,7 @@ const AgentDashboard = () => {
             Agent Dashboard
           </motion.h2>
           <motion.p
-            className="text-sm text-muted-foreground"
+            className="text-sm text-[#4B5563] dark:text-[#A8B5AE]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
@@ -637,8 +637,8 @@ const AgentDashboard = () => {
                 href={`#${item.id}`}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 relative overflow-hidden ${
                   isActive
-                    ? 'bg-gradient-to-r from-ethiopian-green to-ethiopian-green/80 text-white shadow-lg'
-                    : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    ? 'bg-[#0B6E4F] text-white font-bold shadow-md'
+                    : 'text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC]'
                 }`}
                 onClick={(e) => {
                   e.preventDefault();
@@ -695,7 +695,7 @@ const AgentDashboard = () => {
                 {activeTab === 'contact' && 'Contact Support'}
               </motion.h1>
               <motion.p
-                className="text-muted-foreground text-lg"
+                className="text-[#4B5563] dark:text-[#A8B5AE] text-lg"
                 key={`${activeTab}-desc`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -710,7 +710,7 @@ const AgentDashboard = () => {
             </div>
             <div className="flex items-center gap-4">
               <motion.button
-                className="px-4 py-2 glass-dark border border-border/30 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all flex items-center gap-2"
+                className="px-4 py-2 bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm border-[#E5E0D8]/30 dark:border-[#2A342E]/30 rounded-lg text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground hover:bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 transition-all flex items-center gap-2"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -718,7 +718,7 @@ const AgentDashboard = () => {
                 Notifications
               </motion.button>
               <motion.button
-                className="px-6 py-2 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/80 text-white rounded-lg shadow-lg hover:shadow-xl flex items-center gap-2 font-medium"
+                className="px-6 py-2 bg-[#0B6E4F] hover:bg-[#095C42] text-white rounded-xl shadow-md hover:shadow-[0_0_15px_rgba(212,160,23,0.3)] cursor-pointer flex items-center gap-2 font-medium"
                 onClick={() => navigate('/properties/new')}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
@@ -793,7 +793,7 @@ const AgentDashboard = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   {/* Recent Listings */}
                   <motion.div
-                    className="glass-card rounded-2xl p-6 border border-border/30"
+                    className="glass-card rounded-2xl p-6 border border-[#E5E0D8]/30 dark:border-[#2A342E]/30"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 }}
@@ -801,7 +801,7 @@ const AgentDashboard = () => {
                     <div className="flex items-center justify-between mb-6">
                       <h3 className="text-xl font-bold text-foreground">Recent Listings</h3>
                       <motion.button
-                        className="px-4 py-2 text-sm bg-muted/50 text-muted-foreground hover:text-foreground rounded-lg transition-all"
+                        className="px-4 py-2 text-sm bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground rounded-lg transition-all"
                         onClick={() => setActiveTab('listings')}
                         whileHover={{ scale: 1.05 }}
                       >
@@ -812,7 +812,7 @@ const AgentDashboard = () => {
                       {Array.isArray(myListings) && myListings.slice(0, 3).map((listing, index) => (
                         <motion.div
                           key={listing._id}
-                          className="flex items-center gap-4 p-4 bg-muted/30 rounded-xl hover:bg-muted/50 transition-all cursor-pointer"
+                          className="flex items-center gap-4 p-4 bg-[#F0EDE6]/30 dark:bg-[#1C2420]/30 rounded-xl hover:bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 transition-all cursor-pointer"
                           onClick={() => openPropertyDetails(listing)}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -832,26 +832,26 @@ const AgentDashboard = () => {
                           </div>
                           <div className="flex-1 min-w-0">
                             <h4 className="font-semibold text-foreground truncate">{listing.title}</h4>
-                            <p className="text-sm text-muted-foreground">ETB {listing.price?.toLocaleString()}</p>
+                            <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">ETB {listing.price?.toLocaleString()}</p>
                           </div>
                           <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                             listing.status === 'approved' ? 'bg-green-500/20 text-green-400' :
                             listing.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                            'bg-muted text-muted-foreground'
+                            'bg-[#F0EDE6] dark:bg-[#1C2420] text-[#4B5563] dark:text-[#A8B5AE]'
                           }`}>
                             {listing.status}
                           </span>
                         </motion.div>
                       ))}
                       {(!myListings || myListings.length === 0) && (
-                        <p className="text-center text-muted-foreground py-8">No listings yet</p>
+                        <p className="text-center text-[#4B5563] dark:text-[#A8B5AE] py-8">No listings yet</p>
                       )}
                     </div>
                   </motion.div>
 
                   {/* Recent Appointments */}
                   <motion.div
-                    className="glass-card rounded-2xl p-6 border border-border/30"
+                    className="glass-card rounded-2xl p-6 border border-[#E5E0D8]/30 dark:border-[#2A342E]/30"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 }}
@@ -859,7 +859,7 @@ const AgentDashboard = () => {
                     <div className="flex items-center justify-between mb-6">
                       <h3 className="text-xl font-bold text-foreground">Recent Appointments</h3>
                       <motion.button
-                        className="px-4 py-2 text-sm bg-muted/50 text-muted-foreground hover:text-foreground rounded-lg transition-all"
+                        className="px-4 py-2 text-sm bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground rounded-lg transition-all"
                         onClick={() => setActiveTab('appointments')}
                         whileHover={{ scale: 1.05 }}
                       >
@@ -870,7 +870,7 @@ const AgentDashboard = () => {
                       {Array.isArray(recentInterests) && recentInterests.slice(0, 3).map((interest, index) => (
                         <motion.div
                           key={interest._id}
-                          className="flex items-center gap-4 p-4 bg-muted/30 rounded-xl"
+                          className="flex items-center gap-4 p-4 bg-[#F0EDE6]/30 dark:bg-[#1C2420]/30 rounded-xl"
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.1 * index }}
@@ -880,20 +880,20 @@ const AgentDashboard = () => {
                           </div>
                           <div className="flex-1 min-w-0">
                             <h4 className="font-semibold text-foreground truncate">{interest.contactInfo?.name || 'Anonymous'}</h4>
-                            <p className="text-sm text-muted-foreground truncate">{interest.propertyId?.title || 'Property'}</p>
+                            <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE] truncate">{interest.propertyId?.title || 'Property'}</p>
                           </div>
                           <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                             interest.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                            interest.status === 'contacted' ? 'bg-blue-500/20 text-blue-400' :
+                            interest.status === 'contacted' ? 'bg-[#0B6E4F] dark:bg-[#0B6E4F]/20 text-[#0B6E4F] dark:text-[#0D8A62]' :
                             interest.status === 'schedule' ? 'bg-green-500/20 text-green-400' :
-                            'bg-muted text-muted-foreground'
+                            'bg-[#F0EDE6] dark:bg-[#1C2420] text-[#4B5563] dark:text-[#A8B5AE]'
                           }`}>
                             {interest.status}
                           </span>
                         </motion.div>
                       ))}
                       {(!recentInterests || recentInterests.length === 0) && (
-                        <p className="text-center text-muted-foreground py-8">No appointments yet</p>
+                        <p className="text-center text-[#4B5563] dark:text-[#A8B5AE] py-8">No appointments yet</p>
                       )}
                     </div>
                   </motion.div>
@@ -913,7 +913,7 @@ const AgentDashboard = () => {
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-4">
                     <motion.button
-                      className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-ethiopian-green text-white' : 'bg-muted/50 text-muted-foreground'}`}
+                      className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-ethiopian-green text-white' : 'bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 text-[#4B5563] dark:text-[#A8B5AE]'}`}
                       onClick={() => setViewMode('grid')}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -921,7 +921,7 @@ const AgentDashboard = () => {
                       <Grid size={20} />
                     </motion.button>
                     <motion.button
-                      className={`p-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-ethiopian-green text-white' : 'bg-muted/50 text-muted-foreground'}`}
+                      className={`p-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-ethiopian-green text-white' : 'bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 text-[#4B5563] dark:text-[#A8B5AE]'}`}
                       onClick={() => setViewMode('list')}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -931,7 +931,7 @@ const AgentDashboard = () => {
                   </div>
                 </div>
                 
-                <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
+                <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5' : 'space-y-4'}>
                   {Array.isArray(myListings) && myListings.map((listing, index) => (
                     <motion.div
                       key={listing._id}
@@ -944,9 +944,9 @@ const AgentDashboard = () => {
                   ))}
                   {(!myListings || myListings.length === 0) && (
                     <div className="col-span-full text-center py-12 glass-card rounded-2xl">
-                      <Building size={48} className="mx-auto mb-4 text-muted-foreground" />
+                      <Building size={48} className="mx-auto mb-4 text-[#4B5563] dark:text-[#A8B5AE]" />
                       <h3 className="text-xl font-semibold mb-2">No listings yet</h3>
-                      <p className="text-muted-foreground mb-4">Start by adding your first property listing</p>
+                      <p className="text-[#4B5563] dark:text-[#A8B5AE] mb-4">Start by adding your first property listing</p>
                       <motion.button
                         className="px-6 py-2 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/80 text-white rounded-lg"
                         onClick={() => navigate('/properties/new')}
@@ -970,7 +970,7 @@ const AgentDashboard = () => {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                   {Array.isArray(appointments) && appointments.map((appointment, index) => (
                     <motion.div
                       key={appointment._id || index}
@@ -991,9 +991,9 @@ const AgentDashboard = () => {
                   ))}
                   {(!appointments || appointments.length === 0) && (
                     <div className="col-span-full text-center py-12 glass-card rounded-2xl">
-                      <Calendar size={48} className="mx-auto mb-4 text-muted-foreground" />
+                      <Calendar size={48} className="mx-auto mb-4 text-[#4B5563] dark:text-[#A8B5AE]" />
                       <h3 className="text-xl font-semibold mb-2">No appointments</h3>
-                      <p className="text-muted-foreground">Appointments will appear here when buyers express interest</p>
+                      <p className="text-[#4B5563] dark:text-[#A8B5AE]">Appointments will appear here when buyers express interest</p>
                     </div>
                   )}
                 </div>
@@ -1009,7 +1009,7 @@ const AgentDashboard = () => {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                   {Array.isArray(myListings) && myListings.filter(l => l.status === 'approved').map((listing, index) => (
                     <motion.div
                       key={listing._id}
@@ -1022,9 +1022,9 @@ const AgentDashboard = () => {
                   ))}
                   {(!myListings || myListings.filter(l => l.status === 'approved').length === 0) && (
                     <div className="col-span-full text-center py-12 glass-card rounded-2xl">
-                      <TrendingUp size={48} className="mx-auto mb-4 text-muted-foreground" />
+                      <TrendingUp size={48} className="mx-auto mb-4 text-[#4B5563] dark:text-[#A8B5AE]" />
                       <h3 className="text-xl font-semibold mb-2">No active listings</h3>
-                      <p className="text-muted-foreground">Your approved properties for sale will appear here</p>
+                      <p className="text-[#4B5563] dark:text-[#A8B5AE]">Your approved properties for sale will appear here</p>
                     </div>
                   )}
                 </div>
@@ -1041,7 +1041,7 @@ const AgentDashboard = () => {
                 transition={{ duration: 0.3 }}
                 className="max-w-2xl mx-auto"
               >
-                <div className="glass-card rounded-2xl p-8 border border-border/30">
+                <div className="glass-card rounded-2xl p-8 border border-[#E5E0D8]/30 dark:border-[#2A342E]/30">
                   <h3 className="text-2xl font-bold mb-6 text-foreground">Contact Support</h3>
                   <UserContactForm />
                 </div>
@@ -1060,10 +1060,10 @@ const AgentDashboard = () => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
           >
-            <div className="flex items-center justify-between p-6 border-b border-border/30">
+            <div className="flex items-center justify-between p-6 border-b border-[#E5E0D8]/30 dark:border-[#2A342E]/30">
               <h2 className="text-xl font-bold text-foreground">{selectedProperty.title}</h2>
               <button 
-                className="p-2 hover:bg-muted/50 rounded-lg transition-colors"
+                className="p-2 hover:bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 rounded-lg transition-colors"
                 onClick={() => setShowPropertyDetails(false)}
               >
                 <X size={20} />
@@ -1072,27 +1072,27 @@ const AgentDashboard = () => {
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">Status</p>
+                  <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Status</p>
                   <p className="font-semibold">{selectedProperty.status}</p>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">Price</p>
+                  <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Price</p>
                   <p className="font-semibold">ETB {selectedProperty.price?.toLocaleString()}</p>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">Location</p>
+                  <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Location</p>
                   <p className="font-semibold">{selectedProperty.location}</p>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">Type</p>
+                  <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Type</p>
                   <p className="font-semibold">{selectedProperty.type}</p>
                 </div>
               </div>
-              <p className="text-muted-foreground">{selectedProperty.description}</p>
+              <p className="text-[#4B5563] dark:text-[#A8B5AE]">{selectedProperty.description}</p>
             </div>
-            <div className="flex gap-4 p-6 border-t border-border/30">
+            <div className="flex gap-4 p-6 border-t border-[#E5E0D8]/30 dark:border-[#2A342E]/30">
               <button 
-                className="flex-1 py-2 bg-muted/50 text-foreground rounded-lg hover:bg-muted transition-colors"
+                className="flex-1 py-2 bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 text-foreground rounded-lg hover:bg-[#F0EDE6] dark:bg-[#1C2420] transition-colors"
                 onClick={() => navigate(`/properties/${selectedProperty._id}`)}
               >
                 View Full Page

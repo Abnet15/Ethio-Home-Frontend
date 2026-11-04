@@ -757,14 +757,14 @@ const EmployeeDashboard = () => {
   };
 
   const StatCard = ({ title, value, change, icon: Icon, color = 'primary', onClick }) => (
-    <div className="bg-gray-900/80 border border-gray-800 rounded-2xl p-6 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/5 transition-all duration-300 cursor-pointer hover:-translate-y-1" onClick={onClick}>
+    <div className="bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] rounded-3xl p-6 shadow-sm hover:border-[#0B6E4F] hover:shadow-lg hover:shadow-[#0B6E4F]/5 transition-all duration-300 cursor-pointer hover:-translate-y-1" onClick={onClick}>
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">{title}</h3>
-        <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
-          <Icon className="w-5 h-5 text-purple-400" />
+        <h3 className="text-sm font-semibold text-[#6B7280] dark:text-[#A8B5AE] uppercase tracking-wider">{title}</h3>
+        <div className="w-10 h-10 rounded-xl bg-[#0B6E4F]/10 dark:bg-[#10B981]/15 flex items-center justify-center">
+          <Icon className="w-5 h-5 text-[#0B6E4F] dark:text-[#10B981]" />
         </div>
       </div>
-      <p className="text-3xl font-bold text-white mb-1">{value}</p>
+      <p className="text-3xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-1">{value}</p>
       {change !== undefined && (
         <div className={`flex items-center gap-1 text-sm ${change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
           {change >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
@@ -777,48 +777,48 @@ const EmployeeDashboard = () => {
   const ActivityItem = ({ activity }) => {
     const Icon = activity.icon;
     return (
-      <div className="flex items-center gap-4 p-4 hover:bg-gray-800/50 rounded-xl transition">
-        <div className="w-10 h-10 bg-purple-500/10 rounded-full flex items-center justify-center">
-          <Icon size={20} className="text-purple-400" />
+      <div className="flex items-center gap-4 p-4 hover:bg-[#F0EDE6]/50 dark:hover:bg-[#1C2420]/50 rounded-xl transition">
+        <div className="w-10 h-10 bg-[#0B6E4F]/10 dark:bg-[#10B981]/15 rounded-full flex items-center justify-center">
+          <Icon size={20} className="text-[#0B6E4F] dark:text-[#10B981]" />
         </div>
         <div className="flex-1">
-          <p className="font-medium text-gray-200">{activity.message}</p>
-          <p className="text-sm text-gray-500">{activity.time}</p>
+          <p className="font-medium text-[#1A1A1A] dark:text-[#F8F4EC]">{activity.message}</p>
+          <p className="text-sm text-[#4B5563] dark:text-[#6B7A73]">{activity.time}</p>
         </div>
-        <ChevronRight size={16} className="text-gray-600" />
+        <ChevronRight size={16} className="text-[#4B5563] dark:text-[#6B7A73]" />
       </div>
     );
   };
 
   const QuickActionCard = ({ title, description, icon: Icon, onClick, color = 'primary' }) => (
     <div 
-      className="flex items-center gap-4 p-4 bg-gray-800/50 border border-gray-700/50 rounded-xl cursor-pointer hover:bg-gray-800 hover:border-purple-500/30 transition-all"
+      className="flex items-center gap-4 p-4 bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 border border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl cursor-pointer hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:border-[#0B6E4F] transition-all"
       onClick={onClick}
     >
-      <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center">
-        <Icon size={24} className="text-purple-400" />
+      <div className="w-12 h-12 bg-[#0B6E4F]/10 dark:bg-[#10B981]/15 rounded-xl flex items-center justify-center">
+        <Icon size={24} className="text-[#0B6E4F] dark:text-[#10B981]" />
       </div>
       <div className="flex-1">
-        <h4 className="font-semibold text-gray-200 text-sm">{title}</h4>
-        <p className="text-gray-500 text-xs mt-0.5">{description}</p>
+        <h4 className="font-semibold text-[#1A1A1A] dark:text-[#F8F4EC] text-sm">{title}</h4>
+        <p className="text-[#4B5563] dark:text-[#6B7A73] text-xs mt-0.5">{description}</p>
       </div>
-      <ArrowUpRight size={16} className="text-gray-600" />
+      <ArrowUpRight size={16} className="text-[#4B5563] dark:text-[#6B7A73]" />
     </div>
   );
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] text-[#1A1A1A] dark:text-[#F8F4EC] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading employee dashboard...</p>
+          <div className="w-16 h-16 border-4 border-[#0B6E4F] dark:border-[#0B6E4F] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-[#6B7280] dark:text-[#A8B5AE]">Loading employee dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 relative overflow-hidden">
+    <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] text-[#1A1A1A] dark:text-[#F8F4EC] relative overflow-hidden transition-colors duration-200">
       {/* Dark mode background effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-20"
@@ -828,19 +828,19 @@ const EmployeeDashboard = () => {
       {/* Mobile Drawer */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
         <SheetTrigger asChild>
-          <button className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-gray-900/95 backdrop-blur-xl border border-gray-700 shadow-xl flex items-center justify-center hover:bg-gray-800 transition-all">
-            <MenuIcon className="w-5 h-5 text-gray-300" />
+          <button className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-[#F8F4EC] dark:bg-[#0B0F0D]/95 backdrop-blur-xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-xl flex items-center justify-center hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] transition-all">
+            <MenuIcon className="w-5 h-5 text-[#4B5563] dark:text-[#A8B5AE]" />
           </button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-72 bg-gray-900 border-gray-800 p-0">
-          <div className="p-6 border-b border-gray-800">
+        <SheetContent side="left" className="w-72 bg-white dark:bg-[#141A17] border-r border-[#E5E0D8] dark:border-[#2A342E] p-0">
+          <div className="p-6 border-b border-[#E5E0D8] dark:border-[#2A342E]">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
-                <Building size={24} className="text-white" />
+              <div className="w-10 h-10 rounded-xl bg-[#0B6E4F] flex items-center justify-center">
+                <Building size={24} className="text-[#1A1A1A] dark:text-[#F8F4EC]" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-white">Employee Portal</h2>
-                <p className="text-xs text-gray-400">{user?.name || 'Employee'}</p>
+                <h2 className="text-lg font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">Employee Portal</h2>
+                <p className="text-xs text-[#6B7280] dark:text-[#A8B5AE]">{user?.name || 'Employee'}</p>
               </div>
             </div>
           </div>
@@ -853,8 +853,8 @@ const EmployeeDashboard = () => {
                   onClick={() => { setActiveTab(item.id); setMobileOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
                     activeTab === item.id
-                      ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30'
-                      : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+                      ? 'bg-[#0B6E4F] text-[#1A1A1A] dark:text-[#F8F4EC] font-bold shadow-md'
+                      : 'text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC]'
                   }`}
                 >
                   <Icon size={18} />
@@ -868,30 +868,30 @@ const EmployeeDashboard = () => {
 
       <div className="flex">
         {/* Desktop Sidebar */}
-        <div className={`hidden lg:flex flex-col bg-gray-900/95 backdrop-blur-xl border-r border-gray-800 min-h-screen sticky top-0 transition-all ${sidebarCollapsed ? 'w-20' : 'w-64'} p-6`}>
+        <div className={`hidden lg:flex flex-col bg-white dark:bg-[#141A17] border-r border-[#E5E0D8] dark:border-[#2A342E] min-h-screen sticky top-0 transition-all ${sidebarCollapsed ? 'w-20' : 'w-64'} p-6`}>
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
-                <Building size={24} className="text-white" />
+              <div className="w-10 h-10 rounded-xl bg-[#0B6E4F] flex items-center justify-center">
+                <Building size={24} className="text-[#1A1A1A] dark:text-[#F8F4EC]" />
               </div>
-              {!sidebarCollapsed && <h2 className="text-xl font-bold text-white">Employee Portal</h2>}
+              {!sidebarCollapsed && <h2 className="text-xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">Employee Portal</h2>}
             </div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
-                <UserPlus size={20} className="text-purple-400" />
+              <div className="w-10 h-10 rounded-full bg-[#0B6E4F]/10 dark:bg-[#10B981]/15 text-[#0B6E4F] dark:text-[#10B981] flex items-center justify-center">
+                <UserPlus size={20} className="text-[#0B6E4F] dark:text-[#10B981]" />
               </div>
               {!sidebarCollapsed && (
                 <div>
-                  <p className="font-bold text-white">{user?.name || 'Employee'}</p>
-                  <p className="text-xs text-gray-400">Employee</p>
+                  <p className="font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">{user?.name || 'Employee'}</p>
+                  <p className="text-xs text-[#6B7280] dark:text-[#A8B5AE]">Employee</p>
                 </div>
               )}
             </div>
             <button 
-              className="w-full p-2 rounded-lg hover:bg-gray-800 transition-colors"
+              className="w-full p-2 rounded-lg hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] transition-colors"
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             >
-              <ChevronRight size={20} className={`text-gray-400 transition-transform ${sidebarCollapsed ? '' : 'rotate-180'}`} />
+              <ChevronRight size={20} className={`text-[#6B7280] dark:text-[#A8B5AE] transition-transform ${sidebarCollapsed ? '' : 'rotate-180'}`} />
             </button>
           </div>
 
@@ -903,8 +903,8 @@ const EmployeeDashboard = () => {
                   <button 
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
                       activeTab === item.id 
-                        ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30'
-                        : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+                        ? 'bg-[#0B6E4F] text-[#1A1A1A] dark:text-[#F8F4EC] font-bold shadow-md'
+                        : 'text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC]'
                     }`}
                     onClick={() => setActiveTab(item.id)}
                     title={sidebarCollapsed ? item.label : ''}
@@ -917,16 +917,16 @@ const EmployeeDashboard = () => {
             })}
           </nav>
 
-          <div className="mt-4 pt-4 border-t border-gray-800 space-y-2">
+          <div className="mt-4 pt-4 border-t border-[#E5E0D8] dark:border-[#2A342E] space-y-2">
             <button 
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-all" 
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC] transition-all" 
               onClick={() => navigate('/properties/new')}
             >
               <Plus size={16} />
               {!sidebarCollapsed && 'Create Property'}
             </button>
             <button 
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-all" 
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC] transition-all" 
               onClick={logout}
             >
               <LogOut size={16} />
@@ -940,13 +940,13 @@ const EmployeeDashboard = () => {
         {activeTab === 'overview' && (
           <>
             {/* Header */}
-            <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 sm:p-6 rounded-2xl bg-gray-900/80 border border-gray-800">
+            <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 sm:p-6 rounded-2xl bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E]">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-white">Employee Dashboard</h1>
-                <p className="text-gray-400 mt-1">Manage property verifications, client relationships, and daily tasks</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">Employee Dashboard</h1>
+                <p className="text-[#6B7280] dark:text-[#A8B5AE] mt-1">Manage property verifications, client relationships, and daily tasks</p>
               </div>
               <div className="flex items-center gap-4">
-                <button className="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white rounded-xl flex items-center gap-2 transition-all" onClick={fetchDashboardData}>
+                <button className="px-4 py-2 bg-[#F0EDE6] dark:bg-[#1C2420] border border-[#E5E0D8] dark:border-[#2A342E] text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#E5E0D8] dark:hover:bg-[#2A342E] hover:text-[#1A1A1A] dark:text-[#F8F4EC] rounded-xl flex items-center gap-2 transition-all" onClick={fetchDashboardData}>
                   <RefreshCw size={16} />
                   Refresh
                 </button>
@@ -954,7 +954,7 @@ const EmployeeDashboard = () => {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 mb-8">
               <StatCard
                 title="Pending Verifications"
                 value={formatNumber(verifications.filter(v => v.status === 'pending').length)}
@@ -1005,10 +1005,10 @@ const EmployeeDashboard = () => {
             {/* Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Recent Activity */}
-              <div className="bg-gray-900/80 border border-gray-800 rounded-2xl overflow-hidden">
-                <div className="p-5 border-b border-gray-800 flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
-                  <button className="px-3 py-1.5 text-xs bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 rounded-lg transition-all">
+              <div className="bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] rounded-2xl overflow-hidden">
+                <div className="p-5 border-b border-[#E5E0D8] dark:border-[#2A342E] flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Recent Activity</h3>
+                  <button className="px-3 py-1.5 text-xs bg-[#F0EDE6] dark:bg-[#1C2420] border border-[#E5E0D8] dark:border-[#2A342E] text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#E5E0D8] dark:hover:bg-[#2A342E] rounded-lg transition-all">
                     View All
                   </button>
                 </div>
@@ -1020,9 +1020,9 @@ const EmployeeDashboard = () => {
               </div>
 
               {/* Quick Actions */}
-              <div className="bg-gray-900/80 border border-gray-800 rounded-2xl overflow-hidden">
-                <div className="p-5 border-b border-gray-800">
-                  <h3 className="text-lg font-semibold text-white">Quick Actions</h3>
+              <div className="bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] rounded-2xl overflow-hidden">
+                <div className="p-5 border-b border-[#E5E0D8] dark:border-[#2A342E]">
+                  <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Quick Actions</h3>
                 </div>
                 <div className="p-5">
                   <div className="space-y-3">
@@ -1066,9 +1066,9 @@ const EmployeeDashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
               {/* Recent Tasks */}
               <div className="table-container">
-                <div className="p-6 border-b border-neutral-200">
+                <div className="p-6 border-b border-[#E5E0D8] dark:border-[#2A342E]">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-neutral-900">Recent Tasks</h3>
+                    <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Recent Tasks</h3>
                     <button 
                       className="btn btn-sm btn-secondary"
                       onClick={() => setActiveTab('tasks')}
@@ -1092,8 +1092,8 @@ const EmployeeDashboard = () => {
                         <tr key={task.id}>
                           <td>
                             <div>
-                              <p className="font-medium text-neutral-900">{task.title}</p>
-                              <p className="text-sm text-neutral-500">Assigned: {task.assignedDate}</p>
+                              <p className="font-medium text-[#1A1A1A] dark:text-[#F8F4EC]">{task.title}</p>
+                              <p className="text-sm text-[#4B5563] dark:text-[#6B7A73]">Assigned: {task.assignedDate}</p>
                             </div>
                           </td>
                           <td>
@@ -1112,7 +1112,7 @@ const EmployeeDashboard = () => {
                               {task.status}
                             </span>
                           </td>
-                          <td className="text-sm text-neutral-500">{task.dueDate}</td>
+                          <td className="text-sm text-[#4B5563] dark:text-[#6B7A73]">{task.dueDate}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -1122,9 +1122,9 @@ const EmployeeDashboard = () => {
 
               {/* Recent Clients */}
               <div className="table-container">
-                <div className="p-6 border-b border-neutral-200">
+                <div className="p-6 border-b border-[#E5E0D8] dark:border-[#2A342E]">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-neutral-900">Recent Clients</h3>
+                    <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Recent Clients</h3>
                     <button 
                       className="btn btn-sm btn-secondary"
                       onClick={() => setActiveTab('clients')}
@@ -1147,8 +1147,8 @@ const EmployeeDashboard = () => {
                         <tr key={client.id}>
                           <td>
                             <div>
-                              <p className="font-medium text-neutral-900">{client.name}</p>
-                              <p className="text-sm text-neutral-500">{client.email}</p>
+                              <p className="font-medium text-[#1A1A1A] dark:text-[#F8F4EC]">{client.name}</p>
+                              <p className="text-sm text-[#4B5563] dark:text-[#6B7A73]">{client.email}</p>
                             </div>
                           </td>
                           <td>
@@ -1159,7 +1159,7 @@ const EmployeeDashboard = () => {
                               {client.status}
                             </span>
                           </td>
-                          <td className="text-sm text-neutral-500">{client.lastContact}</td>
+                          <td className="text-sm text-[#4B5563] dark:text-[#6B7A73]">{client.lastContact}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -1175,7 +1175,7 @@ const EmployeeDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Task Management</h3>
+                <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Task Management</h3>
                 <div className="flex items-center gap-2">
                   <button className="btn btn-sm btn-secondary" onClick={fetchDashboardData}>
                     <RefreshCw size={16} />
@@ -1268,7 +1268,7 @@ const EmployeeDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Reports & Documentation</h3>
+                <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Reports & Documentation</h3>
                 <div className="flex items-center gap-2">
                   <button className="btn btn-sm btn-secondary" onClick={fetchDashboardData}>
                     <RefreshCw size={16} />
@@ -1362,7 +1362,7 @@ const EmployeeDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Client Management</h3>
+                <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Client Management</h3>
                 <div className="flex items-center gap-2">
                   <button className="btn btn-sm btn-secondary" onClick={fetchDashboardData}>
                     <RefreshCw size={16} />
@@ -1436,7 +1436,7 @@ const EmployeeDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Schedule & Appointments</h3>
+                <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Schedule & Appointments</h3>
                 <div className="flex items-center gap-2">
                   <button className="btn btn-sm btn-secondary" onClick={fetchDashboardData}>
                     <RefreshCw size={16} />
@@ -1447,15 +1447,15 @@ const EmployeeDashboard = () => {
             </div>
             <div className="card-body">
               {isEditingSchedule && (
-                <div className="mb-6 p-4 border border-neutral-200 rounded-lg">
+                <div className="mb-6 p-4 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg">
                   <h4 className="font-semibold mb-3">Edit Appointment</h4>
                   <form onSubmit={saveEditSchedule} onKeyDown={handleScheduleFormKeyDown} className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
-                      <label className="text-sm text-neutral-600">Title</label>
+                      <label className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Title</label>
                       <input className="setting-input" value={scheduleForm.title} onChange={(e)=>setScheduleForm({...scheduleForm,title:e.target.value})} required />
                     </div>
                     <div>
-                      <label className="text-sm text-neutral-600">Type</label>
+                      <label className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Type</label>
                       <select className="setting-input" value={scheduleForm.type} onChange={(e)=>setScheduleForm({...scheduleForm,type:e.target.value})}>
                         <option value="inspection">Inspection</option>
                         <option value="meeting">Meeting</option>
@@ -1463,27 +1463,27 @@ const EmployeeDashboard = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="text-sm text-neutral-600">Date</label>
+                      <label className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Date</label>
                       <input type="date" className="setting-input" value={scheduleForm.date} onChange={(e)=>setScheduleForm({...scheduleForm,date:e.target.value})} required />
                     </div>
                     <div>
-                      <label className="text-sm text-neutral-600">Time</label>
+                      <label className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Time</label>
                       <input type="time" className="setting-input" value={scheduleForm.time} onChange={(e)=>setScheduleForm({...scheduleForm,time:e.target.value})} required />
                     </div>
                     <div className="md:col-span-2">
-                      <label className="text-sm text-neutral-600">Location</label>
+                      <label className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Location</label>
                       <input className="setting-input" value={scheduleForm.location} onChange={(e)=>setScheduleForm({...scheduleForm,location:e.target.value})} />
                     </div>
                     <div>
-                      <label className="text-sm text-neutral-600">Contact Name</label>
+                      <label className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Contact Name</label>
                       <input className="setting-input" value={scheduleForm.contactName} onChange={(e)=>setScheduleForm({...scheduleForm,contactName:e.target.value})} />
                     </div>
                     <div>
-                      <label className="text-sm text-neutral-600">Contact Email</label>
+                      <label className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Contact Email</label>
                       <input type="email" className="setting-input" value={scheduleForm.contactEmail} onChange={(e)=>setScheduleForm({...scheduleForm,contactEmail:e.target.value})} />
                     </div>
                     <div>
-                      <label className="text-sm text-neutral-600">Contact Phone</label>
+                      <label className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Contact Phone</label>
                       <input type="tel" className="setting-input" value={scheduleForm.contactPhone} onChange={(e)=>setScheduleForm({...scheduleForm,contactPhone:e.target.value})} />
                     </div>
                     <div className="flex gap-2 md:col-span-2">
@@ -1578,8 +1578,8 @@ const EmployeeDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Message Management</h3>
-                <p className="text-sm text-neutral-600">Manage and respond to user messages</p>
+                <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Message Management</h3>
+                <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Manage and respond to user messages</p>
               </div>
             </div>
             <div className="card-body">
@@ -1592,8 +1592,8 @@ const EmployeeDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Review Management</h3>
-                <p className="text-sm text-neutral-600">Manage and moderate user reviews</p>
+                <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Review Management</h3>
+                <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Manage and moderate user reviews</p>
               </div>
             </div>
             <div className="card-body">
@@ -1605,14 +1605,14 @@ const EmployeeDashboard = () => {
         {activeTab === 'selling' && (
           <div className="space-y-8">
             {/* Modern Header Section */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 rounded-2xl p-8 text-white shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
+            <div className="relative overflow-hidden bg-gradient-to-br from-[#0B6E4F] via-[#095C42] to-[#043324] text-white rounded-2xl p-8 text-[#1A1A1A] dark:text-[#F8F4EC] shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0B6E4F]/20 to-[#D4A017]/20"></div>
               <div className="relative z-10">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                        <TrendingUp size={24} className="text-white" />
+                        <TrendingUp size={24} className="text-[#1A1A1A] dark:text-[#F8F4EC]" />
                       </div>
                       <div>
                         <h1 className="text-3xl lg:text-4xl font-bold">All Selling Properties</h1>
@@ -1631,17 +1631,17 @@ const EmployeeDashboard = () => {
                     </div>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <button className="btn btn-outline bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 text-white hover:text-white transition-all duration-300">
+                    <button className="btn btn-outline bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 text-[#1A1A1A] dark:text-[#F8F4EC] hover:text-[#1A1A1A] dark:text-[#F8F4EC] transition-all duration-300">
                       <Filter size={18} className="mr-2" />
                       Filter & Search
                     </button>
-                    <button className="btn btn-outline bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 text-white hover:text-white transition-all duration-300">
+                    <button className="btn btn-outline bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 text-[#1A1A1A] dark:text-[#F8F4EC] hover:text-[#1A1A1A] dark:text-[#F8F4EC] transition-all duration-300">
                       <Download size={18} className="mr-2" />
                       Export Data
                     </button>
                     <button 
                       onClick={fetchSoldPropertiesData}
-                      className="btn btn-primary bg-white text-blue-900 hover:bg-blue-50 transition-all duration-300 transform hover:scale-105"
+                      className="btn btn-primary bg-white text-[#0B6E4F] hover:bg-[#0B6E4F]/5 dark:hover:bg-[#0B6E4F]/5 transition-all duration-300 transform hover:scale-105"
                     >
                       <RefreshCw size={18} className="mr-2" />
                       Refresh
@@ -1657,63 +1657,63 @@ const EmployeeDashboard = () => {
             {/* Modern Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Total Sold Properties */}
-              <div className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200">
+              <div className="group bg-white dark:bg-[#141A17] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#E5E0D8] dark:border-[#2A342E] hover:border-[#0B6E4F]/20 dark:border-[#0B6E4F]/20">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
-                    <TrendingUp size={24} className="text-white" />
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#0B6E4F] to-[#D4A017] rounded-xl flex items-center justify-center">
+                    <TrendingUp size={24} className="text-[#1A1A1A] dark:text-[#F8F4EC]" />
                   </div>
                   <div className="text-right">
-                    <p className="text-gray-600 text-sm font-medium">Total Sold</p>
-                    <p className="text-3xl font-bold text-gray-900">{soldProperties.length}</p>
+                    <p className="text-[#4B5563] dark:text-[#6B7A73] text-sm font-medium">Total Sold</p>
+                    <p className="text-3xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">{soldProperties.length}</p>
                   </div>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-[#F0EDE6] dark:bg-[#1C2420] rounded-full h-2">
                   <div 
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-1000" 
+                    className="bg-gradient-to-r from-[#0B6E4F] to-[#D4A017] h-2 rounded-full transition-all duration-1000" 
                     style={{width: `${Math.min((soldProperties.length / 50) * 100, 100)}%`}}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">Properties sold this year</p>
+                <p className="text-xs text-[#4B5563] dark:text-[#6B7A73] mt-2">Properties sold this year</p>
               </div>
 
               {/* Total Revenue */}
-              <div className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-green-200">
+              <div className="group bg-white dark:bg-[#141A17] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#E5E0D8] dark:border-[#2A342E] hover:border-green-200">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
-                    <DollarSign size={24} className="text-white" />
+                    <DollarSign size={24} className="text-[#1A1A1A] dark:text-[#F8F4EC]" />
                   </div>
                   <div className="text-right">
-                    <p className="text-gray-600 text-sm font-medium">Total Revenue</p>
-                    <p className="text-3xl font-bold text-gray-900">
+                    <p className="text-[#4B5563] dark:text-[#6B7A73] text-sm font-medium">Total Revenue</p>
+                    <p className="text-3xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">
                       {formatCurrency(soldProperties.reduce((sum, property) => sum + (property.price || 0), 0))}
                     </p>
                   </div>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-[#F0EDE6] dark:bg-[#1C2420] rounded-full h-2">
                   <div 
                     className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full transition-all duration-1000" 
                     style={{width: `${Math.min((soldProperties.reduce((sum, property) => sum + (property.price || 0), 0) / 10000000) * 100, 100)}%`}}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">Revenue generated from sales</p>
+                <p className="text-xs text-[#4B5563] dark:text-[#6B7A73] mt-2">Revenue generated from sales</p>
               </div>
 
               {/* Average Sale Price */}
-              <div className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-purple-200">
+              <div className="group bg-white dark:bg-[#141A17] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#E5E0D8] dark:border-[#2A342E] hover:border-[#D4A017]/50">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
-                    <BarChart3 size={24} className="text-white" />
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#0B6E4F] to-[#D4A017] rounded-xl flex items-center justify-center">
+                    <BarChart3 size={24} className="text-[#1A1A1A] dark:text-[#F8F4EC]" />
                   </div>
                   <div className="text-right">
-                    <p className="text-gray-600 text-sm font-medium">Avg Sale Price</p>
-                    <p className="text-3xl font-bold text-gray-900">
+                    <p className="text-[#4B5563] dark:text-[#6B7A73] text-sm font-medium">Avg Sale Price</p>
+                    <p className="text-3xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">
                       {soldProperties.length > 0 ? formatCurrency(Math.round(soldProperties.reduce((sum, property) => sum + (property.price || 0), 0) / soldProperties.length)) : formatCurrency(0)}
                     </p>
                   </div>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-[#F0EDE6] dark:bg-[#1C2420] rounded-full h-2">
                   <div 
-                    className="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full transition-all duration-1000" 
+                    className="bg-gradient-to-r from-[#0B6E4F] to-[#D4A017] h-2 rounded-full transition-all duration-1000" 
                     style={{
                       width: `${Math.min(
                         soldProperties.length > 0 
@@ -1724,18 +1724,18 @@ const EmployeeDashboard = () => {
                     }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">Average property value</p>
+                <p className="text-xs text-[#4B5563] dark:text-[#6B7A73] mt-2">Average property value</p>
               </div>
 
               {/* This Month Sales */}
-              <div className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-orange-200">
+              <div className="group bg-white dark:bg-[#141A17] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#E5E0D8] dark:border-[#2A342E] hover:border-orange-200">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
-                    <Calendar size={24} className="text-white" />
+                    <Calendar size={24} className="text-[#1A1A1A] dark:text-[#F8F4EC]" />
                   </div>
                   <div className="text-right">
-                    <p className="text-gray-600 text-sm font-medium">This Month</p>
-                    <p className="text-3xl font-bold text-gray-900">{(() => {
+                    <p className="text-[#4B5563] dark:text-[#6B7A73] text-sm font-medium">This Month</p>
+                    <p className="text-3xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">{(() => {
                       const currentMonth = new Date().getMonth();
                       const currentYear = new Date().getFullYear();
                       return soldProperties.filter(property => {
@@ -1746,7 +1746,7 @@ const EmployeeDashboard = () => {
                     })()}</p>
                   </div>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-[#F0EDE6] dark:bg-[#1C2420] rounded-full h-2">
                   <div 
                     className="bg-gradient-to-r from-orange-500 to-orange-600 h-2 rounded-full transition-all duration-1000" 
                     style={{
@@ -1763,20 +1763,20 @@ const EmployeeDashboard = () => {
                     }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">Sales this month</p>
+                <p className="text-xs text-[#4B5563] dark:text-[#6B7A73] mt-2">Sales this month</p>
               </div>
             </div>
 
             {/* Analytics Charts Section */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Property Type Distribution */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-[#E5E0D8] dark:border-[#2A342E]">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-gray-900 flex items-center">
-                    <PieChart size={24} className="mr-3 text-blue-600" />
+                  <h3 className="text-xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] flex items-center">
+                    <PieChart size={24} className="mr-3 text-[#0B6E4F] dark:text-[#0B6E4F]" />
                     Property Types
                   </h3>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm text-[#4B5563] dark:text-[#6B7A73]">
                     {soldProperties.length} total properties
                   </div>
                 </div>
@@ -1790,9 +1790,9 @@ const EmployeeDashboard = () => {
                     
                     const total = Object.values(typeCounts).reduce((sum, count) => sum + count, 0);
                     const colors = [
-                      { bg: 'bg-blue-500', text: 'text-blue-600' },
+                      { bg: 'bg-[#0B6E4F] dark:bg-[#0B6E4F]', text: 'text-[#0B6E4F] dark:text-[#0B6E4F]' },
                       { bg: 'bg-green-500', text: 'text-green-600' },
-                      { bg: 'bg-purple-500', text: 'text-purple-600' },
+                      { bg: 'bg-[#0B6E4F] dark:bg-[#0B6E4F]', text: 'text-[#0B6E4F] dark:text-[#0B6E4F]' },
                       { bg: 'bg-orange-500', text: 'text-orange-600' },
                       { bg: 'bg-red-500', text: 'text-red-600' }
                     ];
@@ -1802,18 +1802,18 @@ const EmployeeDashboard = () => {
                       const color = colors[index % colors.length];
                       
                       return (
-                        <div key={type} className="group p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300">
+                        <div key={type} className="group p-4 bg-[#F8F4EC] dark:bg-[#0B0F0D] rounded-xl hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] transition-all duration-300">
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center">
                               <div className={`w-3 h-3 rounded-full ${color.bg} mr-3`}></div>
-                              <span className="font-semibold text-gray-900">{type}</span>
+                              <span className="font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">{type}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <span className="text-sm font-bold text-gray-900">{count}</span>
-                              <span className="text-xs text-gray-500">({percentage.toFixed(1)}%)</span>
+                              <span className="text-sm font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">{count}</span>
+                              <span className="text-xs text-[#4B5563] dark:text-[#6B7A73]">({percentage.toFixed(1)}%)</span>
                             </div>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="w-full bg-[#F0EDE6] dark:bg-[#1C2420] rounded-full h-2">
                             <div 
                               className={`h-2 rounded-full ${color.bg} transition-all duration-1000 group-hover:shadow-sm`}
                               style={{width: `${percentage}%`}}
@@ -1827,13 +1827,13 @@ const EmployeeDashboard = () => {
               </div>
 
               {/* Price Range Analysis */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-[#E5E0D8] dark:border-[#2A342E]">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-gray-900 flex items-center">
+                  <h3 className="text-xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] flex items-center">
                     <BarChart3 size={24} className="mr-3 text-green-600" />
                     Price Ranges
                   </h3>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm text-[#4B5563] dark:text-[#6B7A73]">
                     Distribution by value
                   </div>
                 </div>
@@ -1841,8 +1841,8 @@ const EmployeeDashboard = () => {
                   {(() => {
                     const priceRanges = [
                       { label: 'Under 1M ETB', min: 0, max: 1000000, color: { bg: 'bg-green-500', text: 'text-green-600' } },
-                      { label: '1M - 5M ETB', min: 1000000, max: 5000000, color: { bg: 'bg-blue-500', text: 'text-blue-600' } },
-                      { label: '5M - 10M ETB', min: 5000000, max: 10000000, color: { bg: 'bg-purple-500', text: 'text-purple-600' } },
+                      { label: '1M - 5M ETB', min: 1000000, max: 5000000, color: { bg: 'bg-[#0B6E4F] dark:bg-[#0B6E4F]', text: 'text-[#0B6E4F] dark:text-[#0B6E4F]' } },
+                      { label: '5M - 10M ETB', min: 5000000, max: 10000000, color: { bg: 'bg-[#0B6E4F] dark:bg-[#0B6E4F]', text: 'text-[#0B6E4F] dark:text-[#0B6E4F]' } },
                       { label: 'Over 10M ETB', min: 10000000, max: Infinity, color: { bg: 'bg-orange-500', text: 'text-orange-600' } }
                     ];
                     
@@ -1857,15 +1857,15 @@ const EmployeeDashboard = () => {
                     const maxCount = Math.max(...rangeCounts.map(r => r.count));
                     
                     return rangeCounts.map((range, index) => (
-                      <div key={range.label} className="group p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300">
+                      <div key={range.label} className="group p-4 bg-[#F8F4EC] dark:bg-[#0B0F0D] rounded-xl hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] transition-all duration-300">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="font-semibold text-gray-900">{range.label}</span>
+                          <span className="font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">{range.label}</span>
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-bold text-gray-900">{range.count}</span>
-                            <span className="text-xs text-gray-500">properties</span>
+                            <span className="text-sm font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">{range.count}</span>
+                            <span className="text-xs text-[#4B5563] dark:text-[#6B7A73]">properties</span>
                           </div>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="w-full bg-[#F0EDE6] dark:bg-[#1C2420] rounded-full h-2">
                           <div 
                             className={`h-2 rounded-full ${range.color.bg} transition-all duration-1000 group-hover:shadow-sm`}
                             style={{width: `${maxCount > 0 ? (range.count / maxCount) * 100 : 0}%`}}
@@ -1879,19 +1879,19 @@ const EmployeeDashboard = () => {
             </div>
 
             {/* Properties Grid Section */}
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-[#E5E0D8] dark:border-[#2A342E]">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
-                    <Building size={20} className="text-white" />
+                  <div className="w-10 h-10 bg-gradient-to-br from-[#0B6E4F] to-[#D4A017] rounded-xl flex items-center justify-center">
+                    <Building size={20} className="text-[#1A1A1A] dark:text-[#F8F4EC]" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900">Sold Properties</h3>
-                    <p className="text-sm text-gray-600">Complete list of all sold properties</p>
+                    <h3 className="text-xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">Sold Properties</h3>
+                    <p className="text-sm text-[#4B5563] dark:text-[#6B7A73]">Complete list of all sold properties</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+                  <div className="bg-[#0B6E4F]/5 dark:bg-[#0B6E4F]/5 text-[#0B6E4F] dark:text-[#0B6E4F] px-3 py-1 rounded-full text-sm font-medium">
                     {soldProperties.length} Properties
                   </div>
                   <button className="btn btn-outline btn-sm">
@@ -1902,11 +1902,11 @@ const EmployeeDashboard = () => {
               </div>
 
               {soldProperties.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
                   {soldProperties.map((property, index) => (
                     <div 
                       key={property._id} 
-                      className="group bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-blue-300 overflow-hidden"
+                      className="group bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-[#E5E0D8] dark:border-[#2A342E] hover:border-[#0D8A62] dark:border-[#0D8A62] overflow-hidden"
                     >
                       {/* Property Image */}
                       <div className="relative h-48 overflow-hidden">
@@ -1918,20 +1918,20 @@ const EmployeeDashboard = () => {
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                            <Building size={48} className="text-gray-400" />
+                            <Building size={48} className="text-[#6B7280] dark:text-[#A8B5AE]" />
                           </div>
                         )}
                         
                         {/* Status Badge */}
                         <div className="absolute top-3 right-3">
-                          <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
+                          <span className="bg-red-500 text-[#1A1A1A] dark:text-[#F8F4EC] text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
                             Sold
                           </span>
                         </div>
                         
                         {/* Price Badge */}
                         <div className="absolute bottom-3 left-3">
-                          <span className="bg-black/80 backdrop-blur-sm text-white text-sm font-bold px-3 py-1 rounded-lg">
+                          <span className="bg-black/80 backdrop-blur-sm text-[#1A1A1A] dark:text-[#F8F4EC] text-sm font-bold px-3 py-1 rounded-lg">
                             {formatCurrency(property.price || 0)}
                           </span>
                         </div>
@@ -1940,27 +1940,27 @@ const EmployeeDashboard = () => {
                       {/* Property Details */}
                       <div className="p-4">
                         {/* Title and Location */}
-                        <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
+                        <h3 className="font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2 line-clamp-2 group-hover:text-[#0B6E4F] dark:hover:text-[#0B6E4F] transition-colors duration-300">
                           {property.title || 'Property Title'}
                         </h3>
-                        <p className="text-gray-600 text-sm mb-3 flex items-center">
-                          <MapPin size={14} className="mr-1 text-blue-500" />
+                        <p className="text-[#4B5563] dark:text-[#6B7A73] text-sm mb-3 flex items-center">
+                          <MapPin size={14} className="mr-1 text-[#0B6E4F] dark:text-[#0B6E4F]" />
                           {property.location || 'Location not specified'}
                         </p>
                         
                         {/* Property Features */}
                         <div className="grid grid-cols-2 gap-2 mb-3">
-                          <div className="flex items-center text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded">
-                            <Home size={12} className="mr-1 text-blue-500" />
+                          <div className="flex items-center text-xs text-[#4B5563] dark:text-[#6B7A73] bg-[#F8F4EC] dark:bg-[#0B0F0D] px-2 py-1 rounded">
+                            <Home size={12} className="mr-1 text-[#0B6E4F] dark:text-[#0B6E4F]" />
                             <span>{property.features?.bedrooms || 0} beds</span>
                           </div>
-                          <div className="flex items-center text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded">
+                          <div className="flex items-center text-xs text-[#4B5563] dark:text-[#6B7A73] bg-[#F8F4EC] dark:bg-[#0B0F0D] px-2 py-1 rounded">
                             <Bath size={12} className="mr-1 text-green-500" />
                             <span>{property.features?.bathrooms || 0} baths</span>
                           </div>
                           {property.features?.area && (
-                            <div className="flex items-center text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded col-span-2">
-                              <Maximize size={12} className="mr-1 text-purple-500" />
+                            <div className="flex items-center text-xs text-[#4B5563] dark:text-[#6B7A73] bg-[#F8F4EC] dark:bg-[#0B0F0D] px-2 py-1 rounded col-span-2">
+                              <Maximize size={12} className="mr-1 text-[#0B6E4F] dark:text-[#0B6E4F]" />
                               <span>{property.features.area} m²</span>
                             </div>
                           )}
@@ -1968,24 +1968,24 @@ const EmployeeDashboard = () => {
 
                         {/* Property Type */}
                         <div className="mb-3">
-                          <span className="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full">
+                          <span className="bg-[#0B6E4F]/10 dark:bg-[#0B6E4F]/10 text-[#0B6E4F] dark:text-[#0B6E4F] text-xs font-medium px-2 py-1 rounded-full">
                             {property.propertyType || property.type || 'Property'}
                           </span>
                         </div>
 
                         {/* Owner Info */}
-                        <div className="mb-3 p-2 bg-gray-50 rounded-lg">
+                        <div className="mb-3 p-2 bg-[#F8F4EC] dark:bg-[#0B0F0D] rounded-lg">
                           <div className="flex items-center mb-1">
-                            <Users size={12} className="mr-1 text-gray-500" />
-                            <span className="text-xs font-medium text-gray-700">Owner</span>
+                            <Users size={12} className="mr-1 text-[#4B5563] dark:text-[#6B7A73]" />
+                            <span className="text-xs font-medium text-[#1A1A1A] dark:text-[#A8B5AE]">Owner</span>
                           </div>
-                          <p className="text-xs text-gray-600 truncate">
+                          <p className="text-xs text-[#4B5563] dark:text-[#6B7A73] truncate">
                             {property.owner?.name || 'Owner Name'}
                           </p>
                         </div>
 
                         {/* Date Sold */}
-                        <div className="mb-3 flex items-center text-xs text-gray-500">
+                        <div className="mb-3 flex items-center text-xs text-[#4B5563] dark:text-[#6B7A73]">
                           <Calendar size={12} className="mr-1" />
                           <span>Sold: {property.updatedAt ? new Date(property.updatedAt).toLocaleDateString() : 'N/A'}</span>
                         </div>
@@ -1993,7 +1993,7 @@ const EmployeeDashboard = () => {
                         {/* View Button */}
                         <button 
                           onClick={() => navigate(`/property/${property._id}`)}
-                          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+                          className="w-full bg-gradient-to-r from-[#0B6E4F] to-[#D4A017] hover:from-[#0B6E4F] hover:to-[#D4A017] text-[#1A1A1A] dark:text-[#F8F4EC] font-medium py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
                         >
                           <Eye size={16} className="mr-2" />
                           View Details
@@ -2004,15 +2004,15 @@ const EmployeeDashboard = () => {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <div className="bg-gray-50 rounded-xl p-8 max-w-md mx-auto">
-                    <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <TrendingUp size={32} className="text-gray-400" />
+                  <div className="bg-[#F8F4EC] dark:bg-[#0B0F0D] rounded-xl p-8 max-w-md mx-auto">
+                    <div className="w-16 h-16 bg-[#F0EDE6] dark:bg-[#1C2420] rounded-full flex items-center justify-center mx-auto mb-4">
+                      <TrendingUp size={32} className="text-[#6B7280] dark:text-[#A8B5AE]" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No Sold Properties</h3>
-                    <p className="text-gray-600 mb-6">There are currently no sold properties to display.</p>
+                    <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2">No Sold Properties</h3>
+                    <p className="text-[#4B5563] dark:text-[#6B7A73] mb-6">There are currently no sold properties to display.</p>
                     <button 
                       onClick={fetchSoldPropertiesData}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 flex items-center mx-auto"
+                      className="bg-[#0B6E4F] dark:bg-[#0B6E4F] hover:bg-[#0B6E4F] dark:hover:bg-[#0B6E4F] text-[#1A1A1A] dark:text-[#F8F4EC] font-medium py-2 px-4 rounded-lg transition-colors duration-300 flex items-center mx-auto"
                     >
                       <RefreshCw size={16} className="mr-2" />
                       Refresh Data
@@ -2028,8 +2028,8 @@ const EmployeeDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Property Verifications</h3>
-                <p className="text-sm text-neutral-600">Review and approve property listings for publication</p>
+                <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Property Verifications</h3>
+                <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Review and approve property listings for publication</p>
               </div>
             </div>
             <div className="card-body">
@@ -2056,7 +2056,7 @@ const EmployeeDashboard = () => {
                   {/* <button className={`btn btn-sm ${verificationFilter === 'rejected' ? 'btn-error' : 'btn-outline'}`} onClick={() => setVerificationFilter('rejected')}>Rejected</button> */}
                 </div>
                 {actionMessage && (
-                  <span className="text-sm text-neutral-600">{actionMessage}</span>
+                  <span className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">{actionMessage}</span>
                 )}
               </div>
 
@@ -2078,8 +2078,8 @@ const EmployeeDashboard = () => {
                       <tr key={verification.id}>
                         <td>
                           <div>
-                            <p className="font-medium text-neutral-900">{verification.title}</p>
-                            <p className="text-sm text-neutral-500">{verification.type}</p>
+                            <p className="font-medium text-[#1A1A1A] dark:text-[#F8F4EC]">{verification.title}</p>
+                            <p className="text-sm text-[#4B5563] dark:text-[#6B7A73]">{verification.type}</p>
                           </div>
                         </td>
                         <td>{verification.owner}</td>
@@ -2138,14 +2138,14 @@ const EmployeeDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Settings</h3>
-                <p className="text-sm text-neutral-600">Manage your account and preferences</p>
+                <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Settings</h3>
+                <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Manage your account and preferences</p>
               </div>
             </div>
             <div className="card-body">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="settings-section">
-                  <h4 className="text-lg font-medium text-neutral-900 mb-4">Account Settings</h4>
+                  <h4 className="text-lg font-medium text-[#1A1A1A] dark:text-[#F8F4EC] mb-4">Account Settings</h4>
                   <div className="space-y-4">
                     <div className="setting-item">
                       <label className="setting-label">Full Name</label>
@@ -2179,7 +2179,7 @@ const EmployeeDashboard = () => {
                 </div>
                 
                 <div className="settings-section">
-                  <h4 className="text-lg font-medium text-neutral-900 mb-4">Preferences</h4>
+                  <h4 className="text-lg font-medium text-[#1A1A1A] dark:text-[#F8F4EC] mb-4">Preferences</h4>
                   <div className="space-y-4">
                     <div className="setting-item">
                       <label className="setting-label">Notification Settings</label>
@@ -2217,8 +2217,8 @@ const EmployeeDashboard = () => {
           <div className="card">
             <div className="card-header">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-neutral-900">Contact Forms</h3>
-                <p className="text-sm text-neutral-600">Answer inquiries and follow up via messages</p>
+                <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Contact Forms</h3>
+                <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Answer inquiries and follow up via messages</p>
               </div>
             </div>
             <div className="card-body">

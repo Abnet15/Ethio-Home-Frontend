@@ -203,7 +203,7 @@
 
 .input-wrapper input:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: #0B6E4F;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -316,7 +316,7 @@
 }
 
 .property-details-tabs .tab.active {
-  background: #3b82f6;
+  background: #0B6E4F;
   color: white;
 }
 
@@ -416,7 +416,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: #0B6E4F;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -489,7 +489,7 @@
 }
 
 .file-input:hover {
-  border-color: #3b82f6;
+  border-color: #0B6E4F;
 }
 
 .upload-note {
@@ -623,12 +623,12 @@
 }
 
 .btn-primary {
-  background: #3b82f6;
+  background: #0B6E4F;
   color: white;
 }
 
 .btn-primary:hover {
-  background: #2563eb;
+  background: #0D8A62;
 }
 
 .btn-secondary {
@@ -736,7 +736,7 @@
 }
 
 .type-badge {
-  background: #3b82f6;
+  background: #0B6E4F;
   color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
@@ -1216,7 +1216,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #2563eb, #10b981);
+  background: linear-gradient(90deg, #0D8A62, #10b981);
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
@@ -1242,7 +1242,7 @@
 }
 
 .action-icon.users {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background: linear-gradient(135deg, #0D8A62, #095C42);
 }
 
 .action-icon.properties {
@@ -1280,7 +1280,7 @@
 }
 
 .quick-action-card:hover .action-arrow {
-  color: #2563eb;
+  color: #0D8A62;
   transform: translate(2px, -2px);
 }
 
@@ -1317,7 +1317,7 @@
 .view-all-btn {
   background: none;
   border: none;
-  color: #2563eb;
+  color: #0D8A62;
   font-weight: 500;
   cursor: pointer;
   font-size: 0.875rem;
@@ -1325,7 +1325,7 @@
 }
 
 .view-all-btn:hover {
-  color: #1d4ed8;
+  color: #095C42;
 }
 
 /* Activity List */
@@ -1866,7 +1866,7 @@
 }
 
 .property-stats .stat-card.total .stat-icon {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: linear-gradient(135deg, #0B6E4F, #0D8A62);
 }
 
 .property-stats .stat-card.approved .stat-icon {
@@ -1920,7 +1920,7 @@
 
 .search-input input:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #0D8A62;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
@@ -1942,7 +1942,7 @@
 
 .filter-select:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #0D8A62;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
@@ -1967,7 +1967,7 @@
 }
 
 .view-btn.active {
-  background: #2563eb;
+  background: #0D8A62;
   color: white;
 }
 
@@ -2097,7 +2097,7 @@
 
 .action-icon:hover {
   background: #f1f5f9;
-  color: #2563eb;
+  color: #0D8A62;
 }
 
 .property-description {
@@ -2190,7 +2190,7 @@
 
 .card-action-btn.edit {
   background: #dbeafe;
-  color: #2563eb;
+  color: #0D8A62;
 }
 
 .card-action-btn.edit:hover {
@@ -2321,7 +2321,7 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #0D8A62;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
@@ -2346,14 +2346,14 @@
 }
 
 .type-btn:hover {
-  border-color: #2563eb;
+  border-color: #0D8A62;
   background: #f8fafc;
 }
 
 .type-btn.active {
-  border-color: #2563eb;
+  border-color: #0D8A62;
   background: #dbeafe;
-  color: #2563eb;
+  color: #0D8A62;
 }
 
 .image-upload {
@@ -2371,7 +2371,7 @@
 }
 
 .image-upload:hover {
-  border-color: #2563eb;
+  border-color: #0D8A62;
   background: #f1f5f9;
 }
 
@@ -2412,7 +2412,7 @@
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 0.5rem;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background: linear-gradient(135deg, #0D8A62, #095C42);
   color: white;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2644,7 +2644,7 @@
 }
 
 [data-theme="dark"] .view-btn.active {
-  background: #3b82f6 !important;
+  background: #0B6E4F !important;
   color: white !important;
 }
 
@@ -2656,7 +2656,7 @@
 }
 
 [data-theme="dark"] .filter-section button.active {
-  background: #3b82f6 !important;
+  background: #0B6E4F !important;
   color: white !important;
 }
 
@@ -2835,7 +2835,7 @@
 }
 
 [data-theme="dark"] .nav-tab.active {
-  color: #3b82f6 !important;
+  color: #0B6E4F !important;
   background: rgba(59,130,246,0.1) !important;
 }
 
@@ -2852,7 +2852,7 @@
 }
 
 [data-theme="dark"] .view-all-btn:hover {
-  color: #3b82f6;
+  color: #0B6E4F;
 }
 
 [data-theme="dark"] .activity-item {

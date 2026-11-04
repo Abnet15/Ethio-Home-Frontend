@@ -15,90 +15,107 @@
 
 @layer base {
   :root {
-    /* Core Semantic Colors - Light Mode */
-    --background: 42 30% 97%;
-    --foreground: 25 30% 12%;
-    --card: 0 0% 100%;
-    --card-foreground: 25 30% 12%;
+    /* Core Semantic Colors - Light Mode (Strict Design System) */
+    --background: 40 43% 95%; /* #F8F4EC Soft Cream */
+    --foreground: 0 0% 10%; /* #1A1A1A Text Primary */
+    --card: 0 0% 100%; /* #FFFFFF Surface / Cards */
+    --card-foreground: 0 0% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 25 30% 12%;
+    --popover-foreground: 0 0% 10%;
+    --elevated: 42 25% 92%; /* #F0EDE6 Elevated Surface */
     
-    /* Ethiopian-Inspired Primary Palette */
-    --primary: 25 85% 45%;
+    /* Primary & Accents */
+    --primary: 161 82% 24%; /* #0B6E4F Deep Emerald */
+    --primary-hover: 161 82% 20%; /* #095C42 */
     --primary-foreground: 0 0% 100%;
-    --secondary: 42 25% 92%;
-    --secondary-foreground: 25 30% 15%;
-    --muted: 42 20% 94%;
-    --muted-foreground: 25 15% 45%;
-    --accent: 145 63% 32%;
+    
+    --secondary: 42 25% 92%; /* #F0EDE6 */
+    --secondary-foreground: 0 0% 10%;
+    
+    --muted: 42 25% 92%;
+    --muted-foreground: 220 9% 46%; /* #6B7280 Text Muted */
+    --text-secondary: 215 14% 34%; /* #4B5563 */
+    
+    --accent: 43 80% 46%; /* #D4A017 Warm Honey Gold */
     --accent-foreground: 0 0% 100%;
     
     /* Status Colors */
-    --destructive: 0 72% 51%;
+    --destructive: 20 68% 46%; /* #C45C26 Danger */
     --destructive-foreground: 0 0% 100%;
+    --success: 142 71% 45%; /* #22C55E */
+    --warning: 38 92% 50%; /* #F59E0B */
     
     /* Borders & Inputs */
-    --border: 42 20% 88%;
-    --input: 42 20% 88%;
-    --ring: 25 85% 45%;
-    --radius: 0.75rem;
+    --border: 37 21% 87%; /* #E5E0D8 */
+    --input: 37 21% 87%;
+    --ring: 161 82% 24%;
+    --radius: 1rem; /* 16px */
     
     /* Ethiopian Flag Accent Colors */
-    --ethiopian-green: 145 63% 32%;
-    --ethiopian-yellow: 48 96% 53%;
-    --ethiopian-red: 0 85% 47%;
+    --ethiopian-green: 161 82% 24%;
+    --ethiopian-yellow: 43 80% 46%;
+    --ethiopian-red: 20 68% 46%;
     
     /* Luxury Gold Tones */
     --gold-50: 48 100% 96%;
     --gold-100: 48 96% 89%;
     --gold-200: 48 93% 77%;
     --gold-300: 48 94% 68%;
-    --gold-400: 48 96% 53%;
-    --gold-500: 43 96% 47%;
+    --gold-400: 43 80% 46%; /* #D4A017 */
+    --gold-500: 43 80% 46%;
     --gold-600: 36 93% 40%;
     
-    /* Premium Shadows */
-    --shadow-color: 25 30% 12%;
-    --shadow-sm: 0 1px 2px 0 hsl(var(--shadow-color) / 0.05);
-    --shadow-md: 0 4px 6px -1px hsl(var(--shadow-color) / 0.08), 0 2px 4px -2px hsl(var(--shadow-color) / 0.06);
-    --shadow-lg: 0 10px 15px -3px hsl(var(--shadow-color) / 0.1), 0 4px 6px -4px hsl(var(--shadow-color) / 0.1);
-    --shadow-xl: 0 20px 25px -5px hsl(var(--shadow-color) / 0.1), 0 8px 10px -6px hsl(var(--shadow-color) / 0.1);
-    --shadow-2xl: 0 25px 50px -12px hsl(var(--shadow-color) / 0.25);
-    --shadow-glow: 0 0 30px hsl(48 96% 53% / 0.3);
-    --shadow-glow-green: 0 0 30px hsl(145 63% 32% / 0.3);
+    /* Refined Soft Shadows */
+    --shadow-color: 0 0% 0%;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.07), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
+    --shadow-glow: 0 0 25px rgba(212, 160, 23, 0.25);
+    --shadow-glow-green: 0 0 25px rgba(11, 110, 79, 0.25);
   }
 
-  [data-theme="dark"] {
-    /* DEEP LUXURY DARK MODE - Rich Obsidian Base */
-    --background: 220 25% 6%;
-    --foreground: 42 25% 95%;
-    --card: 220 20% 9%;
-    --card-foreground: 42 25% 95%;
-    --popover: 220 20% 9%;
-    --popover-foreground: 42 25% 95%;
+  [data-theme="dark"],
+  .dark {
+    /* Dark Mode (Deep rich charcoal with green undertone) */
+    --background: 156 14% 7%; /* #0F1412 */
+    --foreground: 40 43% 95%; /* #F8F4EC */
+    --card: 154 12% 12%; /* #1A211E Surface / Cards */
+    --card-foreground: 40 43% 95%;
+    --popover: 154 12% 12%;
+    --popover-foreground: 40 43% 95%;
+    --elevated: 150 10% 16%; /* #242C28 Elevated Surface */
     
-    /* Gold-accented Primary for Dark Mode */
-    --primary: 43 96% 56%;
-    --primary-foreground: 220 25% 8%;
-    --secondary: 220 15% 14%;
-    --secondary-foreground: 42 25% 90%;
-    --muted: 220 15% 14%;
-    --muted-foreground: 42 15% 65%;
-    --accent: 145 63% 42%;
-    --accent-foreground: 0 0% 100%;
+    /* Emerald & Gold for Dark Mode */
+    --primary: 160 84% 39%; /* #10B981 Emerald */
+    --primary-hover: 158 64% 52%; /* #34D399 */
+    --primary-foreground: 156 14% 7%;
     
-    --destructive: 0 62% 50%;
+    --secondary: 150 10% 16%;
+    --secondary-foreground: 40 43% 95%;
+    
+    --muted: 150 10% 16%;
+    --muted-foreground: 240 4% 46%; /* #71717A Text Muted */
+    --text-secondary: 240 5% 65%; /* #A1A1AA Text Secondary */
+    
+    --accent: 45 93% 47%; /* #EAB308 Gold */
+    --accent-foreground: 156 14% 7%;
+    
+    --destructive: 20 68% 46%; /* #C45C26 */
     --destructive-foreground: 0 0% 100%;
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
     
-    --border: 220 15% 18%;
-    --input: 220 15% 18%;
-    --ring: 43 96% 56%;
+    --border: 153 10% 21%; /* #2F3A35 Border */
+    --input: 153 10% 21%;
+    --ring: 160 84% 39%;
     
     --shadow-color: 0 0% 0%;
-    
-    /* Enhanced Dark Mode Gold Tones */
-    --gold-400: 43 96% 56%;
-    --gold-500: 40 96% 50%;
+    --gold-400: 45 93% 47%;
+    --gold-500: 45 93% 47%;
+    --shadow-glow: 0 0 25px rgba(234, 179, 8, 0.25);
+    --shadow-glow-green: 0 0 25px rgba(16, 185, 129, 0.25);
   }
 
   /* Dark Purple Admin Theme */
@@ -1798,9 +1815,14 @@
   grid-template-columns: 1fr;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 639px) {
   .properties-container.grid {
     grid-template-columns: 1fr;
+  }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .properties-container.grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -2193,7 +2215,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 639px) {
   .properties-container.grid {
     grid-template-columns: 1fr;
   }
@@ -2537,5 +2559,31 @@
   
   .admin-sidebar.open {
     transform: translateX(0);
+  }
+}
+
+/* ========================================================
+   ETHIO-HOME CORE BULLETPROOF NAVBAR & GRID RESPONSIVENESS
+   Guarantees full navigation on desktop / wide view (>= 600px)
+   and mobile hamburger on phone screens (< 600px)
+   ======================================================== */
+@media (min-width: 600px) {
+  .ethio-desktop-nav {
+    display: flex !important;
+  }
+  .ethio-mobile-toggle {
+    display: none !important;
+  }
+  .ethio-mobile-drawer {
+    display: none !important;
+  }
+}
+
+@media (max-width: 599px) {
+  .ethio-desktop-nav {
+    display: none !important;
+  }
+  .ethio-mobile-toggle {
+    display: flex !important;
   }
 }

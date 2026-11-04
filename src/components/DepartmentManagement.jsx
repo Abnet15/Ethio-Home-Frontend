@@ -202,11 +202,11 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
   });
 
   const StatCard = ({ title, value, icon: Icon, color = 'primary' }) => (
-    <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+    <div className="bg-white rounded-lg p-4 shadow-sm border border-[#E5E0D8] dark:border-[#2A342E]">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <p className="text-sm font-medium text-[#4B5563] dark:text-[#6B7A73]">{title}</p>
+          <p className="text-2xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">{value}</p>
         </div>
         <Icon className={`w-8 h-8 text-${color}-600`} />
       </div>
@@ -222,7 +222,7 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
     return (
       <div className="flex items-center justify-center p-8">
         <div className="loading-spinner"></div>
-        <span className="ml-3 text-gray-600">Loading departments...</span>
+        <span className="ml-3 text-[#4B5563] dark:text-[#6B7A73]">Loading departments...</span>
       </div>
     );
   }
@@ -232,8 +232,8 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Department Management</h2>
-          <p className="text-gray-600">Manage contact departments and their information</p>
+          <h2 className="text-2xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">Department Management</h2>
+          <p className="text-[#4B5563] dark:text-[#6B7A73]">Manage contact departments and their information</p>
         </div>
         {showActions && (userRole === 'admin' || userRole === 'employee') && (
           <button
@@ -248,7 +248,7 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
 
       {/* Stats */}
       {showStats && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <StatCard title="Total Departments" value={stats.totalDepartments} icon={Building} color="blue" />
           <StatCard title="Active Departments" value={stats.activeDepartments} icon={CheckCircle} color="green" />
           <StatCard title="Inactive Departments" value={stats.inactiveDepartments} icon={AlertCircle} color="red" />
@@ -256,24 +256,24 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
       )}
 
       {/* Filters */}
-      <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+      <div className="bg-white rounded-lg p-4 shadow-sm border border-[#E5E0D8] dark:border-[#2A342E]">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#4B5563] dark:text-[#A8B5AE]" size={20} />
               <input
                 type="text"
                 placeholder="Search departments..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
               />
             </div>
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
           >
             <option value="">All Status</option>
             <option value="active">Active</option>
@@ -284,14 +284,14 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
 
       {/* Create/Edit Form */}
       {(showCreateForm || editingDepartment) && (
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-lg p-6 shadow-sm border border-[#E5E0D8] dark:border-[#2A342E]">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">
               {editingDepartment ? 'Edit Department' : 'Create New Department'}
             </h3>
             <button
               onClick={editingDepartment ? cancelEdit : () => setShowCreateForm(false)}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-[#4B5563] dark:text-[#A8B5AE] hover:text-[#4B5563] dark:text-[#6B7A73]"
             >
               <X size={24} />
             </button>
@@ -306,25 +306,25 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
           <form onSubmit={editingDepartment ? handleUpdateDepartment : handleCreateDepartment} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                   Department ID
                 </label>
                 <input
                   type="text"
                   value={formData.id}
                   onChange={(e) => setFormData(prev => ({ ...prev, id: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
                   placeholder="e.g., property-sales"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                   Icon
                 </label>
                 <select
                   value={formData.icon}
                   onChange={(e) => setFormData(prev => ({ ...prev, icon: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
                 >
                   {icons.map(icon => (
                     <option key={icon.value} value={icon.value}>
@@ -336,68 +336,68 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                 Title *
               </label>
               <input
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
                 placeholder="Enter department title..."
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                 Description *
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
                 placeholder="Enter department description..."
                 required
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                   Contact Email *
                 </label>
                 <input
                   type="email"
                   value={formData.contact}
                   onChange={(e) => setFormData(prev => ({ ...prev, contact: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
                   placeholder="contact@example.com"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                   Display Email
                 </label>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
                   placeholder="display@example.com"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                   Phone Number
                 </label>
                 <input
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
                   placeholder="+251 11 123 4567"
                 />
               </div>
@@ -405,14 +405,14 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                   Order
                 </label>
                 <input
                   type="number"
                   value={formData.order}
                   onChange={(e) => setFormData(prev => ({ ...prev, order: parseInt(e.target.value) || 0 }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
                 />
               </div>
               <div className="flex items-center">
@@ -423,7 +423,7 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
                     onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
                     className="mr-2"
                   />
-                  <span className="text-sm font-medium text-gray-700">Active</span>
+                  <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE]">Active</span>
                 </label>
               </div>
             </div>
@@ -432,13 +432,13 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
               <button
                 type="button"
                 onClick={editingDepartment ? cancelEdit : () => setShowCreateForm(false)}
-                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+                className="px-4 py-2 text-[#1A1A1A] dark:text-[#A8B5AE] bg-[#F8F4EC] dark:bg-[#141A17] rounded-lg hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420]"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+                className="px-4 py-2 bg-[#0B6E4F] dark:bg-[#0B6E4F] text-white rounded-lg hover:bg-[#0B6E4F] dark:hover:bg-[#0B6E4F] flex items-center gap-2"
               >
                 <Save size={16} />
                 {editingDepartment ? 'Update Department' : 'Create Department'}
@@ -449,12 +449,12 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
       )}
 
       {/* Departments Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredDepartments.length === 0 ? (
-          <div className="col-span-full p-8 text-center bg-white rounded-lg shadow-sm border border-gray-200">
-            <Building className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No Departments Found</h3>
-            <p className="text-gray-600">
+          <div className="col-span-full p-8 text-center bg-white rounded-lg shadow-sm border border-[#E5E0D8] dark:border-[#2A342E]">
+            <Building className="w-12 h-12 text-[#4B5563] dark:text-[#A8B5AE] mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-[#1A1A1A] dark:text-[#F8F4EC] mb-2">No Departments Found</h3>
+            <p className="text-[#4B5563] dark:text-[#6B7A73]">
               {searchTerm || statusFilter 
                 ? 'Try adjusting your filters to see more results.'
                 : 'Get started by creating your first department.'}
@@ -464,14 +464,14 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
           filteredDepartments.map((department) => {
             const IconComponent = getIconComponent(department.icon);
             return (
-              <div key={department._id} className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+              <div key={department._id} className="bg-white rounded-lg p-6 shadow-sm border border-[#E5E0D8] dark:border-[#2A342E] hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                      <IconComponent size={24} className="text-blue-600" />
+                    <div className="w-12 h-12 bg-[#0B6E4F]/10 dark:bg-[#0B6E4F]/10 rounded-xl flex items-center justify-center">
+                      <IconComponent size={24} className="text-[#0B6E4F] dark:text-[#0B6E4F]" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">
                         {department.title}
                       </h3>
                       <span className={`px-2 py-1 text-xs font-medium rounded-full ${
@@ -488,7 +488,7 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => startEdit(department)}
-                        className="p-2 text-blue-600 hover:text-blue-800"
+                        className="p-2 text-[#0B6E4F] dark:text-[#0B6E4F] hover:text-[#0B6E4F] dark:text-[#0B6E4F]"
                       >
                         <Edit size={16} />
                       </button>
@@ -502,22 +502,22 @@ const DepartmentManagement = ({ userRole, showStats = true, showActions = true }
                   )}
                 </div>
 
-                <p className="text-gray-600 mb-4 line-clamp-2">
+                <p className="text-[#4B5563] dark:text-[#6B7A73] mb-4 line-clamp-2">
                   {department.description}
                 </p>
 
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="flex items-center gap-2 text-sm text-[#4B5563] dark:text-[#6B7A73]">
                     <Mail size={14} />
                     <span>{department.email}</span>
                   </div>
                   {department.phone && (
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm text-[#4B5563] dark:text-[#6B7A73]">
                       <Phone size={14} />
                       <span>{department.phone}</span>
                     </div>
                   )}
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <div className="flex items-center gap-2 text-sm text-[#4B5563] dark:text-[#6B7A73]">
                     <span>Order: {department.order}</span>
                   </div>
                 </div>

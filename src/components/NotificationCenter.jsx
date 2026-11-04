@@ -154,13 +154,13 @@ const NotificationCenter = ({ showStats = true, showActions = true, maxNotificat
       case 'property_rejected':
         return <XCircle {...iconProps} className="text-red-600" />;
       case 'message_received':
-        return <AlertCircle {...iconProps} className="text-blue-600" />;
+        return <AlertCircle {...iconProps} className="text-[#0B6E4F] dark:text-[#0B6E4F]" />;
       case 'subscription_expired':
         return <AlertCircle {...iconProps} className="text-orange-600" />;
       case 'payment_success':
         return <CheckCircle {...iconProps} className="text-green-600" />;
       default:
-        return <Info {...iconProps} className="text-gray-600" />;
+        return <Info {...iconProps} className="text-[#4B5563] dark:text-[#6B7A73]" />;
     }
   };
 
@@ -173,9 +173,9 @@ const NotificationCenter = ({ showStats = true, showActions = true, maxNotificat
       case 'medium':
         return 'bg-yellow-100 text-yellow-800';
       case 'low':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-[#F8F4EC] dark:bg-[#141A17] text-[#1A1A1A] dark:text-[#F8F4EC]';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-[#F8F4EC] dark:bg-[#141A17] text-[#1A1A1A] dark:text-[#F8F4EC]';
     }
   };
 
@@ -204,7 +204,7 @@ const NotificationCenter = ({ showStats = true, showActions = true, maxNotificat
         <div className="notification-header mb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
+              <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Notifications</h3>
               {stats.unread > 0 && (
                 <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                   {stats.unread} unread
@@ -215,14 +215,14 @@ const NotificationCenter = ({ showStats = true, showActions = true, maxNotificat
               {stats.unread > 0 && (
                 <button
                   onClick={handleMarkAllAsRead}
-                  className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                  className="text-sm text-[#0B6E4F] dark:text-[#0B6E4F] hover:text-[#0B6E4F] dark:text-[#0B6E4F] font-medium"
                 >
                   Mark all as read
                 </button>
               )}
               <button
                 onClick={() => setShowAll(!showAll)}
-                className="text-sm text-gray-600 hover:text-gray-800 font-medium"
+                className="text-sm text-[#4B5563] dark:text-[#6B7A73] hover:text-[#1A1A1A] dark:text-[#F8F4EC] font-medium"
               >
                 {showAll ? 'Show less' : 'Show all'}
               </button>
@@ -230,14 +230,14 @@ const NotificationCenter = ({ showStats = true, showActions = true, maxNotificat
           </div>
           
           {/* Stats row */}
-          <div className="flex items-center gap-6 mt-2 text-sm text-gray-600">
+          <div className="flex items-center gap-6 mt-2 text-sm text-[#4B5563] dark:text-[#6B7A73]">
             <span>Total: {stats.total}</span>
             <span>Unread: {stats.unread}</span>
             {stats.byType && Object.keys(stats.byType).length > 0 && (
               <div className="flex items-center gap-2">
                 <span>By type:</span>
                 {Object.entries(stats.byType).map(([type, count]) => (
-                  <span key={type} className="text-xs bg-gray-100 px-2 py-1 rounded">
+                  <span key={type} className="text-xs bg-[#F8F4EC] dark:bg-[#141A17] px-2 py-1 rounded">
                     {type}: {count.total}
                   </span>
                 ))}
@@ -250,8 +250,8 @@ const NotificationCenter = ({ showStats = true, showActions = true, maxNotificat
       {/* Notifications list */}
       <div className="notifications-list space-y-3">
         {displayedNotifications.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            <Bell className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+          <div className="text-center py-8 text-[#4B5563] dark:text-[#6B7A73]">
+            <Bell className="mx-auto h-12 w-12 text-[#4B5563] dark:text-[#A8B5AE] mb-4" />
             <p className="text-lg font-medium">No notifications</p>
             <p className="text-sm">You're all caught up!</p>
           </div>
@@ -261,8 +261,8 @@ const NotificationCenter = ({ showStats = true, showActions = true, maxNotificat
               key={notification._id}
               className={`notification-item p-4 rounded-lg border transition-all duration-200 ${
                 notification.isRead
-                  ? 'bg-gray-50 border-gray-200'
-                  : 'bg-white border-blue-200 shadow-sm'
+                  ? 'bg-[#F8F4EC] dark:bg-[#0B0F0D] border-[#E5E0D8] dark:border-[#2A342E]'
+                  : 'bg-white border-[#0B6E4F]/20 dark:border-[#0B6E4F]/20 shadow-sm'
               }`}
             >
               <div className="flex items-start gap-3">
@@ -276,18 +276,18 @@ const NotificationCenter = ({ showStats = true, showActions = true, maxNotificat
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <h4 className={`text-sm font-medium ${
-                        notification.isRead ? 'text-gray-700' : 'text-gray-900'
+                        notification.isRead ? 'text-[#1A1A1A] dark:text-[#A8B5AE]' : 'text-[#1A1A1A] dark:text-[#F8F4EC]'
                       }`}>
                         {notification.title}
                       </h4>
                       <p className={`text-sm mt-1 ${
-                        notification.isRead ? 'text-gray-500' : 'text-gray-600'
+                        notification.isRead ? 'text-[#4B5563] dark:text-[#6B7A73]' : 'text-[#4B5563] dark:text-[#6B7A73]'
                       }`}>
                         {notification.message}
                       </p>
                       
                       {/* Metadata */}
-                      <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
+                      <div className="flex items-center gap-4 mt-2 text-xs text-[#4B5563] dark:text-[#A8B5AE]">
                         <span className="flex items-center gap-1">
                           <Clock size={12} />
                           {notification.timeAgo}
@@ -307,7 +307,7 @@ const NotificationCenter = ({ showStats = true, showActions = true, maxNotificat
                         {!notification.isRead && (
                           <button
                             onClick={() => handleMarkAsRead(notification._id)}
-                            className="text-blue-600 hover:text-blue-800 p-1 rounded"
+                            className="text-[#0B6E4F] dark:text-[#0B6E4F] hover:text-[#0B6E4F] dark:text-[#0B6E4F] p-1 rounded"
                             title="Mark as read"
                           >
                             <Eye size={16} />
@@ -316,7 +316,7 @@ const NotificationCenter = ({ showStats = true, showActions = true, maxNotificat
                         {notification.isRead && (
                           <button
                             onClick={() => handleMarkAsRead(notification._id)}
-                            className="text-gray-400 hover:text-gray-600 p-1 rounded"
+                            className="text-[#4B5563] dark:text-[#A8B5AE] hover:text-[#4B5563] dark:text-[#6B7A73] p-1 rounded"
                             title="Mark as unread"
                           >
                             <EyeOff size={16} />
@@ -344,7 +344,7 @@ const NotificationCenter = ({ showStats = true, showActions = true, maxNotificat
         <div className="text-center mt-4">
           <button
             onClick={() => setShowAll(!showAll)}
-            className="text-blue-600 hover:text-blue-800 font-medium"
+            className="text-[#0B6E4F] dark:text-[#0B6E4F] hover:text-[#0B6E4F] dark:text-[#0B6E4F] font-medium"
           >
             {showAll ? 'Show less' : `Show ${notifications.length - maxNotifications} more`}
           </button>

@@ -186,12 +186,12 @@ const ReviewForm = () => {
               className={`${
                 star <= reviewForm.rating
                   ? 'text-yellow-400 fill-current'
-                  : 'text-gray-300'
+                  : 'text-[#4B5563] dark:text-[#A8B5AE]'
               } hover:scale-110 transition-transform`}
             />
           </button>
         ))}
-        <span className="ml-3 text-lg font-medium text-gray-700">
+        <span className="ml-3 text-lg font-medium text-[#1A1A1A] dark:text-[#A8B5AE]">
           {reviewForm.rating}/5
         </span>
       </div>
@@ -203,7 +203,7 @@ const ReviewForm = () => {
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center p-4">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading review form...</p>
+          <p className="text-[#4B5563] dark:text-[#A8B5AE]">Loading review form...</p>
         </div>
       </div>
     );
@@ -478,9 +478,9 @@ const ReviewForm = () => {
         </div>
 
             {/* Review Guidelines */}
-            <div className="mt-8 bg-muted/50 rounded-xl p-6">
+            <div className="mt-8 bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 rounded-xl p-6">
               <h4 className="text-xl font-black text-foreground mb-4">Review Guidelines</h4>
-              <ul className="space-y-2 text-muted-foreground">
+              <ul className="space-y-2 text-[#4B5563] dark:text-[#A8B5AE]">
                 <li className="flex items-center gap-2">
                   <span className="text-ethiopian-green">•</span>
                   Be honest and constructive in your feedback

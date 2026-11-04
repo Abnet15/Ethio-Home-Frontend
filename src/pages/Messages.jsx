@@ -448,7 +448,7 @@ const Messages = () => {
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
         <div className="bg-card rounded-xl border shadow-lg p-8 text-center max-w-md">
           <h2 className="text-2xl font-bold mb-4">Access Denied</h2>
-          <p className="text-muted-foreground mb-6">You need to be logged in to access messages.</p>
+          <p className="text-[#4B5563] dark:text-[#A8B5AE] mb-6">You need to be logged in to access messages.</p>
           <button
             onClick={() => navigate("/login")}
             className="px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-lg transition-all"
@@ -623,34 +623,34 @@ const Messages = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+    <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] text-[#1A1A1A] dark:text-[#F8F4EC] transition-colors duration-200">
       {/* Header */}
-      <div className="bg-card border-b shadow-sm">
+      <div className="bg-white dark:bg-[#141A17] border-b border-[#E5E0D8] dark:border-[#2A342E] shadow-sm">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
               <button 
-                className="p-2 hover:bg-muted rounded-lg transition-colors" 
+                className="p-2 hover:bg-[#F0EDE6] dark:bg-[#1C2420] rounded-lg transition-colors" 
                 onClick={() => navigate(-1)}
               >
                 <ArrowLeft size={20} />
               </button>
               <div>
                 <h1 className="text-3xl font-black text-foreground">Messages</h1>
-                <p className="text-muted-foreground">
+                <p className="text-[#4B5563] dark:text-[#A8B5AE]">
                   Communicate with{" "}
                   {user?.role === "buyer" ? "property owners" : "potential buyers"}
                 </p>
               </div>
             </div>
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#4B5563] dark:text-[#A8B5AE]" />
               <input
                 type="text"
                 placeholder="Search conversations..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-12 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ethiopian-green focus:border-transparent"
+                className="pl-12 pr-4 py-3 border-2 border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0B6E4F] focus:border-transparent"
               />
             </div>
           </div>
@@ -660,8 +660,8 @@ const Messages = () => {
             <button
               className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
                 activeTab === "inbox"
-                  ? "bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-[#0B6E4F] text-white shadow-md font-bold"
+                  : "text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:bg-[#1C2420] hover:text-foreground"
               }`}
               onClick={() => setActiveTab("inbox")}
             >
@@ -680,8 +680,8 @@ const Messages = () => {
             <button
               className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
                 activeTab === "sent"
-                  ? "bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-[#0B6E4F] text-white shadow-md font-bold"
+                  : "text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:bg-[#1C2420] hover:text-foreground"
               }`}
               onClick={() => setActiveTab("sent")}
             >
@@ -691,8 +691,8 @@ const Messages = () => {
             <button
               className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
                 activeTab === "received"
-                  ? "bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white shadow-lg"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-[#0B6E4F] text-white shadow-md font-bold"
+                  : "text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:bg-[#1C2420] hover:text-foreground"
               }`}
               onClick={() => setActiveTab("received")}
             >

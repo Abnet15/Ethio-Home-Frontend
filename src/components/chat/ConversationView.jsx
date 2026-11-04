@@ -71,21 +71,21 @@ export function ConversationView({ conversationId, onBack }) {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="p-4 border-b border-border/40 bg-background/50 backdrop-blur-xl">
+      <div className="p-4 border-b border-[#E5E0D8] dark:border-[#2A342E]/40 bg-background/50 backdrop-blur-xl">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="icon" onClick={onBack} className="md:hidden">
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div className="flex-1 flex items-center gap-3">
             <div className="relative">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
+              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#0B6E4F] to-[#D4A017] flex items-center justify-center text-white font-semibold">
                 ?
               </div>
               <div className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-background" />
             </div>
             <div>
               <h3 className="font-semibold">Agent</h3>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-[#4B5563] dark:text-[#A8B5AE]">
                 {isTyping ? "Typing..." : "Online"}
               </p>
             </div>
@@ -108,7 +108,7 @@ export function ConversationView({ conversationId, onBack }) {
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <p className="text-muted-foreground">No messages yet. Start the conversation!</p>
+            <p className="text-[#4B5563] dark:text-[#A8B5AE]">No messages yet. Start the conversation!</p>
           </div>
         ) : (
           messages.map((msg) => {
@@ -122,7 +122,7 @@ export function ConversationView({ conversationId, onBack }) {
                 className={`flex gap-2 ${isSent ? "justify-end" : "justify-start"}`}
               >
                 {!isSent && (
-                  <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
+                  <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#0B6E4F] to-[#D4A017] flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
                     {(typeof msg.sender === "object" ? msg.sender.name : "?")[0]}
                   </div>
                 )}
@@ -131,13 +131,13 @@ export function ConversationView({ conversationId, onBack }) {
                   <motion.div
                     className={`rounded-2xl px-4 py-2 break-words ${
                       isSent
-                        ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-tr-sm"
-                        : "bg-muted text-foreground rounded-tl-sm"
+                        ? "bg-gradient-to-br from-[#0B6E4F] to-[#D4A017] text-white rounded-tr-sm"
+                        : "bg-[#F0EDE6] dark:bg-[#1C2420] text-foreground rounded-tl-sm"
                     }`}
                   >
                     <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                   </motion.div>
-                  <div className={`flex items-center gap-1 mt-1 text-xs text-muted-foreground ${isSent ? "flex-row-reverse" : ""}`}>
+                  <div className={`flex items-center gap-1 mt-1 text-xs text-[#4B5563] dark:text-[#A8B5AE] ${isSent ? "flex-row-reverse" : ""}`}>
                     <span>{format(new Date(msg.createdAt), "HH:mm")}</span>
                     {isSent && <span>{msg.isRead ? "✓✓" : "✓"}</span>}
                   </div>
@@ -152,12 +152,12 @@ export function ConversationView({ conversationId, onBack }) {
             animate={{ opacity: 1, y: 0 }}
             className="flex gap-2 justify-start"
           >
-            <div className="h-8 w-8 rounded-full bg-muted flex-shrink-0" />
-            <div className="bg-muted rounded-2xl rounded-tl-sm px-4 py-2">
+            <div className="h-8 w-8 rounded-full bg-[#F0EDE6] dark:bg-[#1C2420] flex-shrink-0" />
+            <div className="bg-[#F0EDE6] dark:bg-[#1C2420] rounded-2xl rounded-tl-sm px-4 py-2">
               <div className="flex gap-1">
-                <div className="h-2 w-2 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "0ms" }} />
-                <div className="h-2 w-2 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "150ms" }} />
-                <div className="h-2 w-2 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "300ms" }} />
+                <div className="h-2 w-2 rounded-full bg-[#F0EDE6] dark:bg-[#1C2420]-foreground animate-bounce" style={{ animationDelay: "0ms" }} />
+                <div className="h-2 w-2 rounded-full bg-[#F0EDE6] dark:bg-[#1C2420]-foreground animate-bounce" style={{ animationDelay: "150ms" }} />
+                <div className="h-2 w-2 rounded-full bg-[#F0EDE6] dark:bg-[#1C2420]-foreground animate-bounce" style={{ animationDelay: "300ms" }} />
               </div>
             </div>
           </motion.div>
@@ -166,7 +166,7 @@ export function ConversationView({ conversationId, onBack }) {
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-border/40 bg-background/50 backdrop-blur-xl">
+      <div className="p-4 border-t border-[#E5E0D8] dark:border-[#2A342E]/40 bg-background/50 backdrop-blur-xl">
         <div className="flex items-end gap-2">
           <Button variant="ghost" size="icon">
             <Paperclip className="h-5 w-5" />
@@ -192,7 +192,7 @@ export function ConversationView({ conversationId, onBack }) {
             onClick={handleSend}
             disabled={!message.trim() || createMessage.isPending}
             size="icon"
-            className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600"
+            className="h-10 w-10 rounded-full bg-gradient-to-br from-[#0B6E4F] to-[#D4A017]"
           >
             <Send className="h-4 w-4" />
           </Button>

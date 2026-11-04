@@ -104,21 +104,21 @@ const UserContactForm = () => {
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'new': return <AlertCircle size={16} className="text-blue-500" />;
+      case 'new': return <AlertCircle size={16} className="text-[#0B6E4F] dark:text-[#0B6E4F]" />;
       case 'in-progress': return <Clock size={16} className="text-yellow-500" />;
       case 'resolved': return <CheckCircle size={16} className="text-green-500" />;
-      case 'closed': return <CheckCircle size={16} className="text-gray-500" />;
-      default: return <AlertCircle size={16} className="text-blue-500" />;
+      case 'closed': return <CheckCircle size={16} className="text-[#4B5563] dark:text-[#6B7A73]" />;
+      default: return <AlertCircle size={16} className="text-[#0B6E4F] dark:text-[#0B6E4F]" />;
     }
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'new': return 'bg-blue-100 text-blue-800';
+      case 'new': return 'bg-[#0B6E4F]/10 dark:bg-[#0B6E4F]/10 text-[#0B6E4F] dark:text-[#0B6E4F]';
       case 'in-progress': return 'bg-yellow-100 text-yellow-800';
       case 'resolved': return 'bg-green-100 text-green-800';
-      case 'closed': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'closed': return 'bg-[#F8F4EC] dark:bg-[#141A17] text-[#1A1A1A] dark:text-[#F8F4EC]';
+      default: return 'bg-[#F8F4EC] dark:bg-[#141A17] text-[#1A1A1A] dark:text-[#F8F4EC]';
     }
   };
 
@@ -128,7 +128,7 @@ const UserContactForm = () => {
       case 'medium': return 'bg-yellow-100 text-yellow-800';
       case 'high': return 'bg-orange-100 text-orange-800';
       case 'urgent': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-[#F8F4EC] dark:bg-[#141A17] text-[#1A1A1A] dark:text-[#F8F4EC]';
     }
   };
 
@@ -136,12 +136,12 @@ const UserContactForm = () => {
     <div className="user-contact-form">
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">Contact Support</h2>
+          <h2 className="text-2xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">Contact Support</h2>
           <div className="flex space-x-2">
             <button
               onClick={() => { setShowForm(true); setShowMyContacts(false); }}
               className={`px-4 py-2 rounded-md text-sm font-medium ${
-                showForm ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                showForm ? 'bg-[#0B6E4F] dark:bg-[#0B6E4F] text-white' : 'bg-[#F8F4EC] dark:bg-[#141A17] text-[#1A1A1A] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420]'
               }`}
             >
               New Message
@@ -149,7 +149,7 @@ const UserContactForm = () => {
             <button
               onClick={() => { setShowForm(false); setShowMyContacts(true); }}
               className={`px-4 py-2 rounded-md text-sm font-medium ${
-                showMyContacts ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                showMyContacts ? 'bg-[#0B6E4F] dark:bg-[#0B6E4F] text-white' : 'bg-[#F8F4EC] dark:bg-[#141A17] text-[#1A1A1A] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420]'
               }`}
             >
               My Messages ({myContacts.length})
@@ -178,12 +178,12 @@ const UserContactForm = () => {
 
       {showForm && (
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Send us a message</h3>
+          <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC] mb-4">Send us a message</h3>
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                   Name *
                 </label>
                 <input
@@ -192,13 +192,13 @@ const UserContactForm = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F]"
                   placeholder="Your full name"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                   Email *
                 </label>
                 <input
@@ -207,7 +207,7 @@ const UserContactForm = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F]"
                   placeholder="your.email@example.com"
                 />
               </div>
@@ -215,7 +215,7 @@ const UserContactForm = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                   Phone Number
                 </label>
                 <input
@@ -223,13 +223,13 @@ const UserContactForm = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F]"
                   placeholder="+251912345678"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                   Inquiry Type *
                 </label>
                 <select
@@ -237,7 +237,7 @@ const UserContactForm = () => {
                   value={formData.inquiryType}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F]"
                 >
                   {inquiryTypes.map(type => (
                     <option key={type.value} value={type.value}>
@@ -249,7 +249,7 @@ const UserContactForm = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                 Subject *
               </label>
               <input
@@ -258,13 +258,13 @@ const UserContactForm = () => {
                 value={formData.subject}
                 onChange={handleInputChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F]"
                 placeholder="Brief description of your inquiry"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">
                 Message *
               </label>
               <textarea
@@ -273,7 +273,7 @@ const UserContactForm = () => {
                 onChange={handleInputChange}
                 required
                 rows={6}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F]"
                 placeholder="Please provide detailed information about your inquiry..."
               />
             </div>
@@ -282,7 +282,7 @@ const UserContactForm = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex items-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center px-6 py-2 bg-[#0B6E4F] dark:bg-[#0B6E4F] text-white rounded-md hover:bg-[#0B6E4F] dark:hover:bg-[#0B6E4F] focus:outline-none focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <>
@@ -303,24 +303,24 @@ const UserContactForm = () => {
 
       {showMyContacts && (
         <div className="bg-white rounded-lg shadow-md">
-          <div className="p-6 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">My Messages</h3>
-            <p className="text-sm text-gray-600 mt-1">Track your inquiries and responses from our team</p>
+          <div className="p-6 border-b border-[#E5E0D8] dark:border-[#2A342E]">
+            <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">My Messages</h3>
+            <p className="text-sm text-[#4B5563] dark:text-[#6B7A73] mt-1">Track your inquiries and responses from our team</p>
           </div>
 
           {myContacts.length === 0 ? (
             <div className="p-6 text-center">
-              <Mail className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">No messages yet. Send your first inquiry!</p>
+              <Mail className="w-12 h-12 text-[#4B5563] dark:text-[#A8B5AE] mx-auto mb-4" />
+              <p className="text-[#4B5563] dark:text-[#6B7A73]">No messages yet. Send your first inquiry!</p>
             </div>
           ) : (
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-[#E5E0D8] dark:divide-[#2A342E]">
               {myContacts.map((contact) => (
                 <div key={contact._id} className="p-6">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <h4 className="text-lg font-medium text-gray-900">{contact.subject}</h4>
+                        <h4 className="text-lg font-medium text-[#1A1A1A] dark:text-[#F8F4EC]">{contact.subject}</h4>
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(contact.status)}`}>
                           {getStatusIcon(contact.status)}
                           <span className="ml-1 capitalize">{contact.status}</span>
@@ -330,7 +330,7 @@ const UserContactForm = () => {
                         </span>
                       </div>
                       
-                      <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                      <div className="flex items-center gap-4 text-sm text-[#4B5563] dark:text-[#6B7A73] mb-3">
                         <span className="flex items-center">
                           <Tag className="w-4 h-4 mr-1" />
                           {inquiryTypes.find(t => t.value === contact.inquiryType)?.label || contact.inquiryType}
@@ -341,23 +341,23 @@ const UserContactForm = () => {
                         </span>
                       </div>
 
-                      <div className="bg-gray-50 rounded-md p-3 mb-3">
-                        <p className="text-sm text-gray-700">{contact.message}</p>
+                      <div className="bg-[#F8F4EC] dark:bg-[#0B0F0D] rounded-md p-3 mb-3">
+                        <p className="text-sm text-[#1A1A1A] dark:text-[#A8B5AE]">{contact.message}</p>
                       </div>
 
                       {(contact.adminResponse || contact.employeeResponse) && (
-                        <div className="bg-blue-50 rounded-md p-3 border-l-4 border-blue-400">
+                        <div className="bg-[#0B6E4F]/5 dark:bg-[#0B6E4F]/5 rounded-md p-3 border-l-4 border-[#0D8A62] dark:border-[#0D8A62]">
                           <div className="flex items-center mb-2">
-                            <User className="w-4 h-4 text-blue-600 mr-2" />
+                            <User className="w-4 h-4 text-[#0B6E4F] dark:text-[#0B6E4F] mr-2" />
                             <span className="text-sm font-medium text-blue-900">
                               Response from {contact.adminResponse ? 'Admin' : 'Employee'}
                             </span>
                           </div>
-                          <p className="text-sm text-blue-800">
+                          <p className="text-sm text-[#0B6E4F] dark:text-[#0B6E4F]">
                             {contact.adminResponse || contact.employeeResponse}
                           </p>
                           {contact.respondedAt && (
-                            <p className="text-xs text-blue-600 mt-2">
+                            <p className="text-xs text-[#0B6E4F] dark:text-[#0B6E4F] mt-2">
                               Responded on {new Date(contact.respondedAt).toLocaleDateString()}
                             </p>
                           )}

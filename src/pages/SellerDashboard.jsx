@@ -379,7 +379,7 @@ const SellerDashboard = () => {
 
     return (
       <motion.div
-        className={`relative overflow-hidden rounded-2xl p-6 glass-dark border backdrop-blur-md cursor-pointer group ${
+        className={`relative overflow-hidden rounded-2xl p-6 bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm backdrop-blur-md cursor-pointer group ${
           colorClasses[color] || colorClasses.primary
         } ${onClick ? 'hover:scale-105' : ''}`}
         onClick={onClick}
@@ -486,45 +486,45 @@ const SellerDashboard = () => {
     };
 
     return (
-      <div className="bg-gray-900/80 border border-gray-800 rounded-2xl overflow-hidden hover:border-purple-500/30 transition-all">
+      <div className="bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] rounded-2xl overflow-hidden hover:border-[#0B6E4F]/30 transition-all">
         <div className="p-5">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h3 className="font-semibold text-white">{interest.propertyId?.title}</h3>
-              <div className="flex items-center gap-2 text-gray-400 mt-1">
+              <h3 className="font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">{interest.propertyId?.title}</h3>
+              <div className="flex items-center gap-2 text-[#6B7280] dark:text-[#A8B5AE] mt-1">
                 <Users size={14} />
                 <span className="text-sm">{interest.buyerId?.name || 'Anonymous Buyer'}</span>
               </div>
             </div>
             <span className={`px-3 py-1 rounded-full text-xs font-bold ${
               interest.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
-              interest.status === 'contacted' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+              interest.status === 'contacted' ? 'bg-[#0B6E4F] dark:bg-[#0B6E4F]/20 text-[#0B6E4F] dark:text-[#0D8A62] border border-[#0B6E4F] dark:border-[#0B6E4F]/30' :
               interest.status === 'visited' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
               interest.status === 'rejected' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-              'bg-purple-500/20 text-purple-400 border border-purple-500/30'
+              'bg-[#0B6E4F] dark:bg-[#0B6E4F]/20 text-[#0B6E4F] dark:text-[#10B981] border border-[#0B6E4F]/30'
             }`}>
               {getStatusDisplayName(interest.status)}
             </span>
           </div>
           
           <div className="space-y-2 mb-3">
-            <div className="flex items-center gap-2 text-gray-400">
+            <div className="flex items-center gap-2 text-[#6B7280] dark:text-[#A8B5AE]">
               <Calendar size={16} />
               <span className="text-sm">
                 {interest.visitDate ? new Date(interest.visitDate).toLocaleDateString() : 'No date set'}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-gray-400">
+            <div className="flex items-center gap-2 text-[#6B7280] dark:text-[#A8B5AE]">
               <Mail size={16} />
               <span className="text-sm">{interest.contactInfo?.email}</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-400">
+            <div className="flex items-center gap-2 text-[#6B7280] dark:text-[#A8B5AE]">
               <MessageSquare size={16} />
               <span className="text-sm">{interest.contactInfo?.phone}</span>
             </div>
           </div>
           
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-[#4B5563] dark:text-[#6B7A73] mb-4">
             {interest.message || 'No message provided'}
           </p>
           
@@ -624,21 +624,21 @@ const SellerDashboard = () => {
           {/* Schedule Visit Modal */}
           {showScheduleModal && (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-              <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 w-96 shadow-2xl">
-                <h3 className="text-lg font-semibold mb-4 text-white">Schedule Visit</h3>
+              <div className="bg-[#F8F4EC] dark:bg-[#0B0F0D] border border-[#E5E0D8] dark:border-[#2A342E] rounded-2xl p-6 w-96 shadow-2xl">
+                <h3 className="text-lg font-semibold mb-4 text-[#1A1A1A] dark:text-[#F8F4EC]">Schedule Visit</h3>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2 text-gray-300">Visit Date & Time</label>
+                  <label className="block text-sm font-medium mb-2 text-[#4B5563] dark:text-[#A8B5AE]">Visit Date & Time</label>
                   <input
                     type="datetime-local"
                     value={visitDate}
                     onChange={(e) => setVisitDate(e.target.value)}
-                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none"
+                    className="w-full p-3 bg-[#F0EDE6] dark:bg-[#1C2420] border border-[#E5E0D8] dark:border-[#2A342E] rounded-xl text-[#1A1A1A] dark:text-[#F8F4EC] focus:border-[#0B6E4F] focus:ring-1 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] outline-none"
                     min={new Date().toISOString().slice(0, 16)}
                   />
                 </div>
                 <div className="flex gap-2 justify-end">
                   <button
-                    className="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 rounded-xl transition-all"
+                    className="px-4 py-2 bg-[#F0EDE6] dark:bg-[#1C2420] border border-[#E5E0D8] dark:border-[#2A342E] text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#E5E0D8] dark:hover:bg-[#2A342E] rounded-xl transition-all"
                     onClick={() => {
                       setShowScheduleModal(false);
                       setVisitDate('');
@@ -647,7 +647,7 @@ const SellerDashboard = () => {
                     Cancel
                   </button>
                   <button
-                    className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl transition-all"
+                    className="px-4 py-2 bg-[#0B6E4F] dark:bg-[#0B6E4F] hover:bg-[#0B6E4F] dark:bg-[#0B6E4F] text-[#1A1A1A] dark:text-[#F8F4EC] rounded-xl transition-all"
                     onClick={() => handleStatusUpdate('schedule')}
                     disabled={!visitDate || isProcessing}
                   >
@@ -723,45 +723,45 @@ const SellerDashboard = () => {
     };
 
     return (
-      <div className="bg-gray-900/80 border border-gray-800 rounded-2xl overflow-hidden hover:border-purple-500/30 transition-all">
+      <div className="bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] rounded-2xl overflow-hidden hover:border-[#0B6E4F]/30 transition-all">
         <div className="p-5">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h3 className="font-semibold text-white">{appointment.propertyId?.title || appointment.subject || 'Unknown Property'}</h3>
-              <div className="flex items-center gap-2 text-gray-400 mt-1">
+              <h3 className="font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">{appointment.propertyId?.title || appointment.subject || 'Unknown Property'}</h3>
+              <div className="flex items-center gap-2 text-[#6B7280] dark:text-[#A8B5AE] mt-1">
                 <Users size={14} />
                 <span className="text-sm">{appointment.contactInfo?.name || appointment.sender?.name || 'Anonymous Client'}</span>
               </div>
             </div>
             <span className={`px-3 py-1 rounded-full text-xs font-bold ${
               appointment.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
-              appointment.status === 'contacted' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+              appointment.status === 'contacted' ? 'bg-[#0B6E4F] dark:bg-[#0B6E4F]/20 text-[#0B6E4F] dark:text-[#0D8A62] border border-[#0B6E4F] dark:border-[#0B6E4F]/30' :
               appointment.status === 'visited' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
               appointment.status === 'rejected' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-              'bg-purple-500/20 text-purple-400 border border-purple-500/30'
+              'bg-[#0B6E4F] dark:bg-[#0B6E4F]/20 text-[#0B6E4F] dark:text-[#10B981] border border-[#0B6E4F]/30'
             }`}>
               {getStatusDisplayName(appointment.status)}
             </span>
           </div>
           
           <div className="space-y-2 mb-3">
-            <div className="flex items-center gap-2 text-gray-400">
+            <div className="flex items-center gap-2 text-[#6B7280] dark:text-[#A8B5AE]">
               <Calendar size={16} />
               <span className="text-sm">
                 {appointment.visitDate ? new Date(appointment.visitDate).toLocaleDateString() : 'No date set'}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-gray-400">
+            <div className="flex items-center gap-2 text-[#6B7280] dark:text-[#A8B5AE]">
               <Mail size={16} />
               <span className="text-sm">{appointment.contactInfo?.email || appointment.sender?.email}</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-400">
+            <div className="flex items-center gap-2 text-[#6B7280] dark:text-[#A8B5AE]">
               <Phone size={16} />
               <span className="text-sm">{appointment.contactInfo?.phone || appointment.sender?.phone}</span>
             </div>
           </div>
           
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-[#4B5563] dark:text-[#6B7A73] mb-4">
             {appointment.message || appointment.content || 'No message provided'}
           </p>
           
@@ -852,21 +852,21 @@ const SellerDashboard = () => {
           {/* Schedule Visit Modal */}
           {showScheduleModal && (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-              <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 w-96 shadow-2xl">
-                <h3 className="text-lg font-semibold mb-4 text-white">Schedule Visit</h3>
+              <div className="bg-[#F8F4EC] dark:bg-[#0B0F0D] border border-[#E5E0D8] dark:border-[#2A342E] rounded-2xl p-6 w-96 shadow-2xl">
+                <h3 className="text-lg font-semibold mb-4 text-[#1A1A1A] dark:text-[#F8F4EC]">Schedule Visit</h3>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2 text-gray-300">Visit Date & Time</label>
+                  <label className="block text-sm font-medium mb-2 text-[#4B5563] dark:text-[#A8B5AE]">Visit Date & Time</label>
                   <input
                     type="datetime-local"
                     value={visitDate}
                     onChange={(e) => setVisitDate(e.target.value)}
-                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none"
+                    className="w-full p-3 bg-[#F0EDE6] dark:bg-[#1C2420] border border-[#E5E0D8] dark:border-[#2A342E] rounded-xl text-[#1A1A1A] dark:text-[#F8F4EC] focus:border-[#0B6E4F] focus:ring-1 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] outline-none"
                     min={new Date().toISOString().slice(0, 16)}
                   />
                 </div>
                 <div className="flex gap-2 justify-end">
                   <button
-                    className="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 rounded-xl transition-all"
+                    className="px-4 py-2 bg-[#F0EDE6] dark:bg-[#1C2420] border border-[#E5E0D8] dark:border-[#2A342E] text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#E5E0D8] dark:hover:bg-[#2A342E] rounded-xl transition-all"
                     onClick={() => {
                       setShowScheduleModal(false);
                       setVisitDate('');
@@ -875,7 +875,7 @@ const SellerDashboard = () => {
                     Cancel
                   </button>
                   <button
-                    className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl transition-all"
+                    className="px-4 py-2 bg-[#0B6E4F] dark:bg-[#0B6E4F] hover:bg-[#0B6E4F] dark:bg-[#0B6E4F] text-[#1A1A1A] dark:text-[#F8F4EC] rounded-xl transition-all"
                     onClick={() => handleStatusUpdate('schedule')}
                     disabled={!visitDate || isProcessing}
                   >
@@ -892,10 +892,10 @@ const SellerDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] text-[#1A1A1A] dark:text-[#F8F4EC] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading seller dashboard...</p>
+          <div className="w-16 h-16 border-4 border-[#0B6E4F] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-[#6B7280] dark:text-[#A8B5AE]">Loading seller dashboard...</p>
         </div>
       </div>
     );
@@ -916,7 +916,7 @@ const SellerDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-950 relative overflow-hidden">
+    <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] text-[#1A1A1A] dark:text-[#F8F4EC] relative overflow-hidden transition-colors duration-200">
       {/* Dark mode background effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-20"
@@ -926,14 +926,14 @@ const SellerDashboard = () => {
       {/* Mobile Drawer */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
         <SheetTrigger asChild>
-          <button className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-gray-900/95 backdrop-blur-xl border border-gray-700 shadow-xl flex items-center justify-center hover:bg-gray-800 transition-all">
-            <Menu className="w-5 h-5 text-gray-300" />
+          <button className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-[#F8F4EC] dark:bg-[#0B0F0D]/95 backdrop-blur-xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-xl flex items-center justify-center hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] transition-all">
+            <Menu className="w-5 h-5 text-[#4B5563] dark:text-[#A8B5AE]" />
           </button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-72 bg-gray-900 border-gray-800 p-0">
-          <div className="p-6 border-b border-gray-800">
-            <h2 className="text-xl font-bold text-white mb-1">Seller Dashboard</h2>
-            <p className="text-sm text-gray-400">Welcome back, {user?.name}</p>
+        <SheetContent side="left" className="w-72 bg-white dark:bg-[#141A17] border-r border-[#E5E0D8] dark:border-[#2A342E] p-0">
+          <div className="p-6 border-b border-[#E5E0D8] dark:border-[#2A342E]">
+            <h2 className="text-xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-1">Seller Dashboard</h2>
+            <p className="text-sm text-[#6B7280] dark:text-[#A8B5AE]">Welcome back, {user?.name}</p>
           </div>
           <nav className="p-4 space-y-1">
             {navItems.map((item) => {
@@ -943,7 +943,7 @@ const SellerDashboard = () => {
                   key={item.id}
                   onClick={() => { if (item.action) item.action(); else setActiveTab(item.id); setMobileOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
-                    activeTab === item.id ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30' : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+                    activeTab === item.id ? 'bg-[#0B6E4F] dark:bg-[#0B6E4F]/20 text-[#0B6E4F] dark:text-[#10B981] border border-[#0B6E4F]/30' : 'text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC]'
                   }`}
                 >
                   <Icon size={18} />
@@ -957,14 +957,14 @@ const SellerDashboard = () => {
 
       {/* Fixed Desktop Sidebar */}
       <motion.aside
-        className="hidden lg:block fixed left-0 top-0 h-screen w-64 bg-gray-900/95 backdrop-blur-2xl border-r border-gray-800 z-40 overflow-y-auto"
+        className="hidden lg:block fixed left-0 top-0 h-screen w-64 bg-[#F8F4EC] dark:bg-[#0B0F0D]/95 backdrop-blur-2xl border-r border-[#E5E0D8] dark:border-[#2A342E] z-40 overflow-y-auto"
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.5, type: 'spring' }}
       >
-        <div className="p-6 mb-8 border-b border-gray-800">
-          <motion.h2 className="text-2xl font-bold text-white mb-2">Seller Dashboard</motion.h2>
-          <motion.p className="text-sm text-gray-400">Welcome back, {user?.name}</motion.p>
+        <div className="p-6 mb-8 border-b border-[#E5E0D8] dark:border-[#2A342E]">
+          <motion.h2 className="text-2xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2">Seller Dashboard</motion.h2>
+          <motion.p className="text-sm text-[#6B7280] dark:text-[#A8B5AE]">Welcome back, {user?.name}</motion.p>
         </div>
 
         <nav className="px-4 space-y-2">
@@ -975,7 +975,7 @@ const SellerDashboard = () => {
               <motion.button
                 key={item.id}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden ${
-                  isActive ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30 shadow-lg shadow-purple-500/10' : 'text-gray-400 hover:bg-gray-800/50 hover:text-gray-200'
+                  isActive ? 'bg-[#0B6E4F] dark:bg-[#0B6E4F]/20 text-[#0B6E4F] dark:text-[#10B981] border border-[#0B6E4F]/30 shadow-lg shadow-[#0B6E4F]/10' : 'text-[#6B7280] dark:text-[#A8B5AE] hover:bg-[#F0EDE6]/50 dark:hover:bg-[#1C2420]/50 hover:text-[#F8F4EC] dark:hover:text-[#F8F4EC]'
                 }`}
                 onClick={() => { if (item.action) item.action(); else setActiveTab(item.id); }}
                 initial={{ opacity: 0, x: -20 }}
@@ -987,7 +987,7 @@ const SellerDashboard = () => {
                 <Icon size={20} className="flex-shrink-0" />
                 <span className="font-medium">{item.label}</span>
                 {isActive && (
-                  <motion.div className="absolute right-0 top-0 bottom-0 w-1 bg-purple-400" layoutId="sellerActiveIndicator" />
+                  <motion.div className="absolute right-0 top-0 bottom-0 w-1 bg-[#0D8A62] dark:bg-[#0D8A62]" layoutId="sellerActiveIndicator" />
                 )}
               </motion.button>
             );
@@ -1007,7 +1007,7 @@ const SellerDashboard = () => {
           >
             <div>
               <motion.h1
-                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2"
+                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2"
                 key={activeTab}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -1024,7 +1024,7 @@ const SellerDashboard = () => {
                 {activeTab === 'help' && 'Help Center'}
               </motion.h1>
               <motion.p
-                className="text-gray-400 text-lg"
+                className="text-[#6B7280] dark:text-[#A8B5AE] text-lg"
                 key={`${activeTab}-desc`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -1043,7 +1043,7 @@ const SellerDashboard = () => {
             </div>
             <div className="flex items-center gap-4">
               <motion.button
-                className="px-4 py-2 bg-gray-800/80 border border-gray-700 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition-all flex items-center gap-2"
+                className="px-4 py-2 bg-[#F0EDE6]/80 dark:bg-[#1C2420]/80 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg text-[#4B5563] dark:text-[#A8B5AE] hover:text-[#1A1A1A] dark:text-[#F8F4EC] hover:bg-[#E5E0D8] dark:hover:bg-[#2A342E] transition-all flex items-center gap-2"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -1051,7 +1051,7 @@ const SellerDashboard = () => {
                 Notifications
               </motion.button>
               <motion.button
-                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-lg shadow-lg hover:shadow-xl flex items-center gap-2 font-medium"
+                className="px-6 py-2 bg-gradient-to-r from-[#0B6E4F] to-[#D4A017] text-[#1A1A1A] dark:text-[#F8F4EC] rounded-lg shadow-lg hover:shadow-xl flex items-center gap-2 font-medium"
                 onClick={() => navigate('/properties/new')}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
@@ -1128,7 +1128,7 @@ const SellerDashboard = () => {
               {/* WOW UPGRADE: Content Sections with glassmorphism */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <motion.div
-                  className="glass-dark border border-coffee-800/30 rounded-2xl p-6"
+                  className="bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm border-coffee-800/30 rounded-2xl p-6"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 }}
@@ -1136,7 +1136,7 @@ const SellerDashboard = () => {
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-xl font-bold text-coffee-200">Recent Properties</h3>
                     <motion.button
-                      className="px-4 py-2 glass border border-coffee-800/30 rounded-lg text-coffee-200 hover:text-white text-sm"
+                      className="px-4 py-2 glass border border-coffee-800/30 rounded-lg text-coffee-200 hover:text-[#1A1A1A] dark:text-[#F8F4EC] text-sm"
                       onClick={() => setActiveTab('properties')}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -1172,7 +1172,7 @@ const SellerDashboard = () => {
                         <h3 className="text-xl font-bold text-coffee-200 mb-2">No properties yet</h3>
                         <p className="text-coffee-300/70 mb-4">Start by adding your first property listing</p>
                         <motion.button
-                          className="px-6 py-2 bg-gradient-coffee text-white rounded-lg shadow-lg font-medium flex items-center gap-2 mx-auto"
+                          className="px-6 py-2 bg-gradient-coffee text-[#1A1A1A] dark:text-[#F8F4EC] rounded-lg shadow-lg font-medium flex items-center gap-2 mx-auto"
                           onClick={() => navigate('/properties/new')}
                           whileHover={{ scale: 1.05, y: -2 }}
                           whileTap={{ scale: 0.95 }}
@@ -1186,7 +1186,7 @@ const SellerDashboard = () => {
                 </motion.div>
 
                 <motion.div
-                  className="glass-dark border border-coffee-800/30 rounded-2xl p-6"
+                  className="bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm border-coffee-800/30 rounded-2xl p-6"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 }}
@@ -1194,7 +1194,7 @@ const SellerDashboard = () => {
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-xl font-bold text-coffee-200">Recent Appointments</h3>
                     <motion.button
-                      className="px-4 py-2 glass border border-coffee-800/30 rounded-lg text-coffee-200 hover:text-white text-sm"
+                      className="px-4 py-2 glass border border-coffee-800/30 rounded-lg text-coffee-200 hover:text-[#1A1A1A] dark:text-[#F8F4EC] text-sm"
                       onClick={() => setActiveTab('interests')}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -1227,7 +1227,7 @@ const SellerDashboard = () => {
                           </div>
                           <span className={`px-2 py-1 rounded text-xs font-medium ${
                             appointment.status === 'pending' ? 'bg-gold-400/20 text-gold-400' :
-                            appointment.status === 'contacted' ? 'bg-blue-400/20 text-blue-400' :
+                            appointment.status === 'contacted' ? 'bg-[#0D8A62] dark:bg-[#0D8A62]/20 text-[#0B6E4F] dark:text-[#0D8A62]' :
                             appointment.status === 'schedule' ? 'bg-ethiopian-green/20 text-ethiopian-green' :
                             'bg-coffee-800/30 text-coffee-300'
                           }`}>
@@ -1290,9 +1290,9 @@ const SellerDashboard = () => {
               </div>
             </div>
             {viewMode === 'grid' ? (
-              <div className="properties-grid">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                 {myProperties.map(property => (
-                  <div key={property._id} className="admin-card" data-status={property.status}>
+                  <div key={property._id} className="flex flex-col space-y-2">
                     <PropertyCard 
                       property={property}
                       onToggleFavorite={() => {}}
@@ -1300,47 +1300,47 @@ const SellerDashboard = () => {
                       onImageManage={null}
                       canManageImages={false}
                     />
-                    <div className="property-card-actions admin-card-actions" style={{ marginTop: '8px' }}>
+                    <div className="flex items-center justify-end gap-1.5 px-1">
                       <button
-                        className="card-action-btn view"
+                        className="p-1.5 rounded-lg bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] text-[#4B5563] dark:text-[#A8B5AE] hover:text-[#0B6E4F] hover:border-[#0B6E4F] transition-all cursor-pointer shadow-xs"
                         title="View Details"
                         onClick={(e) => { e.stopPropagation(); navigate(`/properties/${property._id}`); }}
                       >
-                        <Eye size={16} />
+                        <Eye size={15} />
                       </button>
                       <button
-                        className="card-action-btn edit"
+                        className="p-1.5 rounded-lg bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] text-[#4B5563] dark:text-[#A8B5AE] hover:text-[#D4A017] hover:border-[#D4A017] transition-all cursor-pointer shadow-xs"
                         title="Edit Property"
                         onClick={(e) => { e.stopPropagation(); navigate(`/properties/${property._id}/edit`); }}
                       >
-                        <Edit size={16} />
+                        <Edit size={15} />
                       </button>
                       <button
-                        className="card-action-btn delete"
+                        className="p-1.5 rounded-lg bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] text-[#C45C26] hover:bg-[#C45C26]/10 transition-all cursor-pointer shadow-xs"
                         title="Delete Property"
                         onClick={(e) => { e.stopPropagation(); handleDeleteProperty(property._id); }}
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={15} />
                       </button>
                     </div>
                   </div>
                 ))}
                 {myProperties.length === 0 && (
-                  <div className="empty-state">
-                    <Building size={48} />
-                    <h3>No properties listed</h3>
-                    <p>Start by adding your first property listing</p>
-                    <button className="btn btn-primary" onClick={() => navigate('/properties/new')}>
-                      <Plus size={16} />
+                  <div className="col-span-full py-12 text-center bg-white dark:bg-[#141A17] rounded-2xl border border-[#E5E0D8] dark:border-[#2A342E] p-8">
+                    <Building size={44} className="mx-auto mb-3 text-[#D4A017] opacity-60" />
+                    <h3 className="text-base font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-1">No properties listed</h3>
+                    <p className="text-xs text-[#6B7280] dark:text-[#A8B5AE] mb-4">Start by adding your first property listing</p>
+                    <button className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0B6E4F] text-white text-xs font-bold shadow-md hover:bg-[#095C42] transition-all" onClick={() => navigate('/properties/new')}>
+                      <Plus size={15} />
                       Add Property
                     </button>
                   </div>
                 )}
               </div>
             ) : (
-              <div className="properties-list">
+              <div className="space-y-4">
                 {myProperties.map(property => (
-                  <div key={property._id} className="admin-card" data-status={property.status}>
+                  <div key={property._id} className="flex flex-col space-y-2">
                     <PropertyCard 
                       property={property}
                       onToggleFavorite={() => {}}
@@ -1348,38 +1348,38 @@ const SellerDashboard = () => {
                       onImageManage={null}
                       canManageImages={false}
                     />
-                    <div className="property-card-actions admin-card-actions" style={{ marginTop: '8px' }}>
+                    <div className="flex items-center justify-end gap-1.5 px-1">
                       <button
-                        className="card-action-btn view"
+                        className="p-1.5 rounded-lg bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] text-[#4B5563] dark:text-[#A8B5AE] hover:text-[#0B6E4F] hover:border-[#0B6E4F] transition-all cursor-pointer shadow-xs"
                         title="View Details"
                         onClick={(e) => { e.stopPropagation(); navigate(`/properties/${property._id}`); }}
                       >
-                        <Eye size={16} />
+                        <Eye size={15} />
                       </button>
                       <button
-                        className="card-action-btn edit"
+                        className="p-1.5 rounded-lg bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] text-[#4B5563] dark:text-[#A8B5AE] hover:text-[#D4A017] hover:border-[#D4A017] transition-all cursor-pointer shadow-xs"
                         title="Edit Property"
                         onClick={(e) => { e.stopPropagation(); navigate(`/properties/${property._id}/edit`); }}
                       >
-                        <Edit size={16} />
+                        <Edit size={15} />
                       </button>
                       <button
-                        className="card-action-btn delete"
+                        className="p-1.5 rounded-lg bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] text-[#C45C26] hover:bg-[#C45C26]/10 transition-all cursor-pointer shadow-xs"
                         title="Delete Property"
                         onClick={(e) => { e.stopPropagation(); handleDeleteProperty(property._id); }}
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={15} />
                       </button>
                     </div>
                   </div>
                 ))}
                 {myProperties.length === 0 && (
-                  <div className="empty-state">
-                    <Building size={48} />
-                    <h3>No properties listed</h3>
-                    <p>Start by adding your first property listing</p>
-                    <button className="btn btn-primary" onClick={() => navigate('/properties/new')}>
-                      <Plus size={16} />
+                  <div className="py-12 text-center bg-white dark:bg-[#141A17] rounded-2xl border border-[#E5E0D8] dark:border-[#2A342E] p-8">
+                    <Building size={44} className="mx-auto mb-3 text-[#D4A017] opacity-60" />
+                    <h3 className="text-base font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-1">No properties listed</h3>
+                    <p className="text-xs text-[#6B7280] dark:text-[#A8B5AE] mb-4">Start by adding your first property listing</p>
+                    <button className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0B6E4F] text-white text-xs font-bold shadow-md hover:bg-[#095C42] transition-all" onClick={() => navigate('/properties/new')}>
+                      <Plus size={15} />
                       Add Property
                     </button>
                   </div>
@@ -1417,7 +1417,7 @@ const SellerDashboard = () => {
             </div>
             <div className="interests-grid">
               {recentInterests.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                   {recentInterests.map((interest) => (
                     <InterestCard 
                       key={interest._id} 
@@ -1444,7 +1444,7 @@ const SellerDashboard = () => {
                 </div>
               ) : (
                 <motion.div
-                  className="col-span-full text-center py-16 glass-dark border border-coffee-800/30 rounded-2xl"
+                  className="col-span-full text-center py-16 bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm border-coffee-800/30 rounded-2xl"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5 }}
@@ -1509,7 +1509,7 @@ const SellerDashboard = () => {
             </div>
             <div className="appointments-grid">
               {appointments.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                   {appointments.map((appointment) => (
                     <AppointmentCard 
                       key={appointment._id} 
@@ -1572,7 +1572,7 @@ const SellerDashboard = () => {
             </div>
             <div className="properties-grid">
               {myProperties.filter(p => p.sold === false && p.isVerified === true).length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                   {myProperties
                     .filter(p => p.sold === false && p.isVerified === true)
                     .map((property) => (
@@ -1585,30 +1585,30 @@ const SellerDashboard = () => {
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <Building size={48} className="text-neutral-400" />
+                            <Building size={48} className="text-[#6B7A73] dark:text-[#A8B5AE]" />
                           )}
                         </div>
                         <div className="property-details p-4">
-                          <h4 className="font-semibold text-lg text-neutral-900 mb-2">
+                          <h4 className="font-semibold text-lg text-[#1A1A1A] dark:text-[#F8F4EC] mb-2">
                             {property.title || 'Property Title'}
                           </h4>
-                          <p className="text-neutral-600 mb-2 flex items-center">
+                          <p className="text-[#4B5563] dark:text-[#A8B5AE] mb-2 flex items-center">
                             <MapPin size={16} className="mr-2" />
                             {property.location || 'Location'}
                           </p>
                           <div className="property-stats grid grid-cols-2 gap-4 mb-3">
                             <div className="flex items-center">
-                              <Home size={16} className="mr-2 text-neutral-500" />
-                              <span className="text-sm text-neutral-600">{property.features?.bedrooms || 0} beds</span>
+                              <Home size={16} className="mr-2 text-[#4B5563] dark:text-[#6B7A73]" />
+                              <span className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">{property.features?.bedrooms || 0} beds</span>
                             </div>
                             <div className="flex items-center">
-                              <Bath size={16} className="mr-2 text-neutral-500" />
-                              <span className="text-sm text-neutral-600">{property.features?.bathrooms || 0} baths</span>
+                              <Bath size={16} className="mr-2 text-[#4B5563] dark:text-[#6B7A73]" />
+                              <span className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">{property.features?.bathrooms || 0} baths</span>
                             </div>
                           </div>
                           <div className="price-info border-t pt-3 mb-3">
                             <div className="flex justify-between items-center">
-                              <span className="text-sm font-medium text-neutral-700">Price:</span>
+                              <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE]">Price:</span>
                               <span className="text-lg font-semibold text-green-600">
                                 ${property.price?.toLocaleString() || 'N/A'}
                               </span>
@@ -1636,7 +1636,7 @@ const SellerDashboard = () => {
                 </div>
               ) : (
                 <motion.div
-                  className="col-span-full text-center py-16 glass-dark border border-coffee-800/30 rounded-2xl"
+                  className="col-span-full text-center py-16 bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm border-coffee-800/30 rounded-2xl"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5 }}
@@ -1668,7 +1668,7 @@ const SellerDashboard = () => {
                     Properties you list for sale will appear here
                   </motion.p>
                   <motion.button
-                    className="px-8 py-3 bg-gradient-coffee text-white rounded-lg shadow-xl hover:shadow-2xl font-medium flex items-center gap-2 mx-auto"
+                    className="px-8 py-3 bg-gradient-coffee text-[#1A1A1A] dark:text-[#F8F4EC] rounded-lg shadow-xl hover:shadow-2xl font-medium flex items-center gap-2 mx-auto"
                     onClick={() => navigate('/properties/new')}
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}

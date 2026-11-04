@@ -36,9 +36,9 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden">
+    <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] text-[#1A1A1A] dark:text-[#F8F4EC] relative flex items-center justify-center p-4 overflow-hidden transition-colors duration-200">
       {/* Animated background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-accent via-accent/90 to-foreground/90"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0B6E4F]/5 via-transparent to-[#D4A017]/5 pointer-events-none"></div>
       <div className="absolute inset-0 bg-gradient-radial-gold opacity-40"></div>
       
       {/* Floating decorative elements */}
@@ -50,9 +50,9 @@ const ForgotPassword = () => {
       
       <div className="w-full max-w-md relative z-10">
         {/* Premium Card with glassmorphism */}
-        <div className="glass-card rounded-3xl shadow-luxury overflow-hidden animate-fade-in-up">
+        <div className="bg-white dark:bg-[#141A17] rounded-3xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-2xl overflow-hidden animate-fade-in-up">
           {/* Header with gradient */}
-          <div className="relative bg-gradient-to-br from-accent to-accent/80 p-10 text-accent-foreground overflow-hidden">
+          <div className="relative bg-gradient-to-br from-[#0B6E4F] via-[#095C42] to-[#043324] p-8 sm:p-10 text-white overflow-hidden">
             {/* Decorative circles */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full"></div>
             <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 rounded-full"></div>
@@ -70,7 +70,7 @@ const ForgotPassword = () => {
           </div>
 
           {/* Form section */}
-          <form onSubmit={handleSubmit} className="p-10 space-y-6 bg-card">
+          <form onSubmit={handleSubmit} className="p-8 sm:p-10 space-y-6 bg-white dark:bg-[#141A17]">
             {message && (
               <div className="p-4 bg-accent/10 border border-accent/30 rounded-xl text-accent font-medium animate-fade-in">
                 {message}
@@ -87,7 +87,7 @@ const ForgotPassword = () => {
                 {t("Email Address")}
               </label>
               <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#4B5563] dark:text-[#A8B5AE] group-focus-within:text-[#0B6E4F] dark:group-focus-within:text-[#10B981] transition-colors" />
                 <input
                   type="email"
                   id="email"
@@ -95,7 +95,7 @@ const ForgotPassword = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={t("Enter your email")}
-                  className="w-full pl-12 pr-4 py-4 bg-background/50 border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50"
+                  className="w-full pl-12 pr-4 py-4 bg-[#F0EDE6]/50 dark:bg-[#1C2420] border border-[#E5E0D8] dark:border-[#2A342E] rounded-xl focus:outline-none focus:ring-2 focus:ring-2 focus:ring-[#0B6E4F] focus:border-transparent transition-all duration-200 hover:border-[#0B6E4F]/40"
                   autoComplete="email"
                   required
                 />
@@ -104,7 +104,7 @@ const ForgotPassword = () => {
 
             <button 
               type="submit" 
-              className="w-full py-4 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-xl font-bold text-lg shadow-lg hover:shadow-glow-green transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]" 
+              className="w-full py-4 bg-[#0B6E4F] hover:bg-[#095C42] text-white rounded-xl font-bold text-base shadow-lg hover:shadow-[0_0_20px_rgba(212,160,23,0.35)] transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-[0.98]" 
               disabled={loading}
             >
               {loading ? (
@@ -121,9 +121,9 @@ const ForgotPassword = () => {
           {/* Footer */}
           <div className="px-10 pb-10 text-center bg-card">
             <div className="luxury-divider mb-6"></div>
-            <p className="text-muted-foreground">
+            <p className="text-[#4B5563] dark:text-[#A8B5AE]">
               {t("Remembered your password?")}{" "}
-              <Link to="/login" className="font-semibold text-accent hover:underline transition-colors">
+              <Link to="/login" className="font-bold text-[#0B6E4F] dark:text-[#10B981] hover:underline transition-colors">
                 {t("Back to Sign In")}
               </Link>
             </p>

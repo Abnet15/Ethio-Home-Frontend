@@ -1,14 +1,14 @@
-import { Heart, MapPin, Bed, Bath, Square, Trash2, Eye } from "lucide-react";
+import { Heart, MapPin, Bed, Bath, Square, Trash2, Eye, Building2 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
 import { useLanguage } from "../context/LanguageContext";
 import { favoritesService } from "../services/favoritesService";
-import "./Favorites.css";
+import PropertyCard from "../components/PropertyCard";
 
 const Favorites = () => {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   const { user, isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [favorites, setFavorites] = useState([]);
@@ -16,10 +16,7 @@ const Favorites = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Wait for auth to finish loading
-    if (authLoading) {
-      return;
-    }
+    if (authLoading) return;
     
     if (!isAuthenticated || !user) {
       navigate("/login");
@@ -34,24 +31,24 @@ const Favorites = () => {
       setLoading(true);
       setError("");
 
-      // Fetch favorites from API
       const result = await favoritesService.getFavorites();
       if (result.success) {
-        setFavorites(result.data.data.favorites);
+        setFavorites(result.data?.data?.favorites || []);
       } else {
-        // Check if error is authentication related
         const errorMsg = result.error || "Failed to load favorites";
-        if (errorMsg.toLowerCase().includes('not logged in') || errorMsg.toLowerCase().includes('unauthorized') || errorMsg.toLowerCase().includes('401')) {
-          // Redirect to login instead of showing error
+        if (
+          errorMsg.toLowerCase().includes("not logged in") ||
+          errorMsg.toLowerCase().includes("unauthorized") ||
+          errorMsg.toLowerCase().includes("401")
+        ) {
           navigate("/login");
           return;
         }
-        setError(t(errorMsg));
+        setError(t(errorMsg) || errorMsg);
       }
     } catch (err) {
       console.error("Failed to load favorites:", err);
-      // Check if error is authentication related
-      if (err.response?.status === 401 || err.message?.toLowerCase().includes('unauthorized')) {
+      if (err.response?.status === 401 || err.message?.toLowerCase().includes("unauthorized")) {
         navigate("/login");
         return;
       }
@@ -63,11 +60,9 @@ const Favorites = () => {
 
   const removeFromFavorites = async (propertyId) => {
     try {
-      // Remove from API
       const result = await favoritesService.removeFromFavorites(propertyId);
       if (result.success) {
-        // Remove from state
-        setFavorites(prev => prev.filter(property => property._id !== propertyId));
+        setFavorites((prev) => prev.filter((property) => (property._id || property.id) !== propertyId));
       }
     } catch (err) {
       console.error("Failed to remove from favorites:", err);
@@ -75,7 +70,7 @@ const Favorites = () => {
   };
 
   const clearAllFavorites = async () => {
-    if (window.confirm(t("Are you sure you want to clear all favorites?"))) {
+    if (window.confirm(t("Are you sure you want to clear all favorites?") || "Are you sure you want to clear all favorites?")) {
       try {
         const result = await favoritesService.clearFavorites();
         if (result.success) {
@@ -87,191 +82,94 @@ const Favorites = () => {
     }
   };
 
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "ETB",
-      minimumFractionDigits: 0,
-    }).format(price);
-  };
-
-  // Show loading while auth is loading or favorites are loading
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">{authLoading ? t("Checking authentication...") : t("Loading favorites...")}</p>
+          <div className="w-12 h-12 border-4 border-[#0B6E4F] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-sm font-semibold text-[#6B7280] dark:text-[#A8B5AE]">
+            {authLoading ? (t("Checking authentication...") || "Checking authentication...") : (t("Loading favorites...") || "Loading favorites...")}
+          </p>
         </div>
       </div>
     );
   }
 
-  // If not authenticated after loading, show nothing (redirect will happen)
   if (!isAuthenticated || !user) {
     return null;
   }
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-15"
-             style={{ background: 'radial-gradient(circle, hsl(0 85% 47% / 0.15) 0%, transparent 70%)', filter: 'blur(80px)' }} />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full opacity-15"
-             style={{ background: 'radial-gradient(circle, hsl(48 96% 53% / 0.15) 0%, transparent 70%)', filter: 'blur(60px)' }} />
-      </div>
-      
-      <div className="container mx-auto px-4 py-12 relative z-10">
-        {/* Premium Header */}
-        <div className="mb-12 animate-fade-in-up">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="flex items-center gap-6">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-ethiopian-red/20 to-ethiopian-red/10 flex items-center justify-center shadow-lg border border-ethiopian-red/20 group-hover:scale-110 transition-transform">
-                <Heart className="h-10 w-10 text-ethiopian-red" />
-              </div>
-              <div>
-                <div className="ethiopian-accent-bar w-16 mb-4"></div>
-                <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-2">
-                  {t("My Favorites")}
-                </h1>
-                <p className="text-lg text-muted-foreground">
-                  {favorites.length} {t("property")}{favorites.length !== 1 ? 's' : ''} {t("saved")}
-                </p>
-              </div>
+    <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] text-[#1A1A1A] dark:text-[#F8F4EC] py-10 transition-colors duration-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[#E5E0D8] dark:border-[#2A342E]">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-[#0B6E4F]/10 dark:bg-[#10B981]/15 text-[#0B6E4F] dark:text-[#10B981] flex items-center justify-center shadow-sm">
+              <Heart className="h-6 w-6 fill-current" />
             </div>
-            
-            {favorites.length > 0 && (
-              <button 
-                onClick={clearAllFavorites}
-                className="group px-6 py-3 glass border border-ethiopian-red/30 text-ethiopian-red rounded-xl font-semibold hover:bg-ethiopian-red/10 hover:border-ethiopian-red/50 transition-all duration-300 flex items-center gap-3 hover:scale-[1.02]"
-              >
-                <Trash2 className="h-5 w-5 group-hover:scale-110 transition-transform" />
-                {t("Clear All")}
-              </button>
-            )}
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
+                {currentLanguage === "am" ? "የተወደዱ ንብረቶች" : "Saved Properties"}
+              </h1>
+              <p className="text-xs text-[#6B7280] dark:text-[#6B7A73] mt-0.5">
+                {favorites.length} {favorites.length === 1 ? "property" : "properties"} {currentLanguage === "am" ? "ተቀምጠዋል" : "saved to your wishlist"}
+              </p>
+            </div>
           </div>
+          
+          {favorites.length > 0 && (
+            <button 
+              onClick={clearAllFavorites}
+              className="px-4 py-2 rounded-xl bg-white dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] hover:border-red-400 text-red-500 text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <Trash2 className="h-4 w-4" />
+              <span>{currentLanguage === "am" ? "ሁሉንም አጽዳ" : "Clear Wishlist"}</span>
+            </button>
+          )}
         </div>
 
         {error && (
-          <div className="glass-card border border-destructive/30 rounded-2xl p-8 mb-8 text-center animate-fade-in">
-            <p className="text-destructive font-semibold mb-6 text-lg">{error}</p>
-            <button 
-              onClick={loadFavorites} 
-              className="px-8 py-4 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-xl font-bold hover:shadow-glow-green transition-all duration-300 hover:scale-[1.02]"
-            >
-              {t("Try Again")}
-            </button>
+          <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-semibold mb-6">
+            {error}
           </div>
         )}
 
         {favorites.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 animate-fade-in-up">
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center mb-8 shadow-luxury">
-              <Heart className="h-16 w-16 text-muted-foreground/50" />
+          <div className="text-center py-20 px-4 bg-white dark:bg-[#141A17] rounded-3xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm max-w-xl mx-auto">
+            <div className="w-16 h-16 rounded-2xl bg-[#0B6E4F]/10 dark:bg-[#10B981]/15 text-[#0B6E4F] dark:text-[#10B981] flex items-center justify-center mx-auto mb-4">
+              <Heart className="h-8 w-8" />
             </div>
-            <h3 className="font-serif text-3xl font-bold text-foreground mb-4">{t("No favorites yet")}</h3>
-            <p className="text-lg text-muted-foreground mb-8 text-center max-w-lg">
-              {t("Start browsing properties and add them to your favorites!")}
+            <h2 className="text-xl font-bold mb-2">
+              {currentLanguage === "am" ? "ምንም የተወደዱ ንብረቶች የሉም" : "No saved properties yet"}
+            </h2>
+            <p className="text-xs text-[#6B7280] dark:text-[#6B7A73] mb-6 max-w-md mx-auto">
+              {currentLanguage === "am"
+                ? "በፈለጉት ጊዜ በቀላሉ ለማግኘት ንብረቶችን ሲያስሱ የልብ ምልክቷን ይጫኑ"
+                : "Explore verified listings across Addis Ababa and tap the heart icon to save them here for easy comparison."}
             </p>
             <button 
               onClick={() => navigate("/properties")}
-              className="px-10 py-5 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-2xl font-bold text-lg hover:shadow-glow-green transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              className="px-6 py-3 rounded-xl bg-[#0B6E4F] hover:bg-[#095C42] text-white text-sm font-bold shadow-md hover:shadow-[0_0_20px_rgba(212,160,23,0.3)] transition-all cursor-pointer"
             >
-              {t("Browse Properties")}
+              {currentLanguage === "am" ? "ንብረቶችን አስስ" : "Browse Properties"}
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {favorites.map((property, index) => (
-              <div 
-                key={property._id} 
-                className="group glass-card rounded-2xl border border-border/50 shadow-lg overflow-hidden hover:shadow-luxury hover:border-gold-400/30 transition-all duration-500 hover:-translate-y-2"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="relative h-56 overflow-hidden">
-                  <img 
-                    src={property.imagesUrl?.[0] || property.images?.[0] || '/placeholder-property.jpg'} 
-                    alt={property.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent"></div>
-                  
-                  {/* Floating action buttons */}
-                  <div className="absolute top-4 right-4 flex gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-                    <button
-                      onClick={() => navigate(`/properties/${property._id}`)}
-                      className="p-3 glass border border-white/20 backdrop-blur-xl rounded-xl hover:bg-white/20 transition-all duration-300 text-white"
-                      title={t("View Details")}
-                    >
-                      <Eye className="h-5 w-5" />
-                    </button>
-                    <button
-                      onClick={() => removeFromFavorites(property._id)}
-                      className="p-3 bg-ethiopian-red/80 backdrop-blur-xl rounded-xl hover:bg-ethiopian-red transition-all duration-300 text-white"
-                      title={t("Remove from Favorites")}
-                    >
-                      <Trash2 className="h-5 w-5" />
-                    </button>
-                  </div>
-                  
-                  {/* Heart indicator */}
-                  <div className="absolute top-4 left-4">
-                    <div className="p-2 bg-ethiopian-red/80 backdrop-blur-sm rounded-lg">
-                      <Heart className="h-4 w-4 text-white fill-white" />
-                    </div>
-                  </div>
-                  
-                  {/* Price overlay */}
-                  <div className="absolute bottom-4 left-4">
-                    <span className="text-2xl font-black text-gradient-gold" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>
-                      {formatPrice(property.price)}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <h3 className="font-serif text-xl font-bold text-foreground mb-3 line-clamp-2 group-hover:text-gold-500 transition-colors">
-                    {property.title}
-                  </h3>
-                  <p className="text-muted-foreground mb-5 flex items-center gap-2">
-                    <span className="p-1 rounded-md bg-gold-400/20">
-                      <MapPin className="h-4 w-4 text-gold-500" />
-                    </span>
-                    {property.location}
-                  </p>
-                  
-                  <div className="flex items-center gap-4 mb-5 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
-                      <Bed className="h-4 w-4 text-gold-500" />
-                      {property.features?.bedrooms || property.bedrooms} {t("beds")}
-                    </span>
-                    <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
-                      <Bath className="h-4 w-4 text-gold-500" />
-                      {property.features?.bathrooms || property.bathrooms} {t("baths")}
-                    </span>
-                    <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
-                      <Square className="h-4 w-4 text-gold-500" />
-                      {property.features?.area || property.area} m²
-                    </span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                    <span className="px-4 py-2 bg-gradient-to-r from-gold-400/20 to-gold-500/10 text-gold-500 rounded-full text-sm font-bold border border-gold-400/30">
-                      {t(property.type || 'property')}
-                    </span>
-                    <button
-                      onClick={() => navigate(`/properties/${property._id}`)}
-                      className="text-sm font-semibold text-accent hover:text-accent/80 transition-colors flex items-center gap-1"
-                    >
-                      {t("View Details")} →
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <PropertyCard
+                key={property._id || property.id || index}
+                property={property}
+                isFavorite={true}
+                onToggleFavorite={removeFromFavorites}
+                index={index}
+              />
             ))}
           </div>
         )}
+
       </div>
     </div>
   );

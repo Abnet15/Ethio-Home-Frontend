@@ -192,7 +192,7 @@ const Signup = () => {
       <div className="max-w-4xl mx-auto relative z-10 animate-fade-in-up">
         <div className="glass-card rounded-3xl shadow-luxury overflow-hidden">
           {/* Header */}
-          <div className="relative bg-gradient-to-br from-accent to-accent/80 p-10 text-accent-foreground overflow-hidden">
+          <div className="relative bg-gradient-to-br from-[#0B6E4F] via-[#095C42] to-[#043324] p-8 sm:p-10 text-white overflow-hidden">
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full"></div>
             <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 rounded-full"></div>
             
@@ -229,7 +229,7 @@ const Signup = () => {
                 {t("Full Name")}
               </label>
               <div className="relative group">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#4B5563] dark:text-[#A8B5AE] group-focus-within:text-[#0B6E4F] dark:group-focus-within:text-[#10B981] transition-colors" />
                 <input
                   type="text"
                   id="name"
@@ -237,8 +237,8 @@ const Signup = () => {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder={t("Enter your full name")}
-                  className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
-                    formErrors.name ? 'border-destructive' : 'border-border'
+                  className={`w-full pl-12 pr-4 py-4 bg-[#F0EDE6]/50 dark:bg-[#1C2420] border rounded-xl focus:outline-none focus:ring-2 focus:ring-2 focus:ring-[#0B6E4F] focus:border-transparent transition-all duration-200 hover:border-[#0B6E4F]/40 ${
+                    formErrors.name ? 'border-destructive' : 'border-[#E5E0D8] dark:border-[#2A342E]'
                   }`}
                   autoComplete="name"
                   required
@@ -253,7 +253,7 @@ const Signup = () => {
                   {t("Email Address")}
                 </label>
                 <div className="relative group">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#4B5563] dark:text-[#A8B5AE] group-focus-within:text-[#0B6E4F] dark:group-focus-within:text-[#10B981] transition-colors" />
                   <input
                     type="email"
                     id="email"
@@ -261,8 +261,8 @@ const Signup = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder={t("Enter your email")}
-                    className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
-                      formErrors.email ? 'border-destructive' : 'border-border'
+                    className={`w-full pl-12 pr-4 py-4 bg-[#F0EDE6]/50 dark:bg-[#1C2420] border rounded-xl focus:outline-none focus:ring-2 focus:ring-2 focus:ring-[#0B6E4F] focus:border-transparent transition-all duration-200 hover:border-[#0B6E4F]/40 ${
+                      formErrors.email ? 'border-destructive' : 'border-[#E5E0D8] dark:border-[#2A342E]'
                     }`}
                     autoComplete="email"
                     required
@@ -276,7 +276,7 @@ const Signup = () => {
                   {t("Phone Number")}
                 </label>
                 <div className="relative group">
-                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#4B5563] dark:text-[#A8B5AE] group-focus-within:text-[#0B6E4F] dark:group-focus-within:text-[#10B981] transition-colors" />
                   <input
                     type="tel"
                     id="phone"
@@ -284,8 +284,8 @@ const Signup = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder={t("+251 911 123 456")}
-                    className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
-                      formErrors.phone ? 'border-destructive' : 'border-border'
+                    className={`w-full pl-12 pr-4 py-4 bg-[#F0EDE6]/50 dark:bg-[#1C2420] border rounded-xl focus:outline-none focus:ring-2 focus:ring-2 focus:ring-[#0B6E4F] focus:border-transparent transition-all duration-200 hover:border-[#0B6E4F]/40 ${
+                      formErrors.phone ? 'border-destructive' : 'border-[#E5E0D8] dark:border-[#2A342E]'
                     }`}
                     autoComplete="tel"
                     required
@@ -300,7 +300,7 @@ const Signup = () => {
                 {t("Location")}
               </label>
               <div className="relative group">
-                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#4B5563] dark:text-[#A8B5AE] group-focus-within:text-[#0B6E4F] dark:group-focus-within:text-[#10B981] transition-colors" />
                 <input
                   type="text"
                   id="location"
@@ -308,8 +308,8 @@ const Signup = () => {
                   value={formData.location}
                   onChange={handleChange}
                   placeholder={t("e.g., Bole, Addis Ababa")}
-                  className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
-                    formErrors.location ? 'border-destructive' : 'border-border'
+                  className={`w-full pl-12 pr-4 py-4 bg-[#F0EDE6]/50 dark:bg-[#1C2420] border rounded-xl focus:outline-none focus:ring-2 focus:ring-2 focus:ring-[#0B6E4F] focus:border-transparent transition-all duration-200 hover:border-[#0B6E4F]/40 ${
+                    formErrors.location ? 'border-destructive' : 'border-[#E5E0D8] dark:border-[#2A342E]'
                   }`}
                   autoComplete="address-line1"
                   required
@@ -323,7 +323,7 @@ const Signup = () => {
                 {t("Full Address")}
               </label>
               <div className="relative group">
-                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#4B5563] dark:text-[#A8B5AE] group-focus-within:text-[#0B6E4F] dark:group-focus-within:text-[#10B981] transition-colors" />
                 <input
                   type="text"
                   id="address"
@@ -331,8 +331,8 @@ const Signup = () => {
                   value={formData.address}
                   onChange={handleChange}
                   placeholder={t("Enter your full address")}
-                  className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
-                    formErrors.address ? 'border-destructive' : 'border-border'
+                  className={`w-full pl-12 pr-4 py-4 bg-[#F0EDE6]/50 dark:bg-[#1C2420] border rounded-xl focus:outline-none focus:ring-2 focus:ring-2 focus:ring-[#0B6E4F] focus:border-transparent transition-all duration-200 hover:border-[#0B6E4F]/40 ${
+                    formErrors.address ? 'border-destructive' : 'border-[#E5E0D8] dark:border-[#2A342E]'
                   }`}
                   autoComplete="address-line2"
                   required
@@ -347,7 +347,7 @@ const Signup = () => {
                   {t("City")}
                 </label>
                 <div className="relative group">
-                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#4B5563] dark:text-[#A8B5AE] group-focus-within:text-[#0B6E4F] dark:group-focus-within:text-[#10B981] transition-colors" />
                   <input
                     type="text"
                     id="city"
@@ -355,8 +355,8 @@ const Signup = () => {
                     value={formData.city}
                     onChange={handleChange}
                     placeholder={t("Enter your city")}
-                    className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
-                      formErrors.city ? 'border-destructive' : 'border-border'
+                    className={`w-full pl-12 pr-4 py-4 bg-[#F0EDE6]/50 dark:bg-[#1C2420] border rounded-xl focus:outline-none focus:ring-2 focus:ring-2 focus:ring-[#0B6E4F] focus:border-transparent transition-all duration-200 hover:border-[#0B6E4F]/40 ${
+                      formErrors.city ? 'border-destructive' : 'border-[#E5E0D8] dark:border-[#2A342E]'
                     }`}
                     autoComplete="address-level2"
                     required
@@ -370,7 +370,7 @@ const Signup = () => {
                   {t("State/Region")}
                 </label>
                 <div className="relative group">
-                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#4B5563] dark:text-[#A8B5AE] group-focus-within:text-[#0B6E4F] dark:group-focus-within:text-[#10B981] transition-colors" />
                   <input
                     type="text"
                     id="state"
@@ -378,8 +378,8 @@ const Signup = () => {
                     value={formData.state}
                     onChange={handleChange}
                     placeholder={t("Enter your state or region")}
-                    className={`w-full pl-12 pr-4 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
-                      formErrors.state ? 'border-destructive' : 'border-border'
+                    className={`w-full pl-12 pr-4 py-4 bg-[#F0EDE6]/50 dark:bg-[#1C2420] border rounded-xl focus:outline-none focus:ring-2 focus:ring-2 focus:ring-[#0B6E4F] focus:border-transparent transition-all duration-200 hover:border-[#0B6E4F]/40 ${
+                      formErrors.state ? 'border-destructive' : 'border-[#E5E0D8] dark:border-[#2A342E]'
                     }`}
                     autoComplete="address-level1"
                     required
@@ -397,10 +397,10 @@ const Signup = () => {
                 </div>
                 <div className="flex-1">
                   <h4 className="font-bold text-foreground mb-1">{t("Property Buyer Account")}</h4>
-                  <p className="text-sm text-muted-foreground mb-3">
+                  <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE] mb-3">
                     {t("You're creating a buyer account to search and purchase properties.")}
                   </p>
-                  <p className="text-xs text-muted-foreground/80 p-3 rounded-lg bg-muted/30">
+                  <p className="text-xs text-[#4B5563] dark:text-[#A8B5AE]/80 p-3 rounded-lg bg-[#F0EDE6]/30 dark:bg-[#1C2420]/30">
                     <strong className="text-foreground">{t("Note")}:</strong>{" "}
                     {t("Other account types (Seller, Agent, Employee) are created by administrators only.")}
                   </p>
@@ -414,7 +414,7 @@ const Signup = () => {
                   {t("Password")}
                 </label>
                 <div className="relative group">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#4B5563] dark:text-[#A8B5AE] group-focus-within:text-[#0B6E4F] dark:group-focus-within:text-[#10B981] transition-colors" />
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
@@ -422,8 +422,8 @@ const Signup = () => {
                     value={formData.password}
                     onChange={handleChange}
                     placeholder={t("Create password")}
-                    className={`w-full pl-12 pr-14 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
-                      formErrors.password ? 'border-destructive' : 'border-border'
+                    className={`w-full pl-12 pr-14 py-4 bg-[#F0EDE6]/50 dark:bg-[#1C2420] border rounded-xl focus:outline-none focus:ring-2 focus:ring-2 focus:ring-[#0B6E4F] focus:border-transparent transition-all duration-200 hover:border-[#0B6E4F]/40 ${
+                      formErrors.password ? 'border-destructive' : 'border-[#E5E0D8] dark:border-[#2A342E]'
                     }`}
                     autoComplete="new-password"
                     required
@@ -431,7 +431,7 @@ const Signup = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-muted"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground transition-colors p-1 rounded-lg hover:bg-[#F0EDE6] dark:bg-[#1C2420]"
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
@@ -444,7 +444,7 @@ const Signup = () => {
                   {t("Confirm Password")}
                 </label>
                 <div className="relative group">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#4B5563] dark:text-[#A8B5AE] group-focus-within:text-[#0B6E4F] dark:group-focus-within:text-[#10B981] transition-colors" />
                   <input
                     type={showPasswordConfirm ? "text" : "password"}
                     id="passwordConfirm"
@@ -452,8 +452,8 @@ const Signup = () => {
                     value={formData.passwordConfirm}
                     onChange={handleChange}
                     placeholder={t("Confirm password")}
-                    className={`w-full pl-12 pr-14 py-4 bg-background/50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 hover:border-accent/50 ${
-                      formErrors.passwordConfirm ? 'border-destructive' : 'border-border'
+                    className={`w-full pl-12 pr-14 py-4 bg-[#F0EDE6]/50 dark:bg-[#1C2420] border rounded-xl focus:outline-none focus:ring-2 focus:ring-2 focus:ring-[#0B6E4F] focus:border-transparent transition-all duration-200 hover:border-[#0B6E4F]/40 ${
+                      formErrors.passwordConfirm ? 'border-destructive' : 'border-[#E5E0D8] dark:border-[#2A342E]'
                     }`}
                     autoComplete="new-password"
                     required
@@ -461,7 +461,7 @@ const Signup = () => {
                   <button
                     type="button"
                     onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-muted"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground transition-colors p-1 rounded-lg hover:bg-[#F0EDE6] dark:bg-[#1C2420]"
                   >
                     {showPasswordConfirm ? (
                       <EyeOff style={{ width: "20px", height: "20px" }} />
@@ -476,7 +476,7 @@ const Signup = () => {
 
             <button 
               type="submit" 
-              className="w-full py-4 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-xl font-bold text-lg shadow-lg hover:shadow-glow-green transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]" 
+              className="w-full py-4 bg-[#0B6E4F] hover:bg-[#095C42] text-white rounded-xl font-bold text-base shadow-lg hover:shadow-[0_0_20px_rgba(212,160,23,0.35)] transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-[0.98]" 
               disabled={loading}
             >
               {loading ? (
@@ -491,10 +491,10 @@ const Signup = () => {
           </form>
 
           {/* Footer */}
-          <div className="px-10 pb-10 text-center bg-card border-t border-border pt-6">
-            <p className="text-muted-foreground">
+          <div className="px-10 pb-10 text-center bg-card border-t border-[#E5E0D8] dark:border-[#2A342E] pt-6">
+            <p className="text-[#4B5563] dark:text-[#A8B5AE]">
               {t("Already have an account?")}{" "}
-              <Link to="/login" className="font-semibold text-accent hover:underline transition-colors">
+              <Link to="/login" className="font-bold text-[#0B6E4F] dark:text-[#10B981] hover:underline transition-colors">
                 {t("Sign in here")}
               </Link>
             </p>

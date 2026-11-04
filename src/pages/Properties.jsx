@@ -16,7 +16,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-import PropertyCard from "../components/PropertyCard";
+import PropertyCardEnhanced from "../components/PropertyCardEnhanced";
 import { PropertySkeletonGrid } from "../components/PropertyCardSkeleton";
 import PropertyImageManager from "../components/PropertyImageManager";
 import { useAuth } from "../context/AuthContext";
@@ -263,7 +263,7 @@ const Properties = () => {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="group px-4 py-3 bg-card border border-border/50 rounded-xl hover:bg-gold-400/10 hover:border-gold-400/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-card"
+          className="group px-4 py-3 bg-card border border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl hover:bg-gold-400/10 hover:border-gold-400/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-card"
         >
           <ChevronLeft className="h-5 w-5 group-hover:-translate-x-0.5 transition-transform" />
         </button>
@@ -272,11 +272,11 @@ const Properties = () => {
           <>
             <button
               onClick={() => handlePageChange(1)}
-              className="min-w-[44px] h-11 px-4 py-2 bg-card border border-border/50 rounded-xl hover:bg-gold-400/10 hover:border-gold-400/30 font-semibold transition-all duration-300"
+              className="min-w-[44px] h-11 px-4 py-2 bg-card border border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl hover:bg-gold-400/10 hover:border-gold-400/30 font-semibold transition-all duration-300"
             >
               1
             </button>
-            {startPage > 2 && <span className="px-2 text-muted-foreground">...</span>}
+            {startPage > 2 && <span className="px-2 text-[#4B5563] dark:text-[#A8B5AE]">...</span>}
           </>
         )}
 
@@ -287,7 +287,7 @@ const Properties = () => {
             className={`min-w-[44px] h-11 px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${
               currentPage === page 
                 ? "bg-gradient-to-r from-gold-400 to-gold-500 text-foreground border border-gold-500 shadow-glow-gold" 
-                : "bg-card border border-border/50 hover:bg-gold-400/10 hover:border-gold-400/30"
+                : "bg-card border border-[#E5E0D8] dark:border-[#2A342E]/50 hover:bg-gold-400/10 hover:border-gold-400/30"
             }`}
           >
             {page}
@@ -296,10 +296,10 @@ const Properties = () => {
 
         {endPage < totalPages && (
           <>
-            {endPage < totalPages - 1 && <span className="px-2 text-muted-foreground">...</span>}
+            {endPage < totalPages - 1 && <span className="px-2 text-[#4B5563] dark:text-[#A8B5AE]">...</span>}
             <button
               onClick={() => handlePageChange(totalPages)}
-              className="min-w-[44px] h-11 px-4 py-2 bg-card border border-border/50 rounded-xl hover:bg-gold-400/10 hover:border-gold-400/30 font-semibold transition-all duration-300"
+              className="min-w-[44px] h-11 px-4 py-2 bg-card border border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl hover:bg-gold-400/10 hover:border-gold-400/30 font-semibold transition-all duration-300"
             >
               {totalPages}
             </button>
@@ -309,7 +309,7 @@ const Properties = () => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="group px-4 py-3 bg-card border border-border/50 rounded-xl hover:bg-gold-400/10 hover:border-gold-400/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-card"
+          className="group px-4 py-3 bg-card border border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl hover:bg-gold-400/10 hover:border-gold-400/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-card"
         >
           <ChevronRight className="h-5 w-5 group-hover:translate-x-0.5 transition-transform" />
         </button>
@@ -357,31 +357,31 @@ const Properties = () => {
         {/* Premium Header */}
         <div className="mb-12 text-center">
           <div className="ethiopian-accent-bar w-24 mx-auto mb-6"></div>
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-4 animate-fade-in-up">
+          <h1 className="font-sans text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] tracking-tight mb-4">
             {t("Properties")}
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+          <p className="text-xl md:text-2xl text-[#4B5563] dark:text-[#A8B5AE] max-w-3xl mx-auto font-light animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
             {t("Discover your perfect property from our extensive collection")}
           </p>
         </div>
 
         {/* Premium Search and Filters Card */}
-        <div className="glass-card rounded-3xl border border-border/50 shadow-luxury p-8 mb-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        <div className="bg-white dark:bg-[#141A17] rounded-3xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm p-6 sm:p-8 mb-10" style={{ animationDelay: '0.2s' }}>
           <div className="flex flex-col lg:flex-row gap-6 items-center">
             <form onSubmit={handleSearch} className="flex-1 w-full flex gap-4">
               <div className="relative flex-1 group">
-                <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-gold-400 transition-colors" />
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-[#4B5563] dark:text-[#A8B5AE] group-focus-within:text-gold-400 transition-colors" />
                 <input
                   type="text"
                   placeholder={t("Search properties...")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-14 pr-6 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-muted-foreground"
+                  className="w-full pl-14 pr-6 py-4 bg-background/60 backdrop-blur-sm border-2 border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-[#4B5563] dark:text-[#A8B5AE]"
                 />
               </div>
               <button 
                 type="submit" 
-                className="group px-8 py-4 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-2xl font-bold text-lg hover:shadow-glow-green transition-all duration-300 flex items-center gap-3 hover:scale-[1.02] active:scale-[0.98]"
+                className="px-6 sm:px-8 py-3.5 bg-[#0B6E4F] hover:bg-[#095C42] text-white rounded-xl font-bold text-sm sm:text-base shadow-sm hover:shadow-[0_0_20px_rgba(212,160,23,0.35)] transition-all duration-200 flex items-center gap-2 cursor-pointer"
               >
                 <Search className="h-5 w-5 group-hover:scale-110 transition-transform" />
                 <span className="hidden md:inline">{t("Search")}</span>
@@ -389,10 +389,10 @@ const Properties = () => {
               <button
                 type="button"
                 onClick={() => setShowFilters(!showFilters)}
-                className={`px-6 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 border-2 hover:scale-[1.02] ${
+                className={`px-5 py-3.5 rounded-xl font-bold text-sm transition-all duration-200 flex items-center gap-2 border cursor-pointer ${
                   showFilters 
                     ? "bg-gold-400/20 border-gold-400/50 text-gold-400 shadow-glow-gold" 
-                    : "border-border/50 hover:border-gold-400/30 text-foreground hover:bg-gold-400/10"
+                    : "border-[#E5E0D8] dark:border-[#2A342E]/50 hover:border-gold-400/30 text-foreground hover:bg-gold-400/10"
                 }`}
               >
                 <Filter className="h-5 w-5" />
@@ -401,13 +401,13 @@ const Properties = () => {
             </form>
 
             {/* View Mode Toggle */}
-            <div className="flex gap-2 p-2 bg-secondary/50 backdrop-blur-sm rounded-2xl border border-border/50">
+            <div className="flex gap-2 p-2 bg-secondary/50 backdrop-blur-sm rounded-2xl border border-[#E5E0D8] dark:border-[#2A342E]/50">
               <button
                 onClick={() => setViewMode("grid")}
                 className={`p-3 rounded-xl transition-all duration-300 ${
                   viewMode === "grid" 
                     ? "bg-gradient-to-r from-gold-400 to-gold-500 text-foreground shadow-glow-gold" 
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    : "text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground hover:bg-[#F0EDE6] dark:bg-[#1C2420]"
                 }`}
               >
                 <Grid className="h-5 w-5" />
@@ -417,7 +417,7 @@ const Properties = () => {
                 className={`p-3 rounded-xl transition-all duration-300 ${
                   viewMode === "list" 
                     ? "bg-gradient-to-r from-gold-400 to-gold-500 text-foreground shadow-glow-gold" 
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    : "text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground hover:bg-[#F0EDE6] dark:bg-[#1C2420]"
                 }`}
               >
                 <List className="h-5 w-5" />
@@ -428,15 +428,15 @@ const Properties = () => {
 
         {/* Premium Filter Panel */}
         {showFilters && (
-          <div className="glass-card rounded-3xl border border-border/50 shadow-luxury p-8 mb-10 animate-fade-in-down">
+          <div className="glass-card rounded-3xl border border-[#E5E0D8] dark:border-[#2A342E]/50 shadow-luxury p-8 mb-10 animate-fade-in-down">
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h3 className="font-serif text-2xl font-bold text-foreground">{t("Filter Properties")}</h3>
-                <p className="text-muted-foreground mt-1">{t("Refine your search with advanced filters")}</p>
+                <p className="text-[#4B5563] dark:text-[#A8B5AE] mt-1">{t("Refine your search with advanced filters")}</p>
               </div>
               <button
                 onClick={() => setShowFilters(false)}
-                className="p-3 hover:bg-muted rounded-xl transition-all duration-300 text-muted-foreground hover:text-foreground"
+                className="p-3 hover:bg-[#F0EDE6] dark:bg-[#1C2420] rounded-xl transition-all duration-300 text-[#4B5563] dark:text-[#A8B5AE] hover:text-foreground"
               >
                 <X className="h-6 w-6" />
               </button>
@@ -448,7 +448,7 @@ const Properties = () => {
                 <select
                   value={filters.type}
                   onChange={(e) => handleFilterChange("type", e.target.value)}
-                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground"
                 >
                   <option value="">{t("All Types")}</option>
                   <option value="house">{t("House")}</option>
@@ -464,7 +464,7 @@ const Properties = () => {
                 <select
                   value={filters.status}
                   onChange={(e) => handleFilterChange("status", e.target.value)}
-                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground"
                 >
                   <option value="">{t("All Status")}</option>
                   <option value="for-sale">{t("For Sale")}</option>
@@ -481,7 +481,7 @@ const Properties = () => {
                   onChange={(e) =>
                     handleFilterChange("location", e.target.value)
                   }
-                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-muted-foreground"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-[#4B5563] dark:text-[#A8B5AE]"
                 />
               </div>
 
@@ -494,7 +494,7 @@ const Properties = () => {
                   onChange={(e) =>
                     handleFilterChange("minPrice", e.target.value)
                   }
-                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-muted-foreground"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-[#4B5563] dark:text-[#A8B5AE]"
                 />
               </div>
 
@@ -507,7 +507,7 @@ const Properties = () => {
                   onChange={(e) =>
                     handleFilterChange("maxPrice", e.target.value)
                   }
-                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-muted-foreground"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-[#4B5563] dark:text-[#A8B5AE]"
                 />
               </div>
 
@@ -518,7 +518,7 @@ const Properties = () => {
                   onChange={(e) =>
                     handleFilterChange("bedrooms", e.target.value)
                   }
-                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground"
                 >
                   <option value="">{t("Any")}</option>
                   <option value="1">{t("1+")}</option>
@@ -536,7 +536,7 @@ const Properties = () => {
                   onChange={(e) =>
                     handleFilterChange("bathrooms", e.target.value)
                   }
-                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground"
                 >
                   <option value="">{t("Any")}</option>
                   <option value="1">{t("1+")}</option>
@@ -555,7 +555,7 @@ const Properties = () => {
                   onChange={(e) =>
                     handleFilterChange("minArea", e.target.value)
                   }
-                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-muted-foreground"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-[#4B5563] dark:text-[#A8B5AE]"
                 />
               </div>
 
@@ -568,15 +568,15 @@ const Properties = () => {
                   onChange={(e) =>
                     handleFilterChange("maxArea", e.target.value)
                   }
-                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-muted-foreground"
+                  className="w-full px-5 py-4 bg-background/60 backdrop-blur-sm border-2 border-[#E5E0D8] dark:border-[#2A342E]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400/50 transition-all duration-300 hover:border-gold-400/30 text-foreground placeholder:text-[#4B5563] dark:text-[#A8B5AE]"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end pt-6 border-t border-border/30 mt-6">
+            <div className="flex justify-end pt-6 border-t border-[#E5E0D8]/30 dark:border-[#2A342E]/30 mt-6">
               <button 
                 onClick={clearFilters} 
-                className="px-6 py-3 bg-muted hover:bg-destructive/10 text-foreground hover:text-destructive border border-border hover:border-destructive/30 rounded-xl font-semibold transition-all duration-300"
+                className="px-6 py-3 bg-[#F0EDE6] dark:bg-[#1C2420] hover:bg-destructive/10 text-foreground hover:text-destructive border border-[#E5E0D8] dark:border-[#2A342E] hover:border-destructive/30 rounded-xl font-semibold transition-all duration-300"
               >
                 {t("Clear All Filters")}
               </button>
@@ -586,7 +586,7 @@ const Properties = () => {
 
         {/* Results Summary */}
         <div className="flex items-center justify-between mb-6">
-          <p className="text-muted-foreground">
+          <p className="text-[#4B5563] dark:text-[#A8B5AE]">
             {t("Showing")} <span className="font-semibold text-foreground">{startIndex + 1}-{Math.min(endIndex, filteredProperties.length)}</span> {t("of")}{" "}
             <span className="font-semibold text-foreground">{filteredProperties.length}</span> {t("properties")}
           </p>
@@ -610,14 +610,14 @@ const Properties = () => {
           >
             <div className="flex items-center justify-center gap-3 py-4">
               <Sparkles className="w-5 h-5 text-gold-400 animate-pulse" />
-              <span className="text-muted-foreground font-medium">{t("Loading amazing properties...")}</span>
+              <span className="text-[#4B5563] dark:text-[#A8B5AE] font-medium">{t("Loading amazing properties...")}</span>
             </div>
             <PropertySkeletonGrid count={6} viewMode={viewMode} />
           </motion.div>
         ) : filteredProperties.length > 0 ? (
           <>
             <motion.div 
-              className={`properties-container ${viewMode}`}
+              className={viewMode === "grid" ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-8 max-w-7xl mx-auto" : "flex flex-col gap-4 mb-8 max-w-5xl mx-auto"}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -629,12 +629,12 @@ const Properties = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
                 >
-                  <PropertyCard
+                  <PropertyCardEnhanced
                     property={property}
                     isFavorite={favorites.has(property._id)}
                     onToggleFavorite={() => toggleFavorite(property._id)}
                     viewMode={viewMode}
-                    onImageManage={() => openImageManager(property)}
+                    
                     canManageImages={isAuthenticated && (
                       user?.role === 'admin' || 
                       user?.role === 'employee' || 
@@ -660,10 +660,10 @@ const Properties = () => {
             animate={{ opacity: 1, scale: 1 }}
           >
             <div className="w-32 h-32 rounded-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center mb-8 shadow-luxury">
-              <Search className="h-16 w-16 text-muted-foreground/50" />
+              <Search className="h-16 w-16 text-[#4B5563] dark:text-[#A8B5AE]/50" />
             </div>
             <h3 className="font-serif text-3xl font-bold text-foreground mb-4">{t("No properties found")}</h3>
-            <p className="text-lg text-muted-foreground mb-8 text-center max-w-lg">{t("Try adjusting your search criteria or filters")}</p>
+            <p className="text-lg text-[#4B5563] dark:text-[#A8B5AE] mb-8 text-center max-w-lg">{t("Try adjusting your search criteria or filters")}</p>
             <button 
               onClick={clearFilters} 
               className="px-10 py-4 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground rounded-2xl font-bold text-lg hover:shadow-glow-green transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"

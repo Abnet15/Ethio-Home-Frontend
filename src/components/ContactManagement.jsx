@@ -199,11 +199,11 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'new': return <AlertCircle size={16} className="text-blue-500" />;
+      case 'new': return <AlertCircle size={16} className="text-[#0B6E4F] dark:text-[#0B6E4F]" />;
       case 'in-progress': return <Clock size={16} className="text-yellow-500" />;
       case 'resolved': return <CheckCircle size={16} className="text-green-500" />;
-      case 'closed': return <Archive size={16} className="text-gray-500" />;
-      default: return <AlertCircle size={16} className="text-blue-500" />;
+      case 'closed': return <Archive size={16} className="text-[#4B5563] dark:text-[#6B7A73]" />;
+      default: return <AlertCircle size={16} className="text-[#0B6E4F] dark:text-[#0B6E4F]" />;
     }
   };
 
@@ -213,7 +213,7 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
       case 'medium': return 'bg-yellow-100 text-yellow-800';
       case 'high': return 'bg-orange-100 text-orange-800';
       case 'urgent': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-[#F8F4EC] dark:bg-[#141A17] text-[#1A1A1A] dark:text-[#F8F4EC]';
     }
   };
 
@@ -231,19 +231,19 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-white p-4 rounded-lg shadow">
             <div className="flex items-center">
-              <Mail className="w-8 h-8 text-blue-500" />
+              <Mail className="w-8 h-8 text-[#0B6E4F] dark:text-[#0B6E4F]" />
               <div className="ml-3">
-                <p className="text-sm font-medium text-gray-600">Total Contacts</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalContacts}</p>
+                <p className="text-sm font-medium text-[#4B5563] dark:text-[#6B7A73]">Total Contacts</p>
+                <p className="text-2xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">{stats.totalContacts}</p>
               </div>
             </div>
           </div>
           <div className="bg-white p-4 rounded-lg shadow">
             <div className="flex items-center">
-              <AlertCircle className="w-8 h-8 text-blue-500" />
+              <AlertCircle className="w-8 h-8 text-[#0B6E4F] dark:text-[#0B6E4F]" />
               <div className="ml-3">
-                <p className="text-sm font-medium text-gray-600">New</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.newContacts}</p>
+                <p className="text-sm font-medium text-[#4B5563] dark:text-[#6B7A73]">New</p>
+                <p className="text-2xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">{stats.newContacts}</p>
               </div>
             </div>
           </div>
@@ -251,8 +251,8 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
             <div className="flex items-center">
               <Clock className="w-8 h-8 text-yellow-500" />
               <div className="ml-3">
-                <p className="text-sm font-medium text-gray-600">In Progress</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.inProgressContacts}</p>
+                <p className="text-sm font-medium text-[#4B5563] dark:text-[#6B7A73]">In Progress</p>
+                <p className="text-2xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">{stats.inProgressContacts}</p>
               </div>
             </div>
           </div>
@@ -260,8 +260,8 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
             <div className="flex items-center">
               <CheckCircle className="w-8 h-8 text-green-500" />
               <div className="ml-3">
-                <p className="text-sm font-medium text-gray-600">Resolved</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.resolvedContacts}</p>
+                <p className="text-sm font-medium text-[#4B5563] dark:text-[#6B7A73]">Resolved</p>
+                <p className="text-2xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">{stats.resolvedContacts}</p>
               </div>
             </div>
           </div>
@@ -271,15 +271,15 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
       <div className="bg-white p-4 rounded-lg shadow mb-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">Search</label>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input type="text" placeholder="Search contacts..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10 pr-3 py-2 border border-gray-300 rounded-md w-full" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4B5563] dark:text-[#A8B5AE]" />
+              <input type="text" placeholder="Search contacts..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10 pr-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-md w-full" />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-            <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} className="w-full border border-gray-300 rounded-md py-2 px-3">
+            <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">Status</label>
+            <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} className="w-full border border-[#E5E0D8] dark:border-[#2A342E] rounded-md py-2 px-3">
               <option value="all">All Status</option>
               <option value="new">New</option>
               <option value="in-progress">In Progress</option>
@@ -288,8 +288,8 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
-            <select value={filterPriority} onChange={(e) => setFilterPriority(e.target.value)} className="w-full border border-gray-300 rounded-md py-2 px-3">
+            <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">Priority</label>
+            <select value={filterPriority} onChange={(e) => setFilterPriority(e.target.value)} className="w-full border border-[#E5E0D8] dark:border-[#2A342E] rounded-md py-2 px-3">
               <option value="all">All Priorities</option>
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -298,8 +298,8 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
-            <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="w-full border border-gray-300 rounded-md py-2 px-3">
+            <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">Type</label>
+            <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="w-full border border-[#E5E0D8] dark:border-[#2A342E] rounded-md py-2 px-3">
               <option value="all">All Types</option>
               <option value="general">General</option>
               <option value="property">Property</option>
@@ -314,38 +314,38 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-[#E5E0D8] dark:divide-[#2A342E]">
+            <thead className="bg-[#F8F4EC] dark:bg-[#0B0F0D]">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                {showActions && (<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>)}
+                <th className="px-6 py-3 text-left text-xs font-medium text-[#4B5563] dark:text-[#6B7A73] uppercase tracking-wider">Contact</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-[#4B5563] dark:text-[#6B7A73] uppercase tracking-wider">Type</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-[#4B5563] dark:text-[#6B7A73] uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-[#4B5563] dark:text-[#6B7A73] uppercase tracking-wider">Priority</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-[#4B5563] dark:text-[#6B7A73] uppercase tracking-wider">Date</th>
+                {showActions && (<th className="px-6 py-3 text-left text-xs font-medium text-[#4B5563] dark:text-[#6B7A73] uppercase tracking-wider">Actions</th>)}
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-[#E5E0D8] dark:divide-[#2A342E]">
               {filteredContacts.map((contact) => (
-                <tr key={contact._id} className="hover:bg-gray-50">
+                <tr key={contact._id} className="hover:bg-[#F8F4EC] dark:hover:bg-[#141A17]">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
-                      <div className="text-sm font-medium text-gray-900">{contact.name}</div>
-                      <div className="text-sm text-gray-500">{contact.email}</div>
-                      {contact.phone && (<div className="text-sm text-gray-500 flex items-center"><Phone className="w-3 h-3 mr-1" />{contact.phone}</div>)}
+                      <div className="text-sm font-medium text-[#1A1A1A] dark:text-[#F8F4EC]">{contact.name}</div>
+                      <div className="text-sm text-[#4B5563] dark:text-[#6B7A73]">{contact.email}</div>
+                      {contact.phone && (<div className="text-sm text-[#4B5563] dark:text-[#6B7A73] flex items-center"><Phone className="w-3 h-3 mr-1" />{contact.phone}</div>)}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap"><span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">{contact.inquiryType}</span></td>
-                  <td className="px-6 py-4 whitespace-nowrap"><div className="flex items-center">{getStatusIcon(contact.status)}<span className="ml-2 text-sm text-gray-900 capitalize">{contact.status}</span></div></td>
+                  <td className="px-6 py-4 whitespace-nowrap"><span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#0B6E4F]/10 dark:bg-[#0B6E4F]/10 text-[#0B6E4F] dark:text-[#0B6E4F]">{contact.inquiryType}</span></td>
+                  <td className="px-6 py-4 whitespace-nowrap"><div className="flex items-center">{getStatusIcon(contact.status)}<span className="ml-2 text-sm text-[#1A1A1A] dark:text-[#F8F4EC] capitalize">{contact.status}</span></div></td>
                   <td className="px-6 py-4 whitespace-nowrap"><span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(contact.priority)}`}>{contact.priority}</span></td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(contact.createdAt).toLocaleDateString()}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-[#4B5563] dark:text-[#6B7A73]">{new Date(contact.createdAt).toLocaleDateString()}</td>
                   {showActions && (
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
                         <button onClick={() => { setSelectedContact(contact); setResponseForm({ status: contact.status, adminResponse: contact.adminResponse || '', employeeResponse: contact.employeeResponse || '', priority: contact.priority }); setShowResponseModal(true); }} className="text-indigo-600 hover:text-indigo-900" title="Update Status"><Edit className="w-4 h-4" /></button>
                         <button onClick={() => { setSelectedContact(contact); setShowNoteModal(true); }} className="text-green-600 hover:text-green-900" title="Add Note"><MessageSquare className="w-4 h-4" /></button>
-                        <button onClick={() => handleReplyViaMessage(contact)} className="text-blue-600 hover:text-blue-900" title="Reply via Message"><Reply className="w-4 h-4" /></button>
-                        {userRole === 'admin' && (<button onClick={() => { setSelectedContact(contact); setShowAssignModal(true); }} className="text-blue-600 hover:text-blue-900" title="Assign"><UserPlus className="w-4 h-4" /></button>)}
+                        <button onClick={() => handleReplyViaMessage(contact)} className="text-[#0B6E4F] dark:text-[#0B6E4F] hover:text-blue-900" title="Reply via Message"><Reply className="w-4 h-4" /></button>
+                        {userRole === 'admin' && (<button onClick={() => { setSelectedContact(contact); setShowAssignModal(true); }} className="text-[#0B6E4F] dark:text-[#0B6E4F] hover:text-blue-900" title="Assign"><UserPlus className="w-4 h-4" /></button>)}
                         {userRole === 'admin' && (<button onClick={() => handleDelete(contact._id)} className="text-red-600 hover:text-red-900" title="Delete"><Trash2 className="w-4 h-4" /></button>)}
                       </div>
                     </td>
@@ -358,14 +358,14 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
       </div>
 
       {showResponseModal && selectedContact && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div className="fixed inset-0 bg-[#E5E0D8] dark:bg-[#2A342E] bg-opacity-50 overflow-y-auto h-full w-full z-50">
           <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
             <div className="mt-3">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Update Contact</h3>
+              <h3 className="text-lg font-medium text-[#1A1A1A] dark:text-[#F8F4EC] mb-4">Update Contact</h3>
               <form onSubmit={handleResponse}>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                  <select value={responseForm.status} onChange={(e) => setResponseForm({ ...responseForm, status: e.target.value })} className="w-full border border-gray-300 rounded-md py-2 px-3" required>
+                  <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">Status</label>
+                  <select value={responseForm.status} onChange={(e) => setResponseForm({ ...responseForm, status: e.target.value })} className="w-full border border-[#E5E0D8] dark:border-[#2A342E] rounded-md py-2 px-3" required>
                     <option value="new">New</option>
                     <option value="in-progress">In Progress</option>
                     <option value="resolved">Resolved</option>
@@ -373,8 +373,8 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
                   </select>
                 </div>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
-                  <select value={responseForm.priority} onChange={(e) => setResponseForm({ ...responseForm, priority: e.target.value })} className="w-full border border-gray-300 rounded-md py-2 px-3" required>
+                  <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">Priority</label>
+                  <select value={responseForm.priority} onChange={(e) => setResponseForm({ ...responseForm, priority: e.target.value })} className="w-full border border-[#E5E0D8] dark:border-[#2A342E] rounded-md py-2 px-3" required>
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
                     <option value="high">High</option>
@@ -382,11 +382,11 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
                   </select>
                 </div>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{userRole === 'admin' ? 'Admin Response' : 'Employee Response'}</label>
-                  <textarea value={userRole === 'admin' ? responseForm.adminResponse : responseForm.employeeResponse} onChange={(e) => setResponseForm({ ...responseForm, [userRole === 'admin' ? 'adminResponse' : 'employeeResponse']: e.target.value })} rows={4} className="w-full border border-gray-300 rounded-md py-2 px-3" placeholder="Enter your response..." />
+                  <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">{userRole === 'admin' ? 'Admin Response' : 'Employee Response'}</label>
+                  <textarea value={userRole === 'admin' ? responseForm.adminResponse : responseForm.employeeResponse} onChange={(e) => setResponseForm({ ...responseForm, [userRole === 'admin' ? 'adminResponse' : 'employeeResponse']: e.target.value })} rows={4} className="w-full border border-[#E5E0D8] dark:border-[#2A342E] rounded-md py-2 px-3" placeholder="Enter your response..." />
                 </div>
                 <div className="flex justify-end space-x-3">
-                  <button type="button" onClick={() => setShowResponseModal(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200">Cancel</button>
+                  <button type="button" onClick={() => setShowResponseModal(false)} className="px-4 py-2 text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] bg-[#F8F4EC] dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] rounded-md hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420]">Cancel</button>
                   <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700">Update</button>
                 </div>
               </form>
@@ -396,17 +396,17 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
       )}
 
       {showNoteModal && selectedContact && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div className="fixed inset-0 bg-[#E5E0D8] dark:bg-[#2A342E] bg-opacity-50 overflow-y-auto h-full w-full z-50">
           <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
             <div className="mt-3">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Add Note</h3>
+              <h3 className="text-lg font-medium text-[#1A1A1A] dark:text-[#F8F4EC] mb-4">Add Note</h3>
               <form onSubmit={handleAddNote}>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Note Content</label>
-                  <textarea value={noteForm.content} onChange={(e) => setNoteForm({ content: e.target.value })} rows={4} className="w-full border border-gray-300 rounded-md py-2 px-3" placeholder="Enter note content..." required />
+                  <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">Note Content</label>
+                  <textarea value={noteForm.content} onChange={(e) => setNoteForm({ content: e.target.value })} rows={4} className="w-full border border-[#E5E0D8] dark:border-[#2A342E] rounded-md py-2 px-3" placeholder="Enter note content..." required />
                 </div>
                 <div className="flex justify-end space-x-3">
-                  <button type="button" onClick={() => setShowNoteModal(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200">Cancel</button>
+                  <button type="button" onClick={() => setShowNoteModal(false)} className="px-4 py-2 text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] bg-[#F8F4EC] dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] rounded-md hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420]">Cancel</button>
                   <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700">Add Note</button>
                 </div>
               </form>
@@ -416,14 +416,14 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
       )}
 
       {showAssignModal && selectedContact && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div className="fixed inset-0 bg-[#E5E0D8] dark:bg-[#2A342E] bg-opacity-50 overflow-y-auto h-full w-full z-50">
           <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
             <div className="mt-3">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Assign Contact</h3>
+              <h3 className="text-lg font-medium text-[#1A1A1A] dark:text-[#F8F4EC] mb-4">Assign Contact</h3>
               <form onSubmit={handleAssign}>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Assign To Employee</label>
-                  <select value={assignForm.assignedTo} onChange={(e) => setAssignForm({ assignedTo: e.target.value })} className="w-full border border-gray-300 rounded-md py-2 px-3" required>
+                  <label className="block text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] mb-1">Assign To Employee</label>
+                  <select value={assignForm.assignedTo} onChange={(e) => setAssignForm({ assignedTo: e.target.value })} className="w-full border border-[#E5E0D8] dark:border-[#2A342E] rounded-md py-2 px-3" required>
                     <option value="">Select employee...</option>
                     {employees.map(emp => (
                       <option key={emp.id} value={emp.id}>{emp.name} ({emp.email})</option>
@@ -431,8 +431,8 @@ const ContactManagement = ({ userRole, showStats = true, showActions = true }) =
                   </select>
                 </div>
                 <div className="flex justify-end space-x-3">
-                  <button type="button" onClick={() => setShowAssignModal(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200">Cancel</button>
-                  <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700">Assign</button>
+                  <button type="button" onClick={() => setShowAssignModal(false)} className="px-4 py-2 text-sm font-medium text-[#1A1A1A] dark:text-[#A8B5AE] bg-[#F8F4EC] dark:bg-[#141A17] border border-[#E5E0D8] dark:border-[#2A342E] rounded-md hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420]">Cancel</button>
+                  <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-[#0B6E4F] dark:bg-[#0B6E4F] border border-transparent rounded-md hover:bg-[#0B6E4F] dark:hover:bg-[#0B6E4F]">Assign</button>
                 </div>
               </form>
             </div>

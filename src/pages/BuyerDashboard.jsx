@@ -43,6 +43,7 @@ import { visitService } from '../services/visitService';
 import { sellingService } from '../services/sellingService';
 import UserContactForm from '../components/UserContactForm';
 import FAQViewer from '../components/FAQViewer';
+import PropertyCardEnhanced from '../components/PropertyCardEnhanced';
 import { Sheet, SheetContent, SheetTrigger } from '../components/ui/sheet';
 
 const BuyerDashboard = () => {
@@ -429,7 +430,7 @@ const BuyerDashboard = () => {
 
   const StatCard = ({ title, value, icon: Icon, color = 'primary', onClick }) => (
     <div 
-      className="group relative bg-card/95 backdrop-blur-sm border border-border/60 rounded-2xl p-6 cursor-pointer hover:shadow-luxury hover:border-gold-400/30 transition-all duration-500 hover:-translate-y-2 overflow-hidden"
+      className="group relative bg-card/95 backdrop-blur-sm border border-[#E5E0D8] dark:border-[#2A342E]/60 rounded-2xl p-6 cursor-pointer hover:shadow-luxury hover:border-gold-400/30 transition-all duration-500 hover:-translate-y-2 overflow-hidden"
       onClick={onClick}
     >
       {/* Glow effect on hover */}
@@ -437,7 +438,7 @@ const BuyerDashboard = () => {
       
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{title}</h3>
+          <h3 className="text-sm font-semibold text-[#4B5563] dark:text-[#A8B5AE] uppercase tracking-wider">{title}</h3>
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-400/20 to-gold-500/10 flex items-center justify-center group-hover:scale-110 group-hover:shadow-glow-gold transition-all duration-500">
             <Icon className="w-6 h-6 text-gold-500" />
           </div>
@@ -448,77 +449,22 @@ const BuyerDashboard = () => {
   );
 
   const PropertyCard = ({ property, isFavorite = false, showFavoriteButton = true }) => (
-    <div className="group relative bg-card/95 backdrop-blur-xl border border-border/40 rounded-2xl overflow-hidden hover:border-gold-400/40 hover:shadow-2xl hover:shadow-gold-400/10 transition-all duration-500 hover:-translate-y-2">
-      {/* Glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gold-400/0 via-gold-400/5 to-ethiopian-green/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" />
-      
-      <div className="relative h-52 overflow-hidden">
-        <img
-          src={property.imagesUrl?.[0] || property.images?.[0] || '/hero-bg-1.jpg'}
-          alt={property.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
-        {showFavoriteButton && (
-          <button
-            className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-lg ${isFavorite
-                ? 'bg-ethiopian-red text-white'
-                : 'bg-white/20 text-white hover:bg-white/40'
-              }`}
-            onClick={() => isFavorite ? handleRemoveFromFavorites(property._id) : handleAddToFavorites(property._id)}
-          >
-            <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
-          </button>
-        )}
-        <div className="absolute bottom-4 left-4 flex gap-2">
-          <span className="px-3 py-1 rounded-full text-xs font-bold bg-ethiopian-green/90 text-white backdrop-blur-sm">{property.status}</span>
-        </div>
-        <div className="absolute bottom-4 right-4">
-          <span className="text-2xl font-bold text-white drop-shadow-lg">{formatCurrency(property.price)}</span>
-        </div>
-      </div>
-      
-      <div className="relative z-20 p-5">
-        <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-gold-400 transition-colors">{property.title}</h3>
-        <div className="flex items-center gap-2 text-muted-foreground mb-4">
-          <MapPin size={14} className="text-gold-500" />
-          <span className="text-sm">{property.location}</span>
-        </div>
-        
-        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-5 pb-4 border-b border-border/40">
-          <div className="flex items-center gap-1.5">
-            <Home size={14} className="text-gold-500" />
-            <span>{property.bedrooms} beds</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Bath size={14} className="text-gold-500" />
-            <span>{property.bathrooms} baths</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Maximize size={14} className="text-gold-500" />
-            <span>{property.area} m²</span>
-          </div>
-        </div>
-        
-        <button
-          className="w-full py-3 rounded-xl bg-gradient-to-r from-gold-400/10 to-gold-500/5 border border-gold-400/30 text-gold-500 font-semibold hover:from-gold-400/20 hover:to-gold-500/10 hover:border-gold-400/50 transition-all duration-300"
-          onClick={() => navigate(`/properties/${property._id}`)}
-        >
-          View Details
-        </button>
-      </div>
-    </div>
+    <PropertyCardEnhanced
+      property={property}
+      isFavorite={isFavorite}
+      onToggleFavorite={() => isFavorite ? handleRemoveFromFavorites(property._id || property.id) : handleAddToFavorites(property._id || property.id)}
+    />
   );
 
   const VisitCard = ({ visit }) => (
-    <div className="group relative bg-card/95 backdrop-blur-xl border border-border/40 rounded-2xl overflow-hidden hover:border-gold-400/40 hover:shadow-xl hover:shadow-gold-400/10 transition-all duration-500">
+    <div className="group relative bg-card/95 backdrop-blur-xl border border-[#E5E0D8] dark:border-[#2A342E]/40 rounded-2xl overflow-hidden hover:border-gold-400/40 hover:shadow-xl hover:shadow-gold-400/10 transition-all duration-500">
       <div className="absolute inset-0 bg-gradient-to-br from-gold-400/0 to-gold-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
       
       <div className="relative z-10 p-5">
         <div className="flex items-start justify-between mb-4">
           <div>
             <h3 className="font-bold text-lg text-foreground group-hover:text-gold-400 transition-colors">{visit.propertyId?.title}</h3>
-            <div className="flex items-center gap-2 text-muted-foreground mt-1">
+            <div className="flex items-center gap-2 text-[#4B5563] dark:text-[#A8B5AE] mt-1">
               <MapPin size={14} className="text-gold-500" />
               <span className="text-sm">{visit.propertyId?.location}</span>
             </div>
@@ -530,7 +476,7 @@ const BuyerDashboard = () => {
           </span>
         </div>
         
-        <div className="flex items-center gap-4 text-muted-foreground mb-5 p-3 rounded-xl bg-muted/30 border border-border/30">
+        <div className="flex items-center gap-4 text-[#4B5563] dark:text-[#A8B5AE] mb-5 p-3 rounded-xl bg-[#F0EDE6]/30 dark:bg-[#1C2420]/30 border border-[#E5E0D8]/30 dark:border-[#2A342E]/30">
           <div className="flex items-center gap-2">
             <Calendar size={16} className="text-gold-500" />
             <span className="text-sm">{visit.visitDate ? new Date(visit.visitDate).toLocaleDateString() : 'TBD'}</span>
@@ -551,7 +497,7 @@ const BuyerDashboard = () => {
           >
             View Property
           </button>
-          <button className="px-4 py-2.5 rounded-xl bg-muted/50 border border-border/40 text-muted-foreground font-semibold text-sm hover:bg-muted hover:text-foreground transition-all duration-300" onClick={() => openEditVisit(visit)}>
+          <button className="px-4 py-2.5 rounded-xl bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 border border-[#E5E0D8] dark:border-[#2A342E]/40 text-[#4B5563] dark:text-[#A8B5AE] font-semibold text-sm hover:bg-[#F0EDE6] dark:bg-[#1C2420] hover:text-foreground transition-all duration-300" onClick={() => openEditVisit(visit)}>
             Reschedule
           </button>
           <button className="px-4 py-2.5 rounded-xl bg-ethiopian-red/10 border border-ethiopian-red/30 text-red-400 font-semibold text-sm hover:bg-ethiopian-red/20 transition-all duration-300" onClick={() => deleteVisit(visit._id)}>
@@ -564,17 +510,17 @@ const BuyerDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] text-[#1A1A1A] dark:text-[#F8F4EC] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading dashboard...</p>
+          <div className="w-16 h-16 border-4 border-[#0B6E4F] dark:border-[#0B6E4F] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-[#6B7280] dark:text-[#A8B5AE]">Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 relative overflow-hidden">
+    <div className="min-h-screen bg-[#F8F4EC] dark:bg-[#0B0F0D] text-[#1A1A1A] dark:text-[#F8F4EC] relative overflow-hidden transition-colors duration-200">
       {/* Dark mode animated background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-20"
@@ -587,19 +533,19 @@ const BuyerDashboard = () => {
         {/* Mobile Drawer */}
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>
-            <button className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-gray-900/95 backdrop-blur-xl border border-gray-700 shadow-xl flex items-center justify-center hover:bg-gray-800 transition-all">
-              <Menu className="w-5 h-5 text-gray-300" />
+            <button className="lg:hidden fixed top-20 left-4 z-50 w-12 h-12 rounded-xl bg-[#F8F4EC] dark:bg-[#0B0F0D]/95 backdrop-blur-xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-xl flex items-center justify-center hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] transition-all">
+              <Menu className="w-5 h-5 text-[#4B5563] dark:text-[#A8B5AE]" />
             </button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-72 bg-gray-900 border-gray-800 p-0">
-            <div className="p-6 border-b border-gray-800">
+          <SheetContent side="left" className="w-72 bg-white dark:bg-[#141A17] border-r border-[#E5E0D8] dark:border-[#2A342E] p-0">
+            <div className="p-6 border-b border-[#E5E0D8] dark:border-[#2A342E]">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
-                  <User className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-[#0B6E4F] flex items-center justify-center">
+                  <User className="w-5 h-5 text-[#1A1A1A] dark:text-[#F8F4EC]" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-white">Buyer</h2>
-                  <p className="text-xs text-gray-400">Dashboard</p>
+                  <h2 className="text-lg font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">Buyer</h2>
+                  <p className="text-xs text-[#6B7280] dark:text-[#A8B5AE]">Dashboard</p>
                 </div>
               </div>
             </div>
@@ -615,24 +561,24 @@ const BuyerDashboard = () => {
                   onClick={() => { setActiveTab(item.id); setMobileOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
                     activeTab === item.id
-                      ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30'
-                      : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+                      ? 'bg-[#0B6E4F] text-[#1A1A1A] dark:text-[#F8F4EC] font-bold shadow-md'
+                      : 'text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC]'
                   }`}
                 >
                   <item.icon size={18} />
                   {item.label}
                 </button>
               ))}
-              <div className="pt-4 border-t border-gray-800 mt-4 space-y-1">
-                <button onClick={() => { navigate('/messages'); setMobileOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-all">
+              <div className="pt-4 border-t border-[#E5E0D8] dark:border-[#2A342E] mt-4 space-y-1">
+                <button onClick={() => { navigate('/messages'); setMobileOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC] transition-all">
                   <MessageSquare size={18} />
                   Messages
                 </button>
-                <button onClick={() => { navigate('/profile'); setMobileOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-all">
+                <button onClick={() => { navigate('/profile'); setMobileOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC] transition-all">
                   <User size={18} />
                   Profile
                 </button>
-                <button onClick={() => { setActiveTab('contact'); setMobileOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-all">
+                <button onClick={() => { setActiveTab('contact'); setMobileOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC] transition-all">
                   <Mail size={18} />
                   Contact Support
                 </button>
@@ -642,19 +588,19 @@ const BuyerDashboard = () => {
         </Sheet>
 
         {/* Dark Glassmorphism Sidebar */}
-        <div className="hidden lg:block w-72 bg-gray-900/95 backdrop-blur-2xl border-r border-gray-800 min-h-screen sticky top-0 shadow-2xl">
-          <div className="p-6 border-b border-gray-800">
+        <div className="hidden lg:block w-72 bg-white dark:bg-[#141A17] border-r border-[#E5E0D8] dark:border-[#2A342E] min-h-screen sticky top-0 shadow-sm transition-colors duration-200">
+          <div className="p-6 border-b border-[#E5E0D8] dark:border-[#2A342E]">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-lg shadow-purple-500/20">
-                <User className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded-2xl bg-[#0B6E4F] flex items-center justify-center shadow-lg shadow-[#0B6E4F]/20">
+                <User className="w-6 h-6 text-[#1A1A1A] dark:text-[#F8F4EC]" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-white">Buyer</h2>
-                <p className="text-xs text-gray-400 uppercase tracking-wider">Dashboard</p>
+                <h2 className="text-xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">Buyer</h2>
+                <p className="text-xs text-[#6B7280] dark:text-[#A8B5AE] uppercase tracking-wider">Dashboard</p>
               </div>
             </div>
-            <div className="h-1 w-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-full mb-4"></div>
-            <p className="text-sm text-gray-400">Welcome back, <span className="text-purple-400 font-semibold">{user?.name}</span></p>
+            <div className="h-1 w-full bg-gradient-to-r from-[#0B6E4F] via-[#D4A017] to-[#0B6E4F] rounded-full mb-4"></div>
+            <p className="text-sm text-[#6B7280] dark:text-[#A8B5AE]">Welcome back, <span className="text-[#0B6E4F] dark:text-[#10B981] font-semibold">{user?.name}</span></p>
           </div>
 
           <nav className="p-4 space-y-2">
@@ -669,37 +615,37 @@ const BuyerDashboard = () => {
                 onClick={() => setActiveTab(item.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
                   activeTab === item.id
-                    ? 'bg-gradient-to-r from-purple-600/30 to-purple-500/20 text-purple-400 border border-purple-500/30 shadow-lg shadow-purple-500/10'
-                    : 'text-gray-400 hover:bg-gray-800/70 hover:text-gray-200'
+                    ? 'bg-[#0B6E4F] text-[#1A1A1A] dark:text-[#F8F4EC] font-bold shadow-md shadow-lg shadow-[#0B6E4F]/10'
+                    : 'text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC]'
                 }`}
               >
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                  activeTab === item.id ? 'bg-purple-500/20' : 'bg-gray-800'
+                  activeTab === item.id ? 'bg-[#0B6E4F] dark:bg-[#0B6E4F]/20' : 'bg-[#F0EDE6] dark:bg-[#1C2420]'
                 }`}>
                   <item.icon size={16} />
                 </div>
                 {item.label}
                 {activeTab === item.id && (
-                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#0D8A62] dark:bg-[#0D8A62] animate-pulse" />
                 )}
               </button>
             ))}
             
-            <div className="pt-4 border-t border-gray-800 mt-4 space-y-2">
+            <div className="pt-4 border-t border-[#E5E0D8] dark:border-[#2A342E] mt-4 space-y-2">
               <button
                 onClick={() => navigate('/messages')}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800/70 hover:text-gray-200 transition-all"
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC] transition-all"
               >
-                <div className="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#F0EDE6] dark:bg-[#1C2420] flex items-center justify-center">
                   <MessageSquare size={16} />
                 </div>
                 Messages
               </button>
               <button
                 onClick={() => navigate('/profile')}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-400 hover:bg-gray-800/70 hover:text-gray-200 transition-all"
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC] transition-all"
               >
-                <div className="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#F0EDE6] dark:bg-[#1C2420] flex items-center justify-center">
                   <User size={16} />
                 </div>
                 Profile
@@ -708,12 +654,12 @@ const BuyerDashboard = () => {
                 onClick={() => setActiveTab('contact')}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
                   activeTab === 'contact'
-                    ? 'bg-gradient-to-r from-purple-600/30 to-purple-500/20 text-purple-400 border border-purple-500/30'
-                    : 'text-gray-400 hover:bg-gray-800/70 hover:text-gray-200'
+                    ? 'bg-[#0B6E4F] text-[#1A1A1A] dark:text-[#F8F4EC] font-bold shadow-md'
+                    : 'text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC]'
                 }`}
               >
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                  activeTab === 'contact' ? 'bg-purple-500/20' : 'bg-gray-800'
+                  activeTab === 'contact' ? 'bg-white/20 text-[#1A1A1A] dark:text-[#F8F4EC]' : 'text-[#6B7280] dark:text-[#A8B5AE]'
                 }`}>
                   <Mail size={16} />
                 </div>
@@ -723,12 +669,12 @@ const BuyerDashboard = () => {
                 onClick={() => setActiveTab('help')}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
                   activeTab === 'help'
-                    ? 'bg-gradient-to-r from-purple-600/30 to-purple-500/20 text-purple-400 border border-purple-500/30'
-                    : 'text-gray-400 hover:bg-gray-800/70 hover:text-gray-200'
+                    ? 'bg-[#0B6E4F] text-[#1A1A1A] dark:text-[#F8F4EC] font-bold shadow-md'
+                    : 'text-[#4B5563] dark:text-[#A8B5AE] hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC]'
                 }`}
               >
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                  activeTab === 'help' ? 'bg-purple-500/20' : 'bg-gray-800'
+                  activeTab === 'help' ? 'bg-white/20 text-[#1A1A1A] dark:text-[#F8F4EC]' : 'text-[#6B7280] dark:text-[#A8B5AE]'
                 }`}>
                   <MessageSquare size={16} />
                 </div>
@@ -744,7 +690,7 @@ const BuyerDashboard = () => {
           <div className="mb-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2">
                   {activeTab === 'overview' && 'Dashboard Overview'}
                   {activeTab === 'search' && 'Search Properties'}
                   {activeTab === 'favorites' && 'Favorite Properties'}
@@ -753,7 +699,7 @@ const BuyerDashboard = () => {
                   {activeTab === 'contact' && 'Contact Support'}
                   {activeTab === 'help' && 'Help Center'}
                 </h1>
-                <p className="text-sm sm:text-base text-gray-400">
+                <p className="text-sm sm:text-base text-[#6B7280] dark:text-[#A8B5AE]">
                   {activeTab === 'overview' && 'Track your property search progress and manage your interests'}
                   {activeTab === 'search' && 'Find your perfect property with advanced search filters'}
                   {activeTab === 'favorites' && 'Manage your saved properties and wishlist'}
@@ -764,12 +710,12 @@ const BuyerDashboard = () => {
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <button className="px-4 py-2 border border-gray-700 rounded-xl hover:bg-gray-800 transition-colors flex items-center gap-2 font-medium text-gray-300">
+                <button className="px-4 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-xl hover:bg-[#F0EDE6] dark:hover:bg-[#1C2420] transition-colors flex items-center gap-2 font-medium text-[#4B5563] dark:text-[#A8B5AE]">
                   <Bell size={18} />
                   <span className="hidden sm:inline">Notifications</span>
                 </button>
                 <button
-                  className="px-4 sm:px-6 py-2 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-xl hover:from-purple-500 hover:to-purple-400 transition-all flex items-center gap-2 font-medium shadow-lg shadow-purple-500/20"
+                  className="px-4 sm:px-6 py-2 bg-gradient-to-r from-[#0B6E4F] to-[#D4A017] text-[#1A1A1A] dark:text-[#F8F4EC] rounded-xl hover:from-[#0B6E4F] hover:to-[#D4A017] transition-all flex items-center gap-2 font-medium shadow-lg shadow-[#0B6E4F]/20"
                   onClick={() => navigate('/properties')}
                 >
                   <Search size={18} />
@@ -786,58 +732,58 @@ const BuyerDashboard = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6">
                 <div
                   onClick={() => setActiveTab('favorites')}
-                  className="bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 shadow-lg p-5 cursor-pointer hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all hover:-translate-y-1"
+                  className="bg-white dark:bg-[#141A17] rounded-3xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm p-5 cursor-pointer hover:border-[#0B6E4F] hover:shadow-[#0B6E4F]/10 transition-all hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center">
                       <Heart className="h-6 w-6 text-red-400" />
                     </div>
                   </div>
-                  <div className="text-3xl font-bold text-white mb-1">{stats.favoriteProperties}</div>
-                  <div className="text-xs font-medium text-gray-400 uppercase tracking-wide">Favorite Properties</div>
+                  <div className="text-3xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-1">{stats.favoriteProperties}</div>
+                  <div className="text-xs font-medium text-[#6B7280] dark:text-[#A8B5AE] uppercase tracking-wide">Favorite Properties</div>
                 </div>
                 <div
                   onClick={() => setActiveTab('visits')}
-                  className="bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 shadow-lg p-5 cursor-pointer hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all hover:-translate-y-1"
+                  className="bg-white dark:bg-[#141A17] rounded-3xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm p-5 cursor-pointer hover:border-[#0B6E4F] hover:shadow-[#0B6E4F]/10 transition-all hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
-                      <Calendar className="h-6 w-6 text-blue-400" />
+                    <div className="w-12 h-12 rounded-xl bg-[#0B6E4F] dark:bg-[#0B6E4F]/20 flex items-center justify-center">
+                      <Calendar className="h-6 w-6 text-[#0B6E4F] dark:text-[#0D8A62]" />
                     </div>
                   </div>
-                  <div className="text-3xl font-bold text-white mb-1">{stats.scheduledVisits}</div>
-                  <div className="text-xs font-medium text-gray-400 uppercase tracking-wide">Scheduled Visits</div>
+                  <div className="text-3xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-1">{stats.scheduledVisits}</div>
+                  <div className="text-xs font-medium text-[#6B7280] dark:text-[#A8B5AE] uppercase tracking-wide">Scheduled Visits</div>
                 </div>
-                <div className="bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 shadow-lg p-5 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all hover:-translate-y-1">
+                <div className="bg-white dark:bg-[#141A17] rounded-3xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm p-5 hover:border-[#0B6E4F] hover:shadow-[#0B6E4F]/10 transition-all hover:-translate-y-1">
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
                       <Eye className="h-6 w-6 text-green-400" />
                     </div>
                   </div>
-                  <div className="text-3xl font-bold text-white mb-1">{stats.viewedProperties}</div>
-                  <div className="text-xs font-medium text-gray-400 uppercase tracking-wide">Properties Viewed</div>
+                  <div className="text-3xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-1">{stats.viewedProperties}</div>
+                  <div className="text-xs font-medium text-[#6B7280] dark:text-[#A8B5AE] uppercase tracking-wide">Properties Viewed</div>
                 </div>
                 <div
                   onClick={() => setActiveTab('search')}
-                  className="bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 shadow-lg p-5 cursor-pointer hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all hover:-translate-y-1"
+                  className="bg-white dark:bg-[#141A17] rounded-3xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm p-5 cursor-pointer hover:border-[#0B6E4F] hover:shadow-[#0B6E4F]/10 transition-all hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                      <Bookmark className="h-6 w-6 text-purple-400" />
+                    <div className="w-12 h-12 rounded-xl bg-[#0B6E4F] dark:bg-[#0B6E4F]/20 flex items-center justify-center">
+                      <Bookmark className="h-6 w-6 text-[#0B6E4F] dark:text-[#10B981]" />
                     </div>
                   </div>
-                  <div className="text-3xl font-bold text-white mb-1">{stats.savedSearches}</div>
-                  <div className="text-xs font-medium text-gray-400 uppercase tracking-wide">Saved Searches</div>
+                  <div className="text-3xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-1">{stats.savedSearches}</div>
+                  <div className="text-xs font-medium text-[#6B7280] dark:text-[#A8B5AE] uppercase tracking-wide">Saved Searches</div>
                 </div>
               </div>
 
               {/* Content Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Recently Viewed */}
-                <div className="bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 shadow-lg p-5">
+                <div className="bg-white dark:bg-[#141A17] rounded-3xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm p-5">
                   <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-lg font-semibold text-white">Recently Viewed</h3>
-                    <button className="text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors">
+                    <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Recently Viewed</h3>
+                    <button className="text-sm font-medium text-[#0B6E4F] dark:text-[#10B981] hover:text-[#0B6E4F] dark:text-[#10B981] transition-colors">
                       View All
                     </button>
                   </div>
@@ -845,7 +791,7 @@ const BuyerDashboard = () => {
                     {recentlyViewed.slice(0, 3).map((property) => (
                       <div
                         key={property._id}
-                        className="flex items-center gap-4 p-3 hover:bg-gray-800/70 rounded-xl transition cursor-pointer border border-transparent hover:border-purple-500/30"
+                        className="flex items-center gap-4 p-3 hover:bg-[#F0EDE6]/70 dark:hover:bg-[#1C2420]/70 rounded-xl transition cursor-pointer border border-transparent hover:border-[#0B6E4F]/50"
                         onClick={() => navigate(`/properties/${property._id}`)}
                       >
                         <img
@@ -854,20 +800,20 @@ const BuyerDashboard = () => {
                           className="w-16 h-16 object-cover rounded-lg"
                         />
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-medium text-white mb-1 truncate">{property.title}</h4>
-                          <div className="flex items-center gap-2 text-gray-400 mb-1">
+                          <h4 className="font-medium text-[#1A1A1A] dark:text-[#F8F4EC] mb-1 truncate">{property.title}</h4>
+                          <div className="flex items-center gap-2 text-[#6B7280] dark:text-[#A8B5AE] mb-1">
                             <MapPin size={12} />
                             <span className="text-xs truncate">{property.location}</span>
                           </div>
-                          <p className="font-semibold text-purple-400 text-sm">
+                          <p className="font-semibold text-[#0B6E4F] dark:text-[#10B981] text-sm">
                             {formatCurrency(property.price)}
                           </p>
                         </div>
-                        <ChevronRight size={18} className="text-gray-500 flex-shrink-0" />
+                        <ChevronRight size={18} className="text-[#4B5563] dark:text-[#6B7A73] flex-shrink-0" />
                       </div>
                     ))}
                     {recentlyViewed.length === 0 && (
-                      <div className="text-center py-8 text-gray-500">
+                      <div className="text-center py-8 text-[#4B5563] dark:text-[#6B7A73]">
                         <Eye size={32} className="mx-auto mb-2 opacity-50" />
                         <p className="text-sm">No recently viewed properties</p>
                       </div>
@@ -876,10 +822,10 @@ const BuyerDashboard = () => {
                 </div>
 
                 {/* Recommended Properties */}
-                <div className="bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 shadow-lg p-5">
+                <div className="bg-white dark:bg-[#141A17] rounded-3xl border border-[#E5E0D8] dark:border-[#2A342E] shadow-sm p-5">
                   <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-lg font-semibold text-white">Recommended for You</h3>
-                    <button className="text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors">
+                    <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Recommended for You</h3>
+                    <button className="text-sm font-medium text-[#0B6E4F] dark:text-[#10B981] hover:text-[#0B6E4F] dark:text-[#10B981] transition-colors">
                       View All
                     </button>
                   </div>
@@ -887,7 +833,7 @@ const BuyerDashboard = () => {
                     {recommendedProperties.slice(0, 3).map((property) => (
                       <div
                         key={property._id}
-                        className="flex items-center gap-4 p-3 hover:bg-gray-800/70 rounded-xl transition cursor-pointer border border-transparent hover:border-purple-500/30"
+                        className="flex items-center gap-4 p-3 hover:bg-[#F0EDE6]/70 dark:hover:bg-[#1C2420]/70 rounded-xl transition cursor-pointer border border-transparent hover:border-[#0B6E4F]/50"
                         onClick={() => navigate(`/properties/${property._id}`)}
                       >
                         <img
@@ -896,28 +842,28 @@ const BuyerDashboard = () => {
                           className="w-16 h-16 object-cover rounded-lg"
                         />
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-medium text-white mb-1 truncate">{property.title}</h4>
-                          <div className="flex items-center gap-2 text-gray-400 mb-1">
+                          <h4 className="font-medium text-[#1A1A1A] dark:text-[#F8F4EC] mb-1 truncate">{property.title}</h4>
+                          <div className="flex items-center gap-2 text-[#6B7280] dark:text-[#A8B5AE] mb-1">
                             <MapPin size={12} />
                             <span className="text-xs truncate">{property.location}</span>
                           </div>
-                          <p className="font-semibold text-purple-400 text-sm">
+                          <p className="font-semibold text-[#0B6E4F] dark:text-[#10B981] text-sm">
                             {formatCurrency(property.price)}
                           </p>
                         </div>
                         <button
-                          className="p-2 hover:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
+                          className="p-2 hover:bg-[#E5E0D8] dark:hover:bg-[#2A342E] rounded-lg transition-colors flex-shrink-0"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleAddToFavorites(property._id);
                           }}
                         >
-                          <Heart size={16} className="text-purple-400" />
+                          <Heart size={16} className="text-[#0B6E4F] dark:text-[#10B981]" />
                         </button>
                       </div>
                     ))}
                     {recommendedProperties.length === 0 && (
-                      <div className="text-center py-8 text-gray-500">
+                      <div className="text-center py-8 text-[#4B5563] dark:text-[#6B7A73]">
                         <Star size={32} className="mx-auto mb-2 opacity-50" />
                         <p className="text-sm">No recommendations yet</p>
                       </div>
@@ -934,7 +880,7 @@ const BuyerDashboard = () => {
               {/* Search Filters */}
               <div className="card">
                 <div className="card-header">
-                  <h3 className="text-lg font-semibold text-neutral-900">Search Filters</h3>
+                  <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Search Filters</h3>
                 </div>
                 <div className="card-body">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1007,7 +953,7 @@ const BuyerDashboard = () => {
               <div className="card">
                 <div className="card-header">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-neutral-900">Search Results</h3>
+                    <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">Search Results</h3>
                     <div className="flex items-center gap-2">
                       <button
                         className={`btn btn-sm ${viewMode === 'grid' ? 'btn-primary' : 'btn-secondary'}`}
@@ -1025,7 +971,7 @@ const BuyerDashboard = () => {
                   </div>
                 </div>
                 <div className="card-body">
-                  <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
+                  <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5' : 'space-y-4'}>
                     {recommendedProperties.map((property) => (
                       <PropertyCard
                         key={property._id}
@@ -1045,7 +991,7 @@ const BuyerDashboard = () => {
               <div className="card">
                 <div className="card-header">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-neutral-900">
+                    <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">
                       Your Favorite Properties ({favoriteProperties.length})
                     </h3>
                     <div className="flex items-center gap-2">
@@ -1066,7 +1012,7 @@ const BuyerDashboard = () => {
                 </div>
                 <div className="card-body">
                   {favoriteProperties.length > 0 ? (
-                    <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
+                    <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5' : 'space-y-4'}>
                       {favoriteProperties.map((property) => (
                         <PropertyCard
                           key={property._id}
@@ -1078,8 +1024,8 @@ const BuyerDashboard = () => {
                   ) : (
                     <div className="text-center py-12">
                       <Heart size={48} className="text-neutral-300 mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-neutral-900 mb-2">No favorites yet</h3>
-                      <p className="text-neutral-600 mb-4">Start browsing properties and add them to your favorites</p>
+                      <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2">No favorites yet</h3>
+                      <p className="text-[#4B5563] dark:text-[#A8B5AE] mb-4">Start browsing properties and add them to your favorites</p>
                       <button
                         className="btn btn-primary"
                         onClick={() => navigate('/properties')}
@@ -1099,7 +1045,7 @@ const BuyerDashboard = () => {
               <div className="card">
                 <div className="card-header">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-neutral-900">
+                    <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">
                       Scheduled Visits ({scheduledVisits.length})
                     </h3>
 
@@ -1111,11 +1057,11 @@ const BuyerDashboard = () => {
                 </div>
                 <div className="card-body">
                   {showVisitForm && (
-                    <div className="mb-6 p-4 border border-neutral-200 rounded-lg">
+                    <div className="mb-6 p-4 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg">
                       <h4 className="font-semibold mb-3">{isEditingVisit ? 'Edit Visit' : 'New Visit'}</h4>
                       <form onSubmit={submitVisitForm} className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="md:col-span-2">
-                          <label className="text-sm text-neutral-600">Property</label>
+                          <label className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Property</label>
                           <select
                             className="form-input"
                             value={visitForm.propertyId}
@@ -1130,11 +1076,11 @@ const BuyerDashboard = () => {
                           </select>
                         </div>
                         <div className="md:col-span-2">
-                          <label className="text-sm text-neutral-600">Visit Date & Time</label>
+                          <label className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Visit Date & Time</label>
                           <input type="datetime-local" className="form-input" value={visitForm.visitDate} onChange={(e) => setVisitForm({ ...visitForm, visitDate: e.target.value })} required />
                         </div>
                         <div className="md:col-span-2">
-                          <label className="text-sm text-neutral-600">Message (optional)</label>
+                          <label className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Message (optional)</label>
                           <textarea className="form-input" value={visitForm.message} onChange={(e) => setVisitForm({ ...visitForm, message: e.target.value })} rows="3" />
                         </div>
                         <div className="flex gap-2 md:col-span-2">
@@ -1145,7 +1091,7 @@ const BuyerDashboard = () => {
                     </div>
                   )}
                   {scheduledVisits.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                       {scheduledVisits.map((visit) => (
                         <VisitCard key={visit._id} visit={visit} />
                       ))}
@@ -1153,8 +1099,8 @@ const BuyerDashboard = () => {
                   ) : (
                     <div className="text-center py-12">
                       <Calendar size={48} className="text-neutral-300 mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-neutral-900 mb-2">No visits scheduled</h3>
-                      <p className="text-neutral-600 mb-4">Schedule visits to properties you're interested in</p>
+                      <h3 className="text-lg font-semibold text-[#1A1A1A] dark:text-[#F8F4EC] mb-2">No visits scheduled</h3>
+                      <p className="text-[#4B5563] dark:text-[#A8B5AE] mb-4">Schedule visits to properties you're interested in</p>
                       <button
                         className="btn btn-primary"
                         onClick={() => navigate('/properties')}
@@ -1176,13 +1122,13 @@ const BuyerDashboard = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <div className="p-2 bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg">
-                        <ShoppingBag size={24} className="text-white" />
+                        <ShoppingBag size={24} className="text-[#1A1A1A] dark:text-[#F8F4EC]" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-neutral-900">
+                        <h3 className="text-xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">
                           Your Purchased Properties
                         </h3>
-                        <p className="text-sm text-neutral-600">
+                        <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">
                           {stats.purchasedProperties || 0} properties in your portfolio
                         </p>
                       </div>
@@ -1198,11 +1144,11 @@ const BuyerDashboard = () => {
                 </div>
                 <div className="card-body p-6">
                   {purchasedProperties.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                       {purchasedProperties.map((purchase) => (
                         <div
                           key={purchase._id}
-                          className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-neutral-200 hover:border-primary-300 transform hover:-translate-y-2"
+                          className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-[#E5E0D8] dark:border-[#2A342E] hover:border-primary-300 transform hover:-translate-y-2"
                         >
                           {/* Status Badge */}
                           <div className="absolute top-4 left-4 z-10">
@@ -1233,37 +1179,37 @@ const BuyerDashboard = () => {
                           <div className="p-6 space-y-4">
                             {/* Title and Location */}
                             <div>
-                              <h4 className="font-bold text-lg text-neutral-900 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors duration-300">
+                              <h4 className="font-bold text-lg text-[#1A1A1A] dark:text-[#F8F4EC] mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors duration-300">
                                 {purchase.property?.title || 'Property Title'}
                               </h4>
-                              <p className="text-neutral-600 flex items-center text-sm">
+                              <p className="text-[#4B5563] dark:text-[#A8B5AE] flex items-center text-sm">
                                 <MapPin size={16} className="mr-2 text-primary-500" />
                                 {purchase.property?.location || 'Location'}
                               </p>
                             </div>
 
                             {/* Property Stats */}
-                            <div className="grid grid-cols-2 gap-4 py-3 bg-neutral-50 rounded-xl">
+                            <div className="grid grid-cols-2 gap-4 py-3 bg-[#F8F4EC] dark:bg-[#141A17] rounded-xl">
                               <div className="flex items-center justify-center">
                                 <div className="text-center">
                                   <div className="flex items-center justify-center mb-1">
                                     <Home size={16} className="text-primary-500 mr-1" />
-                                    <span className="font-semibold text-neutral-900">
+                                    <span className="font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">
                                       {purchase.property?.features?.bedrooms || 0}
                                     </span>
                                   </div>
-                                  <span className="text-xs text-neutral-600">Bedrooms</span>
+                                  <span className="text-xs text-[#4B5563] dark:text-[#A8B5AE]">Bedrooms</span>
                                 </div>
                               </div>
                               <div className="flex items-center justify-center">
                                 <div className="text-center">
                                   <div className="flex items-center justify-center mb-1">
                                     <Bath size={16} className="text-primary-500 mr-1" />
-                                    <span className="font-semibold text-neutral-900">
+                                    <span className="font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">
                                       {purchase.property?.features?.bathrooms || 0}
                                     </span>
                                   </div>
-                                  <span className="text-xs text-neutral-600">Bathrooms</span>
+                                  <span className="text-xs text-[#4B5563] dark:text-[#A8B5AE]">Bathrooms</span>
                                 </div>
                               </div>
                             </div>
@@ -1293,14 +1239,14 @@ const BuyerDashboard = () => {
                             {/* Action Buttons */}
                             <div className="flex gap-3 pt-2">
                               <button
-                                className="flex-1 btn btn-sm bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
+                                className="flex-1 btn btn-sm bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-[#1A1A1A] dark:text-[#F8F4EC] font-semibold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
                                 onClick={() => navigate(`/properties/${purchase.property?._id}`)}
                               >
                                 <Eye size={16} className="mr-2" />
                                 View Details
                               </button>
                               <button
-                                className="flex-1 btn btn-sm bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 text-white font-semibold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
+                                className="flex-1 btn btn-sm bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 text-[#1A1A1A] dark:text-[#F8F4EC] font-semibold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
                                 onClick={() => {
                                   // Download documents functionality
                                   console.log('Download documents for:', purchase._id);
@@ -1328,17 +1274,17 @@ const BuyerDashboard = () => {
                         </div>
 
                         {/* Content */}
-                        <h3 className="text-2xl font-bold text-neutral-900 mb-3">
+                        <h3 className="text-2xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC] mb-3">
                           Start Building Your Property Portfolio
                         </h3>
-                        <p className="text-neutral-600 mb-6 leading-relaxed">
+                        <p className="text-[#4B5563] dark:text-[#A8B5AE] mb-6 leading-relaxed">
                           You haven't purchased any properties yet. Browse our amazing selection of properties and find your perfect investment opportunity.
                         </p>
 
                         {/* Action Buttons */}
                         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                           <button
-                            className="inline-flex items-center gap-2 bg-gradient-to-r from-gold-400 to-gold-500 text-slate-900 hover:from-gold-300 hover:to-gold-400 transform hover:scale-105 transition-all duration-300 px-8 py-3 rounded-xl font-semibold shadow-lg shadow-gold-400/30 w-auto"
+                            className="inline-flex items-center gap-2 bg-gradient-to-r from-gold-400 to-gold-500 text-[#1A1A1A] dark:text-[#F8F4EC] hover:from-gold-300 hover:to-gold-400 transform hover:scale-105 transition-all duration-300 px-8 py-3 rounded-xl font-semibold shadow-lg shadow-gold-400/30 w-auto"
                             onClick={() => navigate('/properties')}
                           >
                             <Search size={16} />
@@ -1354,8 +1300,8 @@ const BuyerDashboard = () => {
                         </div>
 
                         {/* Additional Info */}
-                        <div className="mt-8 p-4 bg-neutral-50 rounded-xl border border-neutral-200">
-                          <p className="text-sm text-neutral-600">
+                        <div className="mt-8 p-4 bg-[#F8F4EC] dark:bg-[#141A17] rounded-xl border border-[#E5E0D8] dark:border-[#2A342E]">
+                          <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">
                             💡 <strong>Tip:</strong> Save properties to your favorites to keep track of your preferred options!
                           </p>
                         </div>

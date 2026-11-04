@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import { AnimatePresence } from "framer-motion";
 
 import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { SocketProvider } from "./context/SocketContext";
+import { NotificationProvider } from "./context/NotificationContext";
 
 import CustomCursor from "./components/CustomCursor";
 import CommandPalette from "./components/CommandPalette";
@@ -60,7 +62,7 @@ import "./styles/design-system.css";
 // Animated Routes wrapper component
 const AnimatedRoutes = () => {
   const location = useLocation();
-  
+
   return (
     <AnimatePresence mode="wait">
       <PageTransition key={location.pathname}>
@@ -71,7 +73,7 @@ const AnimatedRoutes = () => {
           <Route path="/payment/:propertyId" element={<Payment />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/selling/verify-payment/:tx_ref" element={<PaymentVerification />} />
-          <Route path="/property/verification-pending" element={<PrivateRoute allowedRoles={["seller","agent","employee","admin"]}><PropertyVerificationPending /></PrivateRoute>} />
+          <Route path="/property/verification-pending" element={<PrivateRoute allowedRoles={["seller", "agent", "employee", "admin"]}><PropertyVerificationPending /></PrivateRoute>} />
           <Route path="/review-form/:propertyId?" element={<ReviewForm />} />
           <Route path="/purchased/:propertyId?" element={<PurchasedProperty />} />
           <Route path="/login" element={<Login />} />
@@ -241,7 +243,7 @@ const AnimatedRoutes = () => {
           />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/subscription" element={<Subscription />} />
-          <Route path="/subscription/create-plan" element={<PrivateRoute allowedRoles={["seller","agent"]}><SubscriptionCreatePlan /></PrivateRoute>} />
+          <Route path="/subscription/create-plan" element={<PrivateRoute allowedRoles={["seller", "agent"]}><SubscriptionCreatePlan /></PrivateRoute>} />
           <Route path="/subscription/verify-payment/:tx_ref" element={<SubscriptionPaymentVerification />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
@@ -255,7 +257,7 @@ const AnimatedRoutes = () => {
 // Wrapper component to handle Navbar re-rendering
 const AppContent = () => {
   const { user, isAuthenticated } = useAuth();
-  
+
   return (
     <Router>
       <div className="App">
@@ -277,7 +279,11 @@ function App() {
     <ThemeProvider>
       <LanguageProvider>
         <AuthProvider>
-          <AppContent />
+          <SocketProvider>
+            <NotificationProvider>
+              <AppContent />
+            </NotificationProvider>
+          </SocketProvider>
         </AuthProvider>
       </LanguageProvider>
     </ThemeProvider>

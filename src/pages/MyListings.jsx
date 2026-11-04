@@ -130,7 +130,7 @@ const MyListings = () => {
     return (
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
         <div className="bg-card rounded-xl border shadow-lg p-8 text-center max-w-md">
-          <Building className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+          <Building className="h-16 w-16 mx-auto mb-4 text-[#4B5563] dark:text-[#A8B5AE]" />
           <h2 className="text-2xl font-bold mb-4">Please log in to view your listings</h2>
           <Link to="/login" className="inline-block px-6 py-3 bg-gradient-to-r from-ethiopian-green to-ethiopian-green/90 text-white rounded-lg font-semibold hover:shadow-lg transition-all">
             Login
@@ -145,7 +145,7 @@ const MyListings = () => {
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-ethiopian-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading your listings...</p>
+          <p className="text-[#4B5563] dark:text-[#A8B5AE]">Loading your listings...</p>
         </div>
       </div>
     );
@@ -168,7 +168,7 @@ const MyListings = () => {
             <div>
               <div className="ethiopian-accent-bar w-16 mb-4"></div>
               <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-2">My Listings</h1>
-              <p className="text-xl text-muted-foreground">Manage your property listings</p>
+              <p className="text-xl text-[#4B5563] dark:text-[#A8B5AE]">Manage your property listings</p>
             </div>
             <Link 
               to="/properties/new" 
@@ -193,7 +193,7 @@ const MyListings = () => {
               className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                 filter === item.key
                   ? 'bg-gradient-to-r from-gold-400 to-gold-500 text-foreground shadow-glow-gold'
-                  : 'glass border border-border/50 text-muted-foreground hover:border-gold-400/30 hover:text-foreground'
+                  : 'glass border border-[#E5E0D8] dark:border-[#2A342E]/50 text-[#4B5563] dark:text-[#A8B5AE] hover:border-gold-400/30 hover:text-foreground'
               }`}
               onClick={() => setFilter(item.key)}
             >
@@ -205,10 +205,10 @@ const MyListings = () => {
         {filteredListings.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 animate-fade-in-up">
             <div className="w-32 h-32 rounded-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center mb-8 shadow-luxury">
-              <Building className="h-16 w-16 text-muted-foreground/50" />
+              <Building className="h-16 w-16 text-[#4B5563] dark:text-[#A8B5AE]/50" />
             </div>
             <h2 className="font-serif text-3xl font-bold text-foreground mb-4">No listings found</h2>
-            <p className="text-lg text-muted-foreground mb-8 text-center max-w-lg">
+            <p className="text-lg text-[#4B5563] dark:text-[#A8B5AE] mb-8 text-center max-w-lg">
               {filter === 'all' 
                 ? "You haven't created any listings yet." 
                 : `No ${filter} listings found.`
@@ -223,14 +223,14 @@ const MyListings = () => {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 stagger-children">
             {filteredListings.map((listing, index) => (
               <div 
                 key={listing.id} 
-                className="group glass-card rounded-2xl border border-border/50 shadow-lg overflow-hidden hover:shadow-luxury hover:border-gold-400/30 transition-all duration-500 hover:-translate-y-2"
+                className="group glass-card rounded-2xl border border-[#E5E0D8] dark:border-[#2A342E]/50 shadow-lg overflow-hidden hover:shadow-luxury hover:border-gold-400/30 transition-all duration-500 hover:-translate-y-2"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="relative h-56 overflow-hidden">
+                <div className="relative h-44 sm:h-48 overflow-hidden">
                   <img 
                     src={listing.image} 
                     alt={listing.title} 
@@ -260,37 +260,37 @@ const MyListings = () => {
                   </div>
                 </div>
                 
-                <div className="p-6">
+                <div className="p-4 sm:p-5">
                   <h3 className="font-serif text-xl font-bold text-foreground mb-3 group-hover:text-gold-500 transition-colors">{listing.title}</h3>
-                  <div className="flex items-center gap-2 text-muted-foreground mb-5">
+                  <div className="flex items-center gap-2 text-[#4B5563] dark:text-[#A8B5AE] mb-5">
                     <div className="p-1 rounded-md bg-gold-400/20">
                       <MapPin className="h-4 w-4 text-gold-500" />
                     </div>
                     <span className="text-sm">{listing.location}</span>
                   </div>
 
-                  <div className="flex items-center gap-3 mb-5 text-sm text-muted-foreground flex-wrap">
-                    <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
+                  <div className="flex items-center gap-3 mb-5 text-sm text-[#4B5563] dark:text-[#A8B5AE] flex-wrap">
+                    <span className="flex items-center gap-2 px-3 py-1.5 bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 rounded-lg">
                       <Home className="h-4 w-4 text-gold-500" />
                       {listing.propertyType}
                     </span>
                     {listing.bedrooms > 0 && (
-                      <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
+                      <span className="flex items-center gap-2 px-3 py-1.5 bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 rounded-lg">
                         <Bed className="h-4 w-4 text-gold-500" />
                         {listing.bedrooms}
                       </span>
                     )}
-                    <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
+                    <span className="flex items-center gap-2 px-3 py-1.5 bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 rounded-lg">
                       <Bath className="h-4 w-4 text-gold-500" />
                       {listing.bathrooms}
                     </span>
-                    <span className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
+                    <span className="flex items-center gap-2 px-3 py-1.5 bg-[#F0EDE6]/50 dark:bg-[#1C2420]/50 rounded-lg">
                       <Square className="h-4 w-4 text-gold-500" />
                       {listing.area} m²
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-4 mb-5 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-4 mb-5 text-xs text-[#4B5563] dark:text-[#A8B5AE]">
                     <span className="flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {formatDate(listing.createdAt)}
@@ -301,10 +301,10 @@ const MyListings = () => {
                     </span>
                   </div>
 
-                  <div className="flex gap-3 pt-5 border-t border-border/50">
+                  <div className="flex gap-3 pt-5 border-t border-[#E5E0D8] dark:border-[#2A342E]/50">
                     <Link 
                       to={`/properties/${listing.id}`} 
-                      className="flex-1 px-4 py-3 glass border border-border/50 hover:border-gold-400/30 rounded-xl font-semibold text-center transition-all duration-300 flex items-center justify-center gap-2 text-foreground hover:text-gold-500"
+                      className="flex-1 px-4 py-3 glass border border-[#E5E0D8] dark:border-[#2A342E]/50 hover:border-gold-400/30 rounded-xl font-semibold text-center transition-all duration-300 flex items-center justify-center gap-2 text-foreground hover:text-gold-500"
                     >
                       <Eye size={16} />
                       View
@@ -326,293 +326,8 @@ const MyListings = () => {
           </div>
         )}
       </div>
-      <style>{`
-        .my-listings-container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 2rem 1rem;
-        }
-
-        .listings-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 2rem;
-        }
-
-        .header-content h1 {
-          margin: 0;
-          color: var(--text-primary);
-        }
-
-        .header-content p {
-          margin: 0.5rem 0 0 0;
-          color: var(--text-secondary);
-        }
-
-        .listings-filters {
-          display: flex;
-          gap: 1rem;
-          margin-bottom: 2rem;
-          flex-wrap: wrap;
-        }
-
-        .filter-btn {
-          padding: 0.5rem 1rem;
-          border: 2px solid var(--border-color);
-          background: var(--card-bg);
-          color: var(--text-primary);
-          border-radius: 6px;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-
-        .filter-btn:hover {
-          border-color: var(--primary-color);
-        }
-
-        .filter-btn.active {
-          background: var(--primary-color);
-          color: white;
-          border-color: var(--primary-color);
-        }
-
-        .listings-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-          gap: 2rem;
-        }
-
-        .listing-card {
-          background: var(--card-bg);
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .listing-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .listing-image {
-          position: relative;
-          height: 200px;
-          overflow: hidden;
-        }
-
-        .listing-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .listing-status {
-          position: absolute;
-          top: 1rem;
-          right: 1rem;
-          padding: 0.25rem 0.75rem;
-          border-radius: 20px;
-          color: white;
-          font-size: 0.875rem;
-          font-weight: 500;
-          text-transform: capitalize;
-        }
-
-        .listing-content {
-          padding: 1.5rem;
-        }
-
-        .listing-content h3 {
-          margin: 0 0 1rem 0;
-          color: var(--text-primary);
-          font-size: 1.25rem;
-        }
-
-        .listing-location {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          color: var(--text-secondary);
-          margin-bottom: 1rem;
-        }
-
-        .listing-price {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          color: var(--primary-color);
-          font-weight: 600;
-          font-size: 1.125rem;
-          margin-bottom: 1rem;
-        }
-
-        .price-type {
-          color: var(--text-secondary);
-          font-weight: 400;
-          font-size: 0.875rem;
-        }
-
-        .listing-details {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1rem;
-          margin-bottom: 1rem;
-        }
-
-        .detail-item {
-          display: flex;
-          align-items: center;
-          gap: 0.25rem;
-          color: var(--text-secondary);
-          font-size: 0.875rem;
-        }
-
-        .listing-meta {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 1.5rem;
-          padding-top: 1rem;
-          border-top: 1px solid var(--border-color);
-        }
-
-        .meta-item {
-          display: flex;
-          align-items: center;
-          gap: 0.25rem;
-          color: var(--text-secondary);
-          font-size: 0.875rem;
-        }
-
-        .listing-actions {
-          display: flex;
-          gap: 0.5rem;
-        }
-
-        .action-btn {
-          flex: 1;
-          padding: 0.5rem;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.25rem;
-          font-size: 0.875rem;
-          text-decoration: none;
-          transition: background-color 0.2s;
-        }
-
-        .view-btn {
-          background: var(--primary-color);
-          color: white;
-        }
-
-        .view-btn:hover {
-          background: var(--primary-hover);
-        }
-
-        .edit-btn {
-          background: var(--secondary-color);
-          color: var(--text-primary);
-        }
-
-        .edit-btn:hover {
-          background: var(--secondary-hover);
-        }
-
-        .delete-btn {
-          background: #ef4444;
-          color: white;
-        }
-
-        .delete-btn:hover {
-          background: #dc2626;
-        }
-
-        .empty-state, .loading-state {
-          text-align: center;
-          padding: 4rem 2rem;
-          color: var(--text-secondary);
-        }
-
-        .empty-state svg, .loading-state svg {
-          color: var(--text-secondary);
-          margin-bottom: 1rem;
-        }
-
-        .empty-state h2 {
-          color: var(--text-primary);
-          margin-bottom: 0.5rem;
-        }
-
-        .spinner {
-          width: 40px;
-          height: 40px;
-          border: 4px solid var(--border-color);
-          border-top: 4px solid var(--primary-color);
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-          margin: 0 auto 1rem auto;
-        }
-
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-
-        .btn {
-          padding: 0.75rem 1.5rem;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          text-decoration: none;
-          font-size: 1rem;
-          transition: background-color 0.2s;
-        }
-
-        .btn-primary {
-          background: var(--primary-color);
-          color: white;
-        }
-
-        .btn-primary:hover {
-          background: var(--primary-hover);
-        }
-
-        @media (max-width: 768px) {
-          .my-listings-container {
-            padding: 1rem;
-          }
-
-          .listings-header {
-            flex-direction: column;
-            gap: 1rem;
-            align-items: flex-start;
-          }
-
-          .listings-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .listings-filters {
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
-          }
-
-          .filter-btn {
-            white-space: nowrap;
-          }
-        }
-      `}</style>
     </div>
   );
 };
 
 export default MyListings;
-

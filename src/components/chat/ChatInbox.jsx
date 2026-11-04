@@ -71,9 +71,9 @@ export function ChatInbox({ onSelectConversation }) {
   if (conversations.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-        <MessageCircle className="h-16 w-16 text-muted-foreground mb-4" />
+        <MessageCircle className="h-16 w-16 text-[#4B5563] dark:text-[#A8B5AE] mb-4" />
         <h3 className="text-lg font-semibold mb-2">No messages yet</h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">
           Start a conversation from any property page
         </p>
       </div>
@@ -83,9 +83,9 @@ export function ChatInbox({ onSelectConversation }) {
   return (
     <div className="flex flex-col h-full">
       {/* Search */}
-      <div className="p-4 border-b border-border/40">
+      <div className="p-4 border-b border-[#E5E0D8] dark:border-[#2A342E]/40">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#4B5563] dark:text-[#A8B5AE]" />
           <Input
             placeholder="Search conversations..."
             value={searchQuery}
@@ -109,7 +109,7 @@ export function ChatInbox({ onSelectConversation }) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: idx * 0.05 }}
               onClick={() => onSelectConversation(conversationId)}
-              className={`p-4 border-b border-border/20 cursor-pointer hover:bg-accent/50 transition-colors ${
+              className={`p-4 border-b border-[#E5E0D8] dark:border-[#2A342E]/20 cursor-pointer hover:bg-accent/50 transition-colors ${
                 isUnread ? "bg-primary/5" : ""
               }`}
             >
@@ -123,7 +123,7 @@ export function ChatInbox({ onSelectConversation }) {
                       className="h-12 w-12 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
+                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#0B6E4F] to-[#D4A017] flex items-center justify-center text-white font-semibold">
                       {otherUser?.name?.[0] || "?"}
                     </div>
                   )}
@@ -136,11 +136,11 @@ export function ChatInbox({ onSelectConversation }) {
                     <h3 className={`font-semibold truncate ${isUnread ? "font-bold" : ""}`}>
                       {otherUser?.name || "Unknown User"}
                     </h3>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-[#4B5563] dark:text-[#A8B5AE]">
                       {formatDistanceToNow(new Date(conversation.lastMessage.createdAt), { addSuffix: true })}
                     </span>
                   </div>
-                  <p className={`text-sm truncate ${isUnread ? "text-foreground font-medium" : "text-muted-foreground"}`}>
+                  <p className={`text-sm truncate ${isUnread ? "text-foreground font-medium" : "text-[#4B5563] dark:text-[#A8B5AE]"}`}>
                     {conversation.lastMessage.content}
                   </p>
                 </div>

@@ -3,17 +3,17 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Volume2, VolumeX, Play, Pause } from 'lucide-react';
 
 /**
- * Premium Hero Video Background Component
- * Features: Parallax scrolling, video controls, overlay effects
+ * Premium Hero Video / Skyline Background Component
+ * Features: Cinematic Addis Ababa skyline at golden hour / dusk, parallax scrolling, soft glass overlays
  */
 const HeroVideo = ({ 
   videoSrc = null,
   posterImage = '/hero-bg-addis.jpg',
-  fallbackImages = ['/hero-bg-addis.jpg', '/hero-bg-modern.jpg'],
+  fallbackImages = ['/hero-bg-addis.jpg', '/hero-bg-modern.jpg', '/hero-bg-1.jpg'],
   children,
   className = '',
-  overlayOpacity = 0.6,
-  parallaxStrength = 0.3,
+  overlayOpacity = 0.65,
+  parallaxStrength = 0.35,
   showControls = false,
 }) => {
   const containerRef = useRef(null);
@@ -26,15 +26,15 @@ const HeroVideo = ({
   // Parallax scroll effect
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 1000], [0, 1000 * parallaxStrength]);
-  const opacity = useTransform(scrollY, [0, 500], [1, 0.3]);
-  const scale = useTransform(scrollY, [0, 500], [1, 1.1]);
+  const opacity = useTransform(scrollY, [0, 600], [1, 0.4]);
+  const scale = useTransform(scrollY, [0, 600], [1, 1.08]);
 
   // Image carousel for fallback
   useEffect(() => {
     if (!videoSrc && fallbackImages.length > 1) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % fallbackImages.length);
-      }, 6000);
+      }, 7000);
       return () => clearInterval(interval);
     }
   }, [videoSrc, fallbackImages]);
@@ -61,11 +61,11 @@ const HeroVideo = ({
   return (
     <div 
       ref={containerRef}
-      className={`relative min-h-[100vh] w-full overflow-hidden ${className}`}
+      className={`relative min-h-[95vh] lg:min-h-screen w-full overflow-hidden flex flex-col justify-center ${className}`}
     >
       {/* Parallax Background Container */}
       <motion.div 
-        className="absolute inset-0 w-full h-[120%] -top-[10%]"
+        className="absolute inset-0 w-full h-[125%] -top-[12%]"
         style={{ y, scale }}
       >
         {/* Video Background */}
@@ -82,7 +82,7 @@ const HeroVideo = ({
             onLoadedData={() => setIsVideoLoaded(true)}
           />
         ) : (
-          /* Fallback Image Carousel with Ken Burns effect */
+          /* Fallback Addis Ababa Skyline Image Carousel with Smooth Ken Burns effect */
           <div className="absolute inset-0 w-full h-full">
             {fallbackImages.map((img, index) => (
               <motion.div
@@ -91,245 +91,85 @@ const HeroVideo = ({
                 initial={{ opacity: 0, scale: 1 }}
                 animate={{ 
                   opacity: index === currentImageIndex ? 1 : 0,
-                  scale: index === currentImageIndex ? 1.1 : 1,
+                  scale: index === currentImageIndex ? 1.08 : 1,
                 }}
                 transition={{ 
-                  opacity: { duration: 1.5, ease: 'easeInOut' },
-                  scale: { duration: 8, ease: 'linear' },
+                  opacity: { duration: 2, ease: 'easeInOut' },
+                  scale: { duration: 9, ease: 'easeInOut' },
                 }}
               >
                 <img
                   src={img}
-                  alt="Hero background"
-                  className="w-full h-full object-cover"
+                  alt="Modern Addis Ababa Skyline at Dusk"
+                  className="w-full h-full object-cover object-center"
                 />
               </motion.div>
             ))}
           </div>
         )}
 
-        {/* Animated Gradient Mesh Overlay */}
+        {/* Cinematic Golden Hour / Dusk Atmosphere Overlay */}
         <div 
           className="absolute inset-0 pointer-events-none"
           style={{
             background: `
-              radial-gradient(ellipse 80% 60% at 50% 40%, transparent 30%, hsl(var(--background) / 0.4) 100%),
+              radial-gradient(ellipse 90% 60% at 50% 25%, rgba(212, 160, 23, 0.22) 0%, transparent 65%),
               linear-gradient(180deg, 
-                hsl(var(--foreground) / ${overlayOpacity * 0.8}) 0%, 
-                hsl(var(--foreground) / ${overlayOpacity * 0.5}) 40%,
-                hsl(var(--foreground) / ${overlayOpacity * 0.7}) 70%,
+                rgba(15, 20, 18, 0.72) 0%, 
+                rgba(15, 20, 18, 0.45) 35%, 
+                rgba(15, 20, 18, 0.75) 75%, 
                 hsl(var(--background)) 100%
               )
             `,
           }}
         />
 
-        {/* Ethiopian Flag Accent Gradient */}
-        <div 
-          className="absolute inset-0 pointer-events-none opacity-20"
-          style={{
-            background: `
-              linear-gradient(135deg, 
-                hsl(var(--ethiopian-green) / 0.3) 0%, 
-                transparent 33%,
-                hsl(var(--ethiopian-yellow) / 0.2) 33%,
-                transparent 66%,
-                hsl(var(--ethiopian-red) / 0.2) 66%,
-                transparent 100%
-              )
-            `,
-          }}
-        />
-
-        {/* Animated Floating Orbs */}
+        {/* Subtle Warm Amber / Emerald Glow Mesh */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Gold orb - top left */}
-          <motion.div
-            className="absolute top-[10%] left-[10%] w-[400px] h-[400px] rounded-full opacity-30"
+          {/* Honey Gold Dusk Ambient Light */}
+          <div 
+            className="absolute -top-[10%] left-[20%] w-[600px] h-[500px] rounded-full pointer-events-none opacity-25 dark:opacity-35"
             style={{
-              background: 'radial-gradient(circle, hsl(var(--gold-400) / 0.4) 0%, transparent 70%)',
-              filter: 'blur(60px)',
-            }}
-            animate={{
-              y: [0, -30, 0],
-              x: [0, 20, 0],
-              scale: [1, 1.1, 1],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: 'easeInOut',
+              background: 'radial-gradient(circle, rgba(212, 160, 23, 0.5) 0%, rgba(234, 179, 8, 0.1) 50%, transparent 75%)',
+              filter: 'blur(80px)',
             }}
           />
 
-          {/* Green orb - bottom right */}
-          <motion.div
-            className="absolute bottom-[15%] right-[10%] w-[350px] h-[350px] rounded-full opacity-25"
+          {/* Deep Emerald Accent Light */}
+          <div 
+            className="absolute bottom-[20%] right-[10%] w-[500px] h-[450px] rounded-full pointer-events-none opacity-25 dark:opacity-35"
             style={{
-              background: 'radial-gradient(circle, hsl(var(--ethiopian-green) / 0.5) 0%, transparent 70%)',
-              filter: 'blur(50px)',
-            }}
-            animate={{
-              y: [0, 25, 0],
-              x: [0, -15, 0],
-              scale: [1, 1.15, 1],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: 2,
+              background: 'radial-gradient(circle, rgba(11, 110, 79, 0.5) 0%, rgba(16, 185, 129, 0.1) 50%, transparent 75%)',
+              filter: 'blur(80px)',
             }}
           />
-
-          {/* Red accent orb - center right */}
-          <motion.div
-            className="absolute top-[40%] right-[20%] w-[200px] h-[200px] rounded-full opacity-20"
-            style={{
-              background: 'radial-gradient(circle, hsl(var(--ethiopian-red) / 0.4) 0%, transparent 70%)',
-              filter: 'blur(40px)',
-            }}
-            animate={{
-              y: [0, -20, 0],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: 4,
-            }}
-          />
-
-          {/* Small floating particles */}
-          {[...Array(8)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-gold-400/40"
-              style={{
-                width: `${4 + Math.random() * 8}px`,
-                height: `${4 + Math.random() * 8}px`,
-                top: `${10 + Math.random() * 70}%`,
-                left: `${10 + Math.random() * 80}%`,
-              }}
-              animate={{
-                y: [0, -30 - Math.random() * 20, 0],
-                opacity: [0.3, 0.7, 0.3],
-              }}
-              transition={{
-                duration: 4 + Math.random() * 4,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: Math.random() * 4,
-              }}
-            />
-          ))}
         </div>
-
-        {/* Animated Grid Pattern Overlay */}
-        <motion.div 
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage: `
-              linear-gradient(hsl(var(--gold-400) / 0.1) 1px, transparent 1px),
-              linear-gradient(90deg, hsl(var(--gold-400) / 0.1) 1px, transparent 1px)
-            `,
-            backgroundSize: '60px 60px',
-          }}
-          animate={{
-            backgroundPosition: ['0px 0px', '60px 60px'],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
       </motion.div>
 
-      {/* Content Container with parallax opacity */}
-      <motion.div 
-        className="relative z-10 min-h-[100vh] flex flex-col"
-        style={{ opacity }}
-      >
-        {children}
-      </motion.div>
-
-      {/* Video Controls (if enabled) */}
-      {showControls && videoSrc && (
-        <div className="absolute bottom-8 right-8 z-20 flex gap-3">
-          <motion.button
+      {/* Video Controls (if video source is active) */}
+      {videoSrc && showControls && (
+        <div className="absolute bottom-6 right-6 z-20 flex items-center gap-2">
+          <button
             onClick={togglePlay}
-            className="w-12 h-12 rounded-full bg-background/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-background/30 transition-colors"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
+            className="p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 transition-all duration-300"
+            aria-label={isPlaying ? 'Pause video' : 'Play video'}
           >
-            {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-          </motion.button>
-          <motion.button
+            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+          </button>
+          <button
             onClick={toggleMute}
-            className="w-12 h-12 rounded-full bg-background/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-background/30 transition-colors"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
+            className="p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 transition-all duration-300"
+            aria-label={isMuted ? 'Unmute video' : 'Mute video'}
           >
-            {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-          </motion.button>
+            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          </button>
         </div>
       )}
 
-      {/* Scroll Indicator */}
-      <motion.div 
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, duration: 0.8 }}
-      >
-        <motion.div 
-          className="relative"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <div className="w-8 h-14 rounded-full border-2 border-white/40 flex items-start justify-center p-2">
-            <motion.div 
-              className="w-2 h-4 bg-white/70 rounded-full"
-              animate={{ y: [0, 16, 0], opacity: [1, 0.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            />
-          </div>
-          <motion.div 
-            className="absolute -inset-3 rounded-full border border-white/10"
-            animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          />
-        </motion.div>
-      </motion.div>
-
-      {/* Image Indicators (for fallback carousel) */}
-      {!videoSrc && fallbackImages.length > 1 && (
-        <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-20 flex gap-3">
-          {fallbackImages.map((_, index) => (
-            <motion.button
-              key={index}
-              className={`relative h-2.5 rounded-full transition-all duration-500 ${
-                index === currentImageIndex 
-                  ? 'w-10 bg-gradient-to-r from-gold-400 to-gold-500' 
-                  : 'w-4 bg-white/30 hover:bg-white/50'
-              }`}
-              onClick={() => setCurrentImageIndex(index)}
-              whileHover={{ scale: 1.2 }}
-            >
-              {index === currentImageIndex && (
-                <motion.div 
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-gold-400 to-gold-500"
-                  style={{ filter: 'blur(8px)' }}
-                  animate={{ opacity: [0.4, 0.8, 0.4] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-              )}
-            </motion.button>
-          ))}
-        </div>
-      )}
+      {/* Content Container */}
+      <div className="relative z-10 w-full flex-1 flex flex-col justify-center">
+        {children}
+      </div>
     </div>
   );
 };

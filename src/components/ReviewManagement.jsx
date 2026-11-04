@@ -136,7 +136,7 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
           <Star
             key={i}
             size={16}
-            className={`${i < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+            className={`${i < rating ? 'text-yellow-400 fill-current' : 'text-[#4B5563] dark:text-[#A8B5AE]'}`}
           />
         ))}
         <span className="ml-2 text-sm font-medium">{rating}/5</span>
@@ -164,8 +164,8 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
 
   const renderReviewTypeBadge = (reviewType) => {
     const config = reviewType === 'property' 
-      ? { color: 'bg-blue-100 text-blue-800', icon: Building, text: 'Property' }
-      : { color: 'bg-purple-100 text-purple-800', icon: Globe, text: 'Website Service' };
+      ? { color: 'bg-[#0B6E4F]/10 dark:bg-[#0B6E4F]/10 text-[#0B6E4F] dark:text-[#0B6E4F]', icon: Building, text: 'Property' }
+      : { color: 'bg-[#0B6E4F]/10 dark:bg-[#0B6E4F]/10 text-purple-800', icon: Globe, text: 'Website Service' };
 
     const Icon = config.icon;
 
@@ -187,7 +187,7 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
             <h3 className="text-lg font-semibold">Review Details</h3>
             <button
               onClick={() => setShowReviewModal(false)}
-              className="text-gray-500 hover:text-gray-700"
+              className="text-[#4B5563] dark:text-[#6B7A73] hover:text-[#1A1A1A] dark:hover:text-[#F8F4EC]"
             >
               ✕
             </button>
@@ -196,17 +196,17 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                  <User size={20} className="text-gray-600" />
+                <div className="w-10 h-10 bg-[#F0EDE6] dark:bg-[#1C2420] rounded-full flex items-center justify-center">
+                  <User size={20} className="text-[#4B5563] dark:text-[#6B7A73]" />
                 </div>
                 <div>
                   <p className="font-medium">{selectedReview.buyer?.name || 'Anonymous'}</p>
-                  <p className="text-sm text-gray-500">{selectedReview.buyer?.email}</p>
+                  <p className="text-sm text-[#4B5563] dark:text-[#6B7A73]">{selectedReview.buyer?.email}</p>
                 </div>
               </div>
               <div className="text-right">
                 {renderRating(selectedReview.rating)}
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-[#4B5563] dark:text-[#6B7A73] mt-1">
                   {new Date(selectedReview.createdAt).toLocaleDateString()}
                 </p>
               </div>
@@ -219,18 +219,18 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
 
             {selectedReview.title && (
               <div>
-                <h4 className="font-medium text-gray-900">{selectedReview.title}</h4>
+                <h4 className="font-medium text-[#1A1A1A] dark:text-[#F8F4EC]">{selectedReview.title}</h4>
               </div>
             )}
             
             <div>
-              <p className="text-gray-700 leading-relaxed">{selectedReview.review}</p>
+              <p className="text-[#1A1A1A] dark:text-[#A8B5AE] leading-relaxed">{selectedReview.review}</p>
             </div>
 
             {selectedReview.property && (
-              <div className="bg-gray-50 p-3 rounded-lg">
-                <h5 className="font-medium text-gray-900 mb-2">Property Review</h5>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
+              <div className="bg-[#F8F4EC] dark:bg-[#0B0F0D] p-3 rounded-lg">
+                <h5 className="font-medium text-[#1A1A1A] dark:text-[#F8F4EC] mb-2">Property Review</h5>
+                <div className="flex items-center gap-2 text-sm text-[#4B5563] dark:text-[#6B7A73]">
                   <Building size={16} />
                   <span>{selectedReview.property.title}</span>
                   <MapPin size={16} />
@@ -240,7 +240,7 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
             )}
 
             {selectedReview.location && (
-              <div className="flex items-center gap-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2 text-sm text-[#4B5563] dark:text-[#6B7A73]">
                 <MapPin size={16} />
                 <span>{selectedReview.location}</span>
               </div>
@@ -255,7 +255,7 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
 
             {showActions && (userRole === 'admin' || userRole === 'employee') && (
               <div className="border-t pt-4">
-                <h5 className="font-medium text-gray-900 mb-3">Review Actions</h5>
+                <h5 className="font-medium text-[#1A1A1A] dark:text-[#F8F4EC] mb-3">Review Actions</h5>
                 
                 {selectedReview.status === 'pending' && (
                   <div className="flex gap-2">
@@ -319,17 +319,17 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
         <div className="bg-white p-4 rounded-lg shadow border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Total Reviews</p>
-              <p className="text-2xl font-bold text-gray-900">{reviewStats.totalReviews}</p>
+              <p className="text-sm font-medium text-[#4B5563] dark:text-[#6B7A73]">Total Reviews</p>
+              <p className="text-2xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">{reviewStats.totalReviews}</p>
             </div>
-            <MessageSquare className="h-8 w-8 text-blue-600" />
+            <MessageSquare className="h-8 w-8 text-[#0B6E4F] dark:text-[#0B6E4F]" />
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Average Rating</p>
-              <p className="text-2xl font-bold text-gray-900">{reviewStats.averageRating ? reviewStats.averageRating.toFixed(1) : '0.0'}</p>
+              <p className="text-sm font-medium text-[#4B5563] dark:text-[#6B7A73]">Average Rating</p>
+              <p className="text-2xl font-bold text-[#1A1A1A] dark:text-[#F8F4EC]">{reviewStats.averageRating ? reviewStats.averageRating.toFixed(1) : '0.0'}</p>
             </div>
             <Star className="h-8 w-8 text-yellow-500" />
           </div>
@@ -337,7 +337,7 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
         <div className="bg-white p-4 rounded-lg shadow border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Pending Reviews</p>
+              <p className="text-sm font-medium text-[#4B5563] dark:text-[#6B7A73]">Pending Reviews</p>
               <p className="text-2xl font-bold text-yellow-600">{reviewStats.pendingReviews}</p>
             </div>
             <Clock className="h-8 w-8 text-yellow-600" />
@@ -351,19 +351,19 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
     <div className="bg-white p-4 rounded-lg shadow border">
       <div className="flex flex-col gap-3">
         <div className="relative">
-          {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} /> */}
+          {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#4B5563] dark:text-[#A8B5AE]" size={20} /> */}
           <input
             type="text"
             placeholder="Search reviews..."
             value={reviewSearch}
             onChange={(e) => setReviewSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
           />
         </div>
         <select
           value={reviewFilter}
           onChange={(e) => setReviewFilter(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
         >
           <option value="all">All Status</option>
           <option value="pending">Pending</option>
@@ -374,7 +374,7 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
           <select
             value={reviewTypeFilter}
             onChange={(e) => setReviewTypeFilter(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-3 py-2 border border-[#E5E0D8] dark:border-[#2A342E] rounded-lg focus:ring-2 focus:ring-[#0B6E4F] dark:focus:ring-[#0B6E4F] focus:border-transparent"
           >
             <option value="all">All Types</option>
             <option value="property">Property</option>
@@ -383,7 +383,7 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
         )}
         <button
           onClick={() => { setCurrentPage(1); fetchReviews(); }}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+          className="px-4 py-2 bg-[#0B6E4F] dark:bg-[#0B6E4F] text-white rounded-lg hover:bg-[#0B6E4F] dark:hover:bg-[#0B6E4F] flex items-center gap-2"
         >
           <RefreshCw size={16} />
           Refresh
@@ -395,43 +395,43 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
   const TablePanel = (
     <div className="bg-white rounded-lg shadow border overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="min-w-full divide-y divide-[#E5E0D8] dark:divide-[#2A342E]">
+          <thead className="bg-[#F8F4EC] dark:bg-[#0B0F0D]">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User & Review</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type & Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-[#4B5563] dark:text-[#6B7A73] uppercase tracking-wider">User & Review</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-[#4B5563] dark:text-[#6B7A73] uppercase tracking-wider">Type & Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-[#4B5563] dark:text-[#6B7A73] uppercase tracking-wider">Rating</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-[#4B5563] dark:text-[#6B7A73] uppercase tracking-wider">Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-[#4B5563] dark:text-[#6B7A73] uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-[#E5E0D8] dark:divide-[#2A342E]">
             {loading ? (
               <tr>
                 <td colSpan="5" className="px-6 py-4 text-center">
                   <div className="flex items-center justify-center">
-                    <RefreshCw className="animate-spin h-5 w-5 text-blue-600 mr-2" />
+                    <RefreshCw className="animate-spin h-5 w-5 text-[#0B6E4F] dark:text-[#0B6E4F] mr-2" />
                     Loading reviews...
                   </div>
                 </td>
               </tr>
             ) : reviews.length === 0 ? (
               <tr>
-                <td colSpan="5" className="px-6 py-4 text-center text-gray-500">No reviews found</td>
+                <td colSpan="5" className="px-6 py-4 text-center text-[#4B5563] dark:text-[#6B7A73]">No reviews found</td>
               </tr>
             ) : (
               reviews.map((review) => (
-                <tr key={review._id} className="hover:bg-gray-50">
+                <tr key={review._id} className="hover:bg-[#F8F4EC] dark:hover:bg-[#141A17]">
                   <td className="px-6 py-4">
                     <div className="flex items-start space-x-3">
                       <div className="flex-shrink-0">
-                        <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                          <User size={20} className="text-gray-600" />
+                        <div className="w-10 h-10 bg-[#F0EDE6] dark:bg-[#1C2420] rounded-full flex items-center justify-center">
+                          <User size={20} className="text-[#4B5563] dark:text-[#6B7A73]" />
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900">{review.buyer?.name || 'Anonymous'}</p>
-                        <p className="text-sm text-gray-500 truncate">{review.title || review.review.substring(0, 50)}...</p>
+                        <p className="text-sm font-medium text-[#1A1A1A] dark:text-[#F8F4EC]">{review.buyer?.name || 'Anonymous'}</p>
+                        <p className="text-sm text-[#4B5563] dark:text-[#6B7A73] truncate">{review.title || review.review.substring(0, 50)}...</p>
                       </div>
                     </div>
                   </td>
@@ -442,10 +442,10 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
                     </div>
                   </td>
                   <td className="px-6 py-4">{renderRating(review.rating)}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{new Date(review.createdAt).toLocaleDateString()}</td>
+                  <td className="px-6 py-4 text-sm text-[#4B5563] dark:text-[#6B7A73]">{new Date(review.createdAt).toLocaleDateString()}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center space-x-2">
-                      <button onClick={() => { setSelectedReview(review); setShowReviewModal(true); }} className="text-blue-600 hover:text-blue-900" title="View Details"><Eye size={16} /></button>
+                      <button onClick={() => { setSelectedReview(review); setShowReviewModal(true); }} className="text-[#0B6E4F] dark:text-[#0B6E4F] hover:text-blue-900" title="View Details"><Eye size={16} /></button>
                       {showActions && userRole === 'admin' && (
                         <button onClick={() => handleDeleteReview(review._id)} className="text-red-600 hover:text-red-900" title="Delete Review"><Trash2 size={16} /></button>
                       )}
@@ -458,16 +458,16 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
         </table>
       </div>
       {totalPages > 1 && (
-        <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+        <div className="bg-white px-4 py-3 border-t border-[#E5E0D8] dark:border-[#2A342E] sm:px-6">
           <div className="flex items-center justify-between">
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between w-full">
               <div>
-                <p className="text-sm text-gray-700">Showing page <span className="font-medium">{currentPage}</span> of <span className="font-medium">{totalPages}</span></p>
+                <p className="text-sm text-[#1A1A1A] dark:text-[#A8B5AE]">Showing page <span className="font-medium">{currentPage}</span> of <span className="font-medium">{totalPages}</span></p>
               </div>
               <div>
                 <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                  <button onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))} disabled={currentPage === 1} className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50">Previous</button>
-                  <button onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))} disabled={currentPage === totalPages} className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50">Next</button>
+                  <button onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))} disabled={currentPage === 1} className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-[#E5E0D8] dark:border-[#2A342E] bg-white text-sm font-medium text-[#4B5563] dark:text-[#6B7A73] hover:bg-[#F8F4EC] dark:hover:bg-[#141A17] disabled:opacity-50">Previous</button>
+                  <button onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))} disabled={currentPage === totalPages} className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-[#E5E0D8] dark:border-[#2A342E] bg-white text-sm font-medium text-[#4B5563] dark:text-[#6B7A73] hover:bg-[#F8F4EC] dark:hover:bg-[#141A17] disabled:opacity-50">Next</button>
                 </nav>
               </div>
             </div>
@@ -483,8 +483,8 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
         <aside className="md:col-span-3 space-y-4">
           {headerTitle && (
             <div className="bg-white p-4 rounded-lg shadow border">
-              <h2 className="text-xl font-semibold text-neutral-900">{headerTitle}</h2>
-              <p className="text-sm text-neutral-500 mt-1">Website Service Reviews</p>
+              <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">{headerTitle}</h2>
+              <p className="text-sm text-[#4B5563] dark:text-[#6B7A73] mt-1">Website Service Reviews</p>
             </div>
           )}
           {StatsPanel}
@@ -502,7 +502,7 @@ const ReviewManagement = ({ userRole = 'admin', showStats = true, showActions = 
     <div className="review-management">
       {headerTitle && (
         <div className="mb-4">
-          <h2 className="text-xl font-semibold text-neutral-900">{headerTitle}</h2>
+          <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-[#F8F4EC]">{headerTitle}</h2>
         </div>
       )}
       {StatsPanel}

@@ -71,7 +71,7 @@ const AdminContacts = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 className="font-bold text-foreground mb-3">For All Staff (Admin & Employee)</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-2 text-sm text-[#4B5563] dark:text-[#A8B5AE]">
                 <li className="flex items-center">
                   <CheckCircle size={16} className="text-green-500 mr-2" />
                   View all contact form submissions
@@ -100,21 +100,21 @@ const AdminContacts = () => {
             </div>
             <div>
               <h4 className="font-bold text-foreground mb-3">Admin Only Features</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-2 text-sm text-[#4B5563] dark:text-[#A8B5AE]">
                 <li className="flex items-center">
-                  <CheckCircle size={16} className="text-blue-500 mr-2" />
+                  <CheckCircle size={16} className="text-[#0B6E4F] dark:text-[#0B6E4F] mr-2" />
                   Delete contact form submissions
                 </li>
                 <li className="flex items-center">
-                  <CheckCircle size={16} className="text-blue-500 mr-2" />
+                  <CheckCircle size={16} className="text-[#0B6E4F] dark:text-[#0B6E4F] mr-2" />
                   Assign contacts to specific employees
                 </li>
                 <li className="flex items-center">
-                  <CheckCircle size={16} className="text-blue-500 mr-2" />
+                  <CheckCircle size={16} className="text-[#0B6E4F] dark:text-[#0B6E4F] mr-2" />
                   Full access to all contact management features
                 </li>
                 <li className="flex items-center">
-                  <CheckCircle size={16} className="text-blue-500 mr-2" />
+                  <CheckCircle size={16} className="text-[#0B6E4F] dark:text-[#0B6E4F] mr-2" />
                   Manage contact priorities and categories
                 </li>
               </ul>
@@ -127,32 +127,32 @@ const AdminContacts = () => {
           <h3 className="text-2xl font-black text-foreground mb-4">Contact Workflow</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-blue-600 font-black text-2xl">1</span>
+              <div className="w-16 h-16 bg-[#0B6E4F]/10 dark:bg-[#0B6E4F]/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                <span className="text-[#0B6E4F] dark:text-[#0B6E4F] font-black text-2xl">1</span>
               </div>
               <h4 className="font-bold text-foreground mb-1">Customer Submits</h4>
-              <p className="text-sm text-muted-foreground">Contact form is submitted through the website</p>
+              <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Contact form is submitted through the website</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span className="text-yellow-600 font-black text-2xl">2</span>
               </div>
               <h4 className="font-bold text-foreground mb-1">Staff Reviews</h4>
-              <p className="text-sm text-muted-foreground">Admin or employee reviews and categorizes the inquiry</p>
+              <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Admin or employee reviews and categorizes the inquiry</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span className="text-green-600 font-black text-2xl">3</span>
               </div>
               <h4 className="font-bold text-foreground mb-1">Response Provided</h4>
-              <p className="text-sm text-muted-foreground">Staff responds to the customer inquiry</p>
+              <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Staff responds to the customer inquiry</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-gray-600 font-black text-2xl">4</span>
+              <div className="w-16 h-16 bg-[#F8F4EC] dark:bg-[#141A17] rounded-full flex items-center justify-center mx-auto mb-3">
+                <span className="text-[#4B5563] dark:text-[#6B7A73] font-black text-2xl">4</span>
               </div>
               <h4 className="font-bold text-foreground mb-1">Resolution</h4>
-              <p className="text-sm text-muted-foreground">Contact is marked as resolved or closed</p>
+              <p className="text-sm text-[#4B5563] dark:text-[#A8B5AE]">Contact is marked as resolved or closed</p>
             </div>
           </div>
         </div>

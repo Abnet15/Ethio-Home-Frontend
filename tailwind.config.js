@@ -7,15 +7,42 @@ export default {
   ],
   theme: {
     screens: {
-      'xs': '480px',
-      'sm': '640px',
+      'xs': '380px',
+      'sm': '600px',
       'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
-      '2xl': '1536px',
+      'lg': '992px',
+      'xl': '1200px',
+      '2xl': '1440px',
     },
     extend: {
       colors: {
+        // Ethio-Home Premium Redesign Tokens
+        brand: {
+          cream: '#F8F4EC',
+          'surface-light': '#FFFFFF',
+          'elevated-light': '#F0EDE6',
+          'border-light': '#E5E0D8',
+          'emerald-deep': '#0B6E4F',
+          'emerald-hover': '#095C42',
+          'gold-warm': '#D4A017',
+          'text-dark': '#1A1A1A',
+          'text-secondary': '#4B5563',
+          'text-muted': '#6B7280',
+          dark: '#0F1412',
+          'surface-dark': '#1A211E',
+          'elevated-dark': '#242C28',
+          'border-dark': '#2F3A35',
+          emerald: '#10B981',
+          'emerald-bright-hover': '#34D399',
+          gold: '#EAB308',
+          'text-light': '#F8F4EC',
+          'text-dark-secondary': '#A1A1AA',
+          'text-dark-muted': '#71717A',
+          success: '#22C55E',
+          warning: '#F59E0B',
+          danger: '#C45C26',
+        },
+
         // Ethiopian Coffee Brown Palette
         coffee: {
           50: '#faf7f4',
